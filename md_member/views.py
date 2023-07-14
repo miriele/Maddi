@@ -10,10 +10,10 @@ from md_member.models import MdUser
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 
-# ·Î±×
+# ë¡œê·¸
 logger = logging.getLogger( __name__ )
 
-# ·Î±×ÀÎ
+# ë¡œê·¸ì¸
 class LoginView( View ):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
@@ -31,11 +31,11 @@ class LoginView( View ):
             if user_pass == dto.user_pass :
                 request.session["memid"] = user_id;
                 request.session["gid"] = user_g_id;
-                return redirect("/md_main/main") #####
+                return redirect("/md_main/main") 
             else :
-                message = "ÀÔ·ÂÇÏ½Å ºñ¹Ğ¹øÈ£°¡ ´Ù¸¨´Ï´Ù"
+                message = "ì…ë ¥í•˜ì‹  ë¹„ë°€ë²ˆí˜¸ê°€ ë‹¤ë¦…ë‹ˆë‹¤"
         except ObjectDoesNotExist :
-            message = "ÀÔ·ÂÇÏ½Å ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù"
+            message = "ì…ë ¥í•˜ì‹  ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤"
         template = loader.get_template( "md_member/login.html" )
         context = {
                 "message" : message
@@ -46,18 +46,12 @@ class LogoutView( View ):
     def get(self, request ):
         del request.session["memid"]
         del request.session["gid"]
-        return redirect( "/md_main/main" )   #####
+        return redirect( "/md_main/main" )
     
 class InputView ( View ):
     def get(self, request ):
         template = loader.get_template( "md_member/input.html" )
         context = {}
         return HttpResponse( template.render( context, request ) )
-
-
-
-
-
-
 
 

@@ -105,6 +105,7 @@ $(document).ready(
 		$("form[name='inputform']").on(
 			"submit",
 			function() {
+				var bdate = document.getElementById("user_bir").value;
 				if( ! $( "input[name='user_id']").val() ) {
 					alert(iderror);
 					inputform.user_id.focus();
@@ -121,7 +122,7 @@ $(document).ready(
 					alert(nickerror);
 					inputform.user_name.focus();
 					return false;
-				}else if( ! $( "input[type='date']").val() ) {
+				}else if(bdate == null ) {
 					alert(birerror);
 					inputform.user_bir.focus();
 					return false;
