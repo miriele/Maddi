@@ -1,5 +1,4 @@
 from django.db import models
-from md_member.models import MdUser
 
 
 class MdIce(models.Model):
@@ -113,7 +112,7 @@ class MdAreaT(models.Model):
 class MdStor(models.Model):
     stor_id = models.AutoField(primary_key=True, db_comment='매장ID')
     stor_t = models.ForeignKey(MdStorT, models.DO_NOTHING, db_comment='매장구분ID')
-    user = models.ForeignKey(MdUser, models.DO_NOTHING, blank=True, null=True, db_comment='회원ID')
+    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, blank=True, null=True, db_comment='회원ID')
     bjd_code = models.ForeignKey(MdBjd, models.DO_NOTHING, db_column='bjd_code', db_comment='법정동코드')
     area_t = models.ForeignKey(MdAreaT, models.DO_NOTHING, db_comment='면적분류ID')
     stor_img = models.CharField(max_length=150, db_comment='이미지')
@@ -150,7 +149,7 @@ class MdStorM(models.Model):
 
 class MdStorReg(models.Model):
     reg_id = models.AutoField(primary_key=True, db_comment='매장등록신청ID')
-    user = models.ForeignKey(MdUser, models.DO_NOTHING, db_comment='회원ID')
+    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
     stor = models.ForeignKey(MdStor, models.DO_NOTHING, db_comment='매장ID')
     reg_num = models.CharField(max_length=40, db_comment='사업자등록번호')
     reg_img = models.CharField(max_length=50, db_comment='사업자등록증경로')

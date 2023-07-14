@@ -1,5 +1,4 @@
 from django.db import models
-from md_store.models import MdDrnkT, MdDsrtT, MdAlgyT
 
 
 class MdGen(models.Model):
@@ -63,7 +62,7 @@ class MdTastT(models.Model):
 class MdUAlgy(models.Model):
     u_algy_id = models.AutoField(primary_key=True, db_comment='사용자알러지ID')
     user = models.ForeignKey(MdUser, models.DO_NOTHING, db_comment='회원ID')
-    algy_t = models.ForeignKey(MdAlgyT, models.DO_NOTHING, db_comment='알러지분류ID')
+    algy_t = models.ForeignKey('md_store.MdAlgyT', models.DO_NOTHING, db_comment='알러지분류ID')
 
     class Meta:
         managed = False
@@ -74,7 +73,7 @@ class MdUAlgy(models.Model):
 class MdUDrnk(models.Model):
     u_drnk_id = models.AutoField(primary_key=True, db_comment='사용자음료ID')
     user = models.ForeignKey(MdUser, models.DO_NOTHING, db_comment='회원ID')
-    drnk_t = models.ForeignKey(MdDrnkT, models.DO_NOTHING, db_comment='음료분류ID')
+    drnk_t = models.ForeignKey('md_store.MdDrnkT', models.DO_NOTHING, db_comment='음료분류ID')
 
     class Meta:
         managed = False
@@ -85,7 +84,7 @@ class MdUDrnk(models.Model):
 class MdUDsrt(models.Model):
     u_dsrt_id = models.AutoField(primary_key=True, db_comment='사용자디저트ID')
     user = models.ForeignKey(MdUser, models.DO_NOTHING, db_comment='회원ID')
-    dsrt_t = models.ForeignKey(MdDsrtT, models.DO_NOTHING, db_comment='디저트분류ID')
+    dsrt_t = models.ForeignKey('md_store.MdDsrtT', models.DO_NOTHING, db_comment='디저트분류ID')
 
     class Meta:
         managed = False

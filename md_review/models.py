@@ -1,5 +1,4 @@
 from django.db import models
-from md_order.models import MdOrdr
 
 
 class MdTagG(models.Model):
@@ -25,7 +24,7 @@ class MdTag(models.Model):
 
 class MdReview(models.Model):
     rev_id = models.AutoField(primary_key=True, db_comment='리뷰ID')
-    ordr = models.ForeignKey(MdOrdr, models.DO_NOTHING, db_comment='주문ID')
+    ordr = models.ForeignKey('md_order.MdOrdr', models.DO_NOTHING, db_comment='주문ID')
     rev_star = models.DecimalField(max_digits=2, decimal_places=1, db_comment='리뷰별점')
     rev_ts = models.DateTimeField(db_comment='작성일시')
     rev_cont = models.CharField(max_length=300, blank=True, null=True, db_comment='리뷰내용')
