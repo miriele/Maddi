@@ -7,23 +7,31 @@ from django.views.decorators.csrf import csrf_exempt
 from md_store.models import MdStor
 
 from django.conf import settings
-
-class InfoView(View):
+##################################################
+# 이주림
+# 지금은 비로 하드 코드로 박았지만..
+# 나중에 stor_id 넘겨 받는거로 수정할 것이다!!
+##################################################
+class StoreView(View):
     def get(self, request):
         stor_id = 26234
         store = MdStor.objects.get(stor_id=stor_id)
         
-        image_filename = store.stor_img 
-        
+        if store.stor_t == 0:
+            stor_type = "개인"
+        else:
+            stor_type = "프랜차이즈"
+
         context = {
             'dto': store,
-            'image_filename': image_filename 
+            'stor_type': stor_type
         }
-        return render(request, 'md_store/info.html', context)
+        return render(request, 'md_store/store.html', context)
 
-class MenuListView(View):
+
+class MenuView(View):
     def get(self, request):
-        template = loader.get_template("md_store/menulist.html")
+        template = loader.get_template("md_store/menu.html")
         return HttpResponse(template.render())
 
 
