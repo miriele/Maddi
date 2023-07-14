@@ -5,5 +5,5 @@ app_name = "md_store"
 
 urlpatterns = [
          path( "info", views.InfoView.as_view(), name="info" ),
-       
+         path( "menulist", views.MenuListView.as_view(), name="menulist" ),
        ]
