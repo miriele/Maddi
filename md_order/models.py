@@ -1,16 +1,6 @@
 from django.db import models
 
 
-class MdWeather(models.Model):
-    weather_id = models.IntegerField(primary_key=True, db_comment='날씨분류ID')
-    weather_name = models.CharField(max_length=10, db_comment='날씨분류명')
-
-    class Meta:
-        managed = False
-        db_table = 'md_weather'
-        db_table_comment = '날씨분류'
-
-
 class MdBuck(models.Model):
     buck_id = models.AutoField(primary_key=True, db_comment='장바구니ID')
     user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
@@ -29,7 +19,7 @@ class MdBuck(models.Model):
 class MdOrdr(models.Model):
     ordr_id = models.AutoField(primary_key=True, db_comment='주문ID')
     user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
-    weather = models.ForeignKey(MdWeather, models.DO_NOTHING, db_comment='날씨분류ID')
+    weather = models.ForeignKey('MdWeather', models.DO_NOTHING, db_comment='날씨분류ID')
     ordr_temp = models.IntegerField(db_comment='기온')
     ordr_ord_ts = models.DateTimeField(db_comment='주문일시')
     ordr_com_ts = models.DateTimeField(blank=True, null=True, db_comment='완료일시')
@@ -50,5 +40,15 @@ class MdOrdrM(models.Model):
         managed = False
         db_table = 'md_ordr_m'
         db_table_comment = '주문메뉴'
+
+
+class MdWeather(models.Model):
+    weather_id = models.IntegerField(primary_key=True, db_comment='날씨분류ID')
+    weather_name = models.CharField(max_length=10, db_comment='날씨분류명')
+
+    class Meta:
+        managed = False
+        db_table = 'md_weather'
+        db_table_comment = '날씨분류'
 
 
