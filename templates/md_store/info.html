@@ -1,0 +1,46 @@
+{% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th colspan="3">
+            매장정보관리
+        </th>
+    </tr>
+    <tr>
+        <th rowspan="6"><img src="{{ dto.stor_img }}" alt="매장 이미지"></th>
+    </tr>
+    <tr>
+        <th>매장명</th>
+        <td colspan="2">&nbsp;{{ dto.stor_id }}</td>
+    </tr>
+    <tr>
+        <th>매장유형</th>
+        <td colspan="2">
+            &nbsp;<select name="stor_type">
+                <option value="개인">개인</option>
+                <option value="프랜차이즈">프랜차이즈</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>주소</th>
+        <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
+    </tr>
+    <tr>
+        <th>연락처</th>
+        <td colspan="2">&nbsp;{{ dto.stor_tel }}</td>
+    </tr>
+    <tr>
+        <th>매장인기시간대</th>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <th colspan="3">
+            <input class="inputbutton" type="submit" value="수정">
+            <input class="inputbutton" type="reset" value="취소">
+            <input class="inputbutton" type="button" value="수정취소">
+        </th>
+    </tr>
+</table>
+{% endblock %}
