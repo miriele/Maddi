@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Maddi</title>
+	</head>
+	<body>
+	{% extends "md_member/topbar.html" %}
+	
+	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
+	
+	{% block content %}
+	{% csrf_token %}
+		<form method="post" action="input"	name="inputform">
+			<table >
+				<tr>
+					<th> 아이디 </th>
+					<td>
+						<input class="input" type="text" name="user_id" placeholder="아이디" autofocus>
+					</td>
+				</tr>
+				<tr>
+					<th> 비밀번호 </th>
+					<td>
+						<input class="input" type="password" name="user_pass" placeholder="비밀번호" maxlength="20">
+					</td>
+				</tr>
+				<tr>
+					<th> 이름 </th>
+					<td>
+						<input class="input" type="text" name="user_name" placeholder="이름" maxlength="30">
+					</td>
+				</tr>
+				<tr>
+					<th> 닉네임 </th>
+					<td>
+						<input class="input" type="text" name="user_nick" placeholder="닉네임" maxlength="45">
+					</td>
+				</tr>
+				<tr>
+					<th> 생년월일 </th>
+					<td> 
+						<!--  <input type="date" name="user_bir" min="1900-01-01" max="2025-01-01"> -->
+						<input class="input" type="text" name="user_bir" placeholder="YYYY-mm-dd" >
+					</td>
+				</tr>
+				<tr>
+					<th> 성별 </th>
+					<td> 
+						<select>
+							<option value="0"> 남자 </option>
+							<option value="1"> 여자 </option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th> 사용하실 이미지를 등록해 주세요 </th>
+					<td>
+						<input class="input" type="file" name="user_img">
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2">
+						<input class="inputbutton" type="submit" value="회원가입">
+						<input class="inputbutton" type="button" value="가입취소"
+							onclick="location='main'">
+					</th>
+				</tr>
+			</table>
+		</form>
+	{% endblock %}
+	</body>
+</html>
