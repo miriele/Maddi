@@ -1,6 +1,9 @@
 {% extends "md_main/base.html"%}
 
 {%block content%}
+{% if memid %}
+	{{memid}}님 안녕하세요.
+{%else%}
 <div class = "search-section">
 	<p class = "title" align = 'center'>추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
 	<h1 class = "title" align = 'center'>Maddi</h1>
@@ -38,5 +41,5 @@
  	<h2 class = "title">추천조합</h2>
  	<!-- 데이터가 없음 -->
  </section>
- 
+ {%endif%}
  {%endblock%}
