@@ -26,17 +26,12 @@
 			<div class = "search-section">
 				<p class = "title">추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
 				<h1 class = "title" align = 'center'>Maddi</h1>
-			</div>			
+			</div>
+			{%csrf_token%}		
 			<div class = "searchform">
-				<form method = "post" id = "search" action = "search" >
-				     <select class = "searchoption">
-				      <option value ="0">매장명</option>
-				      <option value ="1">디저트명</option>
-				      <option value ="2">음료명</option>
-				      <option value ="3">위치</option>
-				      </select>
-				   <input id="mainsearch" name="main-search" type="text" maxlength="50" placeholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup = "search()"/>
-				    <input class="btn-search" type="submit" value="검색" onclick="location='search'"/>
+				<form method = "get" id = "search" action = "searchlist" >
+				   <input id="mainsearch" name="searchtext" type="search" maxlength="50" placeholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup = "search()"/>
+				    <input class="btn-search" type="submit" value="검색" onclick="location='searchlist'"/>
 				</form>
 			</div>
 			<section class = "recommend-list">

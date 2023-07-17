@@ -3,7 +3,8 @@
 {%block content%}
 {% if memid %}	
 	<section class = "recommend-list">
-		<h2 class = "title">추천메뉴</h2>
+		<h2 class = "title">추천메뉴</h2><br>
+		업데이트 중입니다.
 	</section>
 	
 	 <section class = "drink-list">
@@ -30,7 +31,8 @@
 	 		{{rdto.comb.comb_img}}<br>
 	 		{{rdto.menu}}<br>
 	 		{{rdto.comb.comb_tit}}
-	 	{%endfor%}	
+	 	{%endfor%}
+	 	입력된 정보가 없습니다.	
 	 </section>	
 	 
 {%else%}
@@ -57,9 +59,10 @@
  	{% for rdto in rdtos %}
  		{{rdto.comb.comb_img}}<br>
  		{{rdto.menu}}<br>
- 		{{rdto.comb.comb_tit}}
+ 		{{rdto.comb.comb_tit}}<br><br>	
  	{%endfor%}
- 	
+ 	입력된 정보가 없습니다.
  </section>
+
  {%endif%}
  {%endblock%}
