@@ -5,11 +5,7 @@
 		<title>Maddi</title>
 	</head>
 	<body>
-	{% extends "md_main/base.html" %}
-	
 	{% block title %} <h2> 로 그 인 </h2> {% endblock %}
-	
-	{% block content %}
 	{% csrf_token %}
 		<form method="post" action="login" name="loginform">
 		<input type="hidden" name="user_g_id" value="{{ user_g_id }}" >
@@ -47,6 +43,5 @@
 				</tr>
 			</table>
 		</form>
-	{% endblock %}
 	</body>
 </html>
