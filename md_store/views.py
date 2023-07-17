@@ -19,8 +19,6 @@ class StoreView(View):
     def get(self, request):
         stor_id = 38
         try:
-            from md_store.models import MdStor 
-            
             store = MdStor.objects.get(stor_id=stor_id)
             
             if store.stor_t == 0:
