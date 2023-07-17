@@ -81,7 +81,7 @@ class MdMenu(models.Model):
     menu_name = models.CharField(max_length=60, db_comment='메뉴명')
     menu_cal = models.SmallIntegerField(db_comment='칼로리')
     menu_info = models.CharField(max_length=300, db_comment='메뉴소개')
-    menu_img = models.CharField(max_length=30, blank=True, null=True, db_comment='메뉴이미지')
+    menu_img = models.ImageField(max_length=30, blank=True, null=True, db_comment='메뉴이미지', upload_to="images")
 
     class Meta:
         managed = False
@@ -105,7 +105,7 @@ class MdStor(models.Model):
     user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, blank=True, null=True, db_comment='회원ID')
     bjd_code = models.ForeignKey(MdBjd, models.DO_NOTHING, db_column='bjd_code', db_comment='법정동코드')
     area_t = models.ForeignKey(MdAreaT, models.DO_NOTHING, db_comment='면적분류ID')
-    stor_img = models.CharField(max_length=150, db_comment='이미지')
+    stor_img = models.ImageField(max_length=100, db_comment='이미지', upload_to="images")
     stor_name = models.CharField(max_length=50, db_comment='매장명')
     stor_addr = models.CharField(max_length=200, db_comment='매장주소')
     stor_lati = models.DecimalField(max_digits=19, decimal_places=15, blank=True, null=True, db_comment='위치-위도')
@@ -129,7 +129,7 @@ class MdStorM(models.Model):
     stor_m_name = models.CharField(max_length=60, db_comment='매장메뉴명')
     stor_m_cal = models.SmallIntegerField(db_comment='매장메뉴칼로리')
     stor_m_info = models.CharField(max_length=600, db_comment='매장메뉴소개')
-    stor_m_img = models.CharField(max_length=30, db_comment='매장메뉴이미지')
+    stor_m_img = models.ImageField(max_length=100, db_comment='매장메뉴이미지', upload_to="images")
 
     class Meta:
         managed = False
