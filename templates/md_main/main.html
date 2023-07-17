@@ -1,45 +1,68 @@
 {% extends "md_main/base.html"%}
 
 {%block content%}
-{% if memid %}
-	{{memid}}님 안녕하세요.
+{% if memid %}	
+	<section class = "recommend-list">
+		<h2 class = "title">추천메뉴</h2><br>
+		업데이트 중입니다.
+	</section>
+	
+	 <section class = "drink-list">
+	 	<h2 class = "title">음료</h2>
+	 	{% for tdto in tdtos %}
+	 		{{tdto.menu.menu_img}}<br>
+	 		<a>{{tdto.stor_m_name}}</a><br>
+	 		{{tdto.stor_m_pric}}원<br><br>
+	 	{% endfor %}
+	 </section>
+	 
+	 <section class = "dessert-list">
+	 	<h2 class = "title">디저트</h2>
+	 	{% for ddto in ddtos %}
+	 		{{ddto.menu.menu_img}}<br>
+	 		<a>{{ddto.stor_m_name}}</a><br>
+	 		{{ddto.stor_m_pric}}원<br><br>
+	 	{% endfor %}	
+	 </section>
+	 
+	 <section class = "recommend-list">
+	 	<h2 class = "title">추천조합</h2>
+	 	{% for rdto in rdtos %}
+	 		{{rdto.comb.comb_img}}<br>
+	 		{{rdto.menu}}<br>
+	 		{{rdto.comb.comb_tit}}
+	 	{%endfor%}
+	 	입력된 정보가 없습니다.	
+	 </section>	
+	 
 {%else%}
-<div class = "search-section">
-	<p class = "title" align = 'center'>추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
-	<h1 class = "title" align = 'center'>Maddi</h1>
-</div>
-<div class = "searchform">
-<form method = "post" id = "search" action = "search" >
-     <select class = "searchoption">
-      <option value ="0">매장명</option>
-      <option value ="1">디저트명</option>
-      <option value ="2">음료명</option>
-      <option value ="3">위치</option>
-      </select>
-   <input id="mainsearch" name="main-search" type="text" maxlength="50" placeholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup = "search()"/>
-    <input class="btn-search" type="submit" value="검색" onclick="location='search'"/>
-</form>
-</div>
- 
- <section class = "drink-list">
- 	<h2 class = "title">음료</h2>
- 	{% for tdto in tdtos %}
- 		<a href = "/md_store/sangse"><img src="{{tdto.menu_img}}"></a>
- 		{{tdto.menu_name}}<br><!-- 조인으로 가격까지 조회하려했으나 가격정보가없어서 아직 못함 -->
- 	{% endfor %}
- </section>
+	 <section class = "drink-list">
+	 	<h2 class = "title">음료</h2>
+	 	{% for tdto in tdtos %}
+	 		{{tdto.menu.menu_img}}<br>
+	 		<a>{{tdto.stor_m_name}}</a><br>
+	 		{{tdto.stor_m_pric}}원<br><br>
+	 	{% endfor %}
+	 </section>
  
  <section class = "dessert-list">
  	<h2 class = "title">디저트</h2>
- 	 {% for ddto in ddtos %}
- 		<img src="{{ddto.menu_img}}">
- 		{{ddto.menu_name}}<br>
- 	{% endfor %}
+ 	{% for ddto in ddtos %}
+ 		{{ddto.menu.menu_img}}<br>
+ 		<a>{{ddto.stor_m_name}}</a><br>
+ 		{{ddto.stor_m_pric}}원<br><br>
+ 	{% endfor %}	
  </section>
  
  <section class = "recommend-list">
  	<h2 class = "title">추천조합</h2>
- 	<!-- 데이터가 없음 -->
+ 	{% for rdto in rdtos %}
+ 		{{rdto.comb.comb_img}}<br>
+ 		{{rdto.menu}}<br>
+ 		{{rdto.comb.comb_tit}}<br><br>	
+ 	{%endfor%}
+ 	입력된 정보가 없습니다.
  </section>
+
  {%endif%}
  {%endblock%}

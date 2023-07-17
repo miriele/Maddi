@@ -11,20 +11,36 @@
 	<body>
 		{% block login %}
 		{%if memid%}
-			<input type = "button" value = "logout" onclick = "location='/md_member/logout'">
+			<input type = "button" value = "logout" onclick = "location='/md_member/logout'"><br>
+			{{memid}}님 안녕하세요.
 		{%else%}
 			<input type = "button" value = "login" onclick = "location='/md_member/login'">
 		{%endif%}
 		{%endblock%}
-		<br><br>
+
 		{% block topbar %}
 			<a href = "main"><h2>Maddi</h2></a>
 			<a href ="/md_combi/combi">추천조합</a>&nbsp;&nbsp;&nbsp;
 			<a href ="/md_order/order">주문하기</a>&nbsp;&nbsp;&nbsp;
 			<a href ="/md_member/mypage">마이페이지</a>&nbsp;&nbsp;&nbsp;
+			<div class = "search-section">
+				<p class = "title">추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
+				<h1 class = "title" align = 'center'>Maddi</h1>
+			</div>
+			{%csrf_token%}		
+			<div class = "searchform">
+				<form method = "get" id = "search" action = "searchlist" >
+				   <input id="mainsearch" name="searchtext" type="search" maxlength="50" placeholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup = "search()"/>
+				    <input class="btn-search" type="submit" value="검색" onclick="location='searchlist'"/>
+				</form>
+			</div>
+			<section class = "recommend-list">
+			</section>
 		{% endblock %}
-		{% block content %}
+		
+		{% block content %}		
 		{% endblock %}
+
 		{% block footer%}
 			<footer class = "footer">
 				<hr>

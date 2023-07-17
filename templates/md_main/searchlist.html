@@ -1,0 +1,15 @@
+{% extends "md_main/base.html"%}
+
+{%block content%}
+<h2><span>검색결과:{{count}}</span></h2><br>
+{% if count == 0 %}
+	조회된 매장이 없습니다 다른 검색어로 입력해 주세요.
+{% else %}
+<section class = "search-list">
+{%for sdto in sdtos%}
+{{sdto.stor_img}}<br>
+{{sdto.stor_name}}<br>
+{%endfor%}
+{%endif%}
+</section>
+{%endblock%}
