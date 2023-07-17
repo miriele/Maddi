@@ -7,6 +7,7 @@
 	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script src = "{%static 'js/script_main.js'%}"></script>
+	<script src = "{%static 'js/script_member.js'%}"></script>
 	</head>
 	<body>
 		{% block login %}
@@ -19,10 +20,12 @@
 		{%endblock%}
 
 		{% block topbar %}
-			<a href = "main"><h2>Maddi</h2></a>
+			<a href = "/md_main/main"><h2>Maddi</h2></a>
+			{% if memid %}
 			<a href ="/md_combi/combi">추천조합</a>&nbsp;&nbsp;&nbsp;
 			<a href ="/md_order/order">주문하기</a>&nbsp;&nbsp;&nbsp;
-			<a href ="/md_member/mypage">마이페이지</a>&nbsp;&nbsp;&nbsp;
+			<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+			{% endif %}
 			<div class = "search-section">
 				<p class = "title">추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
 				<h1 class = "title" align = 'center'>Maddi</h1>

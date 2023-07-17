@@ -7,48 +7,46 @@
 	<body>
 	{% extends "md_main/base.html" %}
 	
-	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
+	{% block title %} <h2> 마이페이지-회원정보 </h2> {% endblock %}
 	
 	{% block content %}
 	{% csrf_token %}
-		<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
-			<table >
-				<tr>
-					<th> 아이디 </th>
-					<td>
-						<input class="input" type="text" name="user_id" autofocus  required>
-						<font id = "checkid" size="2"></font>
-					</td>
+		<form method="post" action="userinfo" name="userinfoform" enctype="multipart/form-data">
+			<table>
+			<tr>
+				<th> 아이디 </th>
+					<td> &nbsp;{{ dtos.user_id }} </td>
 				</tr>
 				<tr>
 					<th> 비밀번호 </th>
 					<td>
-						<input class="input" type="password" name="user_pass" maxlength="20" required>
+						<input class="input" type="password" name="user_pass" maxlength="20" value="{{dtos.user_pass}}" required>
 					</td>
 				</tr>
 				<tr>
 					<th> 이름 </th>
 					<td>
-						<input class="input" type="text" name="user_name" maxlength="30" required>
+						<input class="input" type="text" name="user_name" maxlength="30" required value="{{dtos.user_name}}">
 					</td>
 				</tr>
 				<tr>
 					<th> 닉네임 </th>
 					<td>
-						<input class="input" type="text" name="user_nick" maxlength="45" required>
-						<font id = "checkneck" size="2"></font>
+						<input class="input" type="text" name="user_nick" maxlength="45" required value="{{dtos.user_nick}}">
 					</td>
 				</tr>
 				<tr>
 					<th> 생년월일 </th>
 					<td> 
-						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required>
+						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required >
+						{{ dtos.user_bir }}
 						<!-- <input class="input" type="text" name="user_birs" placeholder="YYYY-mm-dd" required>-->
 					</td>
 				</tr>
 				<tr>
 					<th> 성별 </th>
 					<td> 
+					{{ dtos.user_g_id }}
 						<select name="user_g_id">
 							<option value="0"> 남자 </option>
 							<option value="1"> 여자 </option>
@@ -56,9 +54,13 @@
 					</td>
 				</tr>
 				<tr>
+					<th> 회원등급 </th>
+					<td> {{dtos.user_g_id }} </td>
+				</tr>
+				<tr>
 					<th> 대표이미지 </th>
 					<td>
-						<img src="{{default_user.jpg }}" alt="" width="50" height="50" name="img_d" border-radius="50%">
+						<img src="{{md_member.static.default_user.jpg }}" width="50" height="50" name="img_d" border-radius="50%">
 						<input class="input" type="file" name="user_img" accept="image/*" >
 						<hr>
 					</td>
@@ -117,11 +119,9 @@
 				</tr>
 				<tr>
 					<th colspan="2">
-						<input class="inputbutton" type="submit" value="회원가입">
-						<input class="inputbutton" type="button" value="가입취소"
-							onclick="location='/md_main/main'">
+						<input class="inputbutton" type="submit" value="정보수정">
 					</th>
-				</tr>	
+				</tr>
 			</table>
 		</form>
 	{% endblock %}
