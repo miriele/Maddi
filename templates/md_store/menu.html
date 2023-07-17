@@ -1,56 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<div class="cont_boxs menu_box">
-					<div class="cont_title_wrap text_center">
-						<div class="cont_title_info">
-							메가MGC커피의 엄선된 메뉴						</div>
-						<div class="cont_title robo">
-							<h2>
-								MEGA MENU							</h2>
-						</div>
-					</div>
-					<div class="cont_text_wrap text_center">
-						<div class="cont_text_info">
-							※메뉴 이미지는 연출컷이라 실물과 다를 수 있습니다.
-						</div>
-					</div>
-										<div class="cont_text_wrap">
-						<div class="cont_gallery_list cont_gallery_list2 cont_list cont_list4 cont_list_m cont_list_m2">
-							<ul id="menu_list">
-<div class="cont_gallery_list cont_gallery_list2 cont_list cont_list4 cont_list_m cont_list_m2">
-	<ul id="menu_list">
-		<li>
-			<a class="inner_modal_open">
-				<div class="cont_gallery_list_box">
-					<div class="cont_gallery_list_img" style="width: 305px; height: 305px;">
-															<div class="cont_gallery_list_label cont_gallery_list_label2">ICE</div>
-												<img src="https://img.79plus.co.kr/megahp/manager/upload/menu/20230703153953_1688366393779_0LqnZOMdfo.jpg">
-					</div>
-					<div class="cont_text_box">
-						<div class="cont_text">
-							<div class="cont_text_inner text_wrap cont_text_title">
-								<div class="text text1">
-									<b>고흥 유자망고 스무디</b>
-								</div>
-							</div>
-							<div class="cont_text_inner text_wrap cont_text_info">
-								<div class="text text1">
-									Yuzu&amp;MAngo Smoothie								</div>
-							</div>
-						</div>
-						<div class="cont_text cont_text_info">
-							<div class="text_wrap">
-								<div class="text text2">
-									메가MGC커피의 여름시즌 인기 음료인 망고스무디를 상큼한 고흥유자와 블렌딩하여 새콤달콤 시원하게 즐길 수 있는 여름 한정 메뉴								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</a>		
-</body>
-</html>
+{% load static %}
+{% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th colspan="3">
+           메뉴정보관리
+        </th>
+    </tr>
+    <tr>
+        <th rowspan="6"><img src="{% static 'images/s_barchich_br.PNG' %}"></th>
+    </tr>
+    <tr>
+        <th>메뉴명</th>
+        <td colspan="2">&nbsp;{{ dto.stor_name }}</td>
+    </tr>
+    <tr>
+        <th>메뉴유형</th>
+        <td colspan="2">&nbsp;{{ stor_type }}</td>
+    </tr>
+    <tr>
+        <th>가격</th>
+        <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
+    </tr>
+    <tr>
+        <th>칼로리</th>
+        <td colspan="2">&nbsp;<input class="input" type="tel" name="tel" maxlength="50" value="{{ dto.stor_tel }}"></td>
+    </tr>
+    <tr>
+        <th>알러지</th>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <th colspan="3">
+            <input class="inputbutton" type="submit" value="수정">
+            <input class="inputbutton" type="reset" value="취소">
+            <input class="inputbutton" type="button" value="수정취소">
+        </th>
+    </tr>
+</table>
+{% endblock %}

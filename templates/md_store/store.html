@@ -1,3 +1,4 @@
+{% load static %}
 {% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
 
 {% block content %}
@@ -8,23 +9,23 @@
         </th>
     </tr>
     <tr>
-        <th rowspan="6"><img src="/media/images/store/{{ dto.stor_img }}" alt="매장 이미지"></th>
+        <th rowspan="6"><img src="{% static 'image/f_1lmax.jpg' %}"></th>
     </tr>
     <tr>
         <th>매장명</th>
         <td colspan="2">&nbsp;{{ dto.stor_name }}</td>
     </tr>
     <tr>
-   		<th>매장유형</th>
-   		<td colspan="2"> &nbsp;{{ stor_type }} </td>
-	</tr>
+        <th>매장유형</th>
+        <td colspan="2">&nbsp;{{ stor_type }}</td>
+    </tr>
     <tr>
         <th>주소</th>
         <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
     </tr>
     <tr>
         <th>연락처</th>
-        <td colspan="2">&nbsp;{{ dto.stor_tel }}</td>
+        <td colspan="2">&nbsp;<input class="input" type="tel" name="tel" maxlength="50" value="{{ dto.stor_tel }}"></td>
     </tr>
     <tr>
         <th>매장인기시간대</th>
