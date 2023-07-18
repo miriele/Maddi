@@ -1,6 +1,6 @@
 {% load static %}
+<script src="{% static 'js/script_store.js' %}"></script>	
 {% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
-
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
 {{ stor_id }} <br>
@@ -16,7 +16,7 @@
 	        </th>
 	    </tr>
 	    <tr>
-	        <th rowspan="6"><img src="{% static stor_img %}"></th>
+	        <th rowspan="6"><img src="/media/{{ stor_img }}" width="300" height="300"></th>
 	    </tr>
 	    <tr>
 	        <th>매장명</th>
@@ -31,10 +31,11 @@
 	        <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
 	    </tr>
 	    <tr>
-	        <th>연락처</th>
-	        <td colspan="2"> <input class="input" type="text" name="tel" maxlength="20" style="width:250px"
-						value = "{{ stor_tel }}"></td>
-	    </tr>
+		    <th>연락처</th>
+		    <td colspan="2">
+		        <input class="input" type="text" name="tel" maxlength="20" style="width:250px" value="{{ stor_tel }}" onclick="clearInput(this)">
+		    </td>
+		</tr>
 	    <tr>
 	        <th>매장인기시간대</th>
 	        <td colspan="2">&nbsp;</td>
