@@ -1,0 +1,69 @@
+{% load static %}
+{% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
+{% block content %}
+<!-- 확인용 발표 전 삭제 -->
+<form method="post" action="menuinfo" name="updateform">
+	<table>
+	    <tr>
+	        <th colspan="3">
+	            메뉴상세정보
+	        </th>
+	    </tr>
+	    <tr>
+	        <th rowspan="8" width="300" height="300"> 메뉴 이미지를 등록해주세요 </th>
+	    </tr>
+	    <tr>
+	        <th>메뉴명</th>
+	        <td colspan="2">
+		        <input class="input" type="text" name="menu_name" maxlength="20" style="width:250px">
+		    </td>
+	    </tr>
+	    <tr>
+	        <th>메뉴유형</th>
+	        <td colspan="2">
+		        <input class="input" type="text" name="menu_kcal" maxlength="20" style="width:250px" value="일반or시그니처">
+		    </td>
+	    </tr>
+	    <tr>
+		    <th>카테고리</th>
+		    <td colspan="2">
+		        <input class="input" type="text" name="menu_kcal" maxlength="20" style="width:250px" value="커피등등">
+		    </td>
+		</tr>
+	    <tr>
+	        <th>칼로리</th>
+	        <td colspan="2">
+		        <input class="input" type="text" name="menu_kcal" maxlength="20" style="width:250px">
+		    </td>
+	    </tr>
+	    <tr>
+	        <th>가격</th>
+	        <td colspan="2">
+		        <input class="input" type="text" name="menu_price" maxlength="20" style="width:250px">
+		    </td>
+	    </tr>
+	    <tr>
+	        <th colspan="3">&nbsp;</th>
+	    </tr>
+	    <tr>
+	        <th colspan="3"> 메뉴 소개 </th>
+	    </tr>
+	    <tr>
+	       <td colspan="2">
+		        <input class="input" type="text" name="menu_price" maxlength="20" style="width:500px">
+		    </td>
+	    </tr>
+	    <tr>
+	        <th colspan="3">&nbsp;</th>
+	    </tr>
+	    <tr>
+	        <th colspan="3">
+	        	<!-- view작성하고 input으로 변경 -->
+	        	<button type="button">메뉴이미지 등록</button>	
+	        	<button type="button">등록</button>
+	            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">			
+	        </th>
+	    </tr>
+	</table>
+</form>
+{% endblock %}

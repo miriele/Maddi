@@ -1,0 +1,35 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_menulist.css' %}">
+{%block content%}
+<head>
+<h2> 메뉴목록 </h2>
+</head>
+<body>
+	<nav> 
+		<ul>
+			<li><a href="addmenu">메뉴등록</li>
+		</ul>
+	</nav>
+	<div class="section menu_wrap"><!-- 추천메뉴 -->
+		<div class = "container">
+			<ul>
+				<li>
+					<div class = "thumb">
+						<a href="menuinfo"><img src="/media/images/{{ stor_m_img }}.jpg" width="300" height="300"></a>
+					<p class="menu_tit"> {{stor_m_name}}</p>
+					<p class="menu_tit"> {{stor_m_pric}}</p>
+					</div>
+				</li>
+				<li>
+					<div class = "thumb">
+						<a href="menuinfo"><img src="/media/images/{{ stor_m_img }}.jpg" width="300" height="300"></a>
+					<p class="menu_tit"> {{stor_m_name}}</p>
+					<p class="menu_tit"> {{stor_m_pric}}</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+
+ {%endblock%}

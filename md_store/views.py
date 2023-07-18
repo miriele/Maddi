@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStor, MdMenu, MdMenuT
+from md_store.models import MdStor, MdMenu, MdMenuT, MdStorM
 
 class StoreView(View):
     @method_decorator( csrf_exempt )
@@ -54,7 +54,6 @@ class StoreView(View):
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             store.stor_tel = stor_tel
-            stor_img = store.stor_img
             store.save()
             
             return redirect("md_store:store")
@@ -83,3 +82,131 @@ class ImageView(View):
         store.save()
     
         return redirect("md_store:store")
+
+class MenuInfoView(View):
+    def get(self, request):
+        stor_m_id = 141
+        try:
+            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+            
+            if storem.menu_t_id == 0:
+                menu_type = "일반"
+            else:
+                menu_type = "시그니처"
+            stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
+            menu = stor_m.menu
+            dsrt_t = menu.dsrt_t
+            drnk_t = menu.drnk_t
+            
+            if dsrt_t:
+                if dsrt_t.dsrt_t_id == 0:
+                    dsrt_t_name = dsrt_t.dsrt_t_name
+                else:
+                    dsrt_t_name = "없음"
+            else:
+                dsrt_t_name = "없음"
+            
+            if drnk_t:
+                drnk_t_name = drnk_t.drnk_t_name
+            else:
+                drnk_t_name = "없음"
+                
+            context = {
+                'dto': storem,
+                'stor_m_pric': storem.stor_m_pric,
+                'stor_m_name': storem.stor_m_name,
+                'stor_m_cal': storem.stor_m_cal,
+                'stor_m_info': storem.stor_m_info,
+                'stor_m_img': storem.stor_m_img,
+                'menu_type': menu_type,
+            }
+
+            return render(request, 'md_store/menuinfo.html', context)
+
+        except MdStorM.DoesNotExist:
+            return HttpResponseNotFound()
+
+class MenuListView(View):
+    def get(self, request):
+        stor_m_id = 141
+        try:
+            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+            
+            if storem.menu_t_id == 0:
+                menu_type = "일반"
+            else:
+                menu_type = "시그니처"
+            stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
+            menu = stor_m.menu
+            dsrt_t = menu.dsrt_t
+            drnk_t = menu.drnk_t
+            
+            if dsrt_t:
+                if dsrt_t.dsrt_t_id == 0:
+                    dsrt_t_name = dsrt_t.dsrt_t_name
+                else:
+                    dsrt_t_name = "없음"
+            else:
+                dsrt_t_name = "없음"
+            
+            if drnk_t:
+                drnk_t_name = drnk_t.drnk_t_name
+            else:
+                drnk_t_name = "없음"
+                
+            context = {
+                'dto': storem,
+                'stor_m_pric': storem.stor_m_pric,
+                'stor_m_name': storem.stor_m_name,
+                'stor_m_cal': storem.stor_m_cal,
+                'stor_m_info': storem.stor_m_info,
+                'stor_m_img': storem.stor_m_img,
+                'menu_type': menu_type,
+            }
+
+            return render(request, 'md_store/menulist.html', context)
+
+        except MdStorM.DoesNotExist:
+            return HttpResponseNotFound()
+class AddMenuView(View):
+    def get(self,request):
+        context = {}
+        return render(request, 'md_store/addmenu.html', context)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
