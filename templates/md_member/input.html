@@ -35,21 +35,20 @@
 				<tr>
 					<th> 닉네임 </th>
 					<td>
-						<input class="input" type="text" name="user_nick" maxlength="45" required>
-						<font id = "checkneck" size="2"></font>
+						<input class="input" type="text" name="user_nick" id="iuser_nick"  maxlength="45" required>
+						<font id = "checknick" size="2"></font>
 					</td>
 				</tr>
 				<tr>
 					<th> 생년월일 </th>
 					<td> 
 						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required>
-						<!-- <input class="input" type="text" name="user_birs" placeholder="YYYY-mm-dd" required>-->
 					</td>
 				</tr>
 				<tr>
 					<th> 성별 </th>
 					<td> 
-						<select name="user_g_id">
+						<select name="gen_id">
 							<option value="0"> 남자 </option>
 							<option value="1"> 여자 </option>
 						</select>
@@ -58,8 +57,9 @@
 				<tr>
 					<th> 대표이미지 </th>
 					<td>
-						<img src="{{default_user.jpg }}" alt="" width="50" height="50" name="img_d" border-radius="50%">
-						<input class="input" type="file" name="user_img" accept="image/*" >
+						<img src="/static/image/default_user.jpg" alt="" width="50" height="50" name="img_d" border-radius="50%">
+						 
+						<input class="input" type="file" name="user_img" accept="image/*" onchange="setThumbnail(event);">
 						<hr>
 					</td>
 				</tr>
@@ -69,8 +69,8 @@
 				<tr>
 					<th> 디저트 취향 선택</th>
 					<td>
-						{% for dsrt in md_dsrt_t %}
-							{{dsrt.dsrt_t_name }}<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_name}}">
+						{% for dsrt in md_dsrt_t  %}
+							<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_id}}"> {{dsrt.dsrt_t_name }}
 						{% endfor %}
 						<hr>
 					</td>
@@ -79,7 +79,7 @@
 					<th> 음료 취향 선택 </th>
 					<td>
 						{% for drnk in md_drnk_t %}
-							{{drnk.drnk_t_name }}<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_name}}">
+							<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_id}}"> {{drnk.drnk_t_name }}
 						{% endfor %}
 						<hr>
 					</td>
@@ -88,7 +88,7 @@
 					<th> 알러지 정보 </th>
 					<td>
 						{% for algy in md_algy_t %}
-							{{algy.algy_t_name }}<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_name}}">
+							<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}"> {{algy.algy_t_name }}
 						{% endfor %}
 						<hr>
 					</td>
@@ -97,7 +97,7 @@
 					<th> 현재 관심분야 </th>
 					<td>
 						{% for intr in md_intr_t %}
-							{{intr.intr_t_name }}<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_name}}">
+							<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_id}}"> {{intr.intr_t_name }}
 						{% endfor %}
 						<hr>
 					</td>
@@ -106,7 +106,7 @@
 					<th> 좋아하는 맛 </th>
 					<td>
 						{% for tast in md_tast_t %}
-							{{tast.tast_t_name }}<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_name}}">
+							<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_id}}"> {{tast.tast_t_name }}
 						{% endfor %}
 					</td>
 				</tr>

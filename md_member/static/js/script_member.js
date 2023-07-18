@@ -19,6 +19,91 @@ $(document).ready(
 			history.back();
 			//이동한 페이지들의 주소를 갖고 있음 히스토리가
 		}
+		
+		//아이디 중복확인
+		$("input[name='user_id']").on(
+			"keyup",
+			function(event) {
+				$.ajax(
+					{
+						url : "idcheck",
+						type : "GET",
+						data : {
+							user_id : $("input[name='user_id']").val()
+						},
+						datatype :"text",
+						success : function( data ) {
+							if ( data == 1 ){
+								$("#checkid").html("사용 불가 아이디");
+								$("#checkid").attr("color", "red");
+							} else {
+								$("#checkid").html("사용가능 아이디");
+								$("#checkid").attr("color", "green");
+							}/**/
+						},
+						error : function(request, status, error) {
+							//alert("서버요청실패");
+							$("#checkid").html("서버요청실패");
+						}
+					}
+				)
+			}//function
+		);//on
+		
+		// 닉네임 중복확인2
+		$("input[id='iuser_nick']").on(
+			"keyup",
+			function(event) {
+				$.ajax(
+					{
+						url : "nickcheck",
+						type : "GET",
+						data : {
+							iuser_nick : $("input[id='iuser_nick']").val()
+						},
+						datatype :"text",
+						success : function( data ) {
+							if ( data == 1 ){
+								$("#checknick").html("사용 불가 닉네임");
+								$("#checknick").attr("color", "red");
+							} else {
+								$("#checknick").html("사용가능 닉네임");
+								$("#checknick").attr("color", "green");
+							}/**/
+						},
+						error : function(request, status, error) {
+							//alert("서버요청실패");
+							$("#checknick").html("서버요청실패");
+						}
+					}
+				)
+			}//function
+		);//on
+		
+		
+		
+		
+		
+		
+		
+		// 이미지 옮기기
+		//$("input[name='user_img']").on(
+			//"submit",
+			//function(event) 		
+		//)
+		
+		
+		
+		
+		// 이미지 미리보기
+		//$("input[name='user_img']")
+		
+		
+		
+	}	//function
+)	//ready
+		
+		
 		/* 
 		
 		//회원정보 수정
@@ -100,21 +185,20 @@ $(document).ready(
 			}
 		);
 		*/
-		
+		/*
 		//가입페이지
 		$("form[name='inputform']").on(
 			"submit",
 			function() {
-				var bdate = document.getElementById("user_bir").value;
 				if( ! $( "input[name='user_id']").val() ) {
 					alert(iderror);
 					inputform.user_id.focus();
 					return false;	
-				} else if(! $( "input[name='user_pass]").val() ) {
+				} else if( ! $( "input[name='user_pass']").val() ) {
 					alert( passwderror);
 					inputform.user_pass.focus();
 					return false;	
-				}else if ( ! $( "input[name='user_name']").val() ) {
+				} else if ( ! $( "input[name='user_name']").val() ) {
 					alert(nameerror);
 					inputform.user_name.focus();
 					return false;	
@@ -122,24 +206,18 @@ $(document).ready(
 					alert(nickerror);
 					inputform.user_name.focus();
 					return false;
-				}else if(bdate == null ) {
+				} else if( ! $( "input[name='user_bir']").val() ) {
 					alert(birerror);
-					inputform.user_bir.focus();
 					return false;
 				}
-				//3칸 데이터가 없거나 짧으면>데이터가 다 있으면
-				
 			}//function
 		);//on	
 		
-	
-	
-		
-		//메인페이지>로그인 화면에서 아이디 비번 입력안 했음 경고창을 띄어라
+		//로그인 알림
 		$("form[name='loginform']").on(
 			"submit", 
 			function( event ) {
-				if( ! $( "input[name='user_id']").val() ) {	//아이디에 값이 없을떄는 경고창 띄워라
+				if( ! $( "input[name='user_id']").val() ) {	
 					alert( iderror );
 					$("input[name='user_id']").focus();
 					return false;
@@ -150,6 +228,7 @@ $(document).ready(
 				}
 			}
 		);
+		*/
 	
 	
 	}	//function
