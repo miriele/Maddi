@@ -5,5 +5,5 @@ app_name = "md_store"
 
 urlpatterns = [
          path( "store", views.StoreView.as_view(), name="store" ),
-         path("image", views.ImageView.as_view(), name="image"),
+         path( "image", views.ImageView.as_view(), name="image" ),
        ]
