@@ -27,11 +27,15 @@
 	 
 	 <section class = "recommend-list">
 	 	<h2 class = "title">추천조합</h2>
-	 	{% for rdto in rdtos %}
-	 		{{rdto.comb.comb_img}}<br>
-	 		{{rdto.menu}}<br>
-	 		{{rdto.comb.comb_tit}}
-	 	{%endfor%}
+			{%for rdto in rdtos%}
+				{{rdto.comb_img}}<br>
+			{%for mdto in mdtos%}
+				{%if rdto.comb_id == mdto.comb_id%}
+					{{mdto.menu.menu_name}}<br>
+				{%endif%}
+			{%endfor%}
+				{{rdto.comb_tit}}<br><br>
+			{%endfor%}
 	 	입력된 정보가 없습니다.	
 	 </section>	
 	 
@@ -56,12 +60,15 @@
  
  <section class = "recommend-list">
  	<h2 class = "title">추천조합</h2>
- 	{% for rdto in rdtos %}
- 		{{rdto.comb.comb_img}}<br>
- 		{{rdto.menu}}<br>
- 		{{rdto.comb.comb_tit}}<br><br>	
- 	{%endfor%}
- 	입력된 정보가 없습니다.
+	{%for rdto in rdtos%}
+		{{rdto.comb_img}}<br>
+	{%for mdto in mdtos%}
+		{%if rdto.comb_id == mdto.comb_id%}
+			{{mdto.menu.menu_name}}<br>
+		{%endif%}
+	{%endfor%}
+		{{rdto.comb_tit}}<br><br>
+	{%endfor%}
  </section>
 
  {%endif%}

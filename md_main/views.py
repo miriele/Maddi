@@ -5,7 +5,7 @@ from django import template
 from django.template import loader
 from django.http.response import HttpResponse
 from md_store.models import MdStorM, MdStor
-from md_combi.models import MdCombM
+from md_combi.models import MdCombM, MdComb
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
@@ -15,22 +15,24 @@ class MainView(View):
     def get(self,request):
         template = loader.get_template("md_main/main.html")
         memid = request.session.get("memid")
-        tdtos = MdStorM.objects.select_related("menu").filter(menu__dsrt_t=-1)[:5]
-        ddtos = MdStorM.objects.select_related("menu").filter(menu__drnk_t=-1)[:5]
-        rdtos = MdCombM.objects.select_related("comb")[:5]
+        tdtos = MdStorM.objects.select_related("menu").filter(menu__dsrt_t=-1).order_by('?')[:5]
+        ddtos = MdStorM.objects.select_related("menu").filter(menu__drnk_t=-1).order_by('?')[:5]
+        rdtos = MdComb.objects.all()
+        mdtos = MdCombM.objects.select_related("menu").all()
         if memid:
             context = {
                 "memid":memid,
                 "tdtos":tdtos,
                 "ddtos":ddtos,
                 "rdtos":rdtos,
-                
+                "mdtos":mdtos,      
                 }
         else:
             context={
                 "tdtos":tdtos,
                 "ddtos":ddtos,
                 "rdtos":rdtos,
+                "mdtos":mdtos,
                 }
         return HttpResponse(template.render(context,request))
     def post(self,request):
