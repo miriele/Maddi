@@ -31,7 +31,7 @@ class LoginView( View ):
         try :
             dto = MdUser.objects.get( user_id = user_id )
             if user_pass == dto.user_pass :
-                 request.session["memid"] = user_id;
+                request.session["memid"] = user_id;
                 request.session["gid"] = dto.user_g_id;
                 return redirect("/md_main/main") 
             else :
