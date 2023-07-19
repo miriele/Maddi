@@ -1,0 +1,15 @@
+ul {
+      list-style-type: none;
+    }
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+
+.table-container table {
+  margin: 40px;
+}
+
+.table-container td {
+  vertical-align: top;
+}
