@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.dateformat import DateFormat
 from datetime import datetime
 from md_member.models import MdUser, MdUDsrt, MdIntrT, MdTastT, MdUDrnk, MdUAlgy,\
-    MdUIntr, MdUTast
+    MdUIntr, MdUTast, MdUserG
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT
@@ -28,12 +28,11 @@ class LoginView( View ):
     def post(self, request ):
         user_id = request.POST["user_id"]
         user_pass = request.POST["user_pass"]
-        user_g_id = request.POST["user_g_id"]
         try :
             dto = MdUser.objects.get( user_id = user_id )
             if user_pass == dto.user_pass :
-                request.session["memid"] = user_id;
-                request.session["gid"] = user_g_id;
+                 request.session["memid"] = user_id;
+                request.session["gid"] = dto.user_g_id;
                 return redirect("/md_main/main") 
             else :
                 message = "입력하신 비밀번호가 다릅니다"
@@ -174,22 +173,37 @@ class UserInfoView( View ):
         return View.dispatch(self, request, *args, **kwargs)
     def get(self, request ):
         memid = request.session.get("memid")
+        gid = request.session.get("gid")
+
         dtos = MdUser.objects.get(user_id = memid)
+        g_name = MdUserG.objects.get(user_g_id = gid )
         
+        md_dsrt_t = MdDsrtT.objects.filter(dsrt_t_id__gt=-1 ).order_by("dsrt_t_id")
+        md_drnk_t = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
+        md_algy_t = MdAlgyT.objects.order_by("algy_t_id")
         md_intr_t = MdIntrT.objects.order_by("intr_t_id")
         md_tast_t = MdTastT.objects.order_by("tast_t_id")
-        md_algy_t = MdAlgyT.objects.order_by("algy_t_id")
-        md_drnk_t = MdDrnkT.objects.order_by("drnk_t_id")
-        md_dsrt_t = MdDsrtT.objects.order_by("dsrt_t_id")
         
+        udsrt = MdUDsrt.objects.filter(user_id = memid )
+        udrnk = MdUDrnk.objects.filter(user_id = memid )
+        ualgy = MdUAlgy.objects.filter(user_id = memid )
+        uintr = MdUIntr.objects.filter(user_id = memid )
+        utast = MdUTast.objects.filter(user_id = memid )
+       
         template = loader.get_template( "md_member/userinfo.html")
         context = {
             "memid" : memid,
-            "dtos" :dtos, 
+            "dtos" :dtos,
+            "g_name" :g_name,
             "md_intr_t" : md_intr_t,
             "md_tast_t" : md_tast_t,
             "md_algy_t" : md_algy_t,
             "md_drnk_t" : md_drnk_t,
             "md_dsrt_t" : md_dsrt_t,
+            "udsrt" : udsrt,
+            "udrnk" : udrnk,
+            "ualgy" : ualgy,
+            "uintr" : uintr,
+            "utast" : utast,
             }       
         return HttpResponse( template.render( context, request ) )

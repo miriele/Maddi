@@ -12,6 +12,8 @@
 	{% block content %}
 	{% csrf_token %}
 		<form method="post" action="userinfo" name="userinfoform" enctype="multipart/form-data">
+		<input type="hidden" name="user_id" value="{{dtos.user_id}}">
+		<input type="hidden" name="user_img" value="{{dtos.user_img}}">
 			<table>
 			<tr>
 				<th> 아이디 </th>
@@ -38,29 +40,32 @@
 				<tr>
 					<th> 생년월일 </th>
 					<td> 
-						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required >
-						{{ dtos.user_bir }}
-						<!-- <input class="input" type="text" name="user_birs" placeholder="YYYY-mm-dd" required>-->
+						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" value="{{dtos.user_bir|date:'Y-m-d'}}" required >
 					</td>
 				</tr>
 				<tr>
 					<th> 성별 </th>
 					<td> 
-					{{ dtos.user_g_id }}
 						<select name="user_g_id">
-							<option value="0"> 남자 </option>
-							<option value="1"> 여자 </option>
+							{% if  dtos.user_g_id  == 0 %}
+								<option value="0"> 남자 </option>
+							{% else %}
+								<option value="1"> 여자 </option>
+							{% endif %}
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th> 회원등급 </th>
-					<td> {{dtos.user_g_id }} </td>
+					<td> {{g_name.user_g_name }} 
+						&nbsp;&nbsp;<input class="inputbutton" type="button" value="점주등록">
+					</td>
+					
 				</tr>
 				<tr>
 					<th> 대표이미지 </th>
 					<td>
-						<img src="{{md_member.static.default_user.jpg }}" width="50" height="50" name="img_d" border-radius="50%">
+						<img src="/media/{{dtos.user_img}}" width="50" height="50" name="img_d" border-radius="50%">
 						<input class="input" type="file" name="user_img" accept="image/*" >
 						<hr>
 					</td>
@@ -72,7 +77,14 @@
 					<th> 디저트 취향 선택</th>
 					<td>
 						{% for dsrt in md_dsrt_t %}
-							{{dsrt.dsrt_t_name }}<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_name}}">
+							<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_id}}">{{dsrt.dsrt_t_name }}
+							{% for uds in udsrt %}
+								{% if uds.dsrt_t_id == dsrt.dsrt_t_id %}
+									<script>
+									$('input[name="md_dsrt_t"][value={{dsrt.dsrt_t_id}}]').attr("checked", true)
+									</script>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 						<hr>
 					</td>
@@ -81,7 +93,14 @@
 					<th> 음료 취향 선택 </th>
 					<td>
 						{% for drnk in md_drnk_t %}
-							{{drnk.drnk_t_name }}<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_name}}">
+							<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_id}}">{{drnk.drnk_t_name }}
+							{% for udr in udrnk %}
+								{% if udr.drnk_t_id == drnk.drnk_t_id %}
+									<script>
+									$('input[name="md_drnk_t"][value={{drnk.drnk_t_id}}]').attr("checked", true)
+									</script>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 						<hr>
 					</td>
@@ -90,7 +109,14 @@
 					<th> 알러지 정보 </th>
 					<td>
 						{% for algy in md_algy_t %}
-							{{algy.algy_t_name }}<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_name}}">
+							<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}">{{algy.algy_t_name }}
+							{% for ual in ualgy %}
+								{% if ual.algy_t_id == algy.algy_t_id %}
+									<script>
+									$('input[name="md_algy_t"][value={{algy.algy_t_id}}]').attr("checked", true)
+									</script>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 						<hr>
 					</td>
@@ -99,7 +125,14 @@
 					<th> 현재 관심분야 </th>
 					<td>
 						{% for intr in md_intr_t %}
-							{{intr.intr_t_name }}<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_name}}">
+							<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_id}}">{{intr.intr_t_name }}
+							{% for uin in uintr %}
+								{% if uin.intr_t_id == intr.intr_t_id %}
+									<script>
+									$('input[name="md_intr_t"][value={{intr.intr_t_id}}]').attr("checked", true)
+									</script>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 						<hr>
 					</td>
@@ -108,7 +141,14 @@
 					<th> 좋아하는 맛 </th>
 					<td>
 						{% for tast in md_tast_t %}
-							{{tast.tast_t_name }}<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_name}}">
+							<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_id}}">{{tast.tast_t_name }}
+							{% for uta in utast %}
+								{% if uta.tast_t_id == tast.tast_t_id %}
+									<script>
+									$('input[name="md_tast_t"][value={{tast.tast_t_id}}]').attr("checked", true)
+									</script>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 					</td>
 				</tr>
@@ -120,7 +160,6 @@
 				<tr>
 					<th colspan="2">
 						<input class="inputbutton" type="submit" value="정보수정">
-						<input class="inputbutton" type="button" value="점주등록">
 					</th>
 				</tr>
 			</table>
