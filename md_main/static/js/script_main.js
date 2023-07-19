@@ -59,12 +59,19 @@ $(document).ready(
 		}	
 		
 		$("input[name='differlocate']").on(//다른위치설정 클릭시 위치설정 템플릿으로
-			"click",
+			"click",		
 			function(event){
+				if($(".differ_wrap").css("display")==='none'){
+					$(".differ_wrap").show();
+				}
 			    new daum.Postcode({
 			      oncomplete: function (data) {
+					var RAddress = data.roadAddress //주소찾기 api에서 도로명주소 클릭시 지번주소로변환
+					data.roadAddress = data.jibunAddress
 			        var address = data.jibunAddress; // 지번 주소
 			        document.getElementsByName("address")[0].value = address;//지번주소 출력
+			        
+			        RAddress.innerHTML
 			        address.innerHTML
 			      }
 			    }).open();		
