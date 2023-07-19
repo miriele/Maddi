@@ -4,49 +4,63 @@
 	<head>
 	<meta charset = "utf-8">
 	<title>Welcome Maddi</title>
-	<!-- <link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
-	 -->
+	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
-	<!-- <script src = "{%static 'js/script_main.js'%}"></script>
-	-->
+	<script src = "{%static 'js/script_main.js'%}"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df3043bfd9f0cd2d661d8d846a70763&libraries=services"></script>
 	<script src = "{%static 'js/script_member.js'%}"></script>
+	
 	</head>
-	<body>
+	
+	<body><!-- 로그인/로그아웃 버튼 -->
 		{% block login %}
 		{%if memid%}
 			<input type = "button" value = "logout" onclick = "location='/md_member/logout'"><br>
 			{{memid}}님 안녕하세요.
 		{%else%}
-			<input type = "button" value = "login" onclick = "location='/md_member/login'">
+			<input type = "button" value = "login" onclick = "location='/md_member/login'"><br>
 		{%endif%}
 		{%endblock%}
-
-		{% block topbar %}
+						
+		{% block topbar %}<!-- 카테고리 버튼 -->
 			<a href = "/md_main/main"><h2>Maddi</h2></a>
 			{% if memid %}
 			<a href ="/md_combi/combi">추천조합</a>&nbsp;&nbsp;&nbsp;
 			<a href ="/md_order/order">주문하기</a>&nbsp;&nbsp;&nbsp;
 			<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
 			{% endif %}
+		{% endblock %}
+		
+		{%block search%}<!-- 검색창 -->
 			<div class = "search-section">
 				<p class = "title">추천알고리즘을 통한 디저트/음료 추천 사이트!</p>
 				<h1 class = "title" align = 'center'>Maddi</h1>
 			</div>
-			{%csrf_token%}		
+		{%csrf_token%}		
 			<div class = "searchform">
 				<form method = "get" id = "search" action = "searchlist" >
 				   <input id="mainsearch" name="searchtext" type="search" maxlength="50" placeholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup = "search()"/>
 				    <input class="btn-search" type="submit" value="검색" onclick="location='searchlist'"/>
 				</form>
 			</div>
-			<section class = "recommend-list">
-			</section>
-		{% endblock %}
+		{%endblock%}
+		
+		{%block mapview%}<!-- 현재위치/다른위치 설정 -->
+		<input type = "button" name = "prelocate" value = "현재위치설정">
+		<input type = "button" name = "differlocate" value = "다른위치설정"><br>
+			<div class="map_wrap" style ="display:none">
+		    	<div id="map" style="width:75%;height:75%;position:relative;overflow:hidden;"></div>
+		    <div class="hAddr">
+	    </div>
+	    	<span id="centerAddr"></span>
+		</div>
+		
+		{%endblock%}
 		
 		{% block content %}		
 		{% endblock %}
 
-		{% block footer%}
+		{% block footer%}<!-- footer -->
 			<footer class = "footer">
 				<hr>
 				<p>대표 : 김철수 / E : abc123@abc.com / F : 010) 1111-1111 <br>서울특별시 서초구 서초대로74길 33  <br>문의전화(운영시간 평일 08:00~22:00)<br>문의(COOKWEE) : 02-1111-1111<br></p>
