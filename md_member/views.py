@@ -92,7 +92,7 @@ class InputView ( View ):
             gen_id = request.POST["gen_id"],
             user_img = user_img,
             user_g_id = 1,
-            user_reg_ts = DateFormat( datetime.now() ).format( "Y-m-d" ),
+            user_reg_ts = datetime.now(),
             )
         dtos.save()
        # 태그 
@@ -107,35 +107,35 @@ class InputView ( View ):
                     user_id = user_id,
                     dsrt_t_id = a
                     )
-                dtos.save()
+                dto.save()
         if list_drnk :
             for b in list_drnk :
                 dto = MdUDrnk(
                     user_id = user_id,
                     drnk_t_id = b
                     )
-                dtos.save()
+                dto.save()
         if list_algy :
             for c in list_algy :
                 dto = MdUAlgy(
                     user_id = user_id,
                     algy_t_id = c
                     )
-                dtos.save()
+                dto.save()
         if list_intr :
             for d in list_intr :
                 dto = MdUIntr(
                     user_id = user_id,
                     intr_t_id = d
                     )
-                dtos.save()
+                dto.save()
         if list_tast :
             for e in list_tast :
                 dto = MdUTast(
                     user_id = user_id,
                     tast_t_id = e
                     )
-                dtos.save()
+                dto.save()
         
         return redirect( "/md_member/login" )
 

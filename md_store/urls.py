@@ -10,3 +10,4 @@ urlpatterns = [
          path("menulist", views.MenuListView.as_view(), name="menulist"),
          path("addmenu", views.AddMenuView.as_view(), name="addmenu"),
        ]
+
