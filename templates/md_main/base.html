@@ -8,6 +8,7 @@
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script src = "{%static 'js/script_main.js'%}"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df3043bfd9f0cd2d661d8d846a70763&libraries=services"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src = "{%static 'js/script_member.js'%}"></script>
 	
 	</head>
@@ -48,13 +49,13 @@
 		{%block mapview%}<!-- 현재위치/다른위치 설정 -->
 		<input type = "button" name = "prelocate" value = "현재위치설정">
 		<input type = "button" name = "differlocate" value = "다른위치설정"><br>
+		<input type="text" name="address" maxlength="50" maxlength="70" readonly onclick="findaddress()"> 
 			<div class="map_wrap" style ="display:none">
 		    	<div id="map" style="width:75%;height:75%;position:relative;overflow:hidden;"></div>
 		    <div class="hAddr">
 	    </div>
 	    	<span id="centerAddr"></span>
-		</div>
-		
+		</div>		
 		{%endblock%}
 		
 		{% block content %}		
@@ -68,5 +69,6 @@
   				<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
 			</footer>
 		{% endblock %}
+		
 	</body>
 </html>
