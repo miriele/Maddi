@@ -1,0 +1,11 @@
+Django==4.2.3
+django-mathfilters==1.0.0
+flake8==6.0.0
+konlpy==0.6.0
+launchpadlib==1.10.13
+lxml==4.9.3
+mysqlclient==2.2.0
+Pillow==10.0.0
+PyMySQL==1.1.0
+requests==2.22.0
+webdriver-manager==3.8.6
