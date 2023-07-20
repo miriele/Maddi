@@ -46,7 +46,8 @@ class SearchView(View):
         return View.dispatch(self, request, *args, **kwargs)    
     def get(self,request):
         template = loader.get_template("md_main/searchlist.html")
-        count= MdStor.objects.all().count()
+        count    = MdStor.objects.all().count()
+        
         if count ==0:
             context = {
                 "count":count,
