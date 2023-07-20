@@ -4,14 +4,12 @@ from django.views.generic.base import View
 from django.template import loader
 from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
-from django.utils.dateformat import DateFormat
 from datetime import datetime
 from md_member.models import MdUser, MdUDsrt, MdIntrT, MdTastT, MdUDrnk, MdUAlgy,\
     MdUIntr, MdUTast, MdUserG
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT
-from django.db.models.aggregates import Count
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -194,6 +192,7 @@ class UserInfoView( View ):
         context = {
             "memid" : memid,
             "dtos" :dtos,
+            "gid" :gid,
             "g_name" :g_name,
             "md_intr_t" : md_intr_t,
             "md_tast_t" : md_tast_t,
@@ -247,10 +246,7 @@ class UserInfoView( View ):
         ualgy = MdUAlgy.objects.filter(user_id = user_id )
         uintr = MdUIntr.objects.filter(user_id = user_id )
         utast = MdUTast.objects.filter(user_id = user_id )
-        # for ds in udsrt :
-        #     a={ds.value()
-        # logger.debug(a)
-        #
+
         for ds in udsrt :
             ds.delete()
            
@@ -262,6 +258,45 @@ class UserInfoView( View ):
                     )
                 dtoa.save()
 
+        for dr in udrnk :
+            dr.delete()
+        for b in list_drnk :
+            if b:
+                dtob = MdUDrnk(
+                    user_id = user_id,
+                    drnk_t_id = b
+                    )
+                dtob.save()
+        
+        for al in ualgy :
+            al.delete()
+        for c in list_algy :
+            if c:
+                dtoc = MdUAlgy(
+                    user_id = user_id,
+                    algy_t_id = c
+                    )
+                dtoc.save()
+
+        for int in uintr :
+            int.delete()
+        for d in list_intr :
+            if d:
+                dtod = MdUIntr(
+                    user_id = user_id,
+                    intr_t_id = d
+                    )
+                dtod.save()
+        
+        for ta in utast :
+            ta.delete()
+        for e in list_tast :
+            if e:
+                dtoe = MdUTast(
+                    user_id = user_id,
+                    tast_t_id = e
+                    )
+                dtoe.save()
         return redirect("/md_member/userinfo")
     
     

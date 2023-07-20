@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4df3043bfd9f0cd2d661d8d846a70763&libraries=services"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src = "{%static 'js/script_member.js'%}"></script>
+	<script src = "{%static 'js/script_comb.js'%}"></script>
 	
 	</head>
 	
@@ -26,9 +27,15 @@
 		{% block topbar %}<!-- 카테고리 버튼 -->
 			<a href = "/md_main/main"><h2>Maddi</h2></a>
 			{% if memid %}
-			<a href ="/md_combi/combi">추천조합</a>&nbsp;&nbsp;&nbsp;
-			<a href ="/md_order/order">주문하기</a>&nbsp;&nbsp;&nbsp;
-			<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+				{% if gid == 1 %}
+					<a href ="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+					<a href ="/md_order/order">주문하기</a>&nbsp;&nbsp;&nbsp;
+					<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+				{% elif gid == 6 %}
+					<a href ="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+					<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+					<a href ="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
+				{% endif %}
 			{% endif %}
 		{% endblock %}
 		
