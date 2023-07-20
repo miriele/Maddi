@@ -1,6 +1,4 @@
-#!/bin/bash
-
-DOCKER_REPOSITORY_NAME=$1
+CKER_REPOSITORY_NAME=$1
 ID=miriele
 PW=qlxm1234!
 
