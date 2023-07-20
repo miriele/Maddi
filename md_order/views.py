@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 141
+        stor_m_id = 37957
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -39,7 +39,7 @@ class OrderInfoView(View):
             return HttpResponseNotFound()
 
     def post(self, request):
-        stor_m_id = 141
+        stor_m_id = 37957
 
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -59,6 +59,7 @@ class OrderInfoView(View):
             context = {
                 'dto': storem,
                 'stor_m_pric': storem.stor_m_pric,
+                'stor_id': storem.stor_id,
                 'stor_m_name': storem.stor_m_name,
                 'stor_m_cal': storem.stor_m_cal,
                 'stor_m_info': storem.stor_m_info,
@@ -97,6 +98,7 @@ class CartView(View):
         context = {
                 'dto': storem,
                 'stor_m_pric': storem.stor_m_pric,
+                'stor_id': storem.stor_id,
                 'stor_m_name': storem.stor_m_name,
                 'buck_id' : buck_id,
                 'bucknum': bucknum,
@@ -133,6 +135,7 @@ class OrderView(View):
                 'stor_m_pric': storem.stor_m_pric,
                 'stor_m_name': storem.stor_m_name,
                 'buck_id' : buck_id,
+                'stor_id': storem.stor_id,
                 'bucknum': bucknum,
                 'buckprice': buckprice,
                 'buck_reg_ts' : buck_reg_ts,
@@ -140,31 +143,34 @@ class OrderView(View):
         
         return redirect("md_order:buck")
 
-
 class BuckView(View):
     def get(self, request):
-        buck_id = 80
         try:
-            buck = MdBuck.objects.get(buck_id=buck_id)
-            storem = MdStorM.objects.get(stor_m_id=buck.stor_m_id)
-            bucknum = buck.buck_num
-            buckprice = bucknum * storem.stor_m_pric
-            buck_reg_ts = buck.buck_reg_ts
-            
-            context = {
-                'dto': storem,
-                'stor_id' : storem.stor_m_pric,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_m_name': storem.stor_m_name,
-                'buck_id': buck_id,
-                'bucknum': bucknum,
-                'buckprice': buckprice,
-                'buck_reg_ts': buck_reg_ts,
-            }
-            
-            return render(request, 'md_order/buck.html', context)
+            bucks = MdBuck.objects.order_by('stor_m__stor_id')
+            context = []
+
+            for buck in bucks:
+                storem = MdStorM.objects.get(stor_m_id=buck.stor_m.stor_id)
+                bucknum = buck.buck_num
+                buck_id = buck.buck_id
+                buckprice = bucknum * storem.stor_m_pric
+                buck_reg_ts = buck.buck_reg_ts
+
+                context.append({
+                    'dto': storem,
+                    'stor_id': storem.stor_id,
+                    'stor_m_pric': storem.stor_m_pric,
+                    'stor_m_name': storem.stor_m_name,
+                    'buck_id': buck_id,
+                    'bucknum': bucknum,
+                    'buckprice': buckprice,
+                    'buck_reg_ts': buck_reg_ts,
+                })
+
+            return render(request, 'md_order/buck.html', {'context': context})
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
+
 
 
 

@@ -1,19 +1,21 @@
-{% block title %}
-  <h2>장바구니</h2>
-{% endblock %}
+<!-- md_order/buck.html -->
 
-{% block content %}
-<form method="post" action="{% url 'md_order:buck' %}">
-    {% csrf_token %}
-    <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-    <input type="hidden" name="bucknum" value="{{ bucknum }}">
-	  <h3>주문 정보</h3>
-	  <p>메뉴명: {{ buck_id }}</p>
-	  <p>메뉴명: {{ dto.stor_m_name }}</p>
-	  <p>가격: {{ stor_m_pric }}</p>
-	  <p>주문 수량: {{ bucknum }}</p>
-	  <p>주문 금액: {{ buckprice }}</p>
-	  <p>주문 일시: {{ buck_reg_ts }}</p>
-      <input class="inputbutton" type="submit" value="주문하기">
-  </form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buck List</title>
+</head>
+<body>
+    <h2>장바구니</h2>
+    <h3>주문 정보</h3>
+    <ul>
+        {% for buck in context %}
+            <li>
+			    <p>매장ID: {{buck.stor_id}} | 장바구니ID: {{ buck.buck_id }} | 메뉴명: {{ buck.stor_m_name }} | 가격: {{ buck.stor_m_pric }} | 주문 수량: {{ buck.bucknum }} | 주문 금액: {{ buck.buckprice }} | 주문 일시: {{ buck.buck_reg_ts }}</p>
+			</li>
+
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
