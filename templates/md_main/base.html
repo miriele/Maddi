@@ -54,17 +54,11 @@
 		{%endblock%}
 		
 		{%block mapview%}<!-- 현재위치/다른위치 설정 -->
-		<input type = "button" name = "differlocate" value = "다른위치설정"><br>
-		
+		<button id = "differlocate">다른위치설정</button><br>			
 			<div class="map_wrap">
 		    	<div id="map" style="width:75%;height:75%;position:relative;overflow:hidden;"></div>
 	    		내위치:<span id="centerAddr"></span>	
-			</div>
-			
-			<div class="differ_wrap" style ="display:none;">
-				내위치:<input type="text" name="address" maxlength="50" maxlength="70" style="border:none;"readonly>
-			</div>
-			
+			</div>	
 		{%endblock%}
 		
 		{% block content %}		
