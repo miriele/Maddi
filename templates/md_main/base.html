@@ -54,10 +54,9 @@
 		{%endblock%}
 		
 		{%block mapview%}<!-- 현재위치/다른위치 설정 -->
-		<input type = "button" name = "prelocate" value = "현재위치설정">
 		<input type = "button" name = "differlocate" value = "다른위치설정"><br>
 		
-			<div class="map_wrap" style ="display:none">
+			<div class="map_wrap">
 		    	<div id="map" style="width:75%;height:75%;position:relative;overflow:hidden;"></div>
 	    		내위치:<span id="centerAddr"></span>	
 			</div>
