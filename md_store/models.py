@@ -81,7 +81,7 @@ class MdMenu(models.Model):
     menu_name = models.CharField(max_length=60, db_comment='메뉴명')
     menu_cal = models.SmallIntegerField(db_comment='칼로리')
     menu_info = models.CharField(max_length=300, db_comment='메뉴소개')
-    menu_img = models.ImageField(max_length=30, blank=True, null=True, db_comment='메뉴이미지', upload_to="images")
+    menu_img = models.ImageField(max_length=100, blank=True, null=True, db_comment='메뉴이미지', upload_to="images")
 
     class Meta:
         managed = False
@@ -142,7 +142,7 @@ class MdStorReg(models.Model):
     user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
     stor = models.ForeignKey(MdStor, models.DO_NOTHING, db_comment='매장ID')
     reg_num = models.CharField(max_length=40, db_comment='사업자등록번호')
-    reg_img = models.CharField(max_length=50, db_comment='사업자등록증경로')
+    reg_img = models.ImageField(max_length=100, db_comment='사업자등록증경로', upload_to="images")
     reg_sub_ts = models.DateTimeField(db_comment='신청일시')
     reg_con_ts = models.DateTimeField(blank=True, null=True, db_comment='승일일시')
 

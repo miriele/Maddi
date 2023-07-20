@@ -211,7 +211,7 @@ DATABASES = {
         'NAME'      : 'bit',                  # database name
         'USER'      : 'bit',
         'PASSWORD'  : 'bit',
-        'HOST'      : 'localhost',            # ip
+        'HOST'      : '192.168.0.86',            # ip
         'PORT'      : '3306',
     }
 }
