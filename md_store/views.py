@@ -105,19 +105,6 @@ class MenuInfoView(View):
             menu = stor_m.menu
             dsrt_t = menu.dsrt_t
             drnk_t = menu.drnk_t
-            
-            if dsrt_t:
-                if dsrt_t.dsrt_t_id == 0:
-                    dsrt_t_name = dsrt_t.dsrt_t_name
-                else:
-                    dsrt_t_name = "없음"
-            else:
-                dsrt_t_name = "없음"
-            
-            if drnk_t:
-                drnk_t_name = drnk_t.drnk_t_name
-            else:
-                drnk_t_name = "없음"
                 
             context = {
                 'dto': storem,
