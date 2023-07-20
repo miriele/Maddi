@@ -7,7 +7,7 @@ class MdComb(models.Model):
     comb_tit = models.CharField(max_length=90, db_comment='제목')
     comb_nop = models.IntegerField(db_comment='인원수')
     comb_cont = models.TextField(db_comment='조합내용')
-    comb_img = models.CharField(max_length=30, blank=True, null=True, db_comment='이미지경로')
+    comb_img = models.ImageField(max_length=100, blank=True, null=True, db_comment='이미지경로', upload_to="images")
     comb_reg_ts = models.DateTimeField(db_comment='작성일시')
 
     class Meta:

@@ -4,5 +4,5 @@ from md_combi import views
 app_name = "md_combi"
 
 urlpatterns = [
-    # path("Aaaa",       views.AaaaView.as_view(),       name="Aaaa"),    # view 추가하면 삭제하세요
+    path( "comblist",      views.CombListView.as_view(),       name="comblist"),
     ]
