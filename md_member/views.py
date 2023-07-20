@@ -78,7 +78,7 @@ class InputView ( View ):
         user_img = request.FILES.get("user_img")    
         # 이미지 업로드 안 했을 시 기본으로 저장
         if user_img  == None :
-            user_img = "default_user.jpg"
+            user_img = "images/default_user.jpg"
         else :
             user_img 
         
@@ -206,4 +206,130 @@ class UserInfoView( View ):
             "uintr" : uintr,
             "utast" : utast,
             }       
+        
         return HttpResponse( template.render( context, request ) )
+    def post(self, request ):
+        user_id = request.POST["user_id"]
+        dto = MdUser.objects.get(user_id = user_id)
+        user_img = request.FILES.get("user_img")  
+        
+        logger.debug(user_img)  
+        # 이미지 업로드 안 했을 시 기본으로 저장
+        if user_img  == None :
+            user_img = "images/default_user.jpg"
+        else :
+            user_img 
+            
+        logger.debug(user_img)
+        ndtos = MdUser(
+            user_id = user_id,
+            user_pass = request.POST["user_pass"],
+            user_name = request.POST["user_name"],
+            user_nick = request.POST["user_nick"],
+            user_bir = request.POST["user_bir"],
+            gen_id = request.POST["gen_id"],
+            user_img = user_img,
+            user_g_id = dto.user_g_id,
+            user_reg_ts = dto.user_reg_ts
+            )      
+        ndtos.save()
+        
+        # 태그 받아온거
+        list_dsrt = request.POST.getlist("md_dsrt_t")
+        logger.debug(list_dsrt)
+        list_drnk = request.POST.getlist("md_drnk_t")
+        list_algy = request.POST.getlist("md_algy_t")
+        list_intr = request.POST.getlist("md_intr_t")
+        list_tast = request.POST.getlist("md_tast_t") 
+        # 태그 디비서 가져온거 
+        udsrt = MdUDsrt.objects.filter(user_id = user_id )
+        udrnk = MdUDrnk.objects.filter(user_id = user_id )
+        ualgy = MdUAlgy.objects.filter(user_id = user_id )
+        uintr = MdUIntr.objects.filter(user_id = user_id )
+        utast = MdUTast.objects.filter(user_id = user_id )
+        # for ds in udsrt :
+        #     a={ds.value()
+        # logger.debug(a)
+        #
+        for ds in udsrt :
+            ds.delete()
+           
+        for a in list_dsrt :
+            if a :
+                dtoa = MdUDsrt(
+                    user_id = user_id,
+                    dsrt_t_id = a
+                    )
+                dtoa.save()
+
+        return redirect("/md_member/userinfo")
+    
+    
+    
+    
+    
+        ''' 
+        # for ds in udsrt :
+            # ds.delete()
+           
+        for a in list_dsrt :
+            if a :
+                dtoa = MdUDsrt(
+                    user_id = user_id,
+                    dsrt_t_id = a
+                    )
+                dtoa.save()
+       
+             
+             else :
+                dtoa = MdUDsrt(
+                    user_id = user_id,
+                    dsrt_t_id = a
+                    )
+                dtoa.delete()
+        if list_drnk :
+            for b in list_drnk :
+                dtob = MdUDrnk(
+                    user_id = user_id,
+                    drnk_t_id = b
+                    )
+                dtob.save()
+        if list_algy :
+            for c in list_algy :
+                dtoc = MdUAlgy(
+                    user_id = user_id,
+                    algy_t_id = c
+                    )
+                dtoc.save()
+        if list_intr :
+            for d in list_intr :
+                dtod = MdUIntr(
+                    user_id = user_id,
+                    intr_t_id = d
+                    )
+                dtod.save()
+        if list_tast :
+            for e in list_tast :
+                dtoe = MdUTast(
+                    user_id = user_id,
+                    tast_t_id = e
+                    )
+                dtoe.save()
+'''
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

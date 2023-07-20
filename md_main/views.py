@@ -16,9 +16,6 @@ class MainView(View):
         template = loader.get_template("md_main/main.html")
         memid = request.session.get("memid")
         gid = request.session.get("gid")
-
-        logger.debug(memid)
-        logger.debug(gid)
         tdtos = MdStorM.objects.select_related("menu").filter(menu__dsrt_t=-1).order_by('?')[:5]
         ddtos = MdStorM.objects.select_related("menu").filter(menu__drnk_t=-1).order_by('?')[:5]
         rdtos = MdComb.objects.all()

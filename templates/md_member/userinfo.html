@@ -13,7 +13,7 @@
 	{% csrf_token %}
 		<form method="post" action="userinfo" name="userinfoform" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value="{{dtos.user_id}}">
-		<input type="hidden" name="user_img" value="{{dtos.user_img}}">
+		
 			<table>
 			<tr>
 				<th> 아이디 </th>
@@ -34,7 +34,8 @@
 				<tr>
 					<th> 닉네임 </th>
 					<td>
-						<input class="input" type="text" name="user_nick" maxlength="45" required value="{{dtos.user_nick}}">
+						<input class="input" type="text" name="user_nick" id= "iuser_nick" maxlength="45" required value="{{dtos.user_nick}}">
+						<font id = "checknick" size="2"></font>
 					</td>
 				</tr>
 				<tr>
@@ -46,8 +47,8 @@
 				<tr>
 					<th> 성별 </th>
 					<td> 
-						<select name="user_g_id">
-							{% if  dtos.user_g_id  == 0 %}
+						<select name="gen_id">
+							{% if  dtos.gen_id  == 0 %}
 								<option value="0"> 남자 </option>
 							{% else %}
 								<option value="1"> 여자 </option>
@@ -57,10 +58,11 @@
 				</tr>
 				<tr>
 					<th> 회원등급 </th>
-					<td> {{g_name.user_g_name }} 
-						&nbsp;&nbsp;<input class="inputbutton" type="button" value="점주등록">
+					<td> {{g_name.user_g_name }}
+						{% if gid == 1 %}
+							&nbsp;&nbsp;<input class="inputbutton" type="button" value="점주등록" onclick="location='/md_store/addjumju'">
+						{% endif %}
 					</td>
-					
 				</tr>
 				<tr>
 					<th> 대표이미지 </th>
@@ -160,6 +162,7 @@
 				<tr>
 					<th colspan="2">
 						<input class="inputbutton" type="submit" value="정보수정">
+						<input class="inputbutton" type="reset" value="수정취소">
 					</th>
 				</tr>
 			</table>

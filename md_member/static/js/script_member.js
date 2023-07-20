@@ -2,16 +2,7 @@
 $(document).ready(
 	function() {
 		var iderror = "아이디를 입력하세요.";
-		var passwderror = "비밀번호를 입력하세요.";
-		var nameerror = "이름을 입력하세요.";
-		var nickerror = "이메일을 입력하세요.";
-		var birerror = "생년월일을 입력하세요.";
 		
-		var inputerror = "회원가입에 실패했습니다.\n 잠시 후 다시 시도하세요.";
-		var idxerror ="입력하신 아이디가 없습니다.\n다시 확인하세요.";
-		var passerror ="입력하신 비밀번호가 다릅니다.\n다시 확인하세요.";
-		var deleteerror ="회원탈퇴에 실패했습니다\n 잠시후 다시 시도하세요.";
-		var modifyerror ="회원정보수정에 실패했습니다\n 잠시후 다시 시도하세요.";
 		
 		
 		function erroralert(msg) {
@@ -50,7 +41,7 @@ $(document).ready(
 			}//function
 		);//on
 		
-		// 닉네임 중복확인2
+		// 닉네임 중복확인
 		$("input[id='iuser_nick']").on(
 			"keyup",
 			function(event) {
@@ -79,8 +70,6 @@ $(document).ready(
 				)
 			}//function
 		);//on
-		
-		
 		
 	}	//function
 )	//ready
