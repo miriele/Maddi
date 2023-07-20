@@ -1,0 +1,19 @@
+{% block title %}
+  <h2>장바구니</h2>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'md_order:buck' %}">
+    {% csrf_token %}
+    <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+    <input type="hidden" name="bucknum" value="{{ bucknum }}">
+	  <h3>주문 정보</h3>
+	  <p>메뉴명: {{ buck_id }}</p>
+	  <p>메뉴명: {{ dto.stor_m_name }}</p>
+	  <p>가격: {{ stor_m_pric }}</p>
+	  <p>주문 수량: {{ bucknum }}</p>
+	  <p>주문 금액: {{ buckprice }}</p>
+	  <p>주문 일시: {{ buck_reg_ts }}</p>
+      <input class="inputbutton" type="submit" value="주문하기">
+  </form>
+{% endblock %}
