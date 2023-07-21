@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import View
 from md_store.models import MdStorM
 from django.http.response import HttpResponseNotFound, HttpResponse
-from md_order.models import MdBuck
+from md_order.models import MdBuck, MdOrdrM, MdOrdr
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.template import loader
+import md_order
 
 class OrderInfoView(View):
     def get(self, request):
@@ -119,7 +120,6 @@ class OrderView(View):
         
         # buck_reg_ts에 현재 시각 저장
         buck_reg_ts = timezone.now()
-        
         new_buck = MdBuck.objects.create(user_id=user_id, stor_m_id=stor_m_id, buck_num=buck_num, buck_reg_ts=buck_reg_ts)
         buck_id = 60
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -173,12 +173,13 @@ class BuckView(View):
             return HttpResponseNotFound()
 
 class BuckDelView(View):
-    def get(self,request):
-        template = loader.get_template( "md_order/buck.html" )
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self,request):
-        pass
+    def post(self, request):
+        selected_bucks = request.POST.getlist('selected_bucks')
+        MdBuck.objects.filter(buck_id__in=selected_bucks, buck_del_ts__isnull=True).update(buck_del_ts=timezone.now())
+        
+        return redirect('md_order:buck')
+
+
 
 class BuckOrdrView (View):
     def get(self,request):
@@ -196,13 +197,30 @@ class OrdrSucView (View):
     def post(self,request):
         pass
 
-class OrdrListView (View):
-    def get(self,request):
-        template = loader.get_template( "md_order/orderlist.html" )
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self,request):
+class OrdrListView(View):
+    def get(self, request):
+        template = loader.get_template("md_order/orderlist.html")
+        ordrs = MdOrdr.objects.all()
+        buck = MdBuck.objects.all()
+        storem = MdStorM.objects.all()
+        ordrm = MdOrdrM.objects.all()
+        context = []
+        
+        for ordr in ordrs:
+            
+            if buck:
+                    context.append({
+                    'ordr_id': ordr.ordr_id,
+                    'user_nick': ordr.user.user_nick,
+                
+                })
+
+        return HttpResponse(template.render({'context': context}, request))
+
+    def post(self, request):
         pass
+
+
 
 
 class OrdrAlertView (View):
