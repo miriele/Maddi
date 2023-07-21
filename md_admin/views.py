@@ -31,28 +31,28 @@ class UserinfoView(View):
     
 class ReviewlistView(View):
     def get(self,request):
-        template = loader.get_template("md_admin/userlist.html")
+        template = loader.get_template("md_admin/reviewlist.html")
         context ={
             }
         return HttpResponse(template.render(context,request))
     
 class ReviewinfoView(View):
     def get(self,request):
-        template = loader.get_template("md_admin/userlist.html")
+        template = loader.get_template("md_admin/reviewinfo.html")
         context ={
             }
         return HttpResponse(template.render(context,request))
     
 class SregistlistView(View):
     def get(self,request):
-        template = loader.get_template("md_admin/userlist.html")
+        template = loader.get_template("md_admin/sregistlist.html")
         context ={
             }
         return HttpResponse(template.render(context,request))
     
 class SregistinfoView(View):
     def get(self,request):
-        template = loader.get_template("md_admin/userlist.html")
+        template = loader.get_template("md_admin/sregistinfo.html")
         context ={
             }
         return HttpResponse(template.render(context,request))   
