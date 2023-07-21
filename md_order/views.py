@@ -6,7 +6,11 @@ from md_order.models import MdBuck, MdOrdrM, MdOrdr
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.template import loader
+import logging
 import md_order
+
+# 로그
+logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
@@ -147,26 +151,28 @@ class OrderView(View):
 class BuckView(View):
     def get(self, request):
         try:
-            bucks = MdBuck.objects.order_by('stor_m__stor_id')
-            context = []
+            bucks = MdBuck.objects.select_related('stor_m__stor')
+            context = {}
 
             for buck in bucks:
-                storem = MdStorM.objects.get(stor_m_id=buck.stor_m.stor_id)
-                bucknum = buck.buck_num
-                buck_id = buck.buck_id
-                buckprice = bucknum * storem.stor_m_pric
-                buck_reg_ts = buck.buck_reg_ts
-
-                context.append({
-                    'dto': storem,
-                    'stor_id': storem.stor_id,
-                    'stor_m_pric': storem.stor_m_pric,
-                    'stor_m_name': storem.stor_m_name,
-                    'buck_id': buck_id,
-                    'bucknum': bucknum,
-                    'buckprice': buckprice,
-                    'buck_reg_ts': buck_reg_ts,
-                })
+                store_name = buck.stor_m.stor.stor_name
+                store_data = {
+                        # 'dto'        : buck.stor_m,
+                        'store_id'   : buck.stor_m.stor.stor_id,
+                        'stor_m_name': buck.stor_m.stor_m_name,
+                        'stor_m_pric': buck.stor_m.stor_m_pric,
+                        # 'buck_id'    : buck.buck_id,
+                        'buck_num'   : buck.buck_num,
+                        'buck_price' : buck.buck_num * buck.stor_m.stor_m_pric,
+                        # 'buck_reg_ts': buck.buck_reg_ts,
+                    }
+                
+                if store_name in context :
+                    context[store_name].append(store_data)
+                else :
+                    context[store_name] = [store_data]
+            
+            logger.debug(f'context : {context}')
 
             return render(request, 'md_order/buck.html', {'context': context})
         except MdBuck.DoesNotExist:
