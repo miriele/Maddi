@@ -2,31 +2,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원정보</title>
+<title>리뷰목록</title>
 </head>
+<h2>리뷰목록</h2>
 <body>
 	<table border = "1">
 		<tr>
 			<th style="width:7%"> 아이디 </th>
 			<th style="width:7%"> 주문번호 </th>
 			<th style="width:7%"> 매장명 </th>
-			<th style="width:7%"> 주문일 </th>
+			<th style="width:7%"> 리뷰작성일시 </th>
 		</tr>
+		{% if count == 0 %}
+			<tr>
+				<td colspan = "4" align = "center">
+					리뷰없음
+				</td>
+			</tr>
+		{%else%}
+		{%for rdto in rdtos%}
 			<tr>
 				<td align = "center">
-									
+					<a href = "#">{{rdto.ordr.user_id}}</a>				
 				</td>
 				<td align = "center">
-					
+					{{rdto.ordr_id}}
 				</td>
 				<td align = "center">
-					
+					{{rdto.ordr.stor_name}}
 				</td>
 				<td align = "center">
-					
+					{{rdto.rev_ts|date:"Y-m-d"}}
 				</td>												
 			</tr>
+		{%endfor%}
 	</table>
-
+	{%endif%}
 </body>
 </html>
