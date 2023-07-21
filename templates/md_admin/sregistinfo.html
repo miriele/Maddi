@@ -2,27 +2,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ȸ������</title>
+<title>회원정보</title>
 </head>
 <body>
+<h2>회원상세정보</h2>
+<form method = "post" action = "sregistinfo" name="sregistinfoform">
 	<table border = "1">
 		<tr>
-			<th style="width:7%"> ���̵� </th>
-			<th style="width:7%"> ����� </th>
-			<th style="width:7%"> ��û�� </th>
+			<td>아이디</td>
+			<td></td>
 		</tr>
-			<tr>
-				<td align = "center">
-									
-				</td>
-				<td align = "center">
-					
-				</td>
-				<td align = "center">
-					
-				</td>										
-			</tr>
+		<tr>
+			<td>매장명</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>매장유형</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>사업자등록번호</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>등록신청일</td>
+			<td></td>
+		</tr>
+		<tr>	
+			<td>사업자등록이미지</td>
+		<tr>
+			<th colspan = "2">
+				<input type = "submit" value = "승인">
+				<input type = "button" value = "취소" onclick ="location='sregistlist'">
+			</th>	
+		</tr>											
 	</table>
-
+</form>	
 </body>
 </html>

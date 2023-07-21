@@ -2,9 +2,53 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원정보</title>
 </head>
 <body>
-
+<h2>리뷰상세정보</h2>
+<form method = "post" action = "reviewinfo" name="reviewinfoform">
+	<table border = "1">
+		<tr>
+			<th colspan="2">회원정보</th>
+		</tr>
+		<tr>
+			<th colspan="2">리뷰이미지</th>
+		</tr>
+		<tr>
+			<td>주문정보</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>주문내역</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>평점</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>방문목적</td>
+			<td>{{users.user_id}}</td>
+		</tr>
+		<tr>
+			<td>분위기</td>
+			<td>{{users.user_nick}}</td>
+		</tr>
+		<tr>
+			<td>편의시설</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td></td>
+		</tr>
+		<tr>
+			<th colspan = "2">
+				<input type = "submit" value = "삭제">
+				<input type = "button" value = "취소" onclick ="location='reviewlist'">
+			</th>	
+		</tr>											
+	</table>
+</form>	
 </body>
 </html>
