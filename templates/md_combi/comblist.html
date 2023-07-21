@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Maddi</title>
+	</head>
+	<body>
+	{% extends "md_main/base.html" %}
+	{% load mathfilters %}
+	{% load static %}
+	{% block search %} {% endblock %}
+	{% block mapview %} {% endblock %}
+	{% block content %}
+	 	<h2> 나만의 추천 조합 ( 전체글 :{{count}} ) </h2> 
+		<table border="1">
+			<tr>
+				<td colspan="7" align="right">	
+					<input class="inputbutton" type="button" value="글 작성" onclick="location='/md_combi/combwrite'">
+				</td>
+			</tr>
+			<tr>
+				<th width="7%" > 번호 </th>
+				<th width="35%"> 제목 </th>
+				<th width="25%"> 조합메뉴 </th>
+				<th width="7%"> 인원 </th>
+				<th width="10%"> 작성자 </th>
+				<th width="10%"> 작성일 </th>
+				<th width="6%"> 추천수 </th>
+			</tr>
+			{% if count == 0 %}		<!-- 글이 없음 -->
+				<tr>
+					<td colspan="7" align="center" >
+						작성된 글이 없습니다.
+				</tr>
+			{% else %}
+				{% for mdc in md_comb %}
+					<tr>
+						<td align="center">
+							{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
+						</td>
+						<td>
+							<a href="content?num={{ mdc.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
+								{{ mdc.comb_tit }}
+							</a>
+						</td>
+						<td	align="center">
+							조합메뉴 테이블에서 이프/추천조합아이디가 같으면 포문/(메뉴아이디로 조인>추천조합id=추천조합id>메뉴아이디 나옴/메뉴아이디가 메뉴 아이디인 것의 메뉴 이름 뽑기)
+						</td>
+						<td>
+							{{ mdc.comb_nop }}
+						</td>
+						<td>
+							{% for combl in comblist %}
+								{% if mdc.user_id == combl.user.user_id %}
+									{{ combl.user.user_nick }}
+								{% endif %}
+							{% endfor %}
+						</td>
+						<td>
+							{{ mdc.comb_reg_ts |date:"Y-m-d H:i" }}
+						</td>
+						<td>
+							{% for like in comb_like %}
+								{% if like.com.com_id == mdc.com_id %}
+								{% endif %}
+							{% endfor %}		
+						</td>
+					</tr>
+				{% endfor %}
+			{% endif %}
+		</table>
+		<br><br>
+		{% if startpage > pageblock %}
+			<a href="comblist?pagenum={{ startpage|sub:pageblock }}">[◀]</a>
+		{% endif %}
+		{% for i in pages %}
+			{% if i == pagenum %}
+				<span>{{ i }}</span>
+			{% else %}
+				<a href="comblist?pagenum={{ i }}" >{{ i }}</a>
+			{% endif %}
+		{% endfor %}
+		{% if pagecount > endpage %}
+			<a href="comblist?pagenum={{ startpage|add:pageblock }}">[▶]</a>
+		{% endif %}
 
-</body>
+		{% endblock %}	
+	</body>
 </html>

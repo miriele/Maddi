@@ -8,7 +8,8 @@
 	{% extends "md_main/base.html" %}
 	
 	{% block title %} <h2> 로 그 인 </h2> {% endblock %}
-	
+	{% block search %} {% endblock %}
+	{% block mapview %} {% endblock %}
 	{% block content %}
 	{% csrf_token %}
 		<form method="post" action="login" name="loginform">

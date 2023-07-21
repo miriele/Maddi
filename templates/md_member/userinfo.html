@@ -8,7 +8,8 @@
 	{% extends "md_main/base.html" %}
 	
 	{% block title %} <h2> 마이페이지-회원정보 </h2> {% endblock %}
-	
+	{% block search %} {% endblock %}
+	{% block mapview %} {% endblock %}
 	{% block content %}
 	{% csrf_token %}
 		<form method="post" action="userinfo" name="userinfoform" enctype="multipart/form-data">
