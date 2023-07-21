@@ -20,10 +20,12 @@ class UserlistView(View):
 class UserinfoView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userinfo.html")
-        # id = request.GET["id"]
-        # users = MdUser.objects.select_related("user_g").get(user_id=id)
-        # queryset = users
+        id = request.GET["id"]
+        print(id)
+        users = MdUser.objects.select_related("user_g").select_related("user_g").get(user_id=id)
         context ={
+            "id":id,
+            "users":users,
              }
         return HttpResponse(template.render(context,request))
     

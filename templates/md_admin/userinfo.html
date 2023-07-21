@@ -2,8 +2,62 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원정보</title>
 </head>
 <body>
+<h2>회원상세정보</h2>
+<form method = "post" action = "userinfo" name="userinfoform">
+	<table border = "1">
+		<tr>
+			<th colspan="2">회원정보</th>
+		</tr>
+		<tr>
+			<td>아이디</td>
+			<td>{{users.user_id}}</td>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td>{{users.user_name}}</td>
+		</tr>
+		<tr>
+			<td>성별</td>
+			<td>{{users.gen.gen_name}}</td>
+		</tr>
+		<tr>
+			<td>아이디</td>
+			<td>{{users.user_id}}</td>
+		</tr>
+		<tr>
+			<td>닉네임</td>
+			<td>{{users.user_nick}}</td>
+		</tr>
+		<tr>
+			<td>생년월일</td>
+			<td>{{users.user_bir}}</td>
+		</tr>
+		<tr>
+			<td>회원가입일</td>
+			<td>{{users.user_reg_ts|date:"Y-m-d"}}</td>
+		</tr>
+		<tr>
+			<td>회원등급</td>
+			<td>
+				<select name ="user_grade">
+					<option value = "normal">일반화원
+					<option value = "stop">활동정지
+					<option value = "getout">탈퇴
+					<option value = "store">점주
+					<option value = "admin">관리자	
+					<option value = "develop">개발자				
+				</select>
+			</td>
+		<tr>
+			<th colspan = "2">
+				<input type = "submit" value = "수정">
+				<input type = "button" value = "취소" onclick ="location='userlist'">
+			</th>	
+		</tr>											
+	</table>
+</form>	
 </body>
 </html>
