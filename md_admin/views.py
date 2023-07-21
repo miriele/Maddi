@@ -5,6 +5,7 @@ from django.template import loader
 from md_member.models import MdUser
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
+from md_store.models import MdStorReg
 
 # Create your views here.
 
@@ -72,7 +73,9 @@ class ReviewinfoView(View):
 class SregistlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistlist.html")
+        reglists = MdStorReg.objects.select_related("stor")
         context ={
+            "reglists":reglists,
             }
         return HttpResponse(template.render(context,request))
     

@@ -5,24 +5,26 @@
 <title>점주등록신청</title>
 </head>
 <body>
-	<table border = "1">
-		<tr>
-			<th style="width:7%"> 아이디 </th>
-			<th style="width:7%"> 매장명 </th>
-			<th style="width:7%"> 신청일 </th>
-		</tr>
+	<h2>점주등록신청</h2>
+		<table border = "1">
 			<tr>
-				<td align = "center">
-									
-				</td>
-				<td align = "center">
-					
-				</td>
-				<td align = "center">
-					
-				</td>
-									
+				<th style="width:7%"> 아이디 </th>
+				<th style="width:7%"> 매장명 </th>
+				<th style="width:7%"> 신청일 </th>
+			{%for list in reglists%}
 			</tr>
-	</table>	
+				<tr>
+					<td align = "center">
+						<a href = "sregistinfo?regid={{list.reg_id}}">{{list.user_id}}</a>				
+					</td>
+					<td align = "center">
+						{{list.stor.stor_name}}
+					</td>
+					<td align = "center">
+						{{list.reg_sub_ts |date:"Y-m-d H:i"}}
+					</td>								
+				</tr>
+			{%endfor%}
+		</table>	
 </body>
 </html>
