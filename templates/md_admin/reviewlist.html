@@ -8,6 +8,7 @@
 <body>
 	<table border = "1">
 		<tr>
+			<th style="width:7%"> 글번호 </th>
 			<th style="width:7%"> 아이디 </th>
 			<th style="width:7%"> 주문번호 </th>
 			<th style="width:7%"> 매장명 </th>
@@ -15,7 +16,7 @@
 		</tr>
 		{% if count == 0 %}
 			<tr>
-				<td colspan = "4" align = "center">
+				<td colspan = "5" align = "center">
 					리뷰없음
 				</td>
 			</tr>
@@ -23,7 +24,10 @@
 		{%for rdto in rdtos%}
 			<tr>
 				<td align = "center">
-					<a href = "#">{{rdto.ordr.user_id}}</a>				
+					{{rdto.rev_id}}
+				</td>			
+				<td align = "center">
+					<a href = "reviewinfo?revid={{rdto.rev_id}}">{{rdto.ordr.user_id}}</a>				
 				</td>
 				<td align = "center">
 					{{rdto.ordr_id}}
