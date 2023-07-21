@@ -7,7 +7,7 @@ from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.template import loader
 import logging
-import md_order
+
 
 # 로그
 logger = logging.getLogger( __name__ )

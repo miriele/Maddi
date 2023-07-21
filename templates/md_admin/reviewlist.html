@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>리뷰목록</title>
+	<meta charset="UTF-8">
+	<title>리뷰목록</title>
 </head>
-<h2>리뷰목록</h2>
 <body>
+	<h2>리뷰목록</h2>
 	<table border = "1">
 		<tr>
 			<th style="width:7%"> 글번호 </th>
@@ -21,7 +21,7 @@
 				</td>
 			</tr>
 		{%else%}
-		{%for rdto in rdtos%}
+			{%for rdto in rdtos%}
 			<tr>
 				<td align = "center">
 					{{rdto.rev_id}}
@@ -39,8 +39,8 @@
 					{{rdto.rev_ts|date:"Y-m-d"}}
 				</td>												
 			</tr>
-		{%endfor%}
+			{%endfor%}
+		{%endif%}
 	</table>
-	{%endif%}
 </body>
 </html>

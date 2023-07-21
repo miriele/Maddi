@@ -6,8 +6,11 @@ from md_member.models import MdUser
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
 from md_store.models import MdStorReg
+import logging
 
-# Create your views here.
+
+# 로그
+logger = logging.getLogger( __name__ )
 
 class UserlistView(View):
     def get(self,request):
@@ -46,8 +49,13 @@ class ReviewlistView(View):
         # select * from md_stor_m where stor_m_id=15;
         # select * from md_stor where stor_id=1;
             
+        rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
+
+        logger.debug(f'type(rdtos) : {type(rdtos)}\nrdtos : {rdtos}')
+        
         context ={
             "count":count,
+            "rdtos":rdtos,
             }
         return HttpResponse(template.render(context,request))
     
