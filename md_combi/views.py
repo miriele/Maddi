@@ -9,6 +9,7 @@ import logging
 from md_combi.models import MdComb, MdCombM, MdCLike
 from md_member.models import MdUser
 from md_store.models import MdMenu
+from django.db.models.aggregates import Count
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -20,49 +21,53 @@ class CombListView( View ):
     def get(self, request ):
         
         template = loader.get_template( "md_combi/comblist.html" )
-        count = MdComb.objects.all().count()
+        count    = MdComb.objects.all().count()
+
         if count == 0 :     #30
             context = {
                 "count" :count,
                 }
         else :
             pagenum = request.GET.get( "pagenum" )              #5
+
             if not pagenum :
                 pagenum = "1"
+            
             pagenum = int( pagenum )                            #5
             start = (pagenum -1 ) * int( page_size )            #4*5=    20
             end = start + int( page_size )                      #20+5=    25
+            
             if end >count :
                 end = count
-            md_comb = MdComb.objects.order_by("-comb_id")[start:end]
-            number = count - ( pagenum -1) * int (page_size)            #30-4*5=30-20=    10
             
+            md_comb   = MdComb.objects.order_by("-comb_id")[start:end]
+            number    = count - (pagenum -1) * int(page_size)             #30-4*5=30-20=    10
             startpage = pagenum //int(page_block) * int(page_block) +1  # = 5//3*3+1=1*3=3+1= 4
+            
             if pagenum % int(page_block) == 0 :                         #5%3==0>1.666!=0
                 startpage -= int(page_block)                            #  4-3 ==     1
-            endpage = startpage + int(page_block) -1                    # = 4(1) +3 -1 > 6or 3
             
+            endpage   = startpage + int(page_block) -1                    # = 4(1) +3 -1 > 6or 3
             pagecount = count // int(page_size)                         #  30//5=    6
+            
             if count % int(page_size) >0 :                              #30%5나머지=0 0보다 크면
                 pagecount += 1                                          #카운트가 31이어서 나머지 생기면 페이지 추가해줘야 하니 +1 더해 값 넣겠
+            
             if endpage > pagecount :
                 endpage = pagecount
+            
             pages = range(startpage, endpage + 1)                       # 페이지들은 456 까지 나온다?
+            
             # 닉네임
             comblist = MdComb.objects.select_related('user')
+            
             # for comb in comblist :
                 # print(comb.user.user_nick) #> 닉네임 나옴
 ################################            
+            
             # 추천수
-            comb_like = MdCLike.objects.select_related("comb")#.filter(comb=md_comb.comb_id).count()
-            # for mdc in md_comb:
-            #     for like in comb_like :
-            #         # print(like.comb.comb_id)#1,1,2    # SELECT * FROM md_comb m, md_c_like l WHERE m.comb_id = l.comb_id; #AND l.comb_id =1;    # 추천글번호에 맞는 추천개수 출력 
-            #         # 1/1/2
-            #         if mdc.comb_id == like.comb.comb_id :   # 같으면 출력해라
-            #             print(like.comb.comb_id)    # 2/1/1순서로 출력
-            #
-
+            comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb]
+            logger.debug(f'comb_like : {comb_like}')
             
 ###############################
             comb_menu = MdCombM.objects.select_related("comb", "menu")

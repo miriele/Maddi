@@ -70,10 +70,11 @@ class InputView ( View ):
             "md_tast_t" : md_tast_t,
             }
         return HttpResponse( template.render( context, request ) )
+
     def post(self, request):
-        
-        user_id = request.POST["user_id"]
+        user_id  = request.POST["user_id"]
         user_img = request.FILES.get("user_img")    
+
         # 이미지 업로드 안 했을 시 기본으로 저장
         if user_img  == None :
             user_img = "images/default_user.jpg"
@@ -81,55 +82,61 @@ class InputView ( View ):
             user_img 
         
         dtos = MdUser(
-            user_id = user_id,
-            user_pass = request.POST["user_pass"],
-            user_name = request.POST["user_name"],
-            user_nick = request.POST["user_nick"],
-            user_bir = request.POST["user_bir"],
-            gen_id = request.POST["gen_id"],
-            user_img = user_img,
-            user_g_id = 1,
+            user_id     = user_id,
+            user_pass   = request.POST["user_pass"],
+            user_name   = request.POST["user_name"],
+            user_nick   = request.POST["user_nick"],
+            user_bir    = request.POST["user_bir"],
+            gen_id      = request.POST["gen_id"],
+            user_img    = user_img,
+            user_g_id   = 1,
             user_reg_ts = datetime.now(),
             )
         dtos.save()
-       # 태그 
+        
+        # 태그 
         list_dsrt = request.POST.getlist("md_dsrt_t")
         list_drnk = request.POST.getlist("md_drnk_t")
         list_algy = request.POST.getlist("md_algy_t")
         list_intr = request.POST.getlist("md_intr_t")
         list_tast = request.POST.getlist("md_tast_t") 
+        
         if list_dsrt :
             for a in list_dsrt :
                 dto = MdUDsrt(
-                    user_id = user_id,
+                    user_id   = user_id,
                     dsrt_t_id = a
                     )
                 dto.save()
+        
         if list_drnk :
             for b in list_drnk :
                 dto = MdUDrnk(
-                    user_id = user_id,
+                    user_id   = user_id,
                     drnk_t_id = b
                     )
                 dto.save()
+        
         if list_algy :
             for c in list_algy :
                 dto = MdUAlgy(
-                    user_id = user_id,
+                    user_id   = user_id,
                     algy_t_id = c
                     )
                 dto.save()
+        
         if list_intr :
             for d in list_intr :
                 dto = MdUIntr(
-                    user_id = user_id,
+                    user_id   = user_id,
                     intr_t_id = d
                     )
                 dto.save()
+        
         if list_tast :
             for e in list_tast :
                 dto = MdUTast(
-                    user_id = user_id,
+                    user_id   = user_id,
                     tast_t_id = e
                     )
                 dto.save()

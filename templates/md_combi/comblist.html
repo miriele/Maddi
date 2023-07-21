@@ -64,9 +64,9 @@
 							{{ mdc.comb_reg_ts |date:"Y-m-d H:i" }}	<!-- 작성일 -->
 						</td>
 						<td>
-							{% for like in comb_like %}
-								{% if mdc.comb_id == like.comb.comb_id %}
-									{{like.comb.comb_id }}
+							{% for cid, cnt in comb_like %}
+								{% if mdc.comb_id == cid %}
+									{{cnt}}
 								{% endif %}
 							{% endfor %}
 						</td>
