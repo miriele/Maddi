@@ -1,0 +1,24 @@
+{% load static %}
+<html>
+<head>
+    <title>점주_주문확인페이지</title>
+</head>
+<body>
+    <h2>점주</h2>
+    <h3>주문 내역</h3>
+    <ul>
+    	<li>
+    		<img src="{%static 'image/bell.jpg' %}" width="50" height="40">	
+    	</li>
+       	<li>
+            <p>주문번호:  | 주문시간:  | 주문자명:  | 주문내역:  / | 결제금액:  | 주문상태:  | 주문완료: </p>
+			   <!--
+			   {% for buck in context %} 
+			   <p>주문번호: {{ordr_id}} | 주문시간: {{ ordr_ordr_id }} | 주문자명: {{ user_nick }} | 주문내역: {{ stor_m_id }} / {{ ordr_num}} | 결제금액: {{ buckprice }} | 주문상태:  | 주문완료: </p>
+			    -->
+		</li>
+
+        {% endfor %}
+    </ul>
+</body>
+</html>

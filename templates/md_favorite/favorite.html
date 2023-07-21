@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Maddi</title>
+	</head>
+	<body>
+	{% extends "md_main/base.html" %}
+	
+	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
+	{% block search %} {% endblock %}
+	{% block mapview %} {% endblock %}
+	{% block content %}
+	{% csrf_token %}
+		<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
+			<table >
+				<tr>
+					<th> 아이디 </th>
+				</tr>
+			</table>
+		</form>
+	{% endblock %}
+	</body>
+</html>

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from md_store.models import MdStorM
-from django.http.response import HttpResponseNotFound
+from django.http.response import HttpResponseNotFound, HttpResponse
 from md_order.models import MdBuck
 from django.utils.dateformat import DateFormat
 from django.utils import timezone
+from django.template import loader
 
 class OrderInfoView(View):
     def get(self, request):
@@ -171,12 +172,54 @@ class BuckView(View):
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
 
+class BuckDelView(View):
+    def get(self,request):
+        template = loader.get_template( "md_order/buck.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
+
+class BuckOrdrView (View):
+    def get(self,request):
+        template = loader.get_template( "md_order/buck.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
+
+class OrdrSucView (View):
+    def get(self,request):
+        template = loader.get_template( "md_order/ordersuc.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
+
+class OrdrListView (View):
+    def get(self,request):
+        template = loader.get_template( "md_order/orderlist.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
 
 
+class OrdrAlertView (View):
+    def get(self,request):
+        template = loader.get_template( "md_order/orderlist.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
 
-
-
-
+class OrdrDoneView (View):
+    def get(self,request):
+        template = loader.get_template( "md_order/orderdone.html" )
+        context = {}
+        return HttpResponse( template.render( context, request ) )
+    def post(self,request):
+        pass
 
 
 
