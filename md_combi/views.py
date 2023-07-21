@@ -48,23 +48,31 @@ class CombListView( View ):
             if endpage > pagecount :
                 endpage = pagecount
             pages = range(startpage, endpage + 1)                       # 페이지들은 456 까지 나온다?
-        
+            # 닉네임
             comblist = MdComb.objects.select_related('user')
             # for comb in comblist :
                 # print(comb.user.user_nick) #> 닉네임 나옴
-                
-            comb_like = MdCLike.objects.select_related("comb").all()
-            ################################
-            for like in comb_like :
-                for comb in md_comb :
-                    print( like.comb.comb_id)      #comb_tit은 나옴/like_id는 없음
-                    if like.comb.comb_id == comb.comb_id :
-                       s=0# 수정
-            ####################################
+################################            
+            # 추천수
+            comb_like = MdCLike.objects.select_related("comb")#.filter(comb=md_comb.comb_id).count()
+            # for mdc in md_comb:
+            #     for like in comb_like :
+            #         # print(like.comb.comb_id)#1,1,2    # SELECT * FROM md_comb m, md_c_like l WHERE m.comb_id = l.comb_id; #AND l.comb_id =1;    # 추천글번호에 맞는 추천개수 출력 
+            #         # 1/1/2
+            #         if mdc.comb_id == like.comb.comb_id :   # 같으면 출력해라
+            #             print(like.comb.comb_id)    # 2/1/1순서로 출력
+            #
+
+            
+###############################
             comb_menu = MdCombM.objects.select_related("comb", "menu")
-           
-            # for mm in comb_menu:
-            #     print( mm.comb.menu.menu_name) 
+            # for cm in comb_menu:
+            #     for mdc in md_comb:
+            #         if mdc.comb_id == cm.comb.comb_id :
+            #             print( cm.menu.menu_name)
+                
+                
+                 
             context = {
                 "comb_menu" :comb_menu,
                 "comb_like" :comb_like,
@@ -88,9 +96,11 @@ class CombListView( View ):
 class CombWriteView( View ):
     def get(self, request ):
         template = loader.get_template( "md_combi/combwrite.html" )
+        memid = request.session.get("memid")
         md_menu = MdMenu.objects.all()
         context = {
-                "md_menu" : md_menu
+                "md_menu" : md_menu,
+                "memid" : memid,
             }
         return HttpResponse(template.render( context, request ) )
 class CombDView( View ):
@@ -107,11 +117,16 @@ class CombDView( View ):
         return HttpResponse(template.render( context, request ) )
 
 class CombReplyView( View ):
+     def get(self, request ):
+        template = loader.get_template( "md_combi/combreply.html" )
+        context = {
+            }
+        return HttpResponse(template.render( context, request ) )
+         
+class CombReView( View ):
     def get(self, request ):
         pass
         # return HttpResponse(result ) 
-    
-    
     
     
     

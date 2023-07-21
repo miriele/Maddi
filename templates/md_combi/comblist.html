@@ -40,30 +40,35 @@
 						</td>
 						<td>
 							<a href="content?num={{ mdc.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
-								{{ mdc.comb_tit }}
+								{{ mdc.comb_tit }}					<!-- 제목 -->
 							</a>
 						</td>
-						<td	align="center">
-							조합메뉴 테이블에서 이프/추천조합아이디가 같으면 포문/(메뉴아이디로 조인>추천조합id=추천조합id>메뉴아이디 나옴/메뉴아이디가 메뉴 아이디인 것의 메뉴 이름 뽑기)
+						<td	align="center">							<!-- 조합메뉴 -->
+							{% for cm in comb_menu %}
+								{% if mdc.user_id == cm.comb.user_id %}
+									{{ cm.menu.menu_name }}								
+								{% endif %}
+							{% endfor %}
 						</td>
 						<td>
-							{{ mdc.comb_nop }}
+							{{ mdc.comb_nop }}						<!-- 인원 -->
 						</td>
 						<td>
-							{% for combl in comblist %}
+							{% for combl in comblist %}				<!-- 닉네임 -->
 								{% if mdc.user_id == combl.user.user_id %}
 									{{ combl.user.user_nick }}
 								{% endif %}
 							{% endfor %}
 						</td>
 						<td>
-							{{ mdc.comb_reg_ts |date:"Y-m-d H:i" }}
+							{{ mdc.comb_reg_ts |date:"Y-m-d H:i" }}	<!-- 작성일 -->
 						</td>
 						<td>
 							{% for like in comb_like %}
-								{% if like.com.com_id == mdc.com_id %}
+								{% if mdc.comb_id == like.comb.comb_id %}
+									{{like.comb.comb_id }}
 								{% endif %}
-							{% endfor %}		
+							{% endfor %}
 						</td>
 					</tr>
 				{% endfor %}
