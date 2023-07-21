@@ -8,7 +8,7 @@ from datetime import datetime
 import logging
 from md_combi.models import MdComb, MdCombM, MdCLike
 from md_member.models import MdUser
-from md_store.models import MdMenu
+from md_store.models import MdMenu, MdDrnkT, MdDsrtT
 from django.db.models.aggregates import Count
 
 # 로그
@@ -63,32 +63,33 @@ class CombListView( View ):
             
             # for comb in comblist :
                 # print(comb.user.user_nick) #> 닉네임 나옴
-################################            
             
             # 추천수
             comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb]
             logger.debug(f'comb_like : {comb_like}')
             
-###############################
+            # 조합 메뉴명
             comb_menu = MdCombM.objects.select_related("comb", "menu")
             # for cm in comb_menu:
             #     for mdc in md_comb:
             #         if mdc.comb_id == cm.comb.comb_id :
             #             print( cm.menu.menu_name)
                 
-                
-                 
+            gid = request.session.get("gid") 
+            memid = request.session.get("memid")   
             context = {
-                "comb_menu" :comb_menu,
-                "comb_like" :comb_like,
-                "comblist" :comblist,
-                "count": count,
-                "pagenum" : pagenum,
-                "md_comb" :md_comb,
-                "number" : number,
+                "memid"     : memid,
+                "gid"       : gid,
+                "comb_menu" : comb_menu,
+                "comb_like" : comb_like,
+                "comblist"  : comblist,
+                "count"     : count,
+                "pagenum"   : pagenum,
+                "md_comb"   : md_comb,
+                "number"    : number,
                 "startpage" : startpage,
-                "endpage" : endpage,
-                "pages" : pages, 
+                "endpage"   : endpage,
+                "pages"     : pages, 
                 "pageblock" : page_block,
                 "pagecount" : pagecount,
                  
@@ -100,34 +101,73 @@ class CombListView( View ):
 # 추천글 작성
 class CombWriteView( View ):
     def get(self, request ):
+        
         template = loader.get_template( "md_combi/combwrite.html" )
-        memid = request.session.get("memid")
+        
+        memid   = request.session.get("memid")
+        gid     = request.session.get("gid") 
         md_menu = MdMenu.objects.all()
+        nick = MdUser.objects.get( user_id = memid )
         context = {
-                "md_menu" : md_menu,
-                "memid" : memid,
+                "nick"      : nick,
+                "md_menu"   : md_menu,
+                "memid"     : memid,
+                "gid"       : gid,
             }
         return HttpResponse(template.render( context, request ) )
+    
+'''
+import json    
+class SelectBView(View ):
+    def get(self, request):
+        
+        drnk_t = MdDrnkT.objects.all()      #음료분류
+        print
+        dsrt_t = MdDsrtT.objects.all()      # 디저트 분류
+        md_menu = MdMenu.objects.all()      # 메뉴
+        
+        context = {
+            'drnk_t': drnk_t,
+            'dsrt_t': dsrt_t,
+            'md_menu' : md_menu,
+        }
+        return render(request, 'profile_update.html', context=context)
+    
+'''    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+# 추천글 내용 보기
 class CombDView( View ):
     def get(self, request ):
         template = loader.get_template( "md_combi/combd.html" )
         md_comb = MdComb.objects.all()
-        nd_user = MdComb.objects.select_related("user")
+        md_user = MdComb.objects.select_related("user")
         comb_like = MdCLike.objects.select_related("comb").all()
         context = {
                 "md_comb" : md_comb,
-                "nd_user" : nd_user,
+                "md_user" : md_user,
                 "comb_like" : comb_like,
             }
         return HttpResponse(template.render( context, request ) )
-
+    
+# 댓글용 폼
 class CombReplyView( View ):
      def get(self, request ):
         template = loader.get_template( "md_combi/combreply.html" )
         context = {
             }
         return HttpResponse(template.render( context, request ) )
-         
+
+# 댓글용 ajax      
 class CombReView( View ):
     def get(self, request ):
         pass
@@ -135,8 +175,9 @@ class CombReView( View ):
     
     
     
+
     
-    
+
     
     
     

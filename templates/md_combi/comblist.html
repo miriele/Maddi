@@ -5,18 +5,17 @@
 		<title>Maddi</title>
 	</head>
 	<body>
-	{% extends "md_main/base.html" %}
+	{% extends "md_member/base.html" %}
 	{% load mathfilters %}
 	{% load static %}
-	{% block search %} {% endblock %}
-	{% block mapview %} {% endblock %}
+	
 	{% block content %}
 	 	<h2> 나만의 추천 조합 ( 전체글 :{{count}} ) </h2> 
 		<table border="1">
 			<tr>
 				<td colspan="7" align="right">	
 					<input class="inputbutton" type="button" value="글 작성" onclick="location='/md_combi/combwrite'">
-				</td>
+				</td>	
 			</tr>
 			<tr>
 				<th width="7%" > 번호 </th>
