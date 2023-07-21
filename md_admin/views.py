@@ -82,6 +82,18 @@ class SregistlistView(View):
 class SregistinfoView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistinfo.html")
+        regid = request.GET["regid"]
+        reginfo = MdStorReg.objects.get(reg_id=regid)
+        #화면에 출력해줄내용
+        #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
+        
+        #매장유형명만출력하면 가능
+        #SELECT * FROM md_stor_reg WHERE reg_id = 5;
+        # SELECT * FROM md_stor WHERE stor_id = 100;
+        # SELECT * FROM md_stor_t WHERE stor_t_id = 21;
+
         context ={
+            "regid":regid,
+            "reginfo":reginfo,
             }
         return HttpResponse(template.render(context,request))   

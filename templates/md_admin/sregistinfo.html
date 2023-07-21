@@ -10,26 +10,27 @@
 	<table border = "1">
 		<tr>
 			<td>아이디</td>
-			<td></td>
+			<td>{{reginfo.user_id}}</td>
 		</tr>
 		<tr>
 			<td>매장명</td>
-			<td></td>
+			<td>{{reginfo.stor.stor_name}}</td>
 		</tr>
 		<tr>
 			<td>매장유형</td>
-			<td></td>
+			<td>{{reginfo.stor.stor_t_id}}</td>
 		</tr>
 		<tr>
 			<td>사업자등록번호</td>
-			<td></td>
+			<td>{{reginfo.reg_num}}</td>
 		</tr>
 		<tr>
 			<td>등록신청일</td>
-			<td></td>
+			<td>{{reginfo.reg_sub_ts |date:"Y-m-d H:i"}}</td>
 		</tr>
 		<tr>	
 			<td>사업자등록이미지</td>
+			<td><img src = "/media/{{reginfo.reg_img}}"></td>
 		<tr>
 			<th colspan = "2">
 				<input type = "submit" value = "승인">
