@@ -96,9 +96,9 @@ class SregistinfoView(View):
         #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
         
         #매장유형명만출력하면 가능
-        #SELECT * FROM md_stor_reg WHERE reg_id = 5;
-        # SELECT * FROM md_stor WHERE stor_id = 100;
-        # SELECT * FROM md_stor_t WHERE stor_t_id = 21;
+        #SELECT stor_id FROM md_stor_reg WHERE reg_id = 5;
+        #SELECT stor_t_id FROM md_stor WHERE stor_id = 100;
+        #SELECT stor_t_name FROM md_stor_t WHERE stor_t_id = 21;
 
         context ={
             "regid":regid,
