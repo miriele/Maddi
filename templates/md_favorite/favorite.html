@@ -5,20 +5,69 @@
 		<title>Maddi</title>
 	</head>
 	<body>
-	{% extends "md_main/base.html" %}
+	{% extends "md_member/base.html" %}
+	{% load mathfilters %}
+	{% load static %}
 	
-	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
-	{% block search %} {% endblock %}
-	{% block mapview %} {% endblock %}
 	{% block content %}
-	{% csrf_token %}
-		<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
-			<table >
+	 	<h2> 즐겨찾기 매장 ( 매장개수 :{{count}} ) </h2> 
+		<table border="1">
+			<tr>
+				<th width="7%" > 번호 </th>
+				<th width="35%"> 매장명 </th>
+				<th width="40%"> 매장주소 </th>
+				<th width="15%"> 즐겨찾기 등록일 </th>
+			</tr>
+			{% if count == 0 %}		<!-- 글이 없음 -->
 				<tr>
-					<th> 아이디 </th>
+					<td colspan="4" align="center" >
+						즐겨찾기에 등록된 매장이 없습니다.
 				</tr>
+			{% else %}
+				{% for fav in md_fav %}
+					<tr>
+						<td align="center">
+							{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
+						</td>
+						<td>
+							{% for st in store %}
+								{% if fav.stor_id == st.stor.stor_id %}<!-- ######### 이거 정확한 주소 몰라서 일단 만들어둠 -->
+									<a href="store?stor_id={{ st.stor.stor_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
+										{{ st.stor.stor_name }}					<!-- 매장명 -->
+									</a>
+								{% endif %}
+							{% endfor %}
+						</td>	
+						<td>
+							{% for st in store %}
+								{% if fav.stor_id == st.stor.stor_id %}
+									{{ st.stor.stor_addr }}					<!-- 매장주소 -->
+								{% endif %}
+							{% endfor %}
+						</td>
+						<td>
+							{{ fav.fav_reg_ts |date:"Y-m-d H:i" }}
+						</td>				
+					</tr>						
+				{% endfor %}
+			{% endif %}
 			</table>
 		</form>
+		<br><br>
+		{% if startpage > pageblock %}
+			<a href="favorite?pagenum={{ startpage|sub:pageblock }}">[◀]</a>
+		{% endif %}
+		{% for i in pages %}
+			{% if i == pagenum %}
+				<span>{{ i }}</span>
+			{% else %}
+				<a href="favorite?pagenum={{ i }}" >{{ i }}</a>
+			{% endif %}
+		{% endfor %}
+		{% if pagecount > endpage %}
+			<a href="favorite?pagenum={{ startpage|add:pageblock }}">[▶]</a>
+		{% endif %}
+		
 	{% endblock %}
 	</body>
 </html>
