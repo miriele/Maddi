@@ -16,9 +16,13 @@ class MainView(View):
         template = loader.get_template("md_main/main.html")
         memid = request.session.get("memid")
         gid = request.session.get("gid")
+        
+        # logger.debug(memid)
+        # logger.debug(gid)
         tdtos = MdStorM.objects.select_related("menu").filter(menu__dsrt_t=-1).order_by('?')[:5]
         ddtos = MdStorM.objects.select_related("menu").filter(menu__drnk_t=-1).order_by('?')[:5]
         rdtos = MdComb.objects.all()
+        print(rdtos)
         mdtos = MdCombM.objects.select_related("menu").all()
         if memid:
             context = {
@@ -46,8 +50,7 @@ class SearchView(View):
         return View.dispatch(self, request, *args, **kwargs)    
     def get(self,request):
         template = loader.get_template("md_main/searchlist.html")
-        count    = MdStor.objects.all().count()
-        
+        count= MdStor.objects.all().count()
         if count ==0:
             context = {
                 "count":count,
@@ -67,4 +70,12 @@ class SearchView(View):
             # "ddtos":ddtos,
             # "tdtos":tdtos,
             }
+        return HttpResponse(template.render(context,request))
+
+class MapView(View):
+    def get(self,request):
+        template = loader.get_template("md_main/map.html")
+        # addr = request.GET("centerAddr")
+        # print(addr) 
+        context = {}
         return HttpResponse(template.render(context,request))
