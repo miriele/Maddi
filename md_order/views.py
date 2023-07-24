@@ -209,7 +209,6 @@ class OrdrListView(View):
         template = loader.get_template("md_order/orderlist.html")
         ordrs = MdOrdr.objects.all()
         context = []
-        stor_m_id_list = []
 
         for ordr in ordrs:
             bucks = MdBuck.objects.filter(user_id=ordr.user.user_id)
@@ -218,15 +217,7 @@ class OrdrListView(View):
             total_price = 0
 
             for buck in bucks:
-                stor_m_id = buck.stor_m.stor_m_id
-
-                # 이미 가져온 stor_m_id인 경우 불필요한 쿼리를 줄이기 위해 따로 처리
-                if stor_m_id not in stor_m_id_list:
-                    stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
-                    stor_m_id_list.append(stor_m_id)
-                else:
-                    stor_m = stor_m_id_list.get(stor_m_id=stor_m_id)
-
+                stor_m = MdStorM.objects.get(stor_m_id=buck.stor_m.stor_m_id)
                 total_price += buck.buck_num * stor_m.stor_m_pric
 
                 buck_info = {
@@ -240,8 +231,8 @@ class OrdrListView(View):
             order_status = '접수완료' if ordr.ordr_com_ts is None else '처리완료'
             ordr_m = MdOrdrM.objects.filter(ordr_id=ordr.ordr_id).first()
             ordr_num = ordr_m.ordr_num
-            stor_m_id = ordr_m.stor_m_id  # MdOrdrM의 stor_m_id 가져오기
-            stor_m_name = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_name  # MdStorM에서 해당 stor_m_id와 맞는 stor_m_name 가져오기
+            stor_m_id = ordr_m.stor_m_id
+            stor_m_name = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_name
 
             context.append({
                 'ordr_id': ordr.ordr_id,
@@ -256,11 +247,10 @@ class OrdrListView(View):
                 'ordr_com_ts': ordr.ordr_com_ts,
                 'ordr_num': ordr_num,
                 'stor_m_name': stor_m_name,
-                'user_id' : ordr.user.user_id,
+                'user_id': ordr.user.user_id,
             })
 
         return render(request, 'md_order/orderlist.html', {'context': context})
-
 
 
     
