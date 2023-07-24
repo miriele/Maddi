@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 369
+        stor_m_id = 3
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -37,6 +37,7 @@ class OrderInfoView(View):
                 'menu_type': menu_type,
                 'bucknum': bucknum,
                 'buckprice': buckprice,
+                'stor_m_id' : stor_m_id 
             }
 
             return render(request, 'md_order/orderinfo.html', context)
@@ -73,6 +74,7 @@ class OrderInfoView(View):
                 'menu_type': menu_type,
                 'bucknum': bucknum,
                 'buckprice': buckprice,
+                'stor_m_id' : stor_m_id 
             }
 
             return render(request, 'md_order/orderinfo.html', context)
@@ -161,7 +163,6 @@ class BuckView(View):
                 buck_ord_ts = buck.buck_ord_ts
                 user_id = buck.user_id
 
-                # buck_del_ts와 buck_ord_ts가 모두 null인 경우에만 context에 추가
                 if buck_del_ts is None and buck_ord_ts is None:
                     store_data = {
                         'store_id': buck.stor_m.stor.stor_id,
@@ -215,6 +216,7 @@ class BuckDelOrdrView(View):
                         weather_id = 0
                         ordr_temp = 0
                         ordr_ord_ts = buck.buck_ord_ts
+                        buck_id = buck.buck_id
                         
                         new_order = MdOrdr.objects.create(
                             user_id=user_id,
@@ -228,7 +230,7 @@ class BuckDelOrdrView(View):
                     
                         MdOrdrM.objects.create(
                             ordr_id=ordr_id,
-                            stor_m_id = buck.stor_m.stor.stor_id,
+                            stor_m_id = buck.stor_m_id,
                             ordr_num = ordr_num
                         )
 
@@ -249,6 +251,8 @@ class OrdrSucView (View):
 class OrdrListView(View):
     def get(self, request):
         orders = MdOrdr.objects.all()
+     
+
         context = []
 
         for order in orders:
@@ -281,7 +285,8 @@ class OrdrListView(View):
                 'order_status': order_status,  
                 'order_menus': context_m,
             })
-
+            
+        
         return render(request, 'md_order/orderlist.html', {'context': context})
     
 class OrdrAlertView (View):
