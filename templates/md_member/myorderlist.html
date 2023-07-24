@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Maddi</title>
+	</head>
+	<body>
+	{% extends "md_member/base.html" %}
+	{% load mathfilters %}
+	{% load static %}
+	
+	{% block content %}
+	 	<h2> 내 주문 내역  {{nick.user_nick }} :{{count}}  </h2> 
+		<table border="1">
+			<tr>
+				<th width="7%" > 번호 </th>
+				<th width="10%"> 주문번호 </th>
+				<th width="15%"> 매장명 </th>
+				<th width="20%">  주문 내역 </th>
+				<th width="10%"> 총 금액 </th>
+				<th width="10%">  주문일시 </th>
+				<th width="10%"> 완료일 </th>
+				<th width="6%"> 리뷰 작성 </th>
+			</tr>
+			{% if count == 0 %}		<!-- 글이 없음 -->
+				<tr>
+					<td colspan="8" align="center" >
+						작성된 글이 없습니다.
+				</tr>
+			{% else %}
+				{% for mdo in md_ordr %}
+					<tr>
+						<td align="center">
+							{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
+						</td>
+						<td align="center">							<!-- 주문 번호 -->
+							{{ mdo.ordr_id }}						
+						</td>
+						<td	align="center">							<!-- 매장 명 --><!-- ######### 맞는 이름이 안 나옴... -->
+						{% for msm in md_stor_m %}
+							{% for ms in md_stor %}
+								{% if msm.stor_id == ms.stor_id and ordr_id == mdo_ordr_id %}
+									{{ms.stor_name}}
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+						
+						</td>
+						<td	align="center">							<!-- 주문 내역 -->
+							{% for om in ordr_m %}
+								{% if mdo.ordr_id == om.ordr_id %}
+									{{ om.stor_m.stor_m_name }}	&nbsp; {{om.ordr_num }}						
+								{% endif %}
+							{% endfor %}
+						</td>
+						<td>										<!-- 총 금액 -->
+							
+						</td>
+						<td>
+											<!-- 주문일시 -->
+						</td>
+						<td>
+								<!-- 완료일 -->
+						</td>
+						<td>
+							<!-- 리뷰 작성 버튼 -->
+						</td>
+					</tr>
+				{% endfor %}
+			{% endif %}
+		</table>
+		<br><br>
+		{% if startpage > pageblock %}
+			<a href="myorderlist?pagenum={{ startpage|sub:pageblock }}">[◀]</a>
+		{% endif %}
+		{% for i in pages %}
+			{% if i == pagenum %}
+				<span>{{ i }}</span>
+			{% else %}
+				<a href="myorderlist?pagenum={{ i }}" >{{ i }}</a>
+			{% endif %}
+		{% endfor %}
+		{% if pagecount > endpage %}
+			<a href="myorderlist?pagenum={{ startpage|add:pageblock }}">[▶]</a>
+		{% endif %}
+
+		{% endblock %}	
+	</body>
+</html>

@@ -9,7 +9,8 @@ from md_member.models import MdUser, MdUDsrt, MdIntrT, MdTastT, MdUDrnk, MdUAlgy
     MdUIntr, MdUTast, MdUserG
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT
+from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT, MdStorM, MdStor
+from md_order.models import MdOrdr, MdOrdrM
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -308,70 +309,142 @@ class UserInfoView( View ):
     
     
     
-    
-    
-        ''' 
-        # for ds in udsrt :
-            # ds.delete()
-           
-        for a in list_dsrt :
-            if a :
-                dtoa = MdUDsrt(
-                    user_id = user_id,
-                    dsrt_t_id = a
-                    )
-                dtoa.save()
-       
-             
-             else :
-                dtoa = MdUDsrt(
-                    user_id = user_id,
-                    dsrt_t_id = a
-                    )
-                dtoa.delete()
-        if list_drnk :
-            for b in list_drnk :
-                dtob = MdUDrnk(
-                    user_id = user_id,
-                    drnk_t_id = b
-                    )
-                dtob.save()
-        if list_algy :
-            for c in list_algy :
-                dtoc = MdUAlgy(
-                    user_id = user_id,
-                    algy_t_id = c
-                    )
-                dtoc.save()
-        if list_intr :
-            for d in list_intr :
-                dtod = MdUIntr(
-                    user_id = user_id,
-                    intr_t_id = d
-                    )
-                dtod.save()
-        if list_tast :
-            for e in list_tast :
-                dtoe = MdUTast(
-                    user_id = user_id,
-                    tast_t_id = e
-                    )
-                dtoe.save()
-'''
+page_size = 20
+page_block = 3    
+class MyOrderListView( View ):
+    def get(self, request ):
+        
+        template = loader.get_template( "md_member/myorderlist.html")
+        
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
+        
+        # 갯수 있나 없나
+        count = MdOrdr.objects.filter( user_id= memid ).count()
+        
+        if count == 0 :
+            context = {
+                "count" :count,
+                "memid" :memid,
+                "gid" :gid,
+                }
+        else :   
+            pagenum = request.GET.get( "pagenum" )
+            
+            if not pagenum :
+                pagenum = "1"
+            
+            pagenum = int( pagenum )                            #5
+            start = (pagenum -1 ) * int( page_size )            #4*5=    20
+            end = start + int( page_size )                      #20+5=    25
+            
+            if end >count :
+                end = count
+            
+            number    = count - (pagenum -1) * int(page_size)             #30-4*5=30-20=    10
+            startpage = pagenum //int(page_block) * int(page_block) +1  # = 5//3*3+1=1*3=3+1= 4
+            
+            if pagenum % int(page_block) == 0 :                         #5%3==0>1.666!=0
+                startpage -= int(page_block)                            #  4-3 ==     1
+            
+            endpage   = startpage + int(page_block) -1                    # = 4(1) +3 -1 > 6or 3
+            pagecount = count // int(page_size)                         #  30//5=    6
+            
+            if count % int(page_size) >0 :                              #30%5나머지=0 0보다 크면
+                pagecount += 1                                          #카운트가 31이어서 나머지 생기면 페이지 추가해줘야 하니 +1 더해 값 넣겠
+            
+            if endpage > pagecount :
+                endpage = pagecount
+            
+            pages = range(startpage, endpage + 1) 
+            
+            #주문 내역/ordr_id, ordr_ord_ts / 주문 매장 명
+            md_ordr = MdOrdr.objects.filter( user_id= memid ).order_by("-ordr_ord_ts")[start:end]
+            ordr_id = 0
+            stor_m_id = 0
+            stor_id = 0
+            stor_name = 0
+            stom_m_pric = 0
+            for mo in md_ordr:
+                ordr_id = mo.ordr_id
+                # logger.debug(f' ordr_id  : { ordr_id }')
+                
+                md_ordr_m = MdOrdrM.objects.filter(ordr_id = ordr_id)
+                
+                for mom in md_ordr_m :
+                    stor_m_id = mom.stor_m_id 
+                    md_stor_m = MdStorM.objects.filter(stor_m_id = stor_m_id)
+                    
+                    for msm in md_stor_m :
+                        stor_id = msm.stor_id
+                        stor_m_pric = msm.stor_m_pric
+                        md_stor = MdStor.objects.filter(stor_id = stor_id )
+                        
+                        for ms in md_stor:
+                            stor_name = ms.stor_name
+                            logger.debug(f'ms.stor_name   : {ms.stor_name  }')
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+            # 주문메뉴id /메뉴 이름
+            ordr_m = MdOrdrM.objects.select_related('ordr', 'stor_m')
+            
+            #날씨
+            weather = MdOrdr.objects.select_related('weather').filter(user = memid)
+            
+            #닉네임
+            nick = MdUser.objects.get(user_id = memid )
+            # logger.debug(f'nick.user_nick : {nick.user_nick}')
+            
+            context = {
+                "stor_name"    : stor_name,
+                "md_stor"    : md_stor,
+                "md_stor_m"    : md_stor_m,
+                
+                "weather"   : weather,
+                "ordr_m"    : ordr_m,
+                "md_ordr"   : md_ordr,
+                
+                "memid"     : memid,
+                "gid"       : gid,
+                "count"     : count,
+                "pagenum"   : pagenum,
+                "number"    : number,
+                "startpage" : startpage,
+                "endpage"   : endpage,
+                "pages"     : pages, 
+                "pageblock" : page_block,
+                "pagecount" : pagecount,
+                }
+        return HttpResponse(template.render(context, request ) )
+        
+        '''
+        {% for ms in md_stor %}
+    {% for om in ordr_m %}
+        {% if ms.stor_id == om.stor_m.stor_id %}
+            {{ ms.stor_name }}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+        '''
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

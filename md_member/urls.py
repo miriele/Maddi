@@ -10,4 +10,5 @@ urlpatterns = [
     path( "idcheck",     views.IdCheckView.as_view(),     name="idcheck" ),
     path( "nickcheck",   views.NickCheckView.as_view(),   name="nickcheck" ),
     path( "userinfo",    views.UserInfoView.as_view(),    name="userinfo"),
+    path( "myorderlist",    views.MyOrderListView.as_view(),    name="myorderlist"),
     ]
