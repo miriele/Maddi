@@ -5,7 +5,7 @@ from django.template import loader
 from md_member.models import MdUser
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
-from md_store.models import MdStorReg
+from md_store.models import MdStorReg, MdStorM
 import logging
 
 
@@ -69,10 +69,38 @@ class ReviewinfoView(View):
         #리뷰이미지,    메장메뉴명,    리뷰별점,    태그명,    리뷰내용 
         #md_review.rev_img,   md_stro_m.stor_m_name,    md_review.rev_star    md_tag.tag_name    md_review.rev_cont
         
-        #SELECT * FROM md_stor_m WHERE stor_m_id = 15;
-        #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;
-        #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;
+        # stor_m_id 를 받아오는 곳은 없어서 일단 하드코딩 해둠, 수정필요~!
+        #SELECT stor_m_name FROM md_stor_m WHERE stor_m_id = 15;
+        result = MdStorM.objects.filter(stor_m_id=15).values('stor_m_name')
         
+        if result.exists() :
+            stor_m_name = result.first()['stor_m_name']
+            logger.debug(f'stor_m_name : {stor_m_name}')
+        else:
+            logger.debug(f'stor_m_name : 해당하는 레코드가 없습니다')
+        
+        #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;
+        result = MdReview.objects.filter(rev_id=revid).values('rev_img', 'rev_star', 'rev_cont')
+        
+        if result.exists() :
+            rev_img  = result.first()['rev_img']
+            rev_star = result.first()['rev_star']
+            rev_cont = result.first()['rev_cont']
+            logger.debug(f'rev_img : {rev_img}\trev_star : {rev_star}\trev_cont : {rev_cont}\n')
+        else:
+            logger.debug(f'rev_img, rev_star, rev_cont : 해당하는 레코드가 없습니다')
+        
+        
+        #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;
+        result = MdTag.objects.filter(mdrevt__rev_id=revid).values('tag_name')
+        
+        if result.exists() :
+            for item in result :
+                tag_name = item['tag_name']
+                logger.debug(f'tag_name : {tag_name}')
+        else:
+            logger.debug(f'tag_name : 해당하는 레코드가 없습니다')
+
         context ={
             "revid":revid,
             }
