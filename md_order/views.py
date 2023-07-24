@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 37957
+        stor_m_id = 369
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -45,7 +45,7 @@ class OrderInfoView(View):
             return HttpResponseNotFound()
 
     def post(self, request):
-        stor_m_id = 37957
+        stor_m_id = request.POST.get('stor_m_id')
 
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -158,8 +158,11 @@ class BuckView(View):
                 store_name = buck.stor_m.stor.stor_name
                 buck_price = buck.buck_num * buck.stor_m.stor_m_pric
                 buck_del_ts = buck.buck_del_ts
+                buck_ord_ts = buck.buck_ord_ts
+                user_id = buck.user_id
 
-                if buck_del_ts is None:
+                # buck_del_ts와 buck_ord_ts가 모두 null인 경우에만 context에 추가
+                if buck_del_ts is None and buck_ord_ts is None:
                     store_data = {
                         'store_id': buck.stor_m.stor.stor_id,
                         'stor_m_name': buck.stor_m.stor_m_name,
@@ -168,6 +171,8 @@ class BuckView(View):
                         'buck_num': buck.buck_num,
                         'buck_price': buck_price,
                         'buck_del_ts': buck_del_ts,
+                        'buck_ord_ts': buck_ord_ts,
+                        'user_id' : user_id
                     }
                     
                     if store_name in context:
@@ -180,6 +185,8 @@ class BuckView(View):
             return render(request, 'md_order/buck.html', {'context': context})
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
+        
+        
 class BuckDelOrdrView(View):
     def post(self, request):
         selected_bucks = request.POST.getlist('selected_bucks')
@@ -201,10 +208,33 @@ class BuckDelOrdrView(View):
                         buck = MdBuck.objects.get(pk=buck_id)
                         buck.buck_ord_ts = timezone.now()
                         buck.save()
+                        
+                        user_id = buck.user_id
+                        stor_m_id = buck.stor_m.stor.stor_id
+                        buck_num = buck.buck_num
+                        weather_id = 0
+                        ordr_temp = 0
+                        ordr_ord_ts = buck.buck_ord_ts
+                        
+                        new_order = MdOrdr.objects.create(
+                            user_id=user_id,
+                            weather_id=weather_id,
+                            ordr_temp=ordr_temp,
+                            ordr_ord_ts=ordr_ord_ts,
+                            ordr_com_ts=None
+                        )
+                        ordr_id = new_order.ordr_id
+                        ordr_num = buck.buck_num
+                    
+                        MdOrdrM.objects.create(
+                            ordr_id=ordr_id,
+                            stor_m_id = buck.stor_m.stor.stor_id,
+                            ordr_num = ordr_num
+                        )
+
                     except MdBuck.DoesNotExist:
                         pass
-
-        # 작업 완료 후 다시 장바구니 페이지로 리다이렉트합니다.
+                    
         return redirect('md_order:buck')
 
 class OrdrSucView (View):

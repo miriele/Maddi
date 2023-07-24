@@ -1,6 +1,5 @@
-<!-- md_order/buck.html -->
-
-<!DOCTYPE html>
+{% load static %}
+<script src="{% static 'js/script_order.js' %}"></script>
 <html>
 <head>
     <title>Buck List</title>
@@ -8,6 +7,7 @@
 <body>
     <h2>장바구니</h2>
     <h3>주문 정보</h3>
+{% if context %}
 <form method="post" action="{% url 'md_order:buckdelordr' %}">
     {% csrf_token %}
     {% for store_name, store_data_list in context.items %}
@@ -38,5 +38,10 @@
     {% endfor %}
     <input class="inputbutton" type="submit" name="action" value="선택삭제">
     <input class="inputbutton" type="submit" name="action" value="주문하기">
-</form>
+ </form>
+    {% else %}
+    <p>장바구니에 담긴 메뉴가 없습니다.</p>
+   	<a href="{% url 'md_combi:comblist' %}">추천메뉴 보기</a>
+    {% endif %}
+</body>
 </html>

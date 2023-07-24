@@ -4,6 +4,7 @@
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
 <form method="post" action="orderinfo" name="inputform">
+<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 	<table>
 	    <tr>
 	        <th colspan="3">
