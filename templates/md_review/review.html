@@ -7,18 +7,29 @@
 	<body>
 	{% extends "md_main/base.html" %}
 	
-	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
-	{% block search %} {% endblock %}
-	{% block mapview %} {% endblock %}
+	{% block title %} <h2> 리뷰 목록 </h2> {% endblock %}
+	
 	{% block content %}
-	{% csrf_token %}
-		<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
-			<table >
+		<table >
+		{% if count == 0 %}
+			<tr>
+				<td colspan="5" align="center" >
+						등록된 리뷰가 없습니다.
+			</tr>
+		{% else %}
+			{% for rev in review %}	
 				<tr>
-					<th> 아이디 </th>
+					<td>
+					{% for us in user %}
+						<img src="/media/{{us.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+					{% endfor %}
+					</td>
+					
 				</tr>
-			</table>
-		</form>
+			{% endfor %}
+		{% endif %}
+		</table>
+		
 	{% endblock %}
 	</body>
 </html>

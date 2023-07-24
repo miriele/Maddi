@@ -52,9 +52,7 @@
 				<th> 조합한 메뉴</th>
 				<td> 
 					{% for m in menu %}
-						{% if id == m.comb_id %}
-							{{ m.menu.menu_name }}/
-						{% endif %}
+						{{ m.menu.menu_name }}/
 					{% endfor %}
 				</td>
 			</tr>

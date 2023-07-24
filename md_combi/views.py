@@ -138,6 +138,11 @@ class CombWriteView( View ):
             comb_reg_ts = datetime.now(),
             )
         dto.save()
+        
+        ####################
+        # 태그 값 받아와서 저장해야 함
+        ####################33
+        
         return redirect("/md_combi/combwrite")      ###### 태그 완료후 이동 주소 수정해야 함
 
     
@@ -168,7 +173,8 @@ class CombDView( View ):
         
         # 선택한 메뉴(태그 값)
         menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
-        
+        # for me in menu :
+            # logger.debug(f'me.menu.menu_name : {me.menu.menu_name}')
         # 추천수
         likeC   = MdCLike.objects.filter(comb = comb_id).count()
         
@@ -203,22 +209,22 @@ class CombDView( View ):
             }
         return HttpResponse(template.render( context, request ) )
     
-    def post(self, request ):
+    def post(self, request ): # 댓글용 ajax....?
         
         memid = request.session.get("memid")
         gid = request.session.get("gid")
         
         comb_id = request.POST.get("comb_id","")
-        logger.debug(f'comb_id2 : {comb_id}')
+        # logger.debug(f'comb_id2 : {comb_id}')
         
         pagenum = request.POST.get("pagenum","")
-        logger.debug(f'pagenum : {pagenum}')
+        # logger.debug(f'pagenum : {pagenum}')
         
         number = request.POST.get("number","")
-        logger.debug(f'number : {number}')
+        # logger.debug(f'number : {number}')
         
         c_reply_cont = request.POST.get("c_reply_cont","")
-        logger.debug(f'c_reply_cont : {c_reply_cont}')
+        # logger.debug(f'c_reply_cont : {c_reply_cont}')
                                             
         dto = MdCombR(
             comb_id = comb_id,
@@ -242,17 +248,10 @@ class CLikeView( View ):
         gid = request.session.get("gid")
         
         comb_id = request.POST.get("comb_id","")
-        logger.debug(f'comb_id2 : {comb_id}')
-        
         pagenum = request.POST.get("pagenum","")
-        logger.debug(f'pagenum : {pagenum}')
-        
         number = request.POST.get("number","")
-        logger.debug(f'number : {number}')
         
-      
         like = MdCLike.objects.filter( user = memid, comb = comb_id ).count()
-        logger.debug(f'like : {like}')
         
         result = 0
         if like == 0 :
