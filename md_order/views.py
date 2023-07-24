@@ -156,44 +156,56 @@ class BuckView(View):
 
             for buck in bucks:
                 store_name = buck.stor_m.stor.stor_name
-                store_data = {
-                        # 'dto'        : buck.stor_m,
-                        'store_id'   : buck.stor_m.stor.stor_id,
+                buck_price = buck.buck_num * buck.stor_m.stor_m_pric
+                buck_del_ts = buck.buck_del_ts
+
+                if buck_del_ts is None:
+                    store_data = {
+                        'store_id': buck.stor_m.stor.stor_id,
                         'stor_m_name': buck.stor_m.stor_m_name,
                         'stor_m_pric': buck.stor_m.stor_m_pric,
-                        # 'buck_id'    : buck.buck_id,
-                        'buck_num'   : buck.buck_num,
-                        'buck_price' : buck.buck_num * buck.stor_m.stor_m_pric,
-                        # 'buck_reg_ts': buck.buck_reg_ts,
+                        'buck_id': buck.buck_id,
+                        'buck_num': buck.buck_num,
+                        'buck_price': buck_price,
+                        'buck_del_ts': buck_del_ts,
                     }
-                
-                if store_name in context :
-                    context[store_name].append(store_data)
-                else :
-                    context[store_name] = [store_data]
-            
+                    
+                    if store_name in context:
+                        context[store_name].append(store_data)
+                    else:
+                        context[store_name] = [store_data]
+
             logger.debug(f'context : {context}')
 
             return render(request, 'md_order/buck.html', {'context': context})
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
-
-class BuckDelView(View):
+class BuckDelOrdrView(View):
     def post(self, request):
         selected_bucks = request.POST.getlist('selected_bucks')
-        MdBuck.objects.filter(buck_id__in=selected_bucks, buck_del_ts__isnull=True).update(buck_del_ts=timezone.now())
-        
+        action = request.POST.get('action', None)
+
+        if action == '선택삭제':
+            if selected_bucks:
+                for buck_id in selected_bucks:
+                    try:
+                        buck = MdBuck.objects.get(pk=buck_id)
+                        buck.buck_del_ts = timezone.now()
+                        buck.save()
+                    except MdBuck.DoesNotExist:
+                        pass
+        elif action == '주문하기':
+            if selected_bucks:
+                for buck_id in selected_bucks:
+                    try:
+                        buck = MdBuck.objects.get(pk=buck_id)
+                        buck.buck_ord_ts = timezone.now()
+                        buck.save()
+                    except MdBuck.DoesNotExist:
+                        pass
+
+        # 작업 완료 후 다시 장바구니 페이지로 리다이렉트합니다.
         return redirect('md_order:buck')
-
-
-
-class BuckOrdrView (View):
-    def get(self,request):
-        template = loader.get_template( "md_order/buck.html" )
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self,request):
-        pass
 
 class OrdrSucView (View):
     def get(self,request):

@@ -8,13 +8,15 @@
 <body>
     <h2>장바구니</h2>
     <h3>주문 정보</h3>
-
+<form method="post" action="{% url 'md_order:buckdelordr' %}">
+    {% csrf_token %}
     {% for store_name, store_data_list in context.items %}
 	<table>
 		<tr>
 			<th colspan="4">[ {{store_name}} ]</th>
 		</tr>
 		<tr>
+			<th> 선택 </th>
 			<th>메뉴명</th>
 			<th>단가</th>
 			<th>수량</th>
@@ -22,6 +24,9 @@
 		</tr>
 		{% for store_data in store_data_list %}
     	<tr>
+    		<td>
+				 <input type="checkbox" name="selected_bucks" value="{{ store_data.buck_id }}">
+			</td>
 			<td>{{store_data.stor_m_name}}</td>
 			<td>{{store_data.stor_m_pric}}</td>
 			<th>{{store_data.buck_num}}</th>
@@ -31,6 +36,7 @@
 	</table>
 	<br>
     {% endfor %}
-</body>
+    <input class="inputbutton" type="submit" name="action" value="선택삭제">
+    <input class="inputbutton" type="submit" name="action" value="주문하기">
+</form>
 </html>
-
