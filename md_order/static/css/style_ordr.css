@@ -1,0 +1,32 @@
+body {
+        font-family: Arial, sans-serif;
+    }
+
+table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+th, td {
+        border: 1px solid #dddddd;
+        text-align: center; /* 데이터를 중앙에 정렬 */
+        padding: 8px;
+    }
+
+th {
+        background-color: #f2f2f2;
+    }
+
+img {
+        vertical-align: middle;
+    }
+
+ul {
+  list-style-type: none; /* ul 요소의 기본 리스트 스타일 제거 */
+  padding: 0; /* ul 요소의 내부 패딩 제거 */
+}
+
+li {
+  margin: 10px 0; /* 위아래로 10px의 간격 설정 */
+}
+    

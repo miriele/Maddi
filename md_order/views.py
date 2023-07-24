@@ -203,32 +203,67 @@ class OrdrSucView (View):
     def post(self,request):
         pass
 
+
 class OrdrListView(View):
     def get(self, request):
         template = loader.get_template("md_order/orderlist.html")
         ordrs = MdOrdr.objects.all()
-        buck = MdBuck.objects.all()
-        storem = MdStorM.objects.all()
-        ordrm = MdOrdrM.objects.all()
         context = []
-        
+        stor_m_id_list = []
+
         for ordr in ordrs:
-            
-            if buck:
-                    context.append({
-                    'ordr_id': ordr.ordr_id,
-                    'user_nick': ordr.user.user_nick,
-                
-                })
+            bucks = MdBuck.objects.filter(user_id=ordr.user.user_id)
 
-        return HttpResponse(template.render({'context': context}, request))
+            buck_list = []
+            total_price = 0
 
-    def post(self, request):
-        pass
+            for buck in bucks:
+                stor_m_id = buck.stor_m.stor_m_id
+
+                # 이미 가져온 stor_m_id인 경우 불필요한 쿼리를 줄이기 위해 따로 처리
+                if stor_m_id not in stor_m_id_list:
+                    stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
+                    stor_m_id_list.append(stor_m_id)
+                else:
+                    stor_m = stor_m_id_list.get(stor_m_id=stor_m_id)
+
+                total_price += buck.buck_num * stor_m.stor_m_pric
+
+                buck_info = {
+                    'buck_id': buck.buck_id,
+                    'buck_num': buck.buck_num,
+                    'stor_m_price': stor_m.stor_m_pric,
+                    'stor_m_name': stor_m.stor_m_name,
+                }
+                buck_list.append(buck_info)
+
+            order_status = '접수완료' if ordr.ordr_com_ts is None else '처리완료'
+            ordr_m = MdOrdrM.objects.filter(ordr_id=ordr.ordr_id).first()
+            ordr_num = ordr_m.ordr_num
+            stor_m_id = ordr_m.stor_m_id  # MdOrdrM의 stor_m_id 가져오기
+            stor_m_name = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_name  # MdStorM에서 해당 stor_m_id와 맞는 stor_m_name 가져오기
+
+            context.append({
+                'ordr_id': ordr.ordr_id,
+                'user_nick': ordr.user.user_nick,
+                'bucks': buck_list,
+                'total_price': total_price,
+                'order_status': order_status,
+                'weather_id': ordr.weather_id,
+                'weather_name': ordr.weather.weather_name,
+                'ordr_temp': ordr.ordr_temp,
+                'ordr_ord_ts': ordr.ordr_ord_ts,
+                'ordr_com_ts': ordr.ordr_com_ts,
+                'ordr_num': ordr_num,
+                'stor_m_name': stor_m_name,
+                'user_id' : ordr.user.user_id,
+            })
+
+        return render(request, 'md_order/orderlist.html', {'context': context})
 
 
 
-
+    
 class OrdrAlertView (View):
     def get(self,request):
         template = loader.get_template( "md_order/orderlist.html" )
@@ -238,12 +273,16 @@ class OrdrAlertView (View):
         pass
 
 class OrdrDoneView (View):
-    def get(self,request):
-        template = loader.get_template( "md_order/orderdone.html" )
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self,request):
-        pass
+    def post(self, request):
+        ordr_id = request.POST.get('ordr_id')
+        try:
+            ordr = MdOrdr.objects.get(pk=ordr_id)
+            if ordr.ordr_com_ts is None:
+                ordr.ordr_com_ts = timezone.now()
+                ordr.save()
+        except MdOrdr.DoesNotExist:
+            pass
+        return redirect('md_order:orderlist')
 
 
 
