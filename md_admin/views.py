@@ -20,7 +20,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts")#회원리스트   
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
         context ={
             "count":count,
             "users":users,

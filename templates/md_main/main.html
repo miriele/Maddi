@@ -1,80 +1,39 @@
-<html>
-<head>
-    <meta charset="utf-8">
-</head>
-<body>    
 {% extends "md_main/base.html"%}
 
 {%block content%}
-{% if memid %}	
-	<section class = "recommend-list">
-		<h2 class = "title">추천메뉴</h2><br>
-		업데이트 중입니다.
-	</section>
-	
-	 <section class = "drink-list">
-	 	<h2 class = "title">음료</h2>
-	 	{% for tdto in tdtos %}
-	 		{{tdto.menu.menu_img}}<br>
-	 		<a>{{tdto.stor_m_name}}</a><br>
-	 		{{tdto.stor_m_pric}}원<br><br>
-	 	{% endfor %}
-	 </section>
-	 
-	 <section class = "dessert-list">
-	 	<h2 class = "title">디저트</h2>
-	 	{% for ddto in ddtos %}
-	 		{{ddto.menu.menu_img}}<br>
-	 		<a>{{ddto.stor_m_name}}</a><br>
-	 		{{ddto.stor_m_pric}}원<br><br>
-	 	{% endfor %}	
-	 </section>
-	 
-	 <section class = "recommend-list">
-	 	<h2 class = "title">추천조합</h2>
-			{%for rdto in rdtos%}
-				{{rdto.comb_img}}<br>
-			{%for mdto in mdtos%}
-				{%if rdto.comb_id == mdto.comb_id%}
-					{{mdto.menu.menu_name}}<br>
-				{%endif%}
-			{%endfor%}
-				{{rdto.comb_tit}}<br><br>
-			{%endfor%}	
-	 </section>	
-	 
-{%else%}
-	 <section class = "drink-list">
-	 	<h2 class = "title">음료</h2>
-	 	{% for tdto in tdtos %}
-	 		{{tdto.menu.menu_img}}<br>
-	 		<a>{{tdto.stor_m_name}}</a><br>
-	 		{{tdto.stor_m_pric}}원<br><br>
-	 	{% endfor %}
-	 </section>
- 
- <section class = "dessert-list">
- 	<h2 class = "title">디저트</h2>
- 	{% for ddto in ddtos %}
- 		{{ddto.menu.menu_img}}<br>
- 		<a>{{ddto.stor_m_name}}</a><br>
- 		{{ddto.stor_m_pric}}원<br><br>
- 	{% endfor %}	
- </section>
- 
- <section class = "recommend-list">
- 	<h2 class = "title">추천조합</h2>
-	{%for rdto in rdtos%}
-		{{rdto.comb_img}}<br>
-	{%for mdto in mdtos%}
-		{%if rdto.comb_id == mdto.comb_id%}
-			{{mdto.menu.menu_name}}<br>
-		{%endif%}
-	{%endfor%}
-		{{rdto.comb_tit}}<br><br>
-	{%endfor%}
- </section>
 
- {%endif%}
- {%endblock%}
- </body>
+{% if memid %}	
+<section class = "recommend-list">
+	<h2 class = "title">추천메뉴</h2><br>
+	업데이트 중입니다.
+</section>
+{% endif%}
+
+<section class = "drink-list">
+	<h2 class = "title">음료</h2>
+	{% for tdto in tdtos %}
+		{{tdto.stor_m__menu__menu_img}}<br>
+		<a>{{tdto.stor_m__menu__menu_name}}</a><br>
+	{% endfor %}
+</section>
+
+<section class = "dessert-list">
+	<h2 class = "title">디저트</h2>
+	{% for ddto in ddtos %}
+		{{ddto.stor_m__menu__menu_img}}<br>
+		<a>{{ddto.stor_m__menu__menu_name}}</a><br>
+	{% endfor %}
+</section>
+ 
+<section class = "recommend-list">
+	<h2 class = "title">추천조합</h2>
+	{%for comb_id, comb_info in rdtos.items%}
+		{{comb_info.comb_img.url}}<br>
+		{%for menu in comb_info.menu_names%}
+			{{menu}}&nbsp;
+		{%endfor%}
+		<br>
+		{{comb_info.comb_tit}}<br><br>
+	{%endfor%}	
+</section>	
+{%endblock%}
