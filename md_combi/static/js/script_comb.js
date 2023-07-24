@@ -11,7 +11,7 @@ $(document).ready(
 		}
 		
 		
-				//아이디 중복확인
+		// 댓글 ajax
 		$("form[name='combdform']").on(
 			"submit",
 			function(event) {
@@ -26,8 +26,39 @@ $(document).ready(
 							c_reply_cont : $("textarea[name='c_reply_cont']").val(),
 						},
 						datatype :"text",
-						success : function( response ) {
-							alert(replyok)							
+						success : function( data ) {
+							alert("success")							
+						},
+						error : function(request, status, error) {
+							alert("서버요청실패");
+						}
+					}
+				)
+			}//function
+		);//on
+		
+		
+		// 좋아요 ajax
+		$("form[name='clikeform']").on(
+			"submit",
+			function(event) {
+				$.ajax(
+					{
+						url : "clike",
+						type : "POST",
+						data : {
+							comb_id : $("input[name='comb_id']").val(),
+							pagenum : $("input[name='pagenum']").val(),
+							number : $("input[name='number']").val(),
+						},
+						datatype :"text",
+						success : function( data ) {
+							if ( data == 1 ){
+								alert("replyok")
+							}
+							else {
+								alert("replyno")								
+							}
 						},
 						error : function(request, status, error) {
 							alert("서버요청실패");

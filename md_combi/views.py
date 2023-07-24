@@ -162,7 +162,7 @@ class CombDView( View ):
         # 선택한 추천조합 정보
         
         comb    = MdComb.objects.get( comb_id = comb_id )
-        logger.debug(f'comb.comb_id : {comb.comb_id}')
+
         # 추천글을 작성한 유저의 닉네임
         nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
         
@@ -176,14 +176,16 @@ class CombDView( View ):
         reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
         
         # 로그인한 회원이 추천을 했나 안했나 확인용
-        comb_like = MdCLike.objects.filter(user_id = memid, comb_id = comb_id )
-        
-        #좋아요 버튼 용 값
-        if comb_like == None :
-            result = 0
-        else :
-            result = 1
-        
+        comb_like = MdCLike.objects.filter( comb_id = comb_id)
+        result = 0
+        for like in comb_like :
+            # logger.debug(f'like.user_id : {like.user_id}')
+            if like.user_id != memid :
+                result = 0
+            else :
+                result = 1
+            # logger.debug(f'result : {result}')
+            
         context = {
             "memid"     : memid,
             "gid"       : gid,
@@ -234,30 +236,42 @@ class CombDView( View ):
 # 좋아요 설정 취소
 import json   
 class CLikeView( View ):
-    def get(self, request ):
-        
-        comb_id = request.POST["comb_id"]
-        pagenum = request.POST["pagenum"]
-        number = request.POST["number"]
+    def post(self, request ):
         
         memid = request.session.get("memid")
         gid = request.session.get("gid")
         
-        like = MdCLike.objects.get(user_id = memid, comb_id = comb_id )
-        if like  == None :
+        comb_id = request.POST.get("comb_id","")
+        logger.debug(f'comb_id2 : {comb_id}')
+        
+        pagenum = request.POST.get("pagenum","")
+        logger.debug(f'pagenum : {pagenum}')
+        
+        number = request.POST.get("number","")
+        logger.debug(f'number : {number}')
+        
+      
+        like = MdCLike.objects.filter( user = memid, comb = comb_id ).count()
+        logger.debug(f'like : {like}')
+        
+        result = 0
+        if like == 0 :
             like = MdCLike(
                 comb_id = comb_id,
                 user_id = memid,
                 like_reg_ts = datetime.now()
                 )
             like.save()
+            result = 1
         else :
+            like = MdCLike.objects.filter( user = memid, comb = comb_id )
             like.delete()
+            result = 0
+            
+        return HttpResponse(result) 
+            
         
-        return redirect("/md_combi/combd?comb_id=comb_id&pagenum=pagenum&number=number")  
         
-        
-        # return HttpResponse(result ) 
     
     
     
