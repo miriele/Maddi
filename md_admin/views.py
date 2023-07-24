@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.http.response import HttpResponse
 from django.template import loader
-from md_member.models import MdUser
+from md_member.models import MdUser, MdUserG
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
 from md_store.models import MdStorReg, MdStorM
 import logging
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.dateformat import DateFormat
+from datetime import datetime
 
 
 # 로그
@@ -24,16 +28,57 @@ class UserlistView(View):
         return HttpResponse(template.render(context,request))
 
 class UserinfoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+        
     def get(self,request):
         template = loader.get_template("md_admin/userinfo.html")
         id = request.GET["id"]
-        users = MdUser.objects.select_related("user_g").select_related("user_g").get(user_id=id)
+        users = MdUser.objects.select_related("user_g").get(user_id=id)
+            
         context ={
             "id":id,
-            "users":users,
+            "users":users,  
              }
         return HttpResponse(template.render(context,request))
-    
+    #회원등급수정
+    def post(self,request):
+        id = request.POST["id"]
+        usrg = MdUserG.objects.get(user_g_id=request.POST["user_g"])
+        users = MdUser.objects.get(user_id=id)
+        
+        # logger.debug(f'usrg : {usrg}')
+        
+        newusers=MdUser(
+            user_id = id,
+            user_name = users.user_name,
+            user_pass = users.user_pass,
+            user_img = users.user_img,
+            gen = users.gen,
+            user_nick = users.user_nick,
+            user_bir = users.user_bir,
+            user_reg_ts = users.user_reg_ts,
+            user_g = usrg,                    
+        )
+        newusers.save()
+        if newusers.user_g ==2:
+            newusers=MdUser(
+            user_id = id,
+            user_name = users.user_name,
+            user_pass = users.user_pass,
+            user_img = users.user_img,
+            gen = users.gen,
+            user_nick = users.user_nick,
+            user_bir = users.user_bir,
+            user_reg_ts = users.user_reg_ts,
+            user_g = usrg,
+            user_ext_ts = DateFormat(datetime.now()),      
+        )
+        newusers.save()
+           
+        return redirect("/md_admin/userlist")
+
 class ReviewlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/reviewlist.html")
