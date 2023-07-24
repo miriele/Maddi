@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateformat import DateFormat
 from datetime import datetime
+from django.db.models.aggregates import Count
 
 
 # 로그
@@ -20,7 +21,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts")#회원리스트   
         context ={
             "count":count,
             "users":users,
@@ -74,11 +75,11 @@ class ReviewlistView(View):
         # : 사용자명, 주문번호, 매장명, 리뷰등록일
         # : md_ordr.user_id, md_ordr.ordr_id, md_stor.stor_name, md_review.rev_ts
         
-        # select * from md_review;
-        # select * from md_ordr where ordr_id=1;
-        # select * from md_ordr_m where ordr_id=1;
-        # select * from md_stor_m where stor_m_id=15;
-        # select * from md_stor where stor_id=1;
+        # select * from md_review;(김민우)
+        # select * from md_ordr where ordr_id=1;(김민우)
+        # select * from md_ordr_m where ordr_id=1;(김민우)
+        # select * from md_stor_m where stor_m_id=15;(김민우)
+        # select * from md_stor where stor_id=1;(김민우)
             
         rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
 
@@ -105,7 +106,7 @@ class ReviewinfoView(View):
         #md_review.rev_img,   md_stro_m.stor_m_name,    md_review.rev_star    md_tag.tag_name    md_review.rev_cont
         
         # stor_m_id 를 받아오는 곳은 없어서 일단 하드코딩 해둠, 수정필요~!
-        #SELECT stor_m_name FROM md_stor_m WHERE stor_m_id = 15;
+        #SELECT stor_m_name FROM md_stor_m WHERE stor_m_id = 15;(김민우)
         storm = MdStorM.objects.filter(stor_m_id=15).values('stor_m_name')
         
         if storm.exists() :
@@ -114,7 +115,7 @@ class ReviewinfoView(View):
         else:
             logger.debug(f'stor_m_name : 해당하는 레코드가 없습니다')
         
-        #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;
+        #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;(김민우)
         reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
         
         if reviewn.exists() :
@@ -126,7 +127,7 @@ class ReviewinfoView(View):
             logger.debug(f'rev_img, rev_star, rev_cont : 해당하는 레코드가 없습니다')
         
         
-        #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;
+        #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;(김민우)
         tagn = MdTag.objects.filter(mdrevt__rev_id=rev_id).values('tag_name')
         
         if tagn.exists() :
@@ -177,12 +178,12 @@ class SregistinfoView(View):
         #화면에 출력해줄내용
         #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
         
-        # 매장유형명만출력하면 가능
+        # 매장유형명만출력하면 가능 (김민우)
         # SELECT stor_id FROM md_stor_reg WHERE reg_id = 5;
         # SELECT stor_t_id FROM md_stor WHERE stor_id = 100;
         # SELECT stor_t_name FROM md_stor_t WHERE stor_t_id = 21;
 
-        # select stor_t_name
+        # select stor_t_name (김민우)
         # from md_stor_reg sr, md_stor s, md_stor_t st
         # where  sr.stor_id = s.stor_id
         #     and s.stor_t_id = st.stor_t_id
@@ -196,7 +197,7 @@ class SregistinfoView(View):
         #     logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
 
         context ={
-            "reg_id":reg_id,
+            "reg_id":reg_id,          
             "reginfo":reginfo,
             "result":result,
             }
@@ -224,3 +225,18 @@ class SregistinfoView(View):
          
         return redirect("/md_admin/sregistlist")
         
+class GenstatisView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/genstatis.html")
+        count = MdUser.objects.count()
+        labels = []
+        data = []
+        #남/여 count
+        gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
+        print(gen.values())
+
+        context = {
+            "gen":gen,
+            "count":count,
+            }
+        return HttpResponse(template.render(context,request))

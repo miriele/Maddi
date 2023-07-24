@@ -10,4 +10,5 @@ urlpatterns = [
     path("reviewinfo",  views.ReviewinfoView.as_view(), name="reviewinfo"),
     path("sregistlist",  views.SregistlistView.as_view(), name="sregistlist"),
     path("sregistinfo",  views.SregistinfoView.as_view(), name="sregistinfo"),
+    path("genstatis", views.GenstatisView.as_view(), name = "genstatis"),
     ]
