@@ -206,53 +206,41 @@ class OrdrSucView (View):
 
 class OrdrListView(View):
     def get(self, request):
-        template = loader.get_template("md_order/orderlist.html")
-        ordrs = MdOrdr.objects.all()
+        orders = MdOrdr.objects.all()
         context = []
 
-        for ordr in ordrs:
-            bucks = MdBuck.objects.filter(user_id=ordr.user.user_id)
+        for order in orders:
+            context_m = []
+            order_menus = MdOrdrM.objects.filter(ordr_id=order.ordr_id)
 
-            buck_list = []
-            total_price = 0
-
-            for buck in bucks:
-                stor_m = MdStorM.objects.get(stor_m_id=buck.stor_m.stor_m_id)
-                total_price += buck.buck_num * stor_m.stor_m_pric
-
-                buck_info = {
-                    'buck_id': buck.buck_id,
-                    'buck_num': buck.buck_num,
-                    'stor_m_price': stor_m.stor_m_pric,
+            for order_menu in order_menus:
+                stor_m = MdStorM.objects.get(stor_m_id=order_menu.stor_m_id)
+                context_m.append({
+                    'ordr_m_id': order_menu.ordr_m_id,
+                    'stor_m_id': order_menu.stor_m_id,
                     'stor_m_name': stor_m.stor_m_name,
-                }
-                buck_list.append(buck_info)
+                    'ordr_num': order_menu.ordr_num,
+                })
 
-            order_status = '접수완료' if ordr.ordr_com_ts is None else '처리완료'
-            ordr_m = MdOrdrM.objects.filter(ordr_id=ordr.ordr_id).first()
-            ordr_num = ordr_m.ordr_num
-            stor_m_id = ordr_m.stor_m_id
-            stor_m_name = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_name
-
+            if order.ordr_com_ts is None:
+                order_status = '접수완료'
+            else:
+                order_status = '처리완료'
+            
             context.append({
-                'ordr_id': ordr.ordr_id,
-                'user_nick': ordr.user.user_nick,
-                'bucks': buck_list,
-                'total_price': total_price,
-                'order_status': order_status,
-                'weather_id': ordr.weather_id,
-                'weather_name': ordr.weather.weather_name,
-                'ordr_temp': ordr.ordr_temp,
-                'ordr_ord_ts': ordr.ordr_ord_ts,
-                'ordr_com_ts': ordr.ordr_com_ts,
-                'ordr_num': ordr_num,
-                'stor_m_name': stor_m_name,
-                'user_id': ordr.user.user_id,
+                'ordr_id': order.ordr_id,
+                'user_id': order.user_id,
+                'weather_id': order.weather_id,
+                'weather_name': order.weather.weather_name,
+                'ordr_temp': order.ordr_temp,
+                'ordr_ord_ts': order.ordr_ord_ts,
+                'ordr_com_ts': order.ordr_com_ts,
+                'stor_m_name': stor_m.stor_m_name,
+                'order_status': order_status,  
+                'order_menus': context_m,
             })
 
         return render(request, 'md_order/orderlist.html', {'context': context})
-
-
     
 class OrdrAlertView (View):
     def get(self,request):
