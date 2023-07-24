@@ -39,7 +39,7 @@
 			<td>회원가입일</td>
 			<td>{{users.user_reg_ts|date:"Y-m-d"}}</td>
 		</tr>
-		{%if users.user_ext_ts%}
+		{%if users.user_ext_ts == 2%}
 			<tr>
 				<td>회원정지일</td>
 				<td>{{users.user_ext_ts|date:"Y-m-d"}}</td>	

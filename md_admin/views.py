@@ -20,7 +20,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts")#회원리스트   
         context ={
             "count":count,
             "users":users,
@@ -88,20 +88,15 @@ class ReviewlistView(View):
         # : 사용자명, 주문번호, 매장명, 리뷰등록일
         # : md_ordr.user_id, md_ordr.ordr_id, md_stor.stor_name, md_review.rev_ts
         
-        # select o.user_id, o.ordr_id, s.stor_name, r.rev_ts
-        # from md_review r, md_ordr o,
-        #      md_ordr_m om, md_stor_m sm, md_stor s
-        # where  r.ordr_id    = o.ordr_id
-        #     and o.ordr_id    = om.ordr_id
-        #     and om.stor_m_id = sm.stor_m_id
-        #     and sm.stor_id   = s.stor_id
-        #     and r.rev_id     = 1;            
+        # select * from md_review;
+        # select * from md_ordr where ordr_id=1;
+        # select * from md_ordr_m where ordr_id=1;
+        # select * from md_stor_m where stor_m_id=15;
+        # select * from md_stor where stor_id=1;
+            
+        rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
 
-        # rev_id를 얻어오는 부분이 없어서 하드코딩 해놓음. 수정해야 함~!
-        # rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
-        rdtos = MdReview.objects.filter(rev_id=1).select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
-
-        logger.debug(f'type(rdtos) : {type(rdtos)}\nrdtos : {rdtos}')
+        #logger.debug(f'type(rdtos) : {type(rdtos)}\nrdtos : {rdtos}')
         
         context ={
             "count":count,
@@ -110,9 +105,13 @@ class ReviewlistView(View):
         return HttpResponse(template.render(context,request))
     
 class ReviewinfoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+    
     def get(self,request):
         template = loader.get_template("md_admin/reviewinfo.html")
-        revid = request.GET["revid"]
+        rev_id = request.GET["rev_id"]
         
         #화면에 출력해줄 내용
         #태그는 태그분류없이 나열
@@ -121,41 +120,56 @@ class ReviewinfoView(View):
         
         # stor_m_id 를 받아오는 곳은 없어서 일단 하드코딩 해둠, 수정필요~!
         #SELECT stor_m_name FROM md_stor_m WHERE stor_m_id = 15;
-        result = MdStorM.objects.filter(stor_m_id=15).values('stor_m_name')
+        storm = MdStorM.objects.filter(stor_m_id=15).values('stor_m_name')
         
-        if result.exists() :
-            stor_m_name = result.first()['stor_m_name']
+        if storm.exists() :
+            stor_m_name = storm.first()['stor_m_name']
             logger.debug(f'stor_m_name : {stor_m_name}')
         else:
             logger.debug(f'stor_m_name : 해당하는 레코드가 없습니다')
         
         #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;
-        result = MdReview.objects.filter(rev_id=revid).values('rev_img', 'rev_star', 'rev_cont')
+        reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
         
-        if result.exists() :
-            rev_img  = result.first()['rev_img']
-            rev_star = result.first()['rev_star']
-            rev_cont = result.first()['rev_cont']
+        if reviewn.exists() :
+            rev_img  = reviewn.first()['rev_img']
+            rev_star = reviewn.first()['rev_star']
+            rev_cont = reviewn.first()['rev_cont']
             logger.debug(f'rev_img : {rev_img}\trev_star : {rev_star}\trev_cont : {rev_cont}\n')
         else:
             logger.debug(f'rev_img, rev_star, rev_cont : 해당하는 레코드가 없습니다')
         
         
         #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;
-        result = MdTag.objects.filter(mdrevt__rev_id=revid).values('tag_name')
+        tagn = MdTag.objects.filter(mdrevt__rev_id=rev_id).values('tag_name')
         
-        if result.exists() :
-            for item in result :
+        if tagn.exists() :
+            for item in tagn :
                 tag_name = item['tag_name']
                 logger.debug(f'tag_name : {tag_name}')
         else:
             logger.debug(f'tag_name : 해당하는 레코드가 없습니다')
 
         context ={
-            "revid":revid,
+            "rev_id":rev_id,
+            "strom":storm,
+            "reviewn":reviewn,
+            "tagn":tagn,
             }
         return HttpResponse(template.render(context,request))
-    
+   
+    #리뷰삭제 
+    def post(self,request):
+        rev_id = request.POST["rev_id"]
+        #리뷰태그 삭제
+        tdto = MdRevT.objects.filter(rev=rev_id)
+        tdto.delete()
+        #리뷰삭제
+        rdto = MdReview.objects.get(rev_id=rev_id)
+        rdto.delete()
+        return redirect("/md_admin/reviewlist")
+        
+        
 class SregistlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistlist.html")
@@ -194,5 +208,9 @@ class SregistinfoView(View):
         context ={
             "regid":regid,
             "reginfo":reginfo,
+            "result":result,
             }
-        return HttpResponse(template.render(context,request))   
+        return HttpResponse(template.render(context,request))
+    def post(self,request):
+        pass
+        

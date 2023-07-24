@@ -7,24 +7,25 @@
 <body>
 <h2>리뷰상세정보</h2>
 <form method = "post" action = "reviewinfo" name="reviewinfoform">
+<input type ="hidden" name = "rev_id" value = {{rev_id}}>
 	<table border = "1">
 		<tr>
 			<th colspan="2">리뷰이미지</th>
 		</tr>
 		<tr>
 			<td>주문내역</td>
-			<td></td>
+			<td>{{strom}}</td>
 		</tr>
 		<tr>
 			<td>평점</td>
-			<td></td>
+			<td>{{reviewn}}</td>
 		</tr>
 		<tr>
 			<td>태그</td>
-			<td></td>
+			<td>{{tagn}}</td>
 		<tr>
 			<td>내용</td>
-			<td></td>
+			<td>{{reviewn}}</td>
 		</tr>
 		<tr>
 			<th colspan = "2">
