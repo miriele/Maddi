@@ -93,7 +93,7 @@ class ImageView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = 141
+        stor_m_id = request.session.get('stor_m_id')
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -123,49 +123,21 @@ class MenuInfoView(View):
 
 class MenuListView(View):
     def get(self, request):
-        stor_m_id = 141
+        stor_id = 36
         try:
-            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-            
-            if storem.menu_t_id == 0:
-                menu_type = "일반"
-            else:
-                menu_type = "시그니처"
-            stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
-            menu = stor_m.menu
-            dsrt_t = menu.dsrt_t
-            drnk_t = menu.drnk_t
-            
-            if dsrt_t:
-                if dsrt_t.dsrt_t_id == 0:
-                    dsrt_t_name = dsrt_t.dsrt_t_name
-                else:
-                    dsrt_t_name = "없음"
-            else:
-                dsrt_t_name = "없음"
-            
-            if drnk_t:
-                drnk_t_name = drnk_t.drnk_t_name
-            else:
-                drnk_t_name = "없음"
-                
+            menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
+
             context = {
-                'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_m_name': storem.stor_m_name,
-                'stor_m_cal': storem.stor_m_cal,
-                'stor_m_info': storem.stor_m_info,
-                'stor_m_img': storem.stor_m_img,
-                'menu_type': menu_type,
+                'menu_list': menu_list,
             }
 
             return render(request, 'md_store/menulist.html', context)
 
         except MdStorM.DoesNotExist:
             return HttpResponseNotFound()
-    def post(self,request):
+    def post(self, request):
         stor_id = request.POST["stor_id"]
-        return HttpResponse( request  )
+        return HttpResponse(request)
     
 class AddMenuView(View):
     def get(self,request):

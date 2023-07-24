@@ -1,35 +1,41 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style_store.css' %}">
-{%block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_ordr.css' %}">
+<html>
 <head>
-<h2> 메뉴목록 </h2>
+    <title>메뉴 목록</title>
 </head>
 <body>
-	<nav> 
-		<ul>
-			<li><a href="addmenu">메뉴등록</li>
-		</ul>
-	</nav>
-	<div class="section menu_wrap"><!-- 추천메뉴 -->
-		<div class = "container">
-			<ul>
-				<li>
-					<div class = "thumb">
-						<a href="menuinfo"><img src="/media/images/{{ stor_m_img }}.jpg" width="300" height="300"></a>
-						<p class="menu_tit"> {{stor_m_name}}</p>
-						<p class="menu_tit"> {{stor_m_pric}}</p>
-					</div>
-				</li>
-				<li>
-					<div class = "thumb">
-						<a href="menuinfo"><img src="/media/images/{{ stor_m_img }}.jpg" width="300" height="300"></a>
-						<p class="menu_tit"> {{stor_m_name}}</p>
-						<p class="menu_tit"> {{stor_m_pric}}</p>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-</body>
+    <h1>메뉴 목록</h1>
+    {% if menu_list %}
+    <table>
+        <tr>
+         	<th>메뉴 이미지</th>
+            <th>메뉴 이름</th>
+            <th>가격</th>
+            <th>칼로리</th>
+            <th>메뉴 소개</th>
+           
+            <th>메뉴 타입</th>
+        </tr>
+        {% for menu in menu_list %}
+        <tr>
+        	 <td>
+               <a href="http://localhost:8000/md_order/orderinfo?stor_m_id={{ menu.stor_m_id }}">
+                    <img src="/media/images/{{ menu.stor_m_img }}.png" width="300" height="300">
+                </a>
+            </td>
+            <td>{{ menu.menu.menu_name }}</td>
+            <td>{{ menu.stor_m_pric }}</td>
+            <td>{{ menu.stor_m_cal }}</td>
+            <td>{{ menu.menu.menu_info }}</td>
+            
+            <td>{{ menu.menu_t.menu_t_name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>해당 매장의 메뉴가 없습니다.</p>
+    {% endif %}
 
- {%endblock%}
+</body>
+</html>
