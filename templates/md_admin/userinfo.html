@@ -5,6 +5,7 @@
 <title>회원정보</title>
 </head>
 <body>
+{% csrf_token %}
 <h2>회원상세정보</h2>
 <form method = "post" action = "userinfo" name="userinfoform">
 <input type ="hidden" name = "id" value = {{users.user_id}}>
@@ -39,12 +40,6 @@
 			<td>회원가입일</td>
 			<td>{{users.user_reg_ts|date:"Y-m-d"}}</td>
 		</tr>
-		{%if users.user_ext_ts == 2%}
-			<tr>
-				<td>회원정지일</td>
-				<td>{{users.user_ext_ts|date:"Y-m-d"}}</td>	
-			</tr>
-		{%endif%}
 		<tr>
 			<td>회원등급</td>
 			<td>

@@ -2,11 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원정보</title>
+<title>점주등록신청상세</title>
 </head>
 <body>
-<h2>회원상세정보</h2>
+{% csrf_token %}
+<h2>점주등록신청상세</h2>
 <form method = "post" action = "sregistinfo" name="sregistinfoform">
+<input type ="hidden" name = "reg_id" value = {{reg_id}}>
+<input type ="hidden" name = "id" value = {{reginfo.user_id}}>
 	<table border = "1">
 		<tr>
 			<td>아이디</td>

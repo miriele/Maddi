@@ -62,20 +62,6 @@ class UserinfoView(View):
             user_g = usrg,                    
         )
         newusers.save()
-        if newusers.user_g ==2:
-            newusers=MdUser(
-            user_id = id,
-            user_name = users.user_name,
-            user_pass = users.user_pass,
-            user_img = users.user_img,
-            gen = users.gen,
-            user_nick = users.user_nick,
-            user_bir = users.user_bir,
-            user_reg_ts = users.user_reg_ts,
-            user_g = usrg,
-            user_ext_ts = DateFormat(datetime.now()),      
-        )
-        newusers.save()
            
         return redirect("/md_admin/userlist")
 
@@ -180,10 +166,14 @@ class SregistlistView(View):
         return HttpResponse(template.render(context,request))
     
 class SregistinfoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+        
     def get(self,request):
         template = loader.get_template("md_admin/sregistinfo.html")
-        regid = request.GET["regid"]
-        reginfo = MdStorReg.objects.get(reg_id=regid)
+        reg_id = request.GET["reg_id"]
+        reginfo = MdStorReg.objects.get(reg_id=reg_id)
         #화면에 출력해줄내용
         #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
         
@@ -197,20 +187,40 @@ class SregistinfoView(View):
         # where  sr.stor_id = s.stor_id
         #     and s.stor_t_id = st.stor_t_id
         #     and sr.reg_id = 5;
-        result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=regid).values('stor_t_name')
+        result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=reg_id).values('stor_t_name')
 
-        if result.exists() :
-            stor_t_name = result.first()['stor_t_name']
-            logger.debug(f'stor_t_name : {stor_t_name}')
-        else:
-            logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
+        # if result.exists() :
+        #     stor_t_name = result.first()['stor_t_name']
+        #     logger.debug(f'stor_t_name : {stor_t_name}')
+        # else:
+        #     logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
 
         context ={
-            "regid":regid,
+            "reg_id":reg_id,
             "reginfo":reginfo,
             "result":result,
             }
         return HttpResponse(template.render(context,request))
+    
+    #점주등록신청 승인
     def post(self,request):
-        pass
+        reg_id = request.POST["reg_id"]
+        reginfo = MdStorReg.objects.get(reg_id=reg_id)
+        
+        regagree = MdStorReg(
+            reg_id = reg_id,
+            user = reginfo.user,
+            stor = reginfo.stor,
+            reg_num = reginfo.reg_num,
+            reg_img = reginfo.reg_img,
+            reg_sub_ts = reginfo.reg_sub_ts,
+            reg_con_ts = datetime.now(),
+            )
+        regagree.save()
+        #등록신청한 회원의 등급 -> 6(점주)로 수정     
+        id = request.POST["id"]
+        users = MdUser.objects.filter(user_id=id).update(user_g=6)
+        
+         
+        return redirect("/md_admin/sregistlist")
         
