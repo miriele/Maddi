@@ -26,7 +26,18 @@
 					</td>
 				</tr>
 				<tr>
-					<th>대표메뉴1	</th>
+					<th> 인원수 </th>
+					<td>
+						<select name = "comb_nop">
+							<option value="1"> 1인 </option>
+							<option value="2"> 2인 </option>
+							<option value="3"> 3인 </option>
+							<option value="4"> 4인 </option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>대표메뉴1	</th><!-- 태그 어떻게 가져올지 모르겠음...-->
 					<td> 
 						<select name="dord1" required onchange="dndchange(this)">
 							<option value="" disabled="none" selected> 대분류 </option>
@@ -58,10 +69,12 @@
 							<option> 중분류 </option>
 						</select>
 						
-					
-						<select name="drink" required>
-							<option> 소분류 </option>
+						
 							
+						<select id = "drink"><!-- 안먹음 -->
+						{% for ds in dsrt %}
+							<option value="ds.dsrt_t_id"> {{ ds.dsrt_t_name }}</option>
+						{% endfor %}
 						</select>
 					</td>
 				</tr>
@@ -82,7 +95,7 @@
 							var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
 							var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
 							var target = document.getElementById("dsrt");
-							
+							console.log(drk);
 							if (e.value == "1" )		var d = drk;
 							else if(e.value == "2" )	var d = dst;
 								
@@ -114,11 +127,11 @@
 				<tr>
 					<th> 내용 </th><!--  범위 수정해야 함 -->
 					<td> 
-						<textarea name="comb_cont" rows="5" cols="10"  placeholder="내용을 입력해 주세요" required></textarea>
+						<textarea name="comb_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
 					</td>
 				</tr>
 				<tr>
-					<th> 이미지 첨부 </th>
+					<th> 이미지 첨부 </th> <!-- 썸네일 가능하면 -->
 					<td>
 						<input class="input" type="file" name="comb_img" accept="image/*" >
 					</td>
@@ -128,7 +141,7 @@
 						<input class="inputbutton" type="submit" value="작성">
 						<input class="inputbutton" type="reset" value="취소">
 						<input class="inputbutton" type="button" value="작성취소"
-							onclick="location='list'">
+							onclick="location='/md_combi/comblist'">
 					</th>
 				</tr>
 			</table>
