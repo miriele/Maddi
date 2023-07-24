@@ -5,7 +5,7 @@ from django.template import loader
 from md_member.models import MdUser
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
-from md_store.models import MdStorReg, MdStorM
+from md_store.models import MdStorReg, MdStorM, MdStorT
 import logging
 
 
@@ -123,10 +123,23 @@ class SregistinfoView(View):
         #화면에 출력해줄내용
         #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
         
-        #매장유형명만출력하면 가능
-        #SELECT stor_id FROM md_stor_reg WHERE reg_id = 5;
-        #SELECT stor_t_id FROM md_stor WHERE stor_id = 100;
-        #SELECT stor_t_name FROM md_stor_t WHERE stor_t_id = 21;
+        # 매장유형명만출력하면 가능
+        # SELECT stor_id FROM md_stor_reg WHERE reg_id = 5;
+        # SELECT stor_t_id FROM md_stor WHERE stor_id = 100;
+        # SELECT stor_t_name FROM md_stor_t WHERE stor_t_id = 21;
+
+        # select stor_t_name
+        # from md_stor_reg sr, md_stor s, md_stor_t st
+        # where  sr.stor_id = s.stor_id
+        #     and s.stor_t_id = st.stor_t_id
+        #     and sr.reg_id = 5;
+        result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=regid).values('stor_t_name')
+
+        if result.exists() :
+            stor_t_name = result.first()['stor_t_name']
+            logger.debug(f'stor_t_name : {stor_t_name}')
+        else:
+            logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
 
         context ={
             "regid":regid,
