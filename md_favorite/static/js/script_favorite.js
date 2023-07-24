@@ -12,9 +12,11 @@ $(document).ready(
 		
 		
 		// 댓글 ajax
-		$("form[name='addfavform']").on(
-			"submit",
+		$("input[name='addfavbtn']").on(
+			"click",
 			function(event) {
+				var button = $(this);
+				var csrfToken = "{{ csrf_token }}";
 				$.ajax(
 					{
 						url : "addfav",
@@ -22,15 +24,16 @@ $(document).ready(
 						data : {
 							stor_id : $("input[name='stor_id']").val(),
 							pagenum : $("input[name='pagenum']").val(),
-							number : $("input[name='number']").val(),
+							number  : $("input[name='number']").val(),
+							csrfmiddlewaretoken: csrfToken,
 						},
 						datatype :"text",
 						success : function( data ) {
-							if ( data == 1 ){
-								alert("replyok")
+							if ( data == "1" ){
+								button.val("즐겨찾기 취소");
 							}
 							else {
-								alert("replyno")								
+								button.val("즐겨찾기 등록");
 							}						
 						},
 						error : function(request, status, error) {
@@ -38,8 +41,8 @@ $(document).ready(
 						}
 					}
 				)
-			}//function
-		);//on
+			}	// function
+		);	// $("form[name='addfavform']").on
 		
 		
 		// 좋아요 ajax
@@ -69,15 +72,10 @@ $(document).ready(
 						}
 					}
 				)
-			}//function
-		);//on
-		
-		
-		
-		
-		
-	}	//function
-)	//ready
+			}	// function
+		);	// $("form[name='clikeform']").on
+	}	// function
+)	// $(document).ready
 		
 	
 

@@ -56,17 +56,17 @@ LOGGING = {
         "django" : {
             "handlers" : ["file"],
             # "propagate" : True,
-            "level" : "WARNING"
+            "level" : "DEBUG"
             },
         "django.server" : {
             "handlers" : ["file"],
             "propagate" : False,
-            "level" : "WARNING"
+            "level" : "DEBUG"
             },
         "django.request" : {
             "handlers" : ["file"],
             "propagate" : False,
-            "level" : "WARNING"
+            "level" : "DEBUG"
             },
         "md_admin" : {
             "handlers" : ["file", "console"],

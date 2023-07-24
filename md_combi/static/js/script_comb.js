@@ -49,7 +49,7 @@ $(document).ready(
 						data : {
 							comb_id : $("input[name='comb_id']").val(),
 							pagenum : $("input[name='pagenum']").val(),
-							number : $("input[name='number']").val(),
+							number  : $("input[name='number']").val(),
 						},
 						datatype :"text",
 						success : function( data ) {

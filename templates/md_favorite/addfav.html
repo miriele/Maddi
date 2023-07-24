@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Maddi</title>
-	</head>
-	<body>
-	{% extends "md_member/base.html" %}
-	
-	{% block title %} <h2> 즐겨찾기 등록 </h2> {% endblock %}
+{% extends "md_member/base.html" %}
 
-	{% block content %}
-		<form method="post" action="addfav"name="addfavform">
-		<input type="hidden" name="stor_id" value="{{7}}"><!-- 수정 -->
-		<input type="hidden" name="pagenum" value="{{1}}">
-		<input type="hidden" name="number" value="{{1}}">
-			{% csrf_token %}
-			{% if result == 0 %}
-				<input type="submit" value="즐겨찾기 등록">
-			{% else %}
-				<input type="submit" value="즐겨찾기 취소">
-			{% endif %}
-		</form>
-	{% endblock %}
-	</body>
-</html>
+{% block title %} <h2> 즐겨찾기 등록 </h2> {% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<form method="post" action="addfav"name="addfavform">
+	<input type="hidden" name="stor_id" value="{{7}}"><!-- 수정 -->
+	<input type="hidden" name="pagenum" value="{{1}}">
+	<input type="hidden" name="number"  value="{{1}}">
+	{% if result == 0 %}
+		<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+	{% else %}
+		<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+	{% endif %}
+</form>
+{% endblock %}

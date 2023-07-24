@@ -96,45 +96,52 @@ class FavoriteView( View ):
 # 검색이랑 매장이랑 연결되고 매장눌러서 들어갈수 있게 되면 연결할 예정
 #################################
 class AddFavView( View ):
+    @method_decorator( csrf_exempt )
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+    
     def get (self, request):
         template = loader.get_template( "md_favorite/addfav.html" )
+        memid    = request.session.get("memid")
+        gid      = request.session.get("gid")
         
-        memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        logger.debug(f'memid : {memid}')
         
         ###### 값 박아 놓음 #######
         stor_id = 7
         pagenum = 1
-        number = 1
-        
-        
-        md_fav = MdFavorite.objects.filter( stor = stor_id)
+        number  = 1
         
         result = 0
+        md_fav = MdFavorite.objects.filter(stor = stor_id)
+        
         for fav in md_fav :
             logger.debug(f'fav.user_id : {fav.user_id}')
-            if fav.user_id != memid :
-                result = 0
-            else :
+            if fav.user_id == memid :
                 result = 1
-            # logger.debug(f'result : {result}')
+                break
+
+        logger.debug(f'result : {result}')
         
         context = {
-            "result" :result,
-            "stor_id"  : stor_id,
+            "result"  : result,
+            "stor_id" : stor_id,
             "pagenum" : pagenum,
-            "number"  :number,
+            "number"  : number,
             }
         return HttpResponse(template.render(context, request ) )
         
     def post(self, request ):
-          
         memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        gid   = request.session.get("gid")
         
         stor_id = request.POST.get("stor_id","")    #7
         pagenum = request.POST.get("pagenum","")    #1
-        number = request.POST.get("number","")      #1
+        number  = request.POST.get("number","")     #1
+        
+        logger.debug(f'stor_id : {stor_id}')
+        logger.debug(f'pagenum : {pagenum}')
+        logger.debug(f'number  : {number}')
         
         favo = MdFavorite.objects.filter( user = memid, stor = stor_id ).count()
         logger.debug(f'favo : {favo}')
@@ -143,8 +150,8 @@ class AddFavView( View ):
         
         if favo == 0 :
             favo = MdFavorite(
-                user_id = memid,
-                stor_id = stor_id,
+                user_id    = memid,
+                stor_id    = stor_id,
                 fav_reg_ts = datetime.now()
                 )
             favo.save()
@@ -154,4 +161,6 @@ class AddFavView( View ):
             favo.delete()
             result = 0
             
-        return HttpResponse(result) 
+        logger.debug(f'result : {result}')
+
+        return HttpResponse(result)
