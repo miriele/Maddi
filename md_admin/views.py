@@ -20,7 +20,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts")#회원리스트   
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
         context ={
             "count":count,
             "users":users,
@@ -88,13 +88,18 @@ class ReviewlistView(View):
         # : 사용자명, 주문번호, 매장명, 리뷰등록일
         # : md_ordr.user_id, md_ordr.ordr_id, md_stor.stor_name, md_review.rev_ts
         
-        # select * from md_review;
-        # select * from md_ordr where ordr_id=1;
-        # select * from md_ordr_m where ordr_id=1;
-        # select * from md_stor_m where stor_m_id=15;
-        # select * from md_stor where stor_id=1;
-            
-        rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
+        # select o.user_id, o.ordr_id, s.stor_name, r.rev_ts
+        # from md_review r, md_ordr o,
+        #      md_ordr_m om, md_stor_m sm, md_stor s
+        # where  r.ordr_id    = o.ordr_id
+        #     and o.ordr_id    = om.ordr_id
+        #     and om.stor_m_id = sm.stor_m_id
+        #     and sm.stor_id   = s.stor_id
+        #     and r.rev_id     = 1;            
+
+        # rev_id를 얻어오는 부분이 없어서 하드코딩 해놓음. 수정해야 함~!
+        # rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
+        rdtos = MdReview.objects.filter(rev_id=1).select_related('ordr__mdordrm__stor_m__stor').values('ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
 
         logger.debug(f'type(rdtos) : {type(rdtos)}\nrdtos : {rdtos}')
         
