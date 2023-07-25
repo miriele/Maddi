@@ -14,9 +14,9 @@ $(function() {
 	//console.log("수:" + data)
 	//console.log("인원:" + labels)
 	
-	const ctx = document.getElementById('gender')
+	const gender = document.getElementById('gender')
 	
-	new Chart(ctx, {
+	new Chart(gender, {
 	    type: 'pie',
 	    data: {
 	      labels: arraylabel, //labels
@@ -27,6 +27,7 @@ $(function() {
 	      }]
 	    },
 	    options: {
+			responsive: false,
 	      scales: {
 	        y: {
 	          beginAtZero: true
@@ -34,4 +35,31 @@ $(function() {
 	      }
 	    }
 	 });
+	 
+	 /*연령통계*/
+	 var agecount = $('#agecount').text()
+	 var arrayage = agecount.replace("[","").replace("]","").split(',');
+	 
+	 const age = document.getElementById('age')
+	 
+	 new Chart(age, {
+	    type: 'pie',
+	    data: {
+	      labels: ['10대','20대','30대','40대','50대','60대이상'], //labels
+	      datasets: [{
+	        label: '# of Votes',
+	        data: arrayage, //data
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
  })

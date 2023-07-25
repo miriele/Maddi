@@ -311,14 +311,45 @@ class AgestatisView(View):
         # print(type(today))
         
         #유저들의 생년월일 데이터 받아오기
-        muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).values("year")
-        # print(userbir)
+        count = MdUser.objects.all().count
+        userbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).values("year")
+        #print(userbir)
         
-        year = list(m['year'] for m in muserbir)
+        #나이계산
+        year = list(m['year'] for m in userbir)
         year = list(map(int,year))
         age = list(map(lambda x:x - today , year))
         age = list(map(abs,age))
-        print(age)
+        
+        #10대 인원수
+        teen = list(filter(lambda x: x<20 and x >=10, age))
+        # print(teen)
+        
+        #20대 인원수
+        twe = list(filter(lambda x: x<30 and x >=20, age))
+        # print(twe)
+        
+        #30대 인원수
+        thr = list(filter(lambda x: x<40 and x >=30, age))
+        # print(thr)
+        
+        #40대 인원수
+        fou = list(filter(lambda x: x<50 and x >=40, age))
+        # print(fou)
+        
+        #50대 인원수   
+        fif = list(filter(lambda x: x<60 and x >=50, age))
+        # print(fif)
+        
+        #60대이상 인원수
+        older = list(filter(lambda x: x >=60, age))
+        # print(older)
+        agecount = [len(teen),len(twe),len(thr),len(fou),len(fif),len(older)]
+   
+        # print(age)
         # print(year)
-        context = {}
+        context = {
+            "agecount"  : agecount,
+            "count"     : count,
+            }
         return HttpResponse(template.render(context,request))

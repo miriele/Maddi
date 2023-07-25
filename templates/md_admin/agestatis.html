@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>연령통계</title>
-</head>
-<body>
 {% extends "md_admin/base.html" %}
-</body>
-</html>
+
+{% block content %}
+<h2>관리자 통계페이지()</h2>
+	<div>
+	  <canvas id="age"></canvas>
+	</div>
+	<span id = "agecount" hidden>{{agecount}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	회원수:{{count}}명<br>
+	10대: {{agecount.0}}명<br>
+	20대: {{agecount.1}}명<br>
+	30대: {{agecount.2}}명<br>
+	40대: {{agecount.3}}명<br>
+	50대: {{agecount.4}}명<br>
+	60대이상: {{agecount.5}}명<br>
+{% endblock %}
