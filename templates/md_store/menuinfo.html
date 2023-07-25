@@ -1,12 +1,17 @@
 {% load static %}
-{% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
+{% block title %} 
+<head>
+    <title>점주_메뉴관리</title>
+    <h2> 점주_메뉴관리</h2>
+</head>
+{% endblock %}
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
 <form method="post" action="menuinfo" name="updateform">
 	<table>
 	    <tr>
 	        <th colspan="3">
-	            메뉴등록
+	            메뉴관리
 	        </th>
 	    </tr>
 	    <tr>

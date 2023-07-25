@@ -1,6 +1,10 @@
 {% load static %}
 <script src="{% static 'js/script_store.js' %}"></script>	
-{% block title %} <h2> 점주_마이페이지 </h2> {% endblock %}
+{% block title %}
+<head>
+    <title>점주_매장관리</title>
+</head>
+{% endblock %}
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
 {{ stor_id }} <br>

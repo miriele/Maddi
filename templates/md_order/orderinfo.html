@@ -1,16 +1,14 @@
 {% load static %}
 <script src="{% static 'js/script_order.js' %}"></script>
-{% block title %} <h2> 주문하기 </h2> {% endblock %}
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
+<head>
+    <title>주문하기</title>
+</head>
+<h2> 주문하기 </h2>
 <form method="post" action="orderinfo" name="inputform">
 <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 	<table>
-	    <tr>
-	        <th colspan="3">
-	            메뉴등록
-	        </th>
-	    </tr>
 	    <tr>
 	        <th rowspan="6"><img src="/media/images/{{ stor_m_img }}.png" width="200" height="200"></th>
 	    </tr>

@@ -16,7 +16,6 @@ class StoreView(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs) 
-    
     def get(self, request):
         stor_id = 6
         try:
@@ -93,7 +92,7 @@ class ImageView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = request.session.get('stor_m_id')
+        stor_m_id = 36
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -261,38 +260,4 @@ class MypageJumjuView(View):
             "user_name":user_name,
             }
         
-        return HttpResponse( template.render( context, request ) ) 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+        return HttpResponse( template.render( context, request ) )

@@ -3,11 +3,9 @@ from django.views import View
 from md_store.models import MdStorM
 from django.http.response import HttpResponseNotFound, HttpResponse
 from md_order.models import MdBuck, MdOrdrM, MdOrdr
-from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.template import loader
 import logging
-from operator import itemgetter
 from django.db.models import Case, When, Value, CharField
 
 
@@ -16,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 36
+        stor_m_id = 8852
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -218,7 +216,7 @@ class BuckDelOrdrView(View):
                         buck_num = buck.buck_num
                         weather_id = 0
                         ordr_temp = 0
-                        ordr_ord_ts = buck.buck_ord_ts
+                        ordr_ord_ts = timezone.now()
                         buck_id = buck.buck_id
                         
                         new_order = MdOrdr.objects.create(

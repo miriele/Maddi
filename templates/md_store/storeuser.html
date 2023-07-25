@@ -1,14 +1,16 @@
 {% load static %}
-{% block title %} <h2> 매장정보 </h2> {% endblock %}
+{% block title %} 
+<title>사용자_매장정보</title>
+{% endblock %}
 {% block content %}
-
+<h2>사용자_매장정보</h2>
 <form method="post" action="storeuser" name="updateform">
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 
 	<table>
 	    <tr>
 	        <th colspan="3">
-	            매장정보관리
+	            매장정보
 	        </th>
 	    </tr>
 	    <tr>
@@ -46,5 +48,7 @@
 	        </th>
 	    </tr>
 	</table>
+	
 </form>
+
 {% endblock %}
