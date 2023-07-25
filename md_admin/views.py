@@ -240,6 +240,7 @@ class GenstatisView(View):
         #SELECT g.gen_name ,COUNT(*) FROM md_user u 
         #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
+        print(gen)
         
         #print(gen)
         #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
@@ -262,8 +263,8 @@ class GenstatisView(View):
         gender.extend(genname)
         inwon.extend(gencount)
         
-        # print(gender)
-        # print(inwon)
+        print(gender)
+        print(inwon)
 
         #남성회원 비율
         menper = inwon[0]/sum(inwon) * 100
@@ -276,23 +277,23 @@ class GenstatisView(View):
         
         #연령대
         today = datetime.today().year
-        print(type(today))
+        # print(type(today))
         muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=0).values("year")
         # print(userbir)
         year = list(m['year'] for m in muserbir)
         year = list(map(int,year))
         age = list(map(lambda x:x - today , year))
         age = list(map(abs,age))
-        print(age)
+        # print(age)
         # print(year)
         
         #데이터 TEMPLATE로 넘기기
         context = {
-            "inwon":        inwon,
-            "gender":       gender,
-            "menper":       menper,
-            "womenper":     womenper,
-            "count":        count,
+            "inwon"     :        inwon,
+            "gender"    :       gender,
+            "menper"    :       menper,
+            "womenper"  :     womenper,
+            "count"     :        count,
             }
         
         
@@ -301,5 +302,20 @@ class GenstatisView(View):
 class AgestatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/agestatis.html")
+        #연령대
+        #오늘 날짜 구하기
+        today = datetime.today().year
+        # print(type(today))
+        
+        #유저들의 생년월일 데이터 받아오기
+        muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).values("year")
+        # print(userbir)
+        
+        year = list(m['year'] for m in muserbir)
+        year = list(map(int,year))
+        age = list(map(lambda x:x - today , year))
+        age = list(map(abs,age))
+        print(age)
+        # print(year)
         context = {}
         return HttpResponse(template.render(context,request))

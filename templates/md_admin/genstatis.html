@@ -1,39 +1,13 @@
-{%load static%}
+{% extends "md_admin/base.html" %}
 <h2>관리자 통계페이지</h2>
+{% block content %}
+	<div>
+	  <canvas id="gender"></canvas>
+	</div>
 
-<!--성별차트-->
-<div>
-  <canvas id="gender"></canvas>
-</div>
 회원수:{{count}}명<br>
 남성:{{menper}}%<br>
 여성:{{womenper}}%
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
-<script>
-  const ctx = document.getElementById('gender');
-  
-  var data = {{inwon|safe}}
-  var labels = {{gender|safe}}
-  
-  console.log("수:" + data)
-  console.log("남성:" + labels)
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '# of Votes',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
+
