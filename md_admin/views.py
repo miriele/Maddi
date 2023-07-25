@@ -15,6 +15,7 @@ from django.db.models.aggregates import Count
 from django.db.models.expressions import Case
 from _datetime import date
 from django.db.models.functions.text import Substr
+import json
 
 
 # 로그
@@ -234,22 +235,27 @@ class GenstatisView(View):
         count = MdUser.objects.count()
        
         #성별/인원수
-        gender = [] # 성별이름 담을 리스트
+        gend = [] # 성별이름 담을 리스트
         inwon = []   # 해당 성별 인원수 담을 리스트
         #남/여 count
         #SELECT g.gen_name ,COUNT(*) FROM md_user u 
         #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
-        print(gen)
+
+        
+
         
         #print(gen)
         #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
         
         #쿼리셋을 list로 만듦
         gen_list = list(gen)
+        
         #print(gen_list)
         #[{'gen__gen_name': '남자\r', 'gen__count': 79}, 
         #{'gen__gen_name': '여자\r', 'gen__count': 61}]
+        
+        
         
         #key-value 리스트화
         #1.성별 key
@@ -260,10 +266,10 @@ class GenstatisView(View):
         gencount = list(m['gen__count'] for m in gen_list)
         
         #labels,data리스트에 담기
-        gender.extend(genname)
+        gend.extend(genname)
         inwon.extend(gencount)
         
-        print(gender)
+        print(gend)
         print(inwon)
 
         #남성회원 비율
@@ -286,17 +292,14 @@ class GenstatisView(View):
         age = list(map(abs,age))
         # print(age)
         # print(year)
-        
         #데이터 TEMPLATE로 넘기기
         context = {
-            "inwon"     :        inwon,
-            "gender"    :       gender,
-            "menper"    :       menper,
-            "womenper"  :     womenper,
-            "count"     :        count,
+            "inwon"     : inwon,
+            "gend"      : gend,
+            "menper"    : menper,
+            "womenper"  : womenper,
+            "count"     : count,
             }
-        
-        
         return HttpResponse(template.render(context,request))
     
 class AgestatisView(View):
