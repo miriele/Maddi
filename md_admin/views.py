@@ -21,7 +21,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts")#회원리스트   
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
         context ={
             "count":count,
             "users":users,
@@ -197,9 +197,9 @@ class SregistinfoView(View):
         #     logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
 
         context ={
-            "reg_id":reg_id,          
-            "reginfo":reginfo,
-            "result":result,
+            "reg_id" : reg_id,
+            "reginfo": reginfo,
+            "result" : result,
             }
         return HttpResponse(template.render(context,request))
     

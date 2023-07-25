@@ -1,15 +1,15 @@
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
-import logging
 from django import template
-from django.template import loader
+from django.db.models.aggregates import Count, Sum
 from django.http.response import HttpResponse
+from django.shortcuts import render, redirect
+from django.template import loader
+from django.utils.decorators import method_decorator
+from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
+from md_order.models import MdOrdrM
 from md_store.models import MdStorM, MdStor, MdMenu
 from md_combi.models import MdCombM, MdComb
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.db.models.aggregates import Count, Sum
-from md_order.models import MdOrdrM
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -21,16 +21,14 @@ class MainView(View):
         # logger.debug(memid)
         # logger.debug(gid)
 
-        # À½·á
-        # tdtos = MdStorM.objects.select_related("menu").filter(menu__dsrt_t=-1).order_by('?')[:5]
-        # À½·á ¸Ş´º¸¸ ÇÊÅÍ¸µÇÏ¿© »óÀ§ 5°³ °á°ú °¡Á®¿À±â
+        # ìŒë£Œ ë©”ë‰´ë§Œ í•„í„°ë§í•˜ì—¬ ìƒìœ„ 5ê°œ ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
         drink_orders = MdOrdrM.objects.filter(stor_m__menu__dsrt_t=-1).values('stor_m__menu__menu_id',
                                                                               'stor_m__menu__menu_name',
                                                                               'stor_m__menu__menu_img',).annotate(
             total_orders=Sum('ordr_num')
         ).order_by('-total_orders')[:5]
         
-        # °á°ú Ãâ·Â
+        # ê²°ê³¼ ì¶œë ¥
         for item in drink_orders:
             menu_id = item['stor_m__menu__menu_id']
             menu_name = MdMenu.objects.get(menu_id=menu_id).menu_name
@@ -38,16 +36,14 @@ class MainView(View):
             total_orders = item['total_orders']
             logger.debug(f'[drnk]menu_id:{menu_id}\tmenu_name:{menu_name}\tmenu_img:{menu_img}\ttotal_orders:{total_orders}')
         
-        # µğÀúÆ®
-        # ddtos = MdStorM.objects.select_related("menu").filter(menu__drnk_t=-1).order_by('?')[:5]
-        # µğÀúÆ® ¸Ş´º¸¸ ÇÊÅÍ¸µÇÏ¿© »óÀ§ 5°³ °á°ú °¡Á®¿À±â
+        # ë””ì €íŠ¸ ë©”ë‰´ë§Œ í•„í„°ë§í•˜ì—¬ ìƒìœ„ 5ê°œ ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
         dsrt_orders = MdOrdrM.objects.filter(stor_m__menu__drnk_t=-1).values('stor_m__menu__menu_id',
                                                                              'stor_m__menu__menu_name',
                                                                              'stor_m__menu__menu_img',).annotate(
             total_orders=Sum('ordr_num')
         ).order_by('-total_orders')[:5]
         
-        # °á°ú Ãâ·Â
+        # ê²°ê³¼ ì¶œë ¥
         for item in dsrt_orders:
             menu_id = item['stor_m__menu__menu_id']
             menu_name = MdMenu.objects.get(menu_id=menu_id).menu_name
@@ -55,7 +51,7 @@ class MainView(View):
             total_orders = item['total_orders']
             logger.debug(f'[dsrt]menu_id:{menu_id}\tmenu_name:{menu_name}\tmenu_img:{menu_img}\ttotal_orders:{total_orders}')
 
-        # ÃßÃµÁ¶ÇÕ
+        # ì¶”ì²œì¡°í•©
         rdtos = MdComb.objects.annotate(num_c_likes=Count('mdclike')).order_by('-num_c_likes')[:5]
         # logger.debug(f'rdtos : {rdtos}')
 
