@@ -1,24 +1,30 @@
-<h2>관리자 통계페이지 <br><br>회원수:{{count}}</h2>
-{%for g in gen%}
-{{g.gen__gen_name}}
-{{g.gen__count}}<br>
-{%endfor%}
+{%load static%}
+<h2>관리자 통계페이지</h2>
 
+<!--성별차트-->
 <div>
-  <canvas id="myChart"></canvas>
+  <canvas id="gender"></canvas>
 </div>
-
+회원수:{{count}}명<br>
+남성:{{menper}}%<br>
+여성:{{womenper}}%
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById('gender');
+  
+  var data = {{inwon|safe}}
+  var labels = {{gender|safe}}
+  
+  console.log("수:" + data)
+  console.log("남성:" + labels)
   new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: ['남', '여'],
+      labels: labels,
       datasets: [{
         label: '# of Votes',
-        data: [79, 61],
+        data: data,
         borderWidth: 1
       }]
     },

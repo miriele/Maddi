@@ -229,14 +229,57 @@ class GenstatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/genstatis.html")
         count = MdUser.objects.count()
-        labels = []
-        data = []
+       
+        #성별/인원수
+        gender = [] # 성별이름 담을 리스트
+        inwon = []   # 해당 성별 인원수 담을 리스트
         #남/여 count
+        #SELECT g.gen_name ,COUNT(*) FROM md_user u 
+        #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
-        print(gen.values())
-
+        
+        #print(gen)
+        #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
+        
+        #쿼리셋을 list로 만듦
+        gen_list = list(gen)
+        #print(gen_list)
+        #[{'gen__gen_name': '남자\r', 'gen__count': 79}, 
+        #{'gen__gen_name': '여자\r', 'gen__count': 61}]
+        
+        #key-value 리스트화
+        #1.성별 key
+        genname = list(m['gen__gen_name'] for m in gen_list)
+        #1-1 \r제거
+        genname = [l.strip() for l in genname]
+        #2.성별인원수 value 리스트화
+        gencount = list(m['gen__count'] for m in gen_list)
+        
+       
+        #labels,data리스트에 담기
+        gender.extend(genname)
+        inwon.extend(gencount)
+        
+        print(gender)
+        print(inwon)
+        
+        #남성회원 비율
+        menper = inwon[0]/sum(inwon) * 100
+        menper = round(menper,2)
+        print(menper)
+        #여성회원 비율
+        womenper = inwon[1]/sum(inwon) * 100
+        womenper = round(womenper,2)  
+        print(womenper)        
+        
+        #데이터 TEMPLATE로 넘기기
         context = {
-            "gen":gen,
-            "count":count,
+            "inwon":    inwon,
+            "gender":   gender,
+            "menper":   menper,
+            "womenper": womenper,
+            "count":    count
             }
+        
+        
         return HttpResponse(template.render(context,request))
