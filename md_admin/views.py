@@ -12,6 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateformat import DateFormat
 from datetime import datetime
 from django.db.models.aggregates import Count
+from django.db.models.expressions import Case
+from _datetime import date
+from django.db.models.functions.text import Substr
 
 
 # 로그
@@ -255,31 +258,48 @@ class GenstatisView(View):
         #2.성별인원수 value 리스트화
         gencount = list(m['gen__count'] for m in gen_list)
         
-       
         #labels,data리스트에 담기
         gender.extend(genname)
         inwon.extend(gencount)
         
-        print(gender)
-        print(inwon)
-        
+        # print(gender)
+        # print(inwon)
+
         #남성회원 비율
         menper = inwon[0]/sum(inwon) * 100
         menper = round(menper,2)
-        print(menper)
+        # print(menper)
         #여성회원 비율
         womenper = inwon[1]/sum(inwon) * 100
         womenper = round(womenper,2)  
-        print(womenper)        
+        # print(womenper)        
+        
+        #연령대
+        today = datetime.today().year
+        print(type(today))
+        muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=0).values("year")
+        # print(userbir)
+        year = list(m['year'] for m in muserbir)
+        year = list(map(int,year))
+        age = list(map(lambda x:x - today , year))
+        age = list(map(abs,age))
+        print(age)
+        # print(year)
         
         #데이터 TEMPLATE로 넘기기
         context = {
-            "inwon":    inwon,
-            "gender":   gender,
-            "menper":   menper,
-            "womenper": womenper,
-            "count":    count
+            "inwon":        inwon,
+            "gender":       gender,
+            "menper":       menper,
+            "womenper":     womenper,
+            "count":        count,
             }
         
         
+        return HttpResponse(template.render(context,request))
+    
+class AgestatisView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/agestatis.html")
+        context = {}
         return HttpResponse(template.render(context,request))
