@@ -8,7 +8,7 @@ from datetime import datetime
 import logging
 from md_review.models import MdReview, MdTag, MdRevT
 from md_member.models import MdUser
-from md_order.models import MdOrdrM
+from md_order.models import MdOrdrM, MdOrdr
 from md_store.models import MdStorM
 
 # 로그
@@ -20,23 +20,30 @@ class ReviewView( View ):
     def get(self, request ):
         template = loader.get_template( "md_review/review.html" )   ########
         
-        stor_id = request.GET["stor_id"]
-        stor_id = int(stor_id)######
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
         
-        count = MdReview.objects.filter('''stor_id = stor_id''').count()
+        # stor_id = request.GET["stor_id"]
+        ##########################
+        # 윤제희 / 매장 메이지랑 연결해서 
+        # stor_id받아올수 있게 되면 수정 예정
+        #########################
+        stor_id = 1
         
-        if count == 0 :     
-            context = {
-                "count" :count,
-                }
-        else :
-            rev_ord = MdReview.objects.select_related('ordr')
+        
+        count   = MdReview.objects.count()
+        rdtos   = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name','ordr__mdordrm__stor_m__stor_id', 'rev_ts', 'ordr__user__user_nick', "ordr__user__user_img", 'rev_cont', 'rev_star')
+        user    = MdOrdr.objects.select_related('user')
+        
+        
+        context = {
+            "memid"     : memid,
+            "gid"       : gid,
             
-            
-            
-            context = {
-                "count" :count,
-                }
+            "count"     : count,
+            "rdtos"     : rdtos,
+            "user"      : user,
+            }
         return HttpResponse(template.render( context, request ) )
     
 # 리뷰 작성 폼
@@ -109,7 +116,7 @@ class RevwriteView( View ):
         
         md_tag0 = request.POST.get("md_tag0","")
         md_tag1 = request.POST.getlist("md_tag1","")
-        logger.debug(f' md_tag1  : { md_tag1 }')
+        # logger.debug(f' md_tag1  : { md_tag1 }')
         # 리뷰 저장
         rev = MdReview(
             ordr_id     = ordr_id,

@@ -368,7 +368,6 @@ class MyOrderListView( View ):
             stor_id     = 0
             stor_name   = 0
             stom_m_pric = 0
-            d={}
             for mo in md_ordr:
                 ordr_id = mo.ordr_id
                 md_ordr_m = MdOrdrM.objects.filter(ordr_id = ordr_id)
@@ -376,8 +375,7 @@ class MyOrderListView( View ):
                 for mom in md_ordr_m :
                     stor_m_id = mom.stor_m_id 
                     md_stor_m = MdStorM.objects.filter(stor_m_id = stor_m_id)
-                    d = {'mom.ordr_id' : 'stor_m_id'}
-                    logger.debug(f' d : {d }')
+                    
                     for msm in md_stor_m :
                         stor_id = msm.stor_id
                         stor_m_pric = msm.stor_m_pric
@@ -385,9 +383,7 @@ class MyOrderListView( View ):
                         
                         for ms in md_stor:
                             stor_name = ms.stor_name
-                            logger.debug(f'ms.stor_name   : {ms.stor_name  }')
-                            d = {'ordr_id':'stor_name'}
-                            logger.debug(f' d  : { d }')
+                            # logger.debug(f'ms.stor_name   : {ms.stor_name  }')
                             
             # 주문메뉴id /메뉴 이름
             ordr_m = MdOrdrM.objects.select_related('ordr', 'stor_m')
@@ -402,6 +398,8 @@ class MyOrderListView( View ):
             # for r in rev:
             #     logger.debug(f'r.rev_id  : {r.rev_id }')
             
+            
+            rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
                             
             
             context = {
@@ -413,8 +411,7 @@ class MyOrderListView( View ):
                 "ordr_m"    : ordr_m,
                 "md_ordr"   : md_ordr,
                 "rev"       : rev,
-                "d" : d,
-                
+                "rdtos" : rdtos,
                 
                 "memid"     : memid,
                 "gid"       : gid,

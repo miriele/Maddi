@@ -38,9 +38,12 @@
 						 endif 
 					 endfor 
 				 endfor -->
-					 {% if d.ordr_id == mdo.ordr_id %}
-						 {{stor_name }}
-					{% endif %}			
+				 {% for rdto in rdtos %}
+				 	{% if rdto.ordr_id == mdo.ordr_id %}
+					 	{{rdto.ordr__mdordrm__stor_m__stor__stor_name}}
+					{% endif %}
+				 {% endfor %}
+				 
 				</td>
 				<td	align="center">							<!-- 주문 내역 -->
 					{% for om in ordr_m %}
@@ -80,11 +83,6 @@
 				</td>
 				<td align="center">		<!-- 리뷰 작성 버튼222222 -->
 					
-						
-					{% if mdo.ordr_com_ts == None %}
-					{% endif %}
-	                
-	                
 				</td>
 			</tr>
 		{% endfor %}

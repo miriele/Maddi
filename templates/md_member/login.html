@@ -1,52 +1,43 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Maddi</title>
-	</head>
-	<body>
-	{% extends "md_member/base.html" %}
-	
-	{% block title %} <h2> 로 그 인 </h2> {% endblock %}
-	
-	{% block content %}
-	{% csrf_token %}
-		<form method="post" action="login" name="loginform">
+{% extends "md_member/base.html" %}
+
+{% block title %} <h2> 로 그 인 </h2> {% endblock %}
+
+{% block content %}
+{% csrf_token %}
+	<form method="post" action="login" name="loginform">
 		<input type="hidden" name="user_g_id" value="{{ user_g_id }}" >
-			<table>
-				<tr>
-					<th colspan="3">
-						{% if message %}
-							{{ message }}
-						{% else %}
-							아이디와 비밀번호를 입력해 주세요
-						{% endif %}
-					</th>
-				</tr>
-				<tr>
-					<td>
-						<input class="input" type="text" name="user_id" placeholder="아이디" 
-							size=30% maxlength="20" autofocus required>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input class="input" type="password" name="user_pass" placeholder="비밀번호"
-							size=30% maxlength="20" required>
-					</td>
-				</tr>
-				<tr>
-					<th colspan="2">
-						<input class="inputbutton" type="submit" value="로그인" width=30%>
-				</tr>
-				<tr>
-					<th colspan="2">
-						<input class="inputbutton" type="button" value="회원가입"
-							onclick="location='input'">
-					</th>
-				</tr>
-			</table>
-		</form>
-	{% endblock %}
-	</body>
-</html>
+		<table>
+			<tr>
+				<th colspan="3">
+					{% if message %}
+						{{ message }}
+					{% else %}
+						아이디와 비밀번호를 입력해 주세요
+					{% endif %}
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<input class="input" type="text" name="user_id" placeholder="아이디" 
+						size=30% maxlength="20" autofocus required>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input class="input" type="password" name="user_pass" placeholder="비밀번호"
+						size=30% maxlength="20" required>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<input class="inputbutton" type="submit" value="로그인" width=30%>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<input class="inputbutton" type="button" value="회원가입"
+						onclick="location='input'">
+				</th>
+			</tr>
+		</table>
+	</form>
+{% endblock %}
