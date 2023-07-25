@@ -99,27 +99,23 @@ class SearchView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)    
-    def get(self,request):
-        template = loader.get_template("md_main/searchlist.html")
+    def post(self,request):
+        template   = loader.get_template("md_main/searchlist.html")
+        searchText = request.POST.get("searchtext")
+        bjdName    = request.POST.get("bjc_name")
+
         count= MdStor.objects.all().count()
         if count ==0:
             context = {
                 "count":count,
             }
-        searchtext=request.GET.get("searchtext")
         sdtos = MdStor.objects.all()
-        # ddtos = MdStorM.objects.all().select_related("stor").select_related("menu").filter(menu__drnk_t=-1)
-        # tdtos = MdStorM.objects.all().select_related("menu").select_related("stor").filter(menu__dsrt_t=-1)
-        if searchtext:
-            sdtos = sdtos.filter(stor_name__icontains=searchtext)
-            # ddtos = ddtos.filter(stor__stor_name__icontains=searchtext)
-            # tdtos = tdtos.filter(stor__stor_name__icontains=searchtext)
+        if searchText:
+            sdtos = sdtos.filter(stor_name__icontains=searchText)
             count = sdtos.all().count()
         context = {
             "sdtos":sdtos,
             "count":count,
-            # "ddtos":ddtos,
-            # "tdtos":tdtos,
             }
         return HttpResponse(template.render(context,request))
 

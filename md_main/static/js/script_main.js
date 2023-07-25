@@ -87,7 +87,7 @@ function initializeMap(div, coords) {
 	var container = document.getElementById(div);	// 지도를 담을 영역의 DOM 레퍼런스
 	var options = {									// 지도를 생성할 때 필요한 기본 옵션
 		center: new kakao.maps.LatLng(lat, long),	// 지도의 중심좌표
-		level: 4									// 지도의 레벨(확대, 축소 정도) : 1~7
+		level: 5									// 지도의 레벨(확대, 축소 정도) : 1~14
 	};
 	
 	kakaomap = new kakao.maps.Map(container, options);	// 지도 생성 및 객체 리턴
@@ -113,9 +113,35 @@ function searchDetailAddrFromCoords(coords, callback) {
 
 function displayCenterInfo(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
+		// 지도에 현재 법정동 위치 표시 해주기
 		var infoDiv = document.getElementById('centerAddr');
+		var cur_loc = '현재위치 : ' + result[0].address.address_name;
 		
-		infoDiv.innerHTML = result[0].address.address_name;
+		infoDiv.innerHTML = cur_loc; 
+		
+		// 검색할 때 법정동 코드 얻기 위해 법정도 설정
+		var element_bjd = $("input[name='bjd_name']");
+		var states_s    = ["경기", "서울", "부산", "경남", "인천",
+						   "대구", "경북", "충남", "전북", "광주",
+						   "전남", "대전", "강원특별자치도", "충북", "울산",
+						   "제주특별자치도", "세종특별자치시"];
+		var states_l	= ["경기도", "서울특별시", "부산광역시", "경상남도", "인천광역시",
+						   "대구광역시", "경상북도", "충청남도", "전라북도", "광주광역시",
+						   "전라남도", "대전광역시", "강원특별자치도", "충청북도", "울산광역시",
+						   "제주특별자치도", "세종특별자치시"];
+		
+		var region1  = result[0].address.region_1depth_name;
+		var region2  = result[0].address.region_2depth_name;
+		var region3  = result[0].address.region_3depth_name.split(' ');
+		
+		var bjd_name = states_l[states_s.indexOf(region1)];
+		bjd_name += ' ' + region2;
+		bjd_name += ' ' + region3[0];
+
+		console.log(bjd_name);
+		console.log(kakaomap.getLevel())
+		
+		element_bjd.value = bjd_name;
 	}    
 }
 
