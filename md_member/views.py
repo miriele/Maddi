@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT, MdStorM, MdStor
 from md_order.models import MdOrdr, MdOrdrM
+from md_review.models import MdReview
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -198,20 +199,21 @@ class UserInfoView( View ):
        
         template = loader.get_template( "md_member/userinfo.html")
         context = {
-            "memid" : memid,
-            "dtos" :dtos,
-            "gid" :gid,
-            "g_name" :g_name,
+            "memid"     : memid,
+            "gid"       :gid,
+            
+            "dtos"      :dtos,
+            "g_name"    :g_name,
             "md_intr_t" : md_intr_t,
             "md_tast_t" : md_tast_t,
             "md_algy_t" : md_algy_t,
             "md_drnk_t" : md_drnk_t,
             "md_dsrt_t" : md_dsrt_t,
-            "udsrt" : udsrt,
-            "udrnk" : udrnk,
-            "ualgy" : ualgy,
-            "uintr" : uintr,
-            "utast" : utast,
+            "udsrt"     : udsrt,
+            "udrnk"     : udrnk,
+            "ualgy"     : ualgy,
+            "uintr"     : uintr,
+            "utast"     : utast,
             }       
         
         return HttpResponse( template.render( context, request ) )
@@ -316,8 +318,8 @@ class MyOrderListView( View ):
         
         template = loader.get_template( "md_member/myorderlist.html")
         
-        memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        memid   = request.session.get("memid")
+        gid     = request.session.get("gid")
         
         # 갯수 있나 없나
         count = MdOrdr.objects.filter( user_id= memid ).count()
@@ -335,8 +337,8 @@ class MyOrderListView( View ):
                 pagenum = "1"
             
             pagenum = int( pagenum )                            #5
-            start = (pagenum -1 ) * int( page_size )            #4*5=    20
-            end = start + int( page_size )                      #20+5=    25
+            start   = (pagenum -1 ) * int( page_size )            #4*5=    20
+            end     = start + int( page_size )                      #20+5=    25
             
             if end >count :
                 end = count
@@ -359,22 +361,23 @@ class MyOrderListView( View ):
             pages = range(startpage, endpage + 1) 
             
             #주문 내역/ordr_id, ordr_ord_ts / 주문 매장 명
-            md_ordr = MdOrdr.objects.filter( user_id= memid ).order_by("-ordr_ord_ts")[start:end]
-            ordr_id = 0
-            stor_m_id = 0
-            stor_id = 0
-            stor_name = 0
+            md_ordr = MdOrdr.objects.filter( user_id= memid ).order_by("-ordr_id")[start:end]
+            
+            ordr_id     = 0
+            stor_m_id   = 0
+            stor_id     = 0
+            stor_name   = 0
             stom_m_pric = 0
+            d={}
             for mo in md_ordr:
                 ordr_id = mo.ordr_id
-                # logger.debug(f' ordr_id  : { ordr_id }')
-                
                 md_ordr_m = MdOrdrM.objects.filter(ordr_id = ordr_id)
                 
                 for mom in md_ordr_m :
                     stor_m_id = mom.stor_m_id 
                     md_stor_m = MdStorM.objects.filter(stor_m_id = stor_m_id)
-                    
+                    d = {'mom.ordr_id' : 'stor_m_id'}
+                    logger.debug(f' d : {d }')
                     for msm in md_stor_m :
                         stor_id = msm.stor_id
                         stor_m_pric = msm.stor_m_pric
@@ -383,25 +386,35 @@ class MyOrderListView( View ):
                         for ms in md_stor:
                             stor_name = ms.stor_name
                             logger.debug(f'ms.stor_name   : {ms.stor_name  }')
-
+                            d = {'ordr_id':'stor_name'}
+                            logger.debug(f' d  : { d }')
+                            
             # 주문메뉴id /메뉴 이름
             ordr_m = MdOrdrM.objects.select_related('ordr', 'stor_m')
             
             #날씨
             weather = MdOrdr.objects.select_related('weather').filter(user = memid)
             
-            #닉네임
-            nick = MdUser.objects.get(user_id = memid )
-            # logger.debug(f'nick.user_nick : {nick.user_nick}')
+            # 리뷰 버튼
+            rev = MdReview.objects.select_related('ordr').order_by("-ordr_id")
+            
+            
+            # for r in rev:
+            #     logger.debug(f'r.rev_id  : {r.rev_id }')
+            
+                            
             
             context = {
-                "stor_name"    : stor_name,
-                "md_stor"    : md_stor,
-                "md_stor_m"    : md_stor_m,
+                "stor_name" : stor_name,
+                "md_stor"   : md_stor,
+                "md_stor_m" : md_stor_m,
                 
                 "weather"   : weather,
                 "ordr_m"    : ordr_m,
                 "md_ordr"   : md_ordr,
+                "rev"       : rev,
+                "d" : d,
+                
                 
                 "memid"     : memid,
                 "gid"       : gid,
@@ -415,34 +428,6 @@ class MyOrderListView( View ):
                 "pagecount" : pagecount,
                 }
         return HttpResponse(template.render(context, request ) )
-        
-        '''
-        {% for ms in md_stor %}
-    {% for om in ordr_m %}
-        {% if ms.stor_id == om.stor_m.stor_id %}
-            {{ ms.stor_name }}
-        {% endif %}
-    {% endfor %}
-{% endfor %}
-
-        '''
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         

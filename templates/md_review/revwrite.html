@@ -1,24 +1,65 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Maddi</title>
-	</head>
-	<body>
-	{% extends "md_main/base.html" %}
-	
-	{% block title %} <h2> 회 원 가 입 </h2> {% endblock %}
-	{% block search %} {% endblock %}
-	{% block mapview %} {% endblock %}
-	{% block content %}
-	{% csrf_token %}
-		<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
-			<table >
-				<tr>
-					<th> 아이디 </th>
-				</tr>
-			</table>
-		</form>
-	{% endblock %}
-	</body>
-</html>
+{% extends "md_member/base.html" %}
+
+{% block title %} <h2> 리 뷰 작 성 </h2> {% endblock %}
+{% block content %}
+{% csrf_token %}
+<form method="post" action="revwrite "	name="revwriteform" enctype="multipart/form-data">
+	<input type="hidden" name="ordr_id" value="{{ordr_id}}">
+	<table >
+		<tr>
+			<th colspan="4" align="center"> 리뷰 작성 </th>
+		</tr>
+		<tr>
+			<th> 작성자 </th>
+			<td> {{ nick.user_nick }}</td>
+		</tr>
+		<tr>
+			<th> 주문 내역  </th>
+			<td> {{m_name}} &nbsp;&nbsp; {{ ordr_num }}개</td>		
+		</tr>
+		<tr>
+			<th> 별점  </th>
+			<td> 
+				<input class="input" type="text" name="rev_star" maxlength="6" placeholder="0~5점까지 입력해 주세요" required>
+			</td>		
+		</tr>
+		<tr>
+			<th> 태그 </th>
+			<td>
+				<select name="md_tag0" id="md_tag0" size="4">
+					<option value="-1" disabled > ---선택--- </option>
+					{% for tag0 in md_tag0 %}
+						<option value="{{tag0.tag_id}}"> {{tag0.tag_name }} </option>
+					{% endfor %}
+				</select>
+				<select name="md_tag1" id="md_tag1" multiple size="4">
+					<option value="-1" disabled> ---선택--- </option>
+					{% for tag1 in md_tag1 %}
+						<option value="{{tag1.tag_id}}"> {{tag1.tag_name }} </option>
+					{% endfor %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th> 내용 </th><!--  범위 수정해야 함 -->
+			<td> 
+				<textarea name="rev_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th> 이미지 첨부 </th> <!-- 썸네일 가능하면 -->
+			<td>
+				<input class="input" type="file" name="rev_img" accept="image/*" >
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				<input class="inputbutton" type="submit" value="작성">
+				<input class="inputbutton" type="reset" value="취소">
+				<input class="inputbutton" type="button" value="주문목록"
+					onclick="location='/md_member/myorderlist?pagenum={{ pagenum }}'">
+			</th>
+		</tr>
+	</table>
+</form>
+{% endblock %}

@@ -1,151 +1,142 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Maddi</title>
-	</head>
-	<body>
-	{% extends "md_member/base.html" %}
-	
-	{% block title %} <h2> 추천글 작성 </h2> {% endblock %}
-	{% block content %}
-	{% csrf_token %}
-		<form method="post" action="combwrite "	name="combwriteform" enctype="multipart/form-data">
-			<table border="1">
-				<tr>
-					<th colspan="4" align="center"> 게시글 작성 </th>
-				</tr>
-				<tr>
-					<th> 작성자 </th>
-					<td> {{ nick.user_nick }}</td>
-				</tr>
-				<tr>
-					<th> 제목 </th>
-					<td>
-						<input class="input" type="text" name="comb_tit" maxlength="90" placeholder="제목을 입력해 주세요" required>
-					</td>
-				</tr>
-				<tr>
-					<th> 인원수 </th>
-					<td>
-						<select name = "comb_nop">
-							<option value="1"> 1인 </option>
-							<option value="2"> 2인 </option>
-							<option value="3"> 3인 </option>
-							<option value="4"> 4인 </option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>대표메뉴1	</th><!-- 태그 어떻게 가져올지 모르겠음...-->
-					<td> 
-						<select name="dord1" required onchange="dndchange(this)">
-							<option value="" disabled="none" selected> 대분류 </option>
-							<option value="1"> 음료 </option>
-							<option value="2"> 디저트 </option>
-						</select>
-						<script>
-						function dndchange(e) {
-							var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
-							var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
-							var target = document.getElementById("drnk");
-							
-							if (e.value == "1" )		var d = drk;
-							else if(e.value == "2" )	var d = dst;
-								
-							target.options.length = 0;
-							
-							for  (x in d) {
-								var opt = document.createElement("option");
-								opt.value = d[x];
-								opt.innerHTML = d[x];
-								target.appendChild(opt);
-							}
-						}
+{% extends "md_member/base.html" %}
+
+{% block title %} <h2> 추천글 작성 </h2> {% endblock %}
+{% block content %}
+{% csrf_token %}
+<form method="post" action="combwrite "	name="combwriteform" enctype="multipart/form-data">
+	<table border="1">
+		<tr>
+			<th colspan="4" align="center"> 게시글 작성 </th>
+		</tr>
+		<tr>
+			<th> 작성자 </th>
+			<td> {{ nick.user_nick }}</td>
+		</tr>
+		<tr>
+			<th> 제목 </th>
+			<td>
+				<input class="input" type="text" name="comb_tit" maxlength="90" placeholder="제목을 입력해 주세요" required>
+			</td>
+		</tr>
+		<tr>
+			<th> 인원수 </th>
+			<td>
+				<select name = "comb_nop">
+					<option value="1"> 1인 </option>
+					<option value="2"> 2인 </option>
+					<option value="3"> 3인 </option>
+					<option value="4"> 4인 </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>대표메뉴1	</th><!-- 태그 어떻게 가져올지 모르겠음...-->
+			<td> 
+				<select name="dord1" required onchange="dndchange(this)">
+					<option value="" disabled="none" selected> 대분류 </option>
+					<option value="1"> 음료 </option>
+					<option value="2"> 디저트 </option>
+				</select>
+				<script>
+				function dndchange(e) {
+					var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
+					var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
+					var target = document.getElementById("drnk");
+					
+					if (e.value == "1" )		var d = drk;
+					else if(e.value == "2" )	var d = dst;
 						
-						</script>
-						
-						<select id = "drnk">
-							<option> 중분류 </option>
-						</select>
-						
-						
-							
-						<select id = "drink"><!-- 안먹음 -->
-						{% for ds in dsrt %}
-							<option value="ds.dsrt_t_id"> {{ ds.dsrt_t_name }}</option>
-						{% endfor %}
-						</select>
-					</td>
-				</tr>
+					target.options.length = 0;
+					
+					for  (x in d) {
+						var opt = document.createElement("option");
+						opt.value = d[x];
+						opt.innerHTML = d[x];
+						target.appendChild(opt);
+					}
+				}
+				
+				</script>
+				
+				<select id = "drnk">
+					<option> 중분류 </option>
+				</select>
 				
 				
+					
+				<select id = "drink"><!-- 안먹음 -->
+				{% for ds in dsrt %}
+					<option value="ds.dsrt_t_id"> {{ ds.dsrt_t_name }}</option>
+				{% endfor %}
+				</select>
+			</td>
+		</tr>
+		
+		
+		
+		<tr>
+			<th>대표메뉴2	</th>
+			<td> 
+				<select name="dord2" required onchange="dndchanget(this)">
+					<option value="" disabled="none" selected> 대분류 </option>
+					<option value="1"> 음료 </option>
+					<option value="2"> 디저트 </option>
+				</select>
 				
-				<tr>
-					<th>대표메뉴2	</th>
-					<td> 
-						<select name="dord2" required onchange="dndchanget(this)">
-							<option value="" disabled="none" selected> 대분류 </option>
-							<option value="1"> 음료 </option>
-							<option value="2"> 디저트 </option>
-						</select>
+				<script>
+				function dndchanget(e) {
+					var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
+					var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
+					var target = document.getElementById("dsrt");
+					console.log(drk);
+					if (e.value == "1" )		var d = drk;
+					else if(e.value == "2" )	var d = dst;
 						
-						<script>
-						function dndchanget(e) {
-							var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
-							var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
-							var target = document.getElementById("dsrt");
-							console.log(drk);
-							if (e.value == "1" )		var d = drk;
-							else if(e.value == "2" )	var d = dst;
-								
-							target.options.length = 0;
-							
-							for  (x in d) {
-								var opt = document.createElement("option");
-								opt.value = d[x];
-								opt.innerHTML = d[x];
-								target.appendChild(opt);
-							}
-						}
-						
-						</script>
-						
-						<select id = "dsrt">
-							<option> 중분류 </option>
-						</select>
-						
-						<select name="dessert" required>
-							<option> 소분류 </option>
-							
-						</select>
-					</td>
-				</tr>
+					target.options.length = 0;
+					
+					for  (x in d) {
+						var opt = document.createElement("option");
+						opt.value = d[x];
+						opt.innerHTML = d[x];
+						target.appendChild(opt);
+					}
+				}
 				
+				</script>
 				
+				<select id = "dsrt">
+					<option> 중분류 </option>
+				</select>
 				
-				<tr>
-					<th> 내용 </th><!--  범위 수정해야 함 -->
-					<td> 
-						<textarea name="comb_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th> 이미지 첨부 </th> <!-- 썸네일 가능하면 -->
-					<td>
-						<input class="input" type="file" name="comb_img" accept="image/*" >
-					</td>
-				</tr>
-				<tr>
-					<th colspan="2">
-						<input class="inputbutton" type="submit" value="작성">
-						<input class="inputbutton" type="reset" value="취소">
-						<input class="inputbutton" type="button" value="작성취소"
-							onclick="location='/md_combi/comblist'">
-					</th>
-				</tr>
-			</table>
-		</form>
-	{% endblock %}
-	</body>
-</html>
+				<select name="dessert" required>
+					<option> 소분류 </option>
+					
+				</select>
+			</td>
+		</tr>
+		
+		
+		
+		<tr>
+			<th> 내용 </th><!--  범위 수정해야 함 -->
+			<td> 
+				<textarea name="comb_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th> 이미지 첨부 </th> <!-- 썸네일 가능하면 -->
+			<td>
+				<input class="input" type="file" name="comb_img" accept="image/*" >
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				<input class="inputbutton" type="submit" value="작성">
+				<input class="inputbutton" type="reset" value="취소">
+				<input class="inputbutton" type="button" value="작성취소"
+					onclick="location='/md_combi/comblist'">
+			</th>
+		</tr>
+	</table>
+</form>
+{% endblock %}
