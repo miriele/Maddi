@@ -1,4 +1,5 @@
 {% load static %}
+<script src="{% static 'js/script_store.js' %}"></script>	
 {% block title %} 
 <head>
     <title>점주_메뉴등록</title>
@@ -6,7 +7,9 @@
 {% endblock %}
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
-<form method="post" action="menuinfo" name="updateform">
+{{menu_img}}
+<form method="post" action="{% url 'md_store:addmenu' %}" name="updateform">
+	{% csrf_token %}
 	<table>
 	    <tr>
 	        <th colspan="3">
@@ -14,7 +17,11 @@
 	        </th>
 	    </tr>
 	    <tr>
-	        <th rowspan="8" width="300" height="300"> 메뉴 이미지를 등록해주세요 </th>
+	        <th rowspan="7"><img src="/media/{{ menu_img }}" width="300" height="300"></th>
+	    </tr>
+	    <tr>
+	        <th>매장명</th>
+	        <th>{{ stor_name }}</th>
 	    </tr>
 	    <tr>
 	        <th>메뉴명</th>
@@ -23,17 +30,113 @@
 		    </td>
 	    </tr>
 	    <tr>
-	        <th>메뉴유형</th>
-	        <td colspan="2">
-		        <input class="input" type="text" name="menu_kcal" maxlength="20" style="width:250px" value="일반or시그니처">
+		    <th>메뉴유형</th>
+		    <td colspan="2">
+		        <select class="input" name="menu_type" style="width:250px">
+		            <option value="일반">일반</option>
+		            <option value="시그니처">시그니처</option>
+		        </select>
 		    </td>
-	    </tr>
+		</tr>
 	    <tr>
 		    <th>카테고리</th>
 		    <td colspan="2">
-		        <input class="input" type="text" name="menu_kcal" maxlength="20" style="width:250px" value="커피등등">
+		        <select class="input" name="menu_b_cate" style="width:100px" id="menu_b_cate">
+		            <option value="==카테고리==">==카테고리==</option>
+		            <option value="0">디저트</option>
+		            <option value="1">음료</option>
+		        </select>
+		        <select class="input" name="menu_dsrt" style="width:100px" id="menu_dsrt">
+		            <option value="==디저트==">==디저트==</option>
+		            <option value="0">빵</option>
+		            <option value="1">푸딩</option>
+		            <option value="2">케이크</option>
+		            <option value="3">파이</option>
+		            <option value="4">아이스크림</option>
+		            <option value="5">초콜릿</option>
+		            <option value="6">쿠키</option>
+		        </select>
+		        <select class="input" name="menu_drnk" style="width:100px" id="menu_drnk">
+		            <option value="==음료==">==음료==</option>
+		            <option value="0">스무디</option>
+		            <option value="1">쉐이크</option>
+		            <option value="2">에이드</option>
+		            <option value="3">밀크티</option>
+		            <option value="4">커피</option>
+		            <option value="5">차</option>
+		            <option value="6">주스</option>
+		            <option value="7">디카페인</option>
+		            <option value="8">기타</option>
+		        </select>   
+		        <select class="input" name="menu_ice" style="width:100px" id="menu_ice">
+		            <option value="==아이스==">==아이스==</option>
+		            <option value="ICE">ICE</option>
+		            <option value="HOT">HOT</option>
+		        </select>
 		    </td>
 		</tr>
+		<!-- 
+		<tr>
+		    <th>알러지</th>
+		    <td colspan="2">
+		        <div style="float: left; width: 50%;">
+		            <label>
+		                <input type="checkbox" name="allergy" value="0" /> 계란
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="1" /> 우유
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="2" /> 땅콩
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="3" /> 대두
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="4" /> 밀
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="5" /> 새우
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="6" /> 돼지고기
+		            </label>
+		        </div>
+		        <div style="float: left; width: 50%;">
+		            <label>
+		                <input type="checkbox" name="allergy" value="7" /> 복숭아
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="8" /> 토마토
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="9" /> 아황산류
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="10" /> 호두
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="11" /> 닭고기
+		            </label>
+		            <br />
+		            <label>
+		                <input type="checkbox" name="allergy" value="12" /> 쇠고기
+		            </label>
+		            <br />
+		        </div>
+		    </td>
+		</tr>
+		 -->
 	    <tr>
 	        <th>칼로리</th>
 	        <td colspan="2">
@@ -50,11 +153,11 @@
 	        <th colspan="3">&nbsp;</th>
 	    </tr>
 	    <tr>
-	        <th colspan="3"> 메뉴 소개 </th>
+	        <th>메뉴 소개</th>
 	    </tr>
 	    <tr>
-	       <td colspan="2">
-		        <input class="input" type="text" name="menu_price" maxlength="20" style="width:500px">
+	       <td colspan="3">
+		        <input class="input" type="text" name="menu_info" maxlength="500" style="width:500px">
 		    </td>
 	    </tr>
 	    <tr>

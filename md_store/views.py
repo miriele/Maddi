@@ -68,20 +68,20 @@ class StoreView(View):
         except MdStor.DoesNotExist:
             return HttpResponseNotFound()
 
-class ImageView(View):
+class ImageStoreView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
     def get(self, request):
-        template = loader.get_template("md_store/image.html")
+        template = loader.get_template("md_store/imagestore.html")
         context = {}
         return HttpResponse( template.render( context, request ) )
     def post(self, request):
         stor_id = 6
         store = MdStor.objects.get(stor_id=stor_id)
-        img = request.FILES["img"]
+        imgstor = request.FILES["imgstor"]
     
-        store.stor_img = img
+        store.stor_img = imgstor
         stor_t_id = store.stor_t_id
         bjd_code = store.bjd_code
         area_t = store.area_t
