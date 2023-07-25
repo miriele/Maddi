@@ -7,6 +7,8 @@ from django.utils.dateformat import DateFormat
 from django.utils import timezone
 from django.template import loader
 import logging
+from operator import itemgetter
+from django.db.models import Case, When, Value, CharField
 
 
 # 로그
@@ -14,7 +16,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = request.GET.get('stor_m_id')
+        stor_m_id = 36
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -115,6 +117,7 @@ class CartView(View):
             }
         
         return redirect("md_order:orderinfo")
+
 
     
 class OrderView(View):
@@ -237,7 +240,7 @@ class BuckDelOrdrView(View):
                     except MdBuck.DoesNotExist:
                         pass
                     
-        return redirect('md_order:buck')
+        return redirect('md_order:ordersuc')
 
 class OrdrSucView (View):
     def get(self,request):
@@ -251,8 +254,17 @@ class OrdrSucView (View):
 class OrdrListView(View):
     def get(self, request):
         orders = MdOrdr.objects.all()
-     
+        
+        orders = MdOrdr.objects.annotate(
+            order_status=Case(
+                When(ordr_com_ts__isnull=True, then=Value('접수완료')),
+                default=Value('처리완료'),
+                output_field=CharField()
+            )
+        )
 
+        orders = orders.order_by('order_status', 'ordr_com_ts')
+    
         context = []
 
         for order in orders:
@@ -273,6 +285,8 @@ class OrdrListView(View):
             else:
                 order_status = '처리완료'
             
+            
+            
             context.append({
                 'ordr_id': order.ordr_id,
                 'user_id': order.user_id,
@@ -285,8 +299,9 @@ class OrdrListView(View):
                 'order_status': order_status,  
                 'order_menus': context_m,
             })
-            
         
+
+
         return render(request, 'md_order/orderlist.html', {'context': context})
     
 class OrdrAlertView (View):
