@@ -137,6 +137,7 @@ class MenuListView(View):
             return HttpResponseNotFound()
     def post(self, request):
         stor_id = request.POST["stor_id"]
+        stor_m_id = request.POST["stor_m_id"]
         return HttpResponse(request)
     
 class AddMenuView(View):

@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 3
+        stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
