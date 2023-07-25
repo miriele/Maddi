@@ -1,8 +1,6 @@
 //여기는 ~이런 경우면 안돼게 막는 페이지
 $(document).ready(
 	function() {
-		var replyok = "댓글이 등록되었습니다."
-		var replyno = "댓글이 등록되지 않아습니다. 다시 시도해 주십시오"		
 		
 		function erroralert(msg) {
 			alert(msg);
@@ -11,7 +9,7 @@ $(document).ready(
 		}
 		
 		
-		// 댓글 ajax
+		// 즐겨찾기 ajax
 		$("input[name='addfavbtn']").on(
 			"click",
 			function(event) {
@@ -43,37 +41,6 @@ $(document).ready(
 				)
 			}	// function
 		);	// $("form[name='addfavform']").on
-		
-		
-		// 좋아요 ajax
-		$("form[name='clikeform']").on(
-			"submit",
-			function(event) {
-				$.ajax(
-					{
-						url : "clike",
-						type : "POST",
-						data : {
-							comb_id : $("input[name='comb_id']").val(),
-							pagenum : $("input[name='pagenum']").val(),
-							number : $("input[name='number']").val(),
-						},
-						datatype :"text",
-						success : function( data ) {
-							if ( data == 1 ){
-								alert("replyok")
-							}
-							else {
-								alert("replyno")								
-							}
-						},
-						error : function(request, status, error) {
-							alert("서버요청실패");
-						}
-					}
-				)
-			}	// function
-		);	// $("form[name='clikeform']").on
 	}	// function
 )	// $(document).ready
 		

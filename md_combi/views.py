@@ -149,6 +149,10 @@ class CombWriteView( View ):
     
 # 추천글 내용 보기
 class CombDView( View ):
+    @method_decorator( csrf_exempt )
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
     def get(self, request ):
         template = loader.get_template( "md_combi/combd.html" )
         
@@ -186,17 +190,18 @@ class CombDView( View ):
         result = 0
         for like in comb_like :
             # logger.debug(f'like.user_id : {like.user_id}')
-            if like.user_id != memid :
-                result = 0
-            else :
+            if like.user_id == memid :
                 result = 1
-            # logger.debug(f'result : {result}')
+                break
+        # logger.debug(f'result : {result}')
             
         context = {
             "memid"     : memid,
             "gid"       : gid,
+            
             "pagenum"   :pagenum,
             "number"    : number,
+            
             "comb_id"   : comb_id,
             "user"      :user,
             "comb"      : comb,
@@ -214,34 +219,27 @@ class CombDView( View ):
         memid = request.session.get("memid")
         gid = request.session.get("gid")
         
-        comb_id = request.POST.get("comb_id","")
-        # logger.debug(f'comb_id2 : {comb_id}')
+        comb_id         = request.POST.get("comb_id","")
+        pagenum         = request.POST.get("pagenum","")
+        number          = request.POST.get("number","")
+        c_reply_cont    = request.POST.get("c_reply_cont","")
         
-        pagenum = request.POST.get("pagenum","")
-        # logger.debug(f'pagenum : {pagenum}')
-        
-        number = request.POST.get("number","")
-        # logger.debug(f'number : {number}')
-        
-        c_reply_cont = request.POST.get("c_reply_cont","")
-        # logger.debug(f'c_reply_cont : {c_reply_cont}')
-                                            
+        result = 1                        
         dto = MdCombR(
-            comb_id = comb_id,
-            user_id = memid,
-            c_reply_cont = c_reply_cont,
-            c_reply_ts =  datetime.now(),
+            comb_id         = comb_id,
+            user_id         = memid,
+            c_reply_cont    = c_reply_cont,
+            c_reply_ts      = datetime.now(),
             )
         dto.save()
             
         return HttpResponse()
-# 댓글용 폼
-# class CombReplyView( View ):
-    
 
 # 좋아요 설정 취소
-import json   
 class CLikeView( View ):
+    @method_decorator( csrf_exempt )
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
     def post(self, request ):
         
         memid = request.session.get("memid")

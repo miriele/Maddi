@@ -1,121 +1,108 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Maddi</title>
-	</head>
-	<body>
-	{% extends "md_member/base.html" %}
-	
-	{% block title %} <h2> 추천글 보기 </h2> {% endblock %}
-	
-	{% block content %}
-	{% csrf_token %}
-	<form method="post" action="clike"name="clikeform">
+{% extends "md_member/base.html" %}
+
+{% block title %} <h2> 추천글 보기 </h2> {% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<form method="post" action="clike"name="clikeform">
 	<input type="hidden" name="comb_id" value="{{comb_id}}">
 	<input type="hidden" name="pagenum" value="{{pagenum}}">
 	<input type="hidden" name="number" value="{{number}}">
-	<input type="hidden" name="user_id" value="{{memid}}">
-	{% csrf_token %}
-		{% if result == 0 %}
-			<input type="submit" value="좋아요">
-		{% else %}
-			<input type="submit" value="좋아요취소">
-		{% endif %}
-	</form>
-		<table border="1">
-			<tr>
-				<th> 글번호 </th>
-				<td> {{ number }} </td>
-			</tr>
-			<tr>
-				<th> 작성자 </th>
-				<td> 
-					{% for n in nick %}
-           				{{ n.user.user_id }}
-           			{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th> 추천수</th>
-				<td>{{ likeC }}</td>
-			</tr>
-			<tr>
-				<th> 작성일 </th>
-				<td>{{ comb.comb_reg_ts }}</td>
-			</tr>
-			<tr>
-				<th colsapn="4">제목</th>
-				<td>{{comb.comb_tit }}</td>
-			</tr>
-			<tr>
-				<th> 조합한 메뉴</th>
-				<td> 
-					{% for m in menu %}
-						{{ m.menu.menu_name }}/
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th> 이미지 </th>
-				<td> 
-					<img src="/media/{{comb.comb_img}}" width="280" height="300" name="c_img" >
-				</td>
-			</tr>
-			<tr>
-				<th> 내용 </th>
-				<td> {{ comb.comb_cont }} </td>
-			</tr>
-			<tr>
-				<td>
-					<input class="inputbutton" type="button" value="목록으로 돌아가기"
-							onclick="location='/md_combi/comblist?comb_id={{comb_id }}&pagenum={{ pagenum }}'">
-				</td>
-			</tr>
-		</table>
-		
-		<form method="post" action="combd"name="combdform" >
-		
-		<input type="hidden" name="comb_id" value="{{comb_id}}">
-		<input type="hidden" name="pagenum" value="{{pagenum}}">
-		<input type="hidden" name="number" value="{{number}}">
-			{% csrf_token %}
-			<table>
-				<tr>
-					<th colspan="3"> 댓글 <hr> </th>
-				</tr>
-				<tr>
-					<td><!-- 미리 넣어둔 사진 들은 images/가 추가된 사진이 아니라서 images/써줘야 나옴 >> 다하고 수정하기 -->
-						<img src="/media/images/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-						{{user.user_nick }} 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<textarea name="c_reply_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input class="inputbutton" type="submit" value="댓글작성">
-						<hr>
-					</td>
-				</tr>
-			</table>
-			<table>
-				{% for re in reply %}
-				<tr>
-					<td>
-						<img src="/media/images/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-						{{re.user.user_nick }} / {{ re.c_reply_ts |date:"Y-m-d H:i" }}
-					</td>
-				</tr>
-				<tr>
-					<td> {{re.c_reply_cont }} </td>
-				</tr>
+	{% if result == 0 %}
+		<input type="button" name="clikebtn" value="좋아요">
+	{% else %}
+		<input type="button" name="clikebtn" value="좋아요 취소">
+	{% endif %}
+</form>
+	<table border="1">
+		<tr>
+			<th> 글번호 </th>
+			<td> {{ number }} </td>
+		</tr>
+		<tr>
+			<th> 작성자 </th>
+			<td> 
+				{% for n in nick %}
+          				{{ n.user.user_id }}
+          			{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<th> 추천수</th>
+			<td>{{ likeC }}</td>
+		</tr>
+		<tr>
+			<th> 작성일 </th>
+			<td>{{ comb.comb_reg_ts }}</td>
+		</tr>
+		<tr>
+			<th colsapn="4">제목</th>
+			<td>{{comb.comb_tit }}</td>
+		</tr>
+		<tr>
+			<th> 조합한 메뉴</th>
+			<td> 
+				{% for m in menu %}
+					{{ m.menu.menu_name }}/
 				{% endfor %}
-			</table>
-		</form>
-	{% endblock %}
-	</body>
-</html>
+			</td>
+		</tr>
+		<tr>
+			<th> 이미지 </th>
+			<td> 
+				<img src="/media/{{comb.comb_img}}" width="280" height="300" name="c_img" >
+			</td>
+		</tr>
+		<tr>
+			<th> 내용 </th>
+			<td> {{ comb.comb_cont }} </td>
+		</tr>
+		<tr>
+			<td>
+				<input class="inputbutton" type="button" value="목록으로 돌아가기"
+						onclick="location='/md_combi/comblist?comb_id={{comb_id }}&pagenum={{ pagenum }}'">
+			</td>
+		</tr>
+	</table>
+{% csrf_token %}	
+<form method="post" action="combd"name="combdform" >
+	<input type="hidden" name="comb_id" value="{{comb_id}}">
+	<input type="hidden" name="pagenum" value="{{pagenum}}">
+	<input type="hidden" name="number" value="{{number}}">
+	<table>
+		<tr>
+			<th colspan="3"> 댓글 <hr> </th>
+		</tr>
+		<tr>
+			<td><!-- 미리 넣어둔 사진 들은 images/가 추가된 사진이 아니라서 images/써줘야 나옴 >> 다하고 수정하기 -->
+				<img src="/media/images/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+				{{user.user_nick }} 
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<textarea name="c_reply_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" name="replybtn" value="댓글 작성">
+				<hr>
+			</td>
+		</tr>
+	</table>
+	<table>
+		{% for re in reply %}
+		<tr>
+			<td>
+				<img src="/media/images/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+				{{re.user.user_nick }} / {{ re.c_reply_ts |date:"Y-m-d H:i" }}
+			</td>
+		</tr>
+		<tr>
+			<td> {{re.c_reply_cont }} </td>
+		</tr>
+		{% endfor %}
+	</table>
+</form>
+{% endblock %}

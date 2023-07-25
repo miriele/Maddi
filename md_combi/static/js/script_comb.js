@@ -12,9 +12,11 @@ $(document).ready(
 		
 		
 		// 댓글 ajax
-		$("form[name='combdform']").on(
-			"submit",
+		$("input[name='replybtn']").on(
+			"click",
 			function(event) {
+				var button = $(this);
+				var csrfToken = "{{ csrf_token }}";
 				$.ajax(
 					{
 						url : "combd",
@@ -22,12 +24,13 @@ $(document).ready(
 						data : {
 							comb_id : $("input[name='comb_id']").val(),
 							pagenum : $("input[name='pagenum']").val(),
-							number : $("input[name='number']").val(),
+							number 	: $("input[name='number']").val(),
 							c_reply_cont : $("textarea[name='c_reply_cont']").val(),
+							csrfmiddlewaretoken: csrfToken,
 						},
 						datatype :"text",
 						success : function( data ) {
-							alert("success")							
+							location.reload();
 						},
 						error : function(request, status, error) {
 							alert("서버요청실패");
@@ -39,9 +42,11 @@ $(document).ready(
 		
 		
 		// 좋아요 ajax
-		$("form[name='clikeform']").on(
-			"submit",
+		$("input[name='clikebtn']").on(
+			"click",
 			function(event) {
+				var button = $(this);
+				var csrfToken = "{{ csrf_token }}";
 				$.ajax(
 					{
 						url : "clike",
@@ -50,14 +55,15 @@ $(document).ready(
 							comb_id : $("input[name='comb_id']").val(),
 							pagenum : $("input[name='pagenum']").val(),
 							number  : $("input[name='number']").val(),
+							csrfmiddlewaretoken: csrfToken,
 						},
 						datatype :"text",
 						success : function( data ) {
-							if ( data == 1 ){
-								alert("replyok")
+							if ( data == "1" ){
+								button.val("좋아요 취소");
 							}
 							else {
-								alert("replyno")								
+								button.val("좋아요");								
 							}
 						},
 						error : function(request, status, error) {
@@ -65,13 +71,8 @@ $(document).ready(
 						}
 					}
 				)
-			}//function
-		);//on
-		
-		
-		
-		
-		
+			}	// function
+		);	// $("form[name='clikeform']").on
 	}	//function
 )	//ready
 		
