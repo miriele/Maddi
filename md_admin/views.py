@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.http.response import HttpResponse
 from django.template import loader
-from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT, MdUTast, MdTastT
+from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT, MdUTast, MdTastT,\
+    MdUDsrt
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
-from md_store.models import MdStorReg, MdStorM, MdStorT, MdStor
+from md_store.models import MdStorReg, MdStorM, MdStorT, MdStor, MdDsrtT
 import logging
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -441,5 +442,29 @@ class StoreView(View):
         context = {
             "scount" : scount,
             "stor_list" : stor_list, 
+            }
+        return HttpResponse(template.render(context,request))
+class DsrtView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/dsrtstatis.html")
+        
+        dsrt = MdUDsrt.objects.values("dsrt_t").order_by("dsrt_t")
+        dsrt = list(m['dsrt_t'] for m in dsrt)
+        dict_dsrt = {}
+        dict_dsrt = collections.Counter(dsrt)
+        list_dsrt = []
+        for key,value in sorted(dict_dsrt.items()):
+            list_dsrt.append(value)
+        print(list_dsrt)
+        
+        dsrt_n = MdDsrtT.objects.values("dsrt_t_name")
+        dsrt_n = list(m['dsrt_t_name'] for m in dsrt_n)
+        # print(dsrt_n)
+        dsrt_n.remove('없음' )
+        # print(dsrt_n)
+        
+        context = {
+            "dsrt_n" : dsrt_n,
+            "list_dsrt" : list_dsrt,
             }
         return HttpResponse(template.render(context,request))

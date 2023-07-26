@@ -139,5 +139,33 @@ $(function() {
 	        }
 	      }
 	    }
-	 });		
+	 });
+	//회원디저트취향(전체)
+	 var dsrtcount = $('#list_dsrt').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var dsrtarray = dsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var stor = $('#dsrt')
+	 
+	 new Chart(stor, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: dsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+	
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });			 		
  })
