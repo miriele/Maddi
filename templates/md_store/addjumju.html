@@ -1,4 +1,5 @@
 {% load static %}
+<script src="{% static 'js/script_store.js' %}"></script>	
 {% block title %}
 <head>
     <title>점주등록</title>
@@ -58,7 +59,6 @@
 <form method="post" action="addjumju" name="inputform">
     <input type="hidden" name="stor_id" value="{{ stor_id }}">
     <input type="hidden" name="user_id" value="{{ user_id }}">
-    <img src="/media/{{ reg_img }}" width="200" height="200">
     <table>
         <tr>
             <th>회원정보</th>
@@ -92,12 +92,14 @@
                     <tr>
                         <th>사업자등록번호</th>
                         <td colspan = "2">
-                            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" placeholder="' - '를 포함하여 입력해주세요">
+                            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" value="{{reg_num}}" placeholder="' - '를 포함하여 입력해주세요" onclick ="clearInput(this)">
                         </td>
                     </tr>
                     <tr>
                         <th rowspan="2" >사업자등록증</th>
-                        <th> {{ reg_img }} </th>
+                         <td>
+					            <img src="/media/{{ reg_img }}" width="200" height="200">
+					    </td>
                         <th>
                             <input class="inputbutton" type="button" value="파일선택" onclick="location='imagereg'">
                         </th>
