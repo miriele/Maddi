@@ -120,45 +120,25 @@ class CombWriteView( View ):
         drnk_t  = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
         # logger.debug(f'drnk_t : {drnk_t}')
         
-        drkD = {}
-        drkJ = 0
-        for drk in drnk_t :
-            drkD = {
-                'drnk_t_id'     : drk.drnk_t_id,
-                'drnk_t_name'   : drk.drnk_t_name
-               }
-            
-            # drkD["drnk_t_id"]=drk.drnk_t_id
-            # drkD["drnk_t_name"]=drk.drnk_t_name
-            
-            # drkD.update( ( ( "drnk_t_id" , drk.drnk_t_id ) ) )
-            # drkD.update( ( ( "drnk_t_name" , drk.drnk_t_name ) ) )
-            
-            
-            
-            # logger.debug(f'drkD : {drkD}')
-            # drkJ = json.dumps(drkD)
-            # for key, value in drkD.items() :
-            #     logger.debug(f' key, value : { key, value }')
-            
-            
-        logger.debug(f'drkD : {drkD}')
+        # dsrtList = list(dsrt_t)
+        # drnkList = list(drnk_t)
         
+        dsrtIdList   = [dsrt.dsrt_t_id   for dsrt in dsrt_t]
+        dsrtNameList = [dsrt.dsrt_t_name for dsrt in dsrt_t]
+        drnkIdList   = [drnk.drnk_t_id   for drnk in drnk_t]
+        drnkNameList = [drnk.drnk_t_name for drnk in drnk_t]
         
-        
-        
+        logger.debug(f'dsrtNameList : {dsrtNameList}')
         
         context = {
-            "drkD"      : drkD,
-            "drkJ"      : drkJ,
-            
-            
-            "dsrt_t"    : dsrt_t,
-            "drnk_t"    : drnk_t,
-            "nick"      : nick,
-            "md_menu"   : md_menu,
-            "memid"     : memid,
-            "gid"       : gid,
+            "dsrtIdList"   : list(dsrtIdList),
+            "dsrtNameList" : list(dsrtNameList),
+            "drnkIdList"   : list(drnkIdList),
+            "drnkNameList" : list(drnkNameList),
+            "nick"         : nick,
+            "md_menu"      : md_menu,
+            "memid"        : memid,
+            "gid"          : gid,
             }
         return HttpResponse(template.render( context, request ) )
     

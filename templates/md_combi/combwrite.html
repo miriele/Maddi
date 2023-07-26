@@ -30,80 +30,64 @@
 			</td>
 		</tr>
 		<tr>
-			<th>대표메뉴1	</th><!-- 태그 어떻게 가져올지 모르겠음...-->
-			<td> 
-				<select name="dord1" required onchange="dndchange(this)">
-					<option value="" disabled="none" selected> 대분류 </option>
-					<option value="1"> 음료 </option>
-					<option value="2"> 디저트 </option>
-				</select>
-				<script>
-				function dndchange(e) {
-					//var drkJ = JSON.parse("{{ drkJ|escapejs }}");
-					var drnk_t = drnk_t;
-					var drkD = [] 
-					
-					var drk = [drkD['drnk_t_name']];
-					var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
-					var target = document.getElementById("drnk");
-					
-					if (e.value == "1" )		var d = drk;
-					else if(e.value == "2" )	var d = dst;
-						
-					target.options.length = 0;
-					
-					for  (x in d) {
-						var opt = document.createElement("option");
-						opt.value = d[x];
-						opt.innerHTML = d[x];
-						target.appendChild(opt);
-					}
-				}
-				
-				</script>
-				
-				<select id = "drnk">
-					<option> 중분류 </option>
-				</select>
-				
-				
-					
-				<select id = "drink">
-				{% for ds in drnk_t %}
-					<option value="ds.drnk_t_id"> {{ ds.drnk_t_name }}</option>
-				{% endfor %}
-				</select>
-			</td>
-		</tr>
-		
-		
-		
+			<span id="drnkIdList" hidden>{{drnkIdList}}</span>
+			<span id="dsrtIdList" hidden>{{dsrtIdList}}</span>
+			<span id="drnkNameList" hidden>{{drnkNameList}}</span>
+			<span id="dsrtNameList" hidden>{{dsrtNameList}}</span>
+			
+			<script>
+				console.log($('#drnkIdList').text());
+				console.log($('#dsrtIdList').text());
+				console.log($('#drnkNameList').text());
+				console.log($('#dsrtNameList').text());
+			</script>
+			
 		<tr>
 			<th>대표메뉴2	</th>
 			<td> 
 				<select name="dord2" required onchange="dndchanget(this)">
 					<option value="" disabled="none" selected> 대분류 </option>
-					<option value="1"> 음료 </option>
-					<option value="2"> 디저트 </option>
+					<option value=1> 음료 </option>
+					<option value=2> 디저트 </option>
 				</select>
-				
+
 				<script>
 				function dndchanget(e) {
-					var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
-					var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
-					var target = document.getElementById("dsrt");
-					console.log(drk);
-					if (e.value == "1" )		var d = drk;
-					else if(e.value == "2" )	var d = dst;
+					var drnkIdL   = $('#drnkIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+					var dsrtIdL   = $('#dsrtIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+					var drnkNameL = $('#drnkNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+					var dsrtNameL = $('#dsrtNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+					
+					var target    = document.getElementById("dsrt");
+					var menu2ndIdL;
+					var menu2ndNameL;
+					var menu3rdIdL;
+					var menu3rdNameL;
+
+					if (e.value == 1 ) {
+						menu2ndIdL	 = drnkIdL;
+						menu2ndNameL = drnkNameL;
+					}
+					else if (e.value == 2 ) {
+						menu2ndIdL	 = dsrtIdL;
+						menu2ndNameL = dsrtNameL;
+					}
 						
+					console.log(menu2ndIdL)
+					console.log(menu2ndNameL)
+
 					target.options.length = 0;
 					
-					for  (x in d) {
+					for (i in menu2ndNameL) {
 						var opt = document.createElement("option");
-						opt.value = d[x];
-						opt.innerHTML = d[x];
+						
+						opt.value     = menu2ndIdL[i];
+						opt.innerHTML = menu2ndNameL[i];
+						
 						target.appendChild(opt);
 					}
+					
+					console.log(target)
 				}
 				
 				</script>
