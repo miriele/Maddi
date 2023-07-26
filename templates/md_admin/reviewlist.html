@@ -4,7 +4,9 @@
 	<meta charset="UTF-8">
 	<title>리뷰목록</title>
 </head>
+{% extends "md_admin/base.html" %}
 <body>
+{%block content%}
 	<h2>리뷰목록</h2>
 	<table border = "1">
 		<tr>
@@ -42,5 +44,6 @@
 			{%endfor%}
 		{%endif%}
 	</table>
+{%endblock%}
 </body>
 </html>

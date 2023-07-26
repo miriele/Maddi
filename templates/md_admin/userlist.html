@@ -1,11 +1,14 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
 </head>
+{% extends "md_admin/base.html" %}
 <body>
-
+{%block content%}
+<h2>회원관리</h2>
 	<h2>현재 회원 수:{{count}}</h2>
 	<table border = "1">
 		<tr>
@@ -41,6 +44,6 @@
 		{%endfor%}
 	{%endif%}		
 	</table>
-
+{%endblock%}
 </body>
 </html>

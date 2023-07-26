@@ -77,6 +77,7 @@ $(function() {
 	      }]
 	    },
 	    options: {
+			
 	      scales: {
 	        y: {
 	          beginAtZero: true
@@ -105,6 +106,7 @@ $(function() {
 	      }]
 	    },
 	    options: {
+			responsive: false,
 	      scales: {
 	        y: {
 	          beginAtZero: true
@@ -158,7 +160,7 @@ $(function() {
 	      }]
 	    },
 	    options: {
-	
+			responsive: false,
 	      scales: {
 	        y: {
 	          beginAtZero: true
@@ -187,12 +189,40 @@ $(function() {
 	      }]
 	    },
 	    options: {
-	
+			responsive: false,
 	      scales: {
 	        y: {
 	          beginAtZero: true
 	        }
 	      }
 	    }
-	 });		 			 		
+	 });
+	//구매기반음료취향(전체)
+	 var bdrnkcount = $('#list_bdrnk').text()
+	 var bdrnkname = $('#bdrnk_n').text()
+	 
+	 var bdrnkarray = bdrnkcount.replace("[","").replace("]","").split(',');
+	 var nbdrnkarray = bdrnkname.replace("[","").replace("]","").split(',');
+
+	 var bdrnk = $('#bdrnk')
+	 
+	 new Chart(bdrnk, {
+	    type: 'bar',
+	    data: {
+	      labels: nbdrnkarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: bdrnkarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	 		 			 		
  })

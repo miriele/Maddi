@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <title>점주등록신청</title>
 </head>
+{% extends "md_admin/base.html" %}
 <body>
+{%block content%}
 	<h2>점주등록신청</h2>
 		<table border = "1">
 			<tr>
@@ -29,6 +31,8 @@
 					</td>								
 				</tr>
 			{%endfor%}
-		</table>	
+		</table>
+{%endblock%}			
 </body>
+
 </html>

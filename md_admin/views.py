@@ -377,11 +377,12 @@ class IntereView(View):
         #뽑아온 리스트를 key값순으로 sort하기위해 dict 생성
         dict_inter = {}
         dict_inter = collections.Counter(inter)
+        print(dict_inter)
         #sort한 key들을 다시 리스트로 넣기
         list_inter = []
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
-        
+        print(list_inter)
         # print(len(list_inter))
         # print(len(inter_name))
   
@@ -499,13 +500,13 @@ class DrnkView(View):
             list_drnk.append(value)
         # print(list_drnk)
         
-        #디저트분류명 리스트
+        #음료분류명 리스트
         drnk_n = MdDrnkT.objects.values("drnk_t_name")
         drnk_n = list(m['drnk_t_name'] for m in drnk_n)
         # print(dsrt_n)
         
-        # 디저트 분류 리스트 '없음' 제거
-        drnk_n.remove('없음' )
+        # 음료 분류 리스트 '없음' 제거
+        drnk_n.remove('없음')
         # print(dsrt_n)    
         
         context = {
@@ -513,4 +514,32 @@ class DrnkView(View):
             "list_drnk" : list_drnk,
             }
            
-        return HttpResponse(template.render(context,request))   
+        return HttpResponse(template.render(context,request))
+
+#구매기반 음료 취향
+class BdrnkView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/bdrnkstatis.html")
+        #구매한 음료 분류 정보
+        bdrnk = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__drnk_t")
+        bdrnk = list(m['stor_m__menu__drnk_t'] for m in bdrnk)
+        
+        # dict_bdrnk = dict(0=0,1=0,2=0,3=0,4=0,5=0,6=0,7=0,8=0)
+        dict_bdrnk = {}
+        dict_bdrnk = collections.Counter(bdrnk)
+        print(dict_bdrnk)
+        list_bdrnk = []
+        for key,value in sorted(dict_bdrnk.items()):
+            list_bdrnk.append(value)
+        
+                
+        # print(list_bdrnk)
+        bdrnk_n = MdDrnkT.objects.values("drnk_t_name")
+        bdrnk_n = list(m['drnk_t_name'] for m in bdrnk_n)
+        bdrnk_n.remove('없음')
+        
+        context = {
+            "list_bdrnk" : list_bdrnk,
+            "bdrnk_n" : bdrnk_n
+            }
+        return HttpResponse(template.render(context,request))      
