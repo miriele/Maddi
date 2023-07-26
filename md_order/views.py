@@ -203,6 +203,9 @@ class BuckDelOrdrView(View):
                         buck.save()
                     except MdBuck.DoesNotExist:
                         pass
+                    
+                    return redirect('md_order:buck')
+                    
         elif action == '주문하기':
             if selected_bucks:
                 for buck_id in selected_bucks:
