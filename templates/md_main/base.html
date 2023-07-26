@@ -37,8 +37,8 @@
 	</div>
 	<div class="searchform">
 		{%csrf_token%}
-		<form method="post" id="search" action="searchlist" >
-			<input type="hidden" name="bjd_name" value="">
+		<form method="post" id="search" action="searchlist">
+			<input type="hidden" name="bjd_name" value=""/>
 			<input id="mainsearch" type="search" name="searchtext" maxlength="50"
 				   laceholder="무엇을 찾아 드릴까요?" autocomplete="off" onkeyup="search()"/>
 		    <input type="submit" value="검색"/>

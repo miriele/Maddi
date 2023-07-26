@@ -1,5 +1,6 @@
 from django import template
 from django.db.models.aggregates import Count, Sum
+from django.db.models import F
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
@@ -7,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
 from md_order.models import MdOrdrM
-from md_store.models import MdStorM, MdStor, MdMenu
+from md_store.models import MdStorM, MdStor, MdMenu, MdBjd, MdAreaT
 from md_combi.models import MdCombM, MdComb
 import logging
 
@@ -99,28 +100,45 @@ class SearchView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)    
-    def post(self,request):
-        template   = loader.get_template("md_main/searchlist.html")
-        searchText = request.POST.get("searchtext")
-        bjdName    = request.POST.get("bjc_name")
 
-        count= MdStor.objects.all().count()
-        if count ==0:
-            context = {
-                "count":count,
-            }
-        sdtos = MdStor.objects.all()
-        if searchText:
-            sdtos = sdtos.filter(stor_name__icontains=searchText)
-            count = sdtos.all().count()
+    def post(self, request):
+        template   = loader.get_template("md_main/searchlist.html")
+        searchText = request.POST["searchtext"]
+        bjdName    = request.POST["bjd_name"]
+        
+        logger.debug(f'searchText : {searchText}\tbjdName : {bjdName}')
+        
+        subquery_sb = MdStorM.objects.filter(
+                            menu__menu_name=searchText
+                        ).values('stor_id').distinct()
+    
+        store_list  = MdStor.objects.filter(
+                            bjd_code__bjd_name=bjdName,
+                            area_t_id__in=MdStor.objects.filter(
+                                bjd_code__bjd_name=bjdName
+                            ).values('area_t_id')
+                        ).annotate(
+                            area_t_name=F('area_t__area_t_name')
+                        ).filter(
+                            stor_id__in=subquery_sb
+                        ).values(
+                            'stor_id',
+                            'stor_name',
+                            'stor_img',
+                            'area_t_name'
+                        )
+        
+        logger.debug(f'store_list: {store_list}')
+        logger.debug(f'store_cnt: {len(store_list)}')
+
         context = {
-            "sdtos":sdtos,
-            "count":count,
+            "store_list" : store_list,
+            "count" : len(store_list),
             }
-        return HttpResponse(template.render(context,request))
+        return HttpResponse(template.render(context, request))
 
 class MapView(View):
-    def get(self,request):
+    def get(self, request):
         template = loader.get_template("md_main/map.html")
         # addr = request.GET("centerAddr")
         # print(addr) 

@@ -141,7 +141,9 @@ function displayCenterInfo(result, status) {
 		console.log(bjd_name);
 		console.log(kakaomap.getLevel())
 		
-		element_bjd.value = bjd_name;
+		element_bjd.val(bjd_name);
+		
+		console.log(element_bjd.val())
 	}    
 }
 

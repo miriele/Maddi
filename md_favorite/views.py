@@ -70,21 +70,20 @@ class FavoriteView( View ):
             store = MdFavorite.objects.select_related('stor').order_by("-fav_reg_ts")
             # for s in store :
                 # logger.debug(f's.stor.stor_id : {s.stor.stor_id}')
-        context = {
-            "store" : store,
-            "md_fav"   : md_fav,
 
-            "memid"     : memid,
-            "gid"       : gid,
-            "count"     : count,
-            "pagenum"   : pagenum,
-            "number"    : number,
-            "startpage" : startpage,
-            "endpage"   : endpage,
-            "pages"     : pages, 
-            "pageblock" : page_block,
-            "pagecount" : pagecount,
-         
+            context = {
+                "store"     : store,
+                "md_fav"    : md_fav,
+                "memid"     : memid,
+                "gid"       : gid,
+                "count"     : count,
+                "pagenum"   : pagenum,
+                "number"    : number,
+                "startpage" : startpage,
+                "endpage"   : endpage,
+                "pages"     : pages, 
+                "pageblock" : page_block,
+                "pagecount" : pagecount,
             }
         return HttpResponse(template.render(context, request ) )
 

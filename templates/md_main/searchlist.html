@@ -1,15 +1,52 @@
 {% extends "md_main/base.html"%}
 
-{%block content%}
+{% block content %}
+
 <h2><span>검색결과:{{count}}</span></h2><br>
+<section class="search-list">
 {% if count == 0 %}
 	조회된 매장이 없습니다 다른 검색어로 입력해 주세요.
 {% else %}
-<section class = "search-list">
-{%for sdto in sdtos%}
-{{sdto.stor_img}}<br>
-{{sdto.stor_name}}<br>
-{%endfor%}
-{%endif%}
+	<table>
+	{% for store in store_list %}
+		{% if forloop.counter0|divisibleby:2%}
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td rowspan="3">{{store.stor_img}}</td>
+						<td>{{store.stor_id}}</td>
+					</tr>
+					<tr>
+						<td>{{store.stor_name}}</td>
+					</tr>
+					<tr>
+						<td>{{store.area_t_name}}</td>
+					</tr>
+				</table>
+			</td>
+		{% else %}
+			<td>
+				<table>
+					<tr>
+						<td rowspan="3">{{store.stor_img}}</td>
+						<td>{{store.stor_id}}</td>
+					</tr>
+					<tr>
+						<td>{{store.stor_name}}</td>
+					</tr>
+					<tr>
+						<td>{{store.area_t_name}}</td>
+					</tr>
+				</table>
+			</td>
+		{% endif %}
+
+		{% if not forloop.counter0|divisibleby:2%}
+		</tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+{% endif %}
 </section>
-{%endblock%}
+{% endblock %}
