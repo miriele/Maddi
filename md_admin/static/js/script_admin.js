@@ -115,9 +115,7 @@ $(function() {
 	 
 	 //매장현황(전체)
 	 var storcount = $('#stor_count').text()
-	 
 	 var storcarray = storcount.replace("[","").replace("]","").split(',');
-	 
 	 
 	 var stor = $('#stor')
 	 
@@ -167,5 +165,34 @@ $(function() {
 	        }
 	      }
 	    }
-	 });			 		
+	 });
+
+	//회원음료취향(전체)
+	 var drnkcount = $('#list_drnk').text()
+	 var drnkname = $('#drnk_n').text()
+	 
+	 var drnkarray = drnkcount.replace("[","").replace("]","").split(',');
+	 var ndrnkarray = drnkname.replace("[","").replace("]","").split(',');
+	 
+	 var drnk = $('#drnk')
+	 
+	 new Chart(drnk, {
+	    type: 'bar',
+	    data: {
+	      labels: ndrnkarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: drnkarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+	
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });		 			 		
  })

@@ -3,10 +3,11 @@ from django.views.generic.base import View
 from django.http.response import HttpResponse
 from django.template import loader
 from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT, MdUTast, MdTastT,\
-    MdUDsrt
+    MdUDsrt, MdUDrnk
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
-from md_store.models import MdStorReg, MdStorM, MdStorT, MdStor, MdDsrtT
+from md_store.models import MdStorReg, MdStorM, MdStorT, MdStor, MdDsrtT,\
+    MdDrnkT
 import logging
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -23,6 +24,7 @@ import collections
 # 로그
 logger = logging.getLogger( __name__ )
 
+# 회원정보리스트
 class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
@@ -33,7 +35,8 @@ class UserlistView(View):
             "users":users,
             }
         return HttpResponse(template.render(context,request))
-
+    
+# 회원상세정보
 class UserinfoView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -49,7 +52,7 @@ class UserinfoView(View):
             "users":users,  
              }
         return HttpResponse(template.render(context,request))
-    #회원등급수정
+# 회원등급수정
     def post(self,request):
         id = request.POST["id"]
         usrg = MdUserG.objects.get(user_g_id=request.POST["user_g"])
@@ -72,6 +75,7 @@ class UserinfoView(View):
            
         return redirect("/md_admin/userlist")
 
+# 리뷰리스트
 class ReviewlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/reviewlist.html")
@@ -96,7 +100,8 @@ class ReviewlistView(View):
             "rdtos":rdtos,
             }
         return HttpResponse(template.render(context,request))
-    
+
+# 리뷰상세정보    
 class ReviewinfoView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -151,18 +156,18 @@ class ReviewinfoView(View):
             }
         return HttpResponse(template.render(context,request))
    
-    #리뷰삭제 
+# 리뷰삭제 
     def post(self,request):
         rev_id = request.POST["rev_id"]
-        #리뷰태그 삭제
+        #리뷰태그 delete
         tdto = MdRevT.objects.filter(rev=rev_id)
         tdto.delete()
-        #리뷰삭제
+        #리뷰 delete
         rdto = MdReview.objects.get(rev_id=rev_id)
         rdto.delete()
         return redirect("/md_admin/reviewlist")
-        
-        
+
+# 점주등록신청 리스트          
 class SregistlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistlist.html")
@@ -171,7 +176,8 @@ class SregistlistView(View):
             "reglists":reglists,
             }
         return HttpResponse(template.render(context,request))
-    
+
+# 점주등록신청 상세    
 class SregistinfoView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -209,7 +215,7 @@ class SregistinfoView(View):
             }
         return HttpResponse(template.render(context,request))
     
-    #점주등록신청 승인
+# 점주등록신청 승인
     def post(self,request):
         reg_id = request.POST["reg_id"]
         reginfo = MdStorReg.objects.get(reg_id=reg_id)
@@ -230,7 +236,8 @@ class SregistinfoView(View):
         
          
         return redirect("/md_admin/sregistlist")
-        
+
+# 가입회원 성별 통계        
 class GenstatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/genstatis.html")
@@ -300,6 +307,7 @@ class GenstatisView(View):
             }
         return HttpResponse(template.render(context,request))
     
+# 가입회원 연령 통계    
 class AgestatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/agestatis.html")
@@ -351,7 +359,8 @@ class AgestatisView(View):
             "count"     : count,
             }
         return HttpResponse(template.render(context,request))
-    
+
+# 가입회원 관심사 통계    
 class IntereView(View):
     def get(self,request):
         template = loader.get_template("md_admin/interestatis.html")
@@ -379,13 +388,13 @@ class IntereView(View):
         #print(list_inter)
         #print(inter_name)
         
-        
         context = {
             "list_inter": list_inter,
             "inter_name": inter_name
             }
         return HttpResponse(template.render(context,request))
 
+# 가입회원 입맛 통계
 class TasteView(View):
     def get(self,request):
         template = loader.get_template("md_admin/tastestatis.html")
@@ -409,6 +418,7 @@ class TasteView(View):
             }
         return HttpResponse(template.render(context,request))
 
+# 사이트 매장등록 통계
 class StoreView(View):
     def get(self,request):
         template = loader.get_template("md_admin/storestatis.html")
@@ -444,10 +454,13 @@ class StoreView(View):
             "stor_list" : stor_list, 
             }
         return HttpResponse(template.render(context,request))
+
+# 가입회원 디저트 취향    
 class DsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/dsrtstatis.html")
         
+        #사용자 디저트 기입한 수 리스트
         dsrt = MdUDsrt.objects.values("dsrt_t").order_by("dsrt_t")
         dsrt = list(m['dsrt_t'] for m in dsrt)
         dict_dsrt = {}
@@ -457,9 +470,12 @@ class DsrtView(View):
             list_dsrt.append(value)
         print(list_dsrt)
         
+        #디저트분류명 리스트
         dsrt_n = MdDsrtT.objects.values("dsrt_t_name")
         dsrt_n = list(m['dsrt_t_name'] for m in dsrt_n)
         # print(dsrt_n)
+        
+        # 디저트 분류 리스트 '없음' 제거
         dsrt_n.remove('없음' )
         # print(dsrt_n)
         
@@ -468,3 +484,32 @@ class DsrtView(View):
             "list_dsrt" : list_dsrt,
             }
         return HttpResponse(template.render(context,request))
+    
+# 가입회원 음료 취향
+class DrnkView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/drnkstatis.html")
+        #사용자 음료 기입한 수 리스트
+        drnk = MdUDrnk.objects.values("drnk_t").order_by("drnk_t")
+        drnk = list(m['drnk_t'] for m in drnk)
+        dict_drnk = {}
+        dict_drnk = collections.Counter(drnk)
+        list_drnk = []
+        for key,value in sorted(dict_drnk.items()):
+            list_drnk.append(value)
+        # print(list_drnk)
+        
+        #디저트분류명 리스트
+        drnk_n = MdDrnkT.objects.values("drnk_t_name")
+        drnk_n = list(m['drnk_t_name'] for m in drnk_n)
+        # print(dsrt_n)
+        
+        # 디저트 분류 리스트 '없음' 제거
+        drnk_n.remove('없음' )
+        # print(dsrt_n)    
+        
+        context = {
+            "drnk_n" : drnk_n,
+            "list_drnk" : list_drnk,
+            }        
+        return HttpResponse(template.render(context,request))   
