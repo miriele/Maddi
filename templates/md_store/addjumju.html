@@ -1,81 +1,145 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style_store.css' %}">
 {% block title %}
 <head>
     <title>점주등록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .inputbutton {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+
+        td[colspan="2"] {
+            text-align: center;
+        }
+
+        th[scope="colgroup"] {
+            text-align: center;
+        }
+    </style>
 </head>
 <h2>점주등록</h2>
 {% endblock %}
 {% block content %}
-<!-- 확인용 발표 전 삭제 -->
 <form method="post" action="addjumju" name="inputform">
-	<input type="hidden" name="stor_id" value="{{ stor_id }}">
-	<input type="hidden" name="user_id" value="{{ user_id }}">
+    <input type="hidden" name="stor_id" value="{{ stor_id }}">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+    <img src="/media/{{ reg_img }}" width="200" height="200">
     <table>
-      <tr>
-        <th>회원정보</th>
-        <th>매장정보</th>
-      </tr>
-      <tr>
-        <td>
-          <table>
-          	<tr>
-               <th rowspan="6">
-            </tr>
-            <tr>
-              <th>회원정보를 확인해주세요</th>
-            </tr>
-            <tr>
-              <th>아이디</th>
-              <td>{{ user_id }}</td>
-            </tr>
-            <tr>
-              <th>이름</th>
-              <td>{{ user_name }}</td>
-            </tr>
-            <tr>
-              <th>생년월일</th>
-              <td>{{ user_bir }}</td>
-            </tr>
-          </table>
-        </td>
-        <td>
-          <table>
-            <tr>
-              <th>매장정보를 확인해주세요</th>
-            </tr>
-            <tr>
-              <th rowspan="6"><img src="/media/{{ stor_img }}" width="200" height="200"></th>
-            </tr>
-            <tr>
-              <th>매장명</th>
-              <td>{{ dto.stor_name }}</td>
-            </tr>
-            <tr>
-              <th>매장유형</th>
-              <td>{{ stor_type }}</td>
-            </tr>
-            <tr>
-              <th>주소</th>
-              <td>{{ dto.stor_addr }}</td>
-            </tr>
-            <tr>
-              <th>연락처</th>
-              <td>{{ stor_tel }}</td>
-            </tr>
-            <tr>
-              <th>점주</th>
-              <td> {{ user_ids }}</td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <input class="inputbutton" type="submit" value="등록">
-                <input class="inputbutton" type="reset" value="취소" onclick="location='storeuser'">
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+        <tr>
+            <th>회원정보</th>
+            <th>사업자정보</th>
+            <th>매장정보</th>
+        </tr>
+        <tr>
+            <td>회원정보를 확인해주세요</td>
+            <td>사업자등록 정보를 입력해주세요</td>
+            <td>매장정보를 확인해주세요</td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <th>아이디</th>
+                        <td>{{ user_id }}</td>
+                    </tr>
+                    <tr>
+                        <th>이름</th>
+                        <td>{{ user_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>생년월일</th>
+                        <td>{{ user_bir }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <th>사업자등록번호</th>
+                        <td colspan = "2">
+                            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" placeholder="' - '를 포함하여 입력해주세요">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" >사업자등록증</th>
+                        <th> {{ reg_img }} </th>
+                        <th>
+                            <input class="inputbutton" type="button" value="파일선택" onclick="location='imagereg'">
+                        </th>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <th rowspan="6">
+                            <img src="/media/{{ stor_img }}" width="200" height="200">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>매장명</th>
+                        <td>{{ dto.stor_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>매장유형</th>
+                        <td>{{ stor_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>{{ dto.stor_addr }}</td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>{{ stor_tel }}</td>
+                    </tr>
+                    <tr>
+                        <th>점주</th>
+                        <td>{{ user_ids }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
+    <tr>
+        <td colspan="2">
+            <input class="inputbutton" type="submit" value="신청">
+            <input class="inputbutton" type="reset" value="취소" onclick="location='storeuser'">
+        </td>
+    </tr>
 </form>
 {% endblock %}

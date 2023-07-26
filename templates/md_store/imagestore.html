@@ -2,11 +2,11 @@
 
 {% block content %}
 {% csrf_token %}
-<form method="post" action="image" enctype="multipart/form-data">
+<form method="post" action="imagestore" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th> 이미지 </th>
-			<td> <input class="input" type="file" name="img" accept="image/*"></td>
+			<td> <input class="input" type="file" name="imgstor" accept="image/*"></td>
 		</tr>
 		<tr>
 			<th colspan="2">
