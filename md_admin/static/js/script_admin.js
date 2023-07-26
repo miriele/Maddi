@@ -253,5 +253,33 @@ $(function() {
 	        }
 	      }
 	    }
-	 });	 		 			 		
+	 });
+	//회원유입
+	 var wusercount = $('#list_welmaddi').text()
+	 var wuserday = $('#upwelyearlist').text()
+	 
+	 var wuserarray = wusercount.replace("[","").replace("]","").split(',');
+	 var wuserdayarray = wuserday.replace("[","").replace("]","").split(',');
+
+	 var iao = $('#iao')
+	 
+	 new Chart(iao, {
+	    type: 'line',
+	    data: {
+	      labels: wuserdayarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wuserarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });		 		 			 		
  })

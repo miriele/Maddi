@@ -542,6 +542,8 @@ class BdrnkView(View):
             "bdrnk_n" : bdrnk_n
             }
         return HttpResponse(template.render(context,request))
+    
+#구매기반 디저트 취향    
 class BdsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/bdsrtstatis.html")
@@ -567,4 +569,52 @@ class BdsrtView(View):
             "list_bdsrt" : list_bdsrt,
             "bdsrt_n" : bdsrt_n
             }
-        return HttpResponse(template.render(context,request))           
+        return HttpResponse(template.render(context,request))
+
+#회원유입/이탈률 
+class IaoView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/iaostatis.html")
+        #회원가입일 가져오기
+        welmaddi = MdUser.objects.values("user_reg_ts").order_by("user_reg_ts")
+        welmaddi = list(m["user_reg_ts"] for m in welmaddi)
+        #회원가입일 데이터 타입 str로 변경
+        welmaddi = list(map(str,welmaddi))
+       
+        #회원가입일 연월로 자르기 
+        wellist = []
+        for i in range(len(welmaddi)):            
+            wellist.append(welmaddi[i][0:7])
+        #print(wellist)
+        
+        #해당연월 가입한 수
+        dict_welmaddi = {}
+        dict_welmaddi = collections.Counter(wellist)
+        
+        #print(dict_welmaddi)
+        list_welmaddi = []
+        for key,value in sorted(dict_welmaddi.items()):
+            list_welmaddi.append(value)
+        #print(list_welmaddi)
+        
+        #연월 값 뽑기
+        welyear = MdUser.objects.values("user_reg_ts").order_by("user_reg_ts")
+        welyear = list(m["user_reg_ts"] for m in welyear)
+        welyear = list(map(str,welmaddi))
+        
+        welyearlist = []
+        for i in range(len(welyear)):            
+            welyearlist.append(welmaddi[i][0:7])
+        
+        #중복값 제거
+        upwelyearlist = []
+        for i in welyearlist:
+            if i not in upwelyearlist:
+                upwelyearlist.append(i)
+        
+        #print(upwelyearlist)
+        context = {
+            "list_welmaddi" : list_welmaddi,
+            "upwelyearlist" : upwelyearlist
+            }
+        return HttpResponse(template.render(context,request))     

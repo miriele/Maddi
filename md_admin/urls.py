@@ -19,4 +19,5 @@ urlpatterns = [
     path("drnkstatis",      views.DrnkView.as_view(),           name = "drnkstatis"),
     path("bdrnkstatis",     views.BdrnkView.as_view(),          name = "bdrnkstatis"),
     path("bdsrtstatis",     views.BdsrtView.as_view(),          name = "bdsrtstatis"),
+    path("iaostatis",       views.IaoView.as_view(),            name = "iaostatis"),
     ]

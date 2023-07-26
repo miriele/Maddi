@@ -1,0 +1,11 @@
+{% extends "md_admin/base.html" %}
+
+{% block content %}
+<h2>관리자 통계페이지-회원유입/이탈</h2><br>
+	<div>
+		<h4>회원유입</h4>
+	  	<canvas id="iao" width = "500" height = "500"></canvas>
+	</div>
+	<span id = "list_welmaddi" hidden>{{list_welmaddi}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	<span id = "upwelyearlist" hidden>{{upwelyearlist}}</span>
+{% endblock %}
