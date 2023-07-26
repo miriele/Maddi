@@ -5,7 +5,7 @@ from django.template import loader
 from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT, MdUTast, MdTastT
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
-from md_store.models import MdStorReg, MdStorM, MdStorT
+from md_store.models import MdStorReg, MdStorM, MdStorT, MdStor
 import logging
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -405,5 +405,41 @@ class TasteView(View):
         context = {
             "list_tast": list_tast,
             "tast_n"   : tast_n 
+            }
+        return HttpResponse(template.render(context,request))
+
+class StoreView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/storestatis.html")
+        scount = MdStor.objects.all().count()
+        
+        #매장구분 개인/프랜차이즈
+        pstor = MdStor.objects.filter(stor_t=0).count()
+        fstor = MdStor.objects.exclude(stor_t=0).count()
+        
+        #프랜차이즈 가맹점 수
+        # ps = MdStor.objects.select_related("stor_t").exclude(stor_t=0).values("stor_t__stor_t_name").order_by("stor_t__stor_t_id")
+        # print(ps)
+        #
+        # ps = list(m['stor_t__stor_t_name'] for m in ps)
+        # print(ps)
+        #
+        # dict_ps = {}
+        # dict_ps = collections.Counter(ps)
+        # print(dict_ps)
+        # list_ps = []
+        # for key,value in sorted(dict_ps.items()):
+        #     list_ps.append(value)
+        # print(type(list_ps))
+        #프랜차이즈 구분(9개의 프랜차이즈 매장과 1개 기타매장으로 합칠예정)
+        
+        #print(pstor)
+        #print(fstor)
+        
+        stor_list = [pstor,fstor]
+        
+        context = {
+            "scount" : scount,
+            "stor_list" : stor_list, 
             }
         return HttpResponse(template.render(context,request))

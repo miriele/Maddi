@@ -1,0 +1,11 @@
+{% extends "md_admin/base.html" %}
+
+{% block content %}
+<h2>관리자 통계페이지-등록매장현황</h2><br>
+등록매장:{{scount}}
+	<div>
+		<h4>개인/프랜차이즈구분</h4>
+	  	<canvas id="stor"></canvas>
+	</div>
+	<span id = "stor_count" hidden>{{stor_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+{% endblock %}

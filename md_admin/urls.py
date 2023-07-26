@@ -14,4 +14,6 @@ urlpatterns = [
     path("agestatis",       views.AgestatisView.as_view(),      name = "agestatis"),
     path("interestatis",    views.IntereView.as_view(),         name = "Interestatis"),
     path("tastestatis",     views.TasteView.as_view(),          name = "tastestatis"),
+    path("storestatis",     views.StoreView.as_view(),          name = "storestatis"),
+    
     ]
