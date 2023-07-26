@@ -1,0 +1,10 @@
+{% extends "md_admin/base.html" %}
+
+{% block content %}
+<h2>관리자 통계페이지-입맛</h2>
+	<div>
+	  <canvas id="taste"></canvas>
+	</div>
+	<span id = "list_tast" hidden>{{list_tast}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	<span id = "tast_n" hidden>{{tast_n}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+{% endblock %}

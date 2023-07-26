@@ -62,11 +62,9 @@ $(function() {
 	    }
 	 });
 	 
-	 /*관심사통계*/
+	 //관심사통계
 	 var listinter = $('#list_inter').text()
 	 var inter_name = $('#inter_name').text()
-	 console.log(typeof(listinter))
-	 console.log(typeof(inter_name))
 	 
 	 var interarray = listinter.replace("[","").replace("]","").split(',');
 	 var inamearray = inter_name.replace("[","").replace("]","").split(',');
@@ -92,4 +90,31 @@ $(function() {
 	    }
 	 });	
 	
+	//입맛통계
+	 var tastcount = $('#list_tast').text()
+	 var tastname = $('#tast_n').text()
+	 
+	 var tastearray = tastcount.replace("[","").replace("]","").split(',');
+	 var tnamearray = tastname.replace("[","").replace("]","").split(',');
+	 
+	 var taste = $('#taste')
+	 
+	 new Chart(taste, {
+	    type: 'pie',
+	    data: {
+	      labels: tnamearray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: tastearray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	
  })

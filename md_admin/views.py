@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.http.response import HttpResponse
 from django.template import loader
-from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT
+from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT, MdUTast, MdTastT
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
 from md_store.models import MdStorReg, MdStorM, MdStorT
@@ -200,7 +200,7 @@ class SregistinfoView(View):
         #     logger.debug(f'stor_t_name : {stor_t_name}')
         # else:
         #     logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
-
+        
         context ={
             "reg_id" : reg_id,
             "reginfo": reginfo,
@@ -288,6 +288,7 @@ class GenstatisView(View):
         age = list(map(abs,age))
         # print(age)
         # print(year)
+
         #데이터 TEMPLATE로 넘기기
         context = {
             "inwon"     : inwon,
@@ -369,7 +370,7 @@ class IntereView(View):
         #sort한 key들을 다시 리스트로 넣기
         list_inter = []
         for key,value in sorted(dict_inter.items()):
-            list_inter.append((value))
+            list_inter.append(value)
         
         print(len(list_inter))
         print(len(inter_name))
@@ -381,5 +382,28 @@ class IntereView(View):
         context = {
             "list_inter": list_inter,
             "inter_name": inter_name
+            }
+        return HttpResponse(template.render(context,request))
+
+class TasteView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/tastestatis.html")
+        #입맛 id지정 수
+        tast = MdUTast.objects.values("tast_t").order_by("tast_t")
+        tast = list(m['tast_t'] for m in tast)
+        dict_tast = {}
+        dict_tast = collections.Counter(tast)
+        list_tast = []
+        for key,value in sorted(dict_tast.items()):
+            list_tast.append(value)
+        
+        #입맛 이름
+        tast_n = MdTastT.objects.values("tast_t_name").order_by("tast_t_id")
+        tast_n = list(m['tast_t_name'] for m in tast_n)
+        #print(tast_n)
+        
+        context = {
+            "list_tast": list_tast,
+            "tast_n"   : tast_n 
             }
         return HttpResponse(template.render(context,request))
