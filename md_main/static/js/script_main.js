@@ -1,16 +1,21 @@
 $(function() {
-	// initialize kakaomap
 	setLayoutSize();
-	
+
+	// initialize kakaomap
+	// : https 가 아닌 상황에서는 getCurrentPosition() 이 제대로 동작하지 않아서
+	// : 처음에는 기본 값으로 초기화 해주고 시작
+	initializeMap('kakaomap', null);
+
 	// get geolocation
 	if("geolocation" in navigator) {
 		navigator.geolocation.getCurrentPosition(
 			function(data) {
-				initializeMap('kakaomap', data.coords);
+				// initializeMap('kakaomap', data.coords);
+				kakaomap.panTo(data.coords);
 			}
 		)	// navigator.geolocation.getCurrentPosition(
 	} else {
-		alert('geolocation 사용 불가능');
+		// alert('geolocation 사용 불가능');
 		initializeMap('kakaomap', null);
 	}	// if("geolocation" in navigator)
 	
@@ -146,12 +151,3 @@ function displayCenterInfo(result, status) {
 		console.log(element_bjd.val())
 	}    
 }
-
-function panTo() {
-    // 이동할 위도 경도 위치를 생성합니다 
-    var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
-    
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);            
-}    
