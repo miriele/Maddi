@@ -14,5 +14,6 @@ urlpatterns = [
          path("storeuser",      views.StoreUserView.as_view(),      name="storeuser"),
          path("addjumju",       views.AddJumjuView.as_view(),       name="addjumju"),
          path("addjumjusuc",    views.AddJumjuSucView.as_view(),    name="addjumjusuc"),
+          path("addmenusuc",    views.AddMenuSucView.as_view(),    name="addmenusuc"),
          path("mypagejumju",    views.MypageJumjuView.as_view(),    name="mypagejumju"),
     ]

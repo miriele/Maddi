@@ -1,0 +1,118 @@
+/* script_store.css */
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 타이틀 스타일 */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #007bff;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* 이미지 스타일 */
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 입력 필드 스타일 */
+.input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.inputbutton {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* 파일 선택 버튼 스타일 */
+.file-input {
+    display: none; /* 기본 파일 선택 버튼 숨기기 */
+}
+
+.file-label {
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* 미리보기 이미지 스타일 */
+.preview-image {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 10px 0;
+}
+
+/* 버튼 그룹 스타일 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 버튼 스타일 */
+.button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* 페이지 링크 스타일 */
+.page-link {
+    padding: 8px 12px;
+	color: #007bff;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.page-link.active {
+    color: white;
+    border: none;
+}
+

@@ -1,4 +1,5 @@
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_menulist.css' %}">
 {% block title %} 
 <title>사용자_매장정보</title>
 {% endblock %}
@@ -9,8 +10,10 @@
 
 	<table>
 	    <tr>
-	        <th colspan="3">
-	            매장정보
+	        <th>매장정보</th>
+	        <th>
+	        	<input class="inputbutton" type="button" value="점주등록"
+						onclick="location='addjumju'">					
 	        </th>
 	    </tr>
 	    <tr>
@@ -41,13 +44,36 @@
 	        <th>매장인기시간대</th>
 	        <td colspan="2">&nbsp;</td>
 	    </tr>
-	    <tr>
-	        <th colspan="3">
-	        	<input class="inputbutton" type="button" value="점주등록"
-						onclick="location='addjumju'">					
-	        </th>
-	    </tr>
-	</table>
+	    	</table>
+	<h1>메뉴 목록</h1>
+	    {% if menu_list %}
+	    <table>
+	        <tr>
+	         	<th>메뉴 이미지</th>
+	            <th>메뉴 이름</th>
+	            <th>가격</th>
+	            <th>칼로리</th>
+	            <th>메뉴 소개</th>
+	           
+	            <th>메뉴 타입</th>
+	        </tr>
+	        {% for menu in menu_list %}
+	        <tr>
+	        	<td>
+	               <img src="/media/images/{{ menu.stor_m_img }}.png" width="300" height="300">
+	            </td>
+	            <td>{{ menu.stor_m_name }}</td>
+	            <td>{{ menu.stor_m_pric }}</td>
+	            <td>{{ menu.stor_m_cal }}</td>
+	            <td>{{ menu.menu.menu_info }}</td>
+	            
+	            <td>{{ menu.menu_t.menu_t_name }}</td>
+	        </tr>
+	        {% endfor %}
+	    </table>
+	    {% else %}
+	    <p>해당 매장의 메뉴가 없습니다.</p>
+	    {% endif %}
 	
 </form>
 

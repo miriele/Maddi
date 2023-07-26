@@ -1,33 +1,67 @@
 {% load static %}
-<script src="{% static 'js/script_store.js' %}"></script>	
-{% block title %} 
+<!DOCTYPE html>
+<html>
 <head>
     <title>점주_메뉴등록</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style_addjumju.css' %}">
+    <script src="{% static 'js/script_store.js' %}"></script>
 </head>
-{% endblock %}
-{% block content %}
-<!-- 확인용 발표 전 삭제 -->
-{{stor_id}}
-{{menu_img}}
-<form method="post" action="{% url 'md_store:addmenu' %}" name="updateform">
-	{% csrf_token %}
-	<table>
-	    <tr>
-	        <th>메뉴상세정보</th>
-	    </tr>
-	    <tr>
-	    	<th rowspan="7">메뉴이미지추가</th>
-	        <th rowspan="7"><img src="/media/images/{{ stor_m_img }}" width="300" height="300"></th>
-	    </tr>
-	    
-	    <tr>
-	        <th colspan="3">
-	        	<input class="inputbutton" type="button" value="파일선택" onclick="location='imagemenu'">			
-	        	<input class="inputbutton" type="submit" value="등록">
-	            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">			
-	        </th>
-	    </tr>
-	</table>
-</form>
-
-{% endblock %}
+<body>
+    <form method="post" action="addmenu" name="inputform" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>메뉴 정보 입력</th>
+            </tr>
+            <tr>
+                <td>메뉴 이미지</td>
+                <td colspan="2">메뉴 정보</td>
+            </tr>
+            <tr>
+                <td rowspan="6"> 
+                	<img src="/media/{{ stor_m_img }}" width="300" height="300"> 
+                	<input class="inputbutton" type="button" value="파일선택" onclick="location='imagemenu'">
+                </td>
+                <td>메뉴이름</td>
+                <td><input class="input" type="text" name="menuname" maxlength="20" style="width:250px" placeholder="메뉴명을 입력해주세요" onclick="clearInput(this)"></td>
+            </tr>
+            <tr>
+            	<td> ICE/HOT </td>
+            	<td>
+            		<select name="menucate" class="input">
+                        <option value="0"> ICE </option>
+                        <option value="1"> HOT </option>
+                    </select>
+            	</td>
+            </tr>
+            <tr>
+                <td>메뉴타입</td>
+                <td>
+                    <select name="menutype" class="input">
+                        <option value="0">일반</option>
+                        <option value="1">시그니처</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+            	<td>가격</td>
+                <td><input class="input" type="text" name="menuprice" maxlength="20" style="width:250px" placeholder="가격을 입력해주세요" onclick="clearInput(this)"></td>
+            </tr>
+            <tr>
+            	<td>칼로리</td>
+                <td><input class="input" type="text" name="menukcal" maxlength="20" style="width:250px" placeholder="칼로리를 입력해주세요" onclick="clearInput(this)"></td>
+            </tr>
+             <tr>
+            	<td>소개</td>
+                <td><input class="input" type="text" name="menuinfo" maxlength="20" style="width:500px" placeholder="소개를 입력해주세요" onclick="clearInput(this)"></td>
+            </tr>
+        </table>
+        <table>
+	        <th colspan="2">	
+		            <input class="inputbutton" type="submit" value="등록">
+		            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">
+		    </th>
+	    </table>
+    </form>
+</body>
+</html>

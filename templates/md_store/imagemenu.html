@@ -1,9 +1,10 @@
-{% block title %} <h2> 이미지 업로드 </h2> {% endblock %}
+{% block title %} 
+<h2> 이미지 업로드 </h2> 
+{% endblock %}
 
 {% block content %}
 {% csrf_token %}
-<form method="post" action="{% url 'md_store:addmenu' %}" enctype="multipart/form-data">
-	{% csrf_token %}
+<form method="post" action="imagemenu" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th> 이미지 </th>
@@ -12,8 +13,7 @@
 		<tr>
 			<th colspan="2">
 				<input class="inputbutton" type="submit" value="전송">
-				<input class="inputbutton" type="button" value="취소"
-						onclick="location='store'">		
+				<input class="inputbutton" type="button" value="취소" onclick="location='addmenu'">		
 			</th>
 		</tr>
 	</table>

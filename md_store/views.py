@@ -114,8 +114,30 @@ class AddMenuView(View):
         return HttpResponse( template.render( context, request ) )
         
     def post(self, request):
-        pass
+        stor_id = 4
+        menu_id = 1
+        ice_t_id = request.POST["menucate"]
+        menu_t_id = request.POST["menutype"]
+        stor_m_pric = request.POST["menuprice"]
+        stor_m_name = request.POST["menuname"]
+        stor_m_cal = request.POST["menukcal"]
+        stor_m_info = request.POST["menuinfo"]
+        imgmenu = None
         
+        new_stormenu = MdStorM.objects.create(
+            stor_id = stor_id,
+            menu_id = menu_id,
+            ice_t_id = ice_t_id,
+            menu_t_id = menu_t_id,
+            stor_m_pric = stor_m_pric,
+            stor_m_name = stor_m_name,
+            stor_m_cal = stor_m_cal,
+            stor_m_info = stor_m_info,
+            stor_m_img = imgmenu,
+            
+            )
+        return redirect( "md_store:addmenu")
+    
 class ImageMenuView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -125,7 +147,13 @@ class ImageMenuView(View):
         context = {}
         return HttpResponse(template.render(context, request))
     def post(self, request):
-        pass
+        stor_m_id = 2883543
+        storm = MdStorM.objects.get(stor_m_id=stor_m_id)
+        imgmenu = request.FILES["imgmenu"]
+        storm.stor_m_img = imgmenu
+        storm.save()
+        
+        return redirect("md_store:addmenusuc")
     
 class StoreView(View):
     @method_decorator( csrf_exempt )
@@ -207,7 +235,7 @@ class ImageStoreView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = 1
+        stor_m_id = 2883543
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -263,9 +291,10 @@ class StoreUserView(View):
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs) 
     def get(self, request):
-        stor_id = 1
+        stor_id = request.GET.get("stor_id")
         try:
             store = MdStor.objects.get(stor_id=stor_id)
+            menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
             stor_t_id = store.stor_t_id
             
             if store.stor_t_id == 0:
@@ -292,9 +321,11 @@ class StoreUserView(View):
                 'stor_id' : stor_id,
                 'stor_t_id' : stor_t_id,
                 'stor_img' : stor_img,
-                'user_ids' : user_ids
+                'user_ids' : user_ids,
+                'menu_list': menu_list,
             }
             
+          
             return render(request, 'md_store/storeuser.html', context)
         
         except MdStor.DoesNotExist:
@@ -320,6 +351,13 @@ class MypageJumjuView(View):
 class AddJumjuSucView(View):
     def get(self, request):
         template = loader.get_template("md_store/addjumjusuc.html")
+        context = {}
+        
+        return HttpResponse( template.render( context, request ) )
+
+class AddMenuSucView(View):
+    def get(self, request):
+        template = loader.get_template("md_store/menuinfo.html")
         context = {}
         
         return HttpResponse( template.render( context, request ) )
