@@ -1,0 +1,10 @@
+{% extends "md_admin/base.html" %}
+
+{% block content %}
+<h2>관리자 통계페이지-관심사</h2>
+	<div>
+	  <canvas id="inter"></canvas>
+	</div>
+	<span id = "list_inter" hidden>{{list_inter}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	<span id = "inter_name" hidden>{{inter_name}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+{% endblock %}

@@ -14,7 +14,7 @@ $(function() {
 	//console.log("수:" + data)
 	//console.log("인원:" + labels)
 	
-	const gender = document.getElementById('gender')
+	var gender = $('#gender')
 	
 	new Chart(gender, {
 	    type: 'pie',
@@ -36,19 +36,19 @@ $(function() {
 	    }
 	 });
 	 
-	 /*연령통계*/
+	 //연령통계
 	 var agecount = $('#agecount').text()
 	 var arrayage = agecount.replace("[","").replace("]","").split(',');
 	 
-	 const age = document.getElementById('age')
+	 var age = $('#age')
 	 
 	 new Chart(age, {
 	    type: 'pie',
 	    data: {
-	      labels: ['10대','20대','30대','40대','50대','60대이상'], //labels
+	      labels: ['10대','20대','30대','40대','50대','60대이상'],
 	      datasets: [{
 	        label: '# of Votes',
-	        data: arrayage, //data
+	        data: arrayage, 
 	        borderWidth: 1
 	      }]
 	    },
@@ -62,4 +62,34 @@ $(function() {
 	    }
 	 });
 	 
+	 /*관심사통계*/
+	 var listinter = $('#list_inter').text()
+	 var inter_name = $('#inter_name').text()
+	 console.log(typeof(listinter))
+	 console.log(typeof(inter_name))
+	 
+	 var interarray = listinter.replace("[","").replace("]","").split(',');
+	 var inamearray = inter_name.replace("[","").replace("]","").split(',');
+	 
+	 var inter = $('#inter')
+	 
+	 new Chart(inter, {
+	    type: 'bar',
+	    data: {
+	      labels: inamearray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: interarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	
+	
  })

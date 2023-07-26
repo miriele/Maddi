@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.http.response import HttpResponse
 from django.template import loader
-from md_member.models import MdUser, MdUserG
+from md_member.models import MdUser, MdUserG, MdUIntr, MdIntrT
 from md_review.models import MdReview, MdTag, MdRevT
 from md_order.models import MdOrdr, MdOrdrM
 from md_store.models import MdStorReg, MdStorM, MdStorT
@@ -15,7 +15,8 @@ from django.db.models.aggregates import Count
 from django.db.models.expressions import Case
 from _datetime import date
 from django.db.models.functions.text import Substr
-import json
+import collections
+
 
 
 # 로그
@@ -242,9 +243,6 @@ class GenstatisView(View):
         #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
 
-        
-
-        
         #print(gen)
         #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
         
@@ -254,8 +252,6 @@ class GenstatisView(View):
         #print(gen_list)
         #[{'gen__gen_name': '남자\r', 'gen__count': 79}, 
         #{'gen__gen_name': '여자\r', 'gen__count': 61}]
-        
-        
         
         #key-value 리스트화
         #1.성별 key
@@ -269,8 +265,8 @@ class GenstatisView(View):
         gend.extend(genname)
         inwon.extend(gencount)
         
-        print(gend)
-        print(inwon)
+        # print(gend)
+        # print(inwon)
 
         #남성회원 비율
         menper = inwon[0]/sum(inwon) * 100
@@ -351,5 +347,39 @@ class AgestatisView(View):
         context = {
             "agecount"  : agecount,
             "count"     : count,
+            }
+        return HttpResponse(template.render(context,request))
+    
+class IntereView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/interestatis.html")
+        #회원들의 관심사 전체 고른 수
+        count = MdUIntr.objects.all().count()
+        inter = MdUIntr.objects.values("intr_t").order_by("intr_t")
+        inter_name = MdIntrT.objects.values("intr_t_name").order_by("intr_t_id")
+        # print(inter)
+        inter = list(m['intr_t'] for m in inter)
+        
+        inter_name = list(m['intr_t_name'] for m in inter_name)
+        inter_name = [l.strip() for l in inter_name]
+        
+        #뽑아온 리스트를 key값순으로 sort하기위해 dict 생성
+        dict_inter = {}
+        dict_inter = collections.Counter(inter)
+        #sort한 key들을 다시 리스트로 넣기
+        list_inter = []
+        for key,value in sorted(dict_inter.items()):
+            list_inter.append((value))
+        
+        print(len(list_inter))
+        print(len(inter_name))
+  
+        #print(list_inter)
+        #print(inter_name)
+        
+        
+        context = {
+            "list_inter": list_inter,
+            "inter_name": inter_name
             }
         return HttpResponse(template.render(context,request))

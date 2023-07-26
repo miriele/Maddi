@@ -11,5 +11,6 @@ urlpatterns = [
     path("sregistlist", views.SregistlistView.as_view(),    name = "sregistlist"),
     path("sregistinfo", views.SregistinfoView.as_view(),    name = "sregistinfo"),
     path("genstatis",   views.GenstatisView.as_view(),      name = "genstatis"),
-    path("agestatis",   views.AgestatisView.as_view(),      name = "agestatis")
+    path("agestatis",   views.AgestatisView.as_view(),      name = "agestatis"),
+    path("interestatis",views.IntereView.as_view(),         name = "Interestatis"),
     ]
