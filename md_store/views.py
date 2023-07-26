@@ -27,7 +27,7 @@ class AddJumjuView(View):
         user_bir = user.user_bir
         
         #매장정보
-        stor_id = 1
+        stor_id = 4
         store = MdStor.objects.get(stor_id=stor_id)
         stor_t_id = store.stor_t_id
         
@@ -39,9 +39,15 @@ class AddJumjuView(View):
         stor_tel = store.stor_tel if store.stor_tel else "등록된 연락처가 없습니다"
         user_ids = store.user_id if store.user_id else "등록된 점주가 없습니다"
         stor_img = store.stor_img
-        reg = MdStorReg.objects.get(stor_id=stor_id)
-        reg_img = reg.reg_img
-        reg_num = reg.reg_num
+        
+        try:
+            reg = MdStorReg.objects.get(stor_id=stor_id)
+            reg_img = reg.reg_img
+            reg_num = reg.reg_num
+        except MdStorReg.DoesNotExist:
+            reg_img = None
+            reg_num = None
+        
         context = {
                 "user_id": user_id,
                 "user_ids": user_ids,
@@ -59,7 +65,7 @@ class AddJumjuView(View):
         return render(request, 'md_store/addjumju.html', context)
     
     def post(self, request):
-        stor_id = 1
+        stor_id = 4
         reg = MdStorReg.objects.get(stor_id=stor_id)
         reg_num = request.POST["regnum"]
         reg.reg_num = reg_num
@@ -77,7 +83,7 @@ class ImageRegView(View):
         return HttpResponse( template.render( context, request ) )
     def post(self, request):
         user_id = "abc001"
-        stor_id = 1
+        stor_id = 4
         imgreg = request.FILES["imgreg"]
         reg_sub_ts = timezone.now()
 

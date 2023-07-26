@@ -90,11 +90,15 @@
             <td>
                 <table>
                     <tr>
-                        <th>사업자등록번호</th>
-                        <td colspan = "2">
-                            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" value="{{reg_num}}" placeholder="' - '를 포함하여 입력해주세요" onclick ="clearInput(this)">
-                        </td>
-                    </tr>
+					    <th>사업자등록번호</th>
+					    <td colspan="2">
+					        {% if reg_num is None %}
+					            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" placeholder="' - '를 포함하여 입력해주세요" onclick="clearInput(this)">
+					        {% else %}
+					            <input class="input" type="text" name="regnum" maxlength="20" style="width:250px" value="{{ reg_num }}" onclick="clearInput(this)">
+					        {% endif %}
+					    </td>
+					</tr>
                     <tr>
                         <th rowspan="2" >사업자등록증</th>
                          <td>
