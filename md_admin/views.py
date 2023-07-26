@@ -382,7 +382,6 @@ class IntereView(View):
         list_inter = []
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
-        print(list_inter)
         # print(len(list_inter))
         # print(len(inter_name))
   
@@ -522,17 +521,14 @@ class BdrnkView(View):
         template = loader.get_template("md_admin/bdrnkstatis.html")
         #구매한 음료 분류 정보
         bdrnk = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__drnk_t")
-        bdrnk = list(m['stor_m__menu__drnk_t'] for m in bdrnk)
-        
-        # dict_bdrnk = dict(0=0,1=0,2=0,3=0,4=0,5=0,6=0,7=0,8=0)
+        bdrnk = list(m['stor_m__menu__drnk_t'] for m in bdrnk)  
         dict_bdrnk = {}
         dict_bdrnk = collections.Counter(bdrnk)
-        print(dict_bdrnk)
+        
         list_bdrnk = []
         for key,value in sorted(dict_bdrnk.items()):
             list_bdrnk.append(value)
-        
-                
+               
         # print(list_bdrnk)
         bdrnk_n = MdDrnkT.objects.values("drnk_t_name")
         bdrnk_n = list(m['drnk_t_name'] for m in bdrnk_n)
