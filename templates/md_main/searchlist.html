@@ -11,36 +11,20 @@
 	{% for store in store_list %}
 		{% if forloop.counter0|divisibleby:2%}
 		<tr>
-			<td>
-				<table>
-					<tr>
-						<td rowspan="3">{{store.stor_img}}</td>
-						<td>{{store.stor_id}}</td>
-					</tr>
-					<tr>
-						<td>{{store.stor_name}}</td>
-					</tr>
-					<tr>
-						<td>{{store.area_t_name}}</td>
-					</tr>
-				</table>
-			</td>
-		{% else %}
-			<td>
-				<table>
-					<tr>
-						<td rowspan="3">{{store.stor_img}}</td>
-						<td>{{store.stor_id}}</td>
-					</tr>
-					<tr>
-						<td>{{store.stor_name}}</td>
-					</tr>
-					<tr>
-						<td>{{store.area_t_name}}</td>
-					</tr>
-				</table>
-			</td>
 		{% endif %}
+			<td>
+				<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id={{store.stor_id}}'">
+					<table>
+						<tr>
+							<td rowspan="2">{{store.stor_img}}</td>
+							<td>{{store.stor_name}}</td>
+						</tr>
+						<tr>
+							<td>{{store.area_t_name}}</td>
+						</tr>
+					</table>
+				</div>
+			</td>
 
 		{% if not forloop.counter0|divisibleby:2%}
 		</tr>
