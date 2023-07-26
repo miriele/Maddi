@@ -138,7 +138,6 @@ ALLOWED_HOSTS = [
     '*'
     ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -148,6 +147,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'mathfilters',
     'md_admin.apps.MdAdminConfig',
     'md_combi.apps.MdCombiConfig',
@@ -168,7 +168,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://192.168.0.86:8000',
+    'http://t1.daumcdn.net',
+    'http://dapi.kakao.com',
+    'http://map.daumcdn.net',
+]
+
+CORS_ORIGIN_ALLOW_ALL  = True  
+CORS_ALLOW_CREDENTIALS = True
+
+# kakao maps api
+# - error message : The Cross Origin Opener Policy header has been ignored
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'unsafe-none'
+
 
 ROOT_URLCONF = 'Maddi.urls'
 
