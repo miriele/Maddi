@@ -11,6 +11,18 @@
 </head>
 
 <body>
+	{%block topbar%}
+		<h4>관리자통계</h4>
+		<a href="/md_admin/genstatis">성별통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/agestatis">연령통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/interestatis">관심사통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/storestatis">등록매장통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/drnkstatis">회원정보기반 음료통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/bdrnkstatis">구매기반 음료통계</a> &nbsp;&nbsp;&nbsp;
+	{%endblock%}
 	{%block content%}
 	
 	{%endblock%}

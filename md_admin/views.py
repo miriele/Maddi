@@ -382,8 +382,8 @@ class IntereView(View):
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
         
-        print(len(list_inter))
-        print(len(inter_name))
+        # print(len(list_inter))
+        # print(len(inter_name))
   
         #print(list_inter)
         #print(inter_name)
@@ -468,7 +468,7 @@ class DsrtView(View):
         list_dsrt = []
         for key,value in sorted(dict_dsrt.items()):
             list_dsrt.append(value)
-        print(list_dsrt)
+        # print(list_dsrt)
         
         #디저트분류명 리스트
         dsrt_n = MdDsrtT.objects.values("dsrt_t_name")
@@ -511,5 +511,6 @@ class DrnkView(View):
         context = {
             "drnk_n" : drnk_n,
             "list_drnk" : list_drnk,
-            }        
+            }
+           
         return HttpResponse(template.render(context,request))   
