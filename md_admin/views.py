@@ -492,6 +492,7 @@ class DrnkView(View):
         #사용자 음료 기입한 수 리스트
         drnk = MdUDrnk.objects.values("drnk_t").order_by("drnk_t")
         drnk = list(m['drnk_t'] for m in drnk)
+        
         dict_drnk = {}
         dict_drnk = collections.Counter(drnk)
         list_drnk = []
@@ -519,9 +520,11 @@ class DrnkView(View):
 class BdrnkView(View):
     def get(self,request):
         template = loader.get_template("md_admin/bdrnkstatis.html")
-        #구매한 음료 분류 정보
+        # 구매한 음료 분류 정보
         bdrnk = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__drnk_t")
-        bdrnk = list(m['stor_m__menu__drnk_t'] for m in bdrnk)  
+        bdrnk = list(m['stor_m__menu__drnk_t'] for m in bdrnk)
+        # 디저트분류 아이디 -1은 삭제
+        bdsrt = [item for item in bdrnk if item != -1]  
         dict_bdrnk = {}
         dict_bdrnk = collections.Counter(bdrnk)
         
@@ -538,4 +541,30 @@ class BdrnkView(View):
             "list_bdrnk" : list_bdrnk,
             "bdrnk_n" : bdrnk_n
             }
-        return HttpResponse(template.render(context,request))      
+        return HttpResponse(template.render(context,request))
+class BdsrtView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/bdsrtstatis.html")
+        #구매한 음료 분류 정보
+        bdsrt = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__dsrt_t")
+        bdsrt = list(m['stor_m__menu__dsrt_t'] for m in bdsrt)
+        # 음료분류 아이디 -1은 삭제
+        bdsrt = [item for item in bdsrt if item != -1]
+        # print(bdsrt)  
+        dict_bdsrt = {}
+        dict_bdsrt = collections.Counter(bdsrt)
+        
+        list_bdsrt = []
+        for key,value in sorted(dict_bdsrt.items()):
+            list_bdsrt.append(value)
+               
+        # print(list_bdrnk)
+        bdsrt_n = MdDsrtT.objects.values("dsrt_t_name")
+        bdsrt_n = list(m['dsrt_t_name'] for m in bdsrt_n)
+        bdsrt_n.remove('없음')
+        
+        context = {
+            "list_bdsrt" : list_bdsrt,
+            "bdsrt_n" : bdsrt_n
+            }
+        return HttpResponse(template.render(context,request))           

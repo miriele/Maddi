@@ -224,5 +224,34 @@ $(function() {
 	        }
 	      }
 	    }
+	 });
+	 
+	 //구매기반디저트취향(전체)
+	 var bdsrtcount = $('#list_bdsrt').text()
+	 var bdsrtname = $('#bdsrt_n').text()
+	 
+	 var bdsrtarray = bdsrtcount.replace("[","").replace("]","").split(',');
+	 var nbdsrtkarray = bdsrtname.replace("[","").replace("]","").split(',');
+
+	 var bdsrt = $('#bdsrt')
+	 
+	 new Chart(bdsrt, {
+	    type: 'bar',
+	    data: {
+	      labels: nbdsrtkarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: bdsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
 	 });	 		 			 		
  })
