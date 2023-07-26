@@ -33,7 +33,7 @@
 					{% endfor %}
 				</select>
 				<select name="md_tag1" id="md_tag1" multiple size="4">
-					<option value="-1" disabled> ---선택--- </option>
+					<option value="-1" disabled> ---여러개 선택 가능--- </option>
 					{% for tag1 in md_tag1 %}
 						<option value="{{tag1.tag_id}}"> {{tag1.tag_name }} </option>
 					{% endfor %}

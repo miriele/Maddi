@@ -23,11 +23,15 @@ class FavoriteView( View ):
         
         memid = request.session.get("memid")
         gid = request.session.get("gid")
+        # logger.debug(f'memid: {memid}')
         
         count = MdFavorite.objects.filter(user_id = memid ).count()
         # logger.debug(f'count : {count}')
         
-        if count == 0 :     #30
+        
+        context={}# 밖에다 변수 선언 해 두고 append?로 데이터 집어넣어서 context 보내는게 좋음
+        
+        if count == 0 or None :     #30
             context = {
                 "count" :count,
                 }

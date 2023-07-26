@@ -39,7 +39,11 @@
 				</select>
 				<script>
 				function dndchange(e) {
-					var drk = ["스무디", "쉐이크", "에이드", "밀크티", "커피", "티", "주스", "디카페인", "기타"];
+					//var drkJ = JSON.parse("{{ drkJ|escapejs }}");
+					var drnk_t = drnk_t;
+					var drkD = [] 
+					
+					var drk = [drkD['drnk_t_name']];
 					var dst = ["빵", "푸딩", "케이크", "파이", "아이스크림", "초콜릿", "쿠키"];
 					var target = document.getElementById("drnk");
 					
@@ -64,9 +68,9 @@
 				
 				
 					
-				<select id = "drink"><!-- 안먹음 -->
-				{% for ds in dsrt %}
-					<option value="ds.dsrt_t_id"> {{ ds.dsrt_t_name }}</option>
+				<select id = "drink">
+				{% for ds in drnk_t %}
+					<option value="ds.drnk_t_id"> {{ ds.drnk_t_name }}</option>
 				{% endfor %}
 				</select>
 			</td>

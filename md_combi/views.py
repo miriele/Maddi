@@ -100,6 +100,7 @@ class CombListView( View ):
     
     
 # 추천글 작성
+import json
 class CombWriteView( View ):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
@@ -110,13 +111,48 @@ class CombWriteView( View ):
         
         memid   = request.session.get("memid")
         gid     = request.session.get("gid") 
+        
         md_menu = MdMenu.objects.all()
+        
         nick    = MdUser.objects.get( user_id = memid )
-        dsrt_t = MdDsrtT.objects.filter(dsrt_t_id__gt=-1 ).order_by("dsrt_t_id")
-        drnk_t = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
+        
+        dsrt_t  = MdDsrtT.objects.filter(dsrt_t_id__gt=-1 ).order_by("dsrt_t_id")
+        drnk_t  = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
         # logger.debug(f'drnk_t : {drnk_t}')
         
+        drkD = {}
+        drkJ = 0
+        for drk in drnk_t :
+            drkD = {
+                'drnk_t_id'     : drk.drnk_t_id,
+                'drnk_t_name'   : drk.drnk_t_name
+               }
+            
+            # drkD["drnk_t_id"]=drk.drnk_t_id
+            # drkD["drnk_t_name"]=drk.drnk_t_name
+            
+            # drkD.update( ( ( "drnk_t_id" , drk.drnk_t_id ) ) )
+            # drkD.update( ( ( "drnk_t_name" , drk.drnk_t_name ) ) )
+            
+            
+            
+            # logger.debug(f'drkD : {drkD}')
+            # drkJ = json.dumps(drkD)
+            # for key, value in drkD.items() :
+            #     logger.debug(f' key, value : { key, value }')
+            
+            
+        logger.debug(f'drkD : {drkD}')
+        
+        
+        
+        
+        
         context = {
+            "drkD"      : drkD,
+            "drkJ"      : drkJ,
+            
+            
             "dsrt_t"    : dsrt_t,
             "drnk_t"    : drnk_t,
             "nick"      : nick,

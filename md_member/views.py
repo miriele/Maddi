@@ -362,6 +362,9 @@ class MyOrderListView( View ):
             
             #주문 내역/ordr_id, ordr_ord_ts / 주문 매장 명
             md_ordr = MdOrdr.objects.filter( user_id= memid ).order_by("-ordr_id")[start:end]
+            # revs = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('ordr__ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'ordr__mdordrm__stor_m__stor_m_name', 'ordr__mdordrm__ordr_num', ' ordr__mdordrm__stor_m__stor_m_pric', 'ordr__ordr_ord_ts','ordr__ordr_com_ts','rev_id', 'ordr_id', 'ordr__ordr_id')
+            
+            
             
             ordr_id     = 0
             stor_m_id   = 0
@@ -399,10 +402,12 @@ class MyOrderListView( View ):
             #     logger.debug(f'r.rev_id  : {r.rev_id }')
             
             
-            rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
+            # rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts', 'ordr__user_id', 'ordr__mdordrm__stor_m__stor_m_pric', 'ordr__mdordrm__ordr_num', 'ordr__ordr_ord_ts','ordr__ordr_com_ts')
                             
             
             context = {
+                # "revs"      : revs,
+                
                 "stor_name" : stor_name,
                 "md_stor"   : md_stor,
                 "md_stor_m" : md_stor_m,
@@ -411,7 +416,7 @@ class MyOrderListView( View ):
                 "ordr_m"    : ordr_m,
                 "md_ordr"   : md_ordr,
                 "rev"       : rev,
-                "rdtos" : rdtos,
+                # "rdtos" : rdtos,
                 
                 "memid"     : memid,
                 "gid"       : gid,
