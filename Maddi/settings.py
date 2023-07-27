@@ -233,6 +233,7 @@ DATABASES = {
         'USER'      : 'bit',
         'PASSWORD'  : 'bit',
         'HOST'      : '218.153.113.20',       # ip
+        # 'HOST'      : '127.0.0.1',       # ip
         'PORT'      : '3306',
     }
 }

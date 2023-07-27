@@ -124,7 +124,7 @@ function displayCenterInfo(result, status) {
 		
 		infoDiv.innerHTML = cur_loc; 
 		
-		// 검색할 때 법정동 코드 얻기 위해 법정도 설정
+		// 검색할 때 법정동 코드 얻기 위해 법정동 설정
 		var element_bjd = $("input[name='bjd_name']");
 		var states_s    = ["경기", "서울", "부산", "경남", "인천",
 						   "대구", "경북", "충남", "전북", "광주",
