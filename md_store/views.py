@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg
+from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
 from md_member.models import MdUser
 
 from django.utils import timezone
@@ -122,6 +122,8 @@ class AddMenuView(View):
         stor_m_name = request.POST["menuname"]
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
+        algy_t_id = request.POST["algy"]
+        
         imgmenu = None
         
         new_stormenu = MdStorM.objects.create(
@@ -134,8 +136,16 @@ class AddMenuView(View):
             stor_m_cal = stor_m_cal,
             stor_m_info = stor_m_info,
             stor_m_img = imgmenu,
-            
             )
+        
+        if MdMAlgy.objects.filter(menu_id=menu_id, algy_t_id=algy_t_id).exists():
+            pass
+        else:
+            new_algy = MdMAlgy.objects.create(
+                menu_id=menu_id, 
+                algy_t_id=algy_t_id
+                )
+            
         return redirect( "md_store:addmenu")
     
 class ImageMenuView(View):
