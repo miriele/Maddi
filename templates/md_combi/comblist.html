@@ -25,39 +25,31 @@
 				작성된 글이 없습니다.
 		</tr>
 	{% else %}
-		{% for mdc in md_comb %}
+		{% for c in md_comb %}
 			<tr>
 				<td align="center">
 					{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
 				</td>
 				<td>
-					<a href="combd?comb_id={{ mdc.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
-						{{ mdc.comb_tit }}					<!-- 제목 -->
+					<a href="combd?comb_id={{ c.mdcomb__comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
+						{{ c.mdcomb__comb_tit }}					<!-- 제목 -->
 					</a>
 				</td>
 				<td	align="center">							<!-- 조합메뉴 -->
-					{% for cm in comb_menu %}<!-- #############아이디 같은사람이 2개 이상 글 쓰면 한칸에 중복되서 나옴 수정해야 함-->
-						{% if mdc.user_id == cm.comb.user_id and mdc.comb_id == cm.comb.comb_id %}
-							/{{ cm.menu.menu_name }}							
-						{% endif %}
-					{% endfor %}
+					/{{ c.mdcomb__mdcombm__menu__menu_name }}							
 				</td>
 				<td>
-					{{ mdc.comb_nop }}						<!-- 인원 -->
+					{{ c.mdcomb__comb_nop }}						<!-- 인원 -->
+				</td>
+				<td><!-- 닉네임 -->
+					{{ c.user_nick }}
 				</td>
 				<td>
-					{% for combl in comblist %}				<!-- 닉네임 -->
-						{% if mdc.user_id == combl.user.user_id %}
-							{{ combl.user.user_nick }}
-						{% endif %}
-					{% endfor %}
-				</td>
-				<td>
-					{{ mdc.comb_reg_ts |date:"Y-m-d H:i" }}	<!-- 작성일 -->
+					{{ c.mdcomb__comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
 				</td>
 				<td>
 					{% for cid, cnt in comb_like %}
-						{% if mdc.comb_id == cid %}
+						{% if c.mdcomb__comb_id == cid %}
 							{{cnt}}
 						{% endif %}
 					{% endfor %}

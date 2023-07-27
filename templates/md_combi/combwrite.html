@@ -29,82 +29,70 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
 			<span id="drnkIdList" hidden>{{drnkIdList}}</span>
 			<span id="dsrtIdList" hidden>{{dsrtIdList}}</span>
 			<span id="drnkNameList" hidden>{{drnkNameList}}</span>
 			<span id="dsrtNameList" hidden>{{dsrtNameList}}</span>
 			
-			<script>
-				console.log($('#drnkIdList').text());
-				console.log($('#dsrtIdList').text());
-				console.log($('#drnkNameList').text());
-				console.log($('#dsrtNameList').text());
-			</script>
+			<span id="rm0IdL" hidden>{{rm0IdL}}</span>
+			<span id="rm1IdL" hidden>{{rm1IdL}}</span>
+			<span id="rm2IdL" hidden>{{rm2IdL}}</span>
+			<span id="rm3IdL" hidden>{{rm3IdL}}</span>
+			<span id="rm4IdL" hidden>{{rm4IdL}}</span>
+			<span id="rm5IdL" hidden>{{rm5IdL}}</span>
+			<span id="rm6IdL" hidden>{{rm6IdL}}</span>
+			<span id="rm7IdL" hidden>{{rm7IdL}}</span>
+			<span id="rm8IdL" hidden>{{rm8IdL}}</span>
 			
+			<span id="sm0IdL" hidden>{{sm0IdL}}</span>
+			<span id="sm1IdL" hidden>{{sm1IdL}}</span>
+			<span id="sm2IdL" hidden>{{sm2IdL}}</span>
+			<span id="sm3IdL" hidden>{{sm3IdL}}</span>
+			<span id="sm4IdL" hidden>{{sm4IdL}}</span>
+			<span id="sm5IdL" hidden>{{sm5IdL}}</span>
+			<span id="sm6IdL" hidden>{{sm6IdL}}</span>
+			
+			<span id="rm0NameL" hidden>{{rm0NameL}}</span>
+			<span id="rm1NameL" hidden>{{rm1NameL}}</span>
+			<span id="rm2NameL" hidden>{{rm2NameL}}</span>
+			<span id="rm3NameL" hidden>{{rm3NameL}}</span>
+			<span id="rm4NameL" hidden>{{rm4NameL}}</span>
+			<span id="rm5NameL" hidden>{{rm5NameL}}</span>
+			<span id="rm6NameL" hidden>{{rm6NameL}}</span>
+			<span id="rm7NameL" hidden>{{rm7NameL}}</span>
+			<span id="rm8NameL" hidden>{{rm8NameL}}</span>
+
+			<span id="sm0NameL" hidden>{{sm0NameL}}</span>
+			<span id="sm1NameL" hidden>{{sm1NameL}}</span>
+			<span id="sm2NameL" hidden>{{sm2NameL}}</span>
+			<span id="sm3NameL" hidden>{{sm3NameL}}</span>
+			<span id="sm4NameL" hidden>{{sm4NameL}}</span>
+			<span id="sm5NameL" hidden>{{sm5NameL}}</span>
+			<span id="sm6NameL" hidden>{{sm6NameL}}</span>
 		<tr>
-			<th>대표메뉴2	</th>
+			<th> 대표메뉴1 </th>
 			<td> 
-				<select name="dord2" required onchange="dndchanget(this)">
-					<option value="" disabled="none" selected> 대분류 </option>
-					<option value=1> 음료 </option>
-					<option value=2> 디저트 </option>
-				</select>
-
-				<script>
-				function dndchanget(e) {
-					var drnkIdL   = $('#drnkIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
-					var dsrtIdL   = $('#dsrtIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
-					var drnkNameL = $('#drnkNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
-					var dsrtNameL = $('#dsrtNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
-					
-					var target    = document.getElementById("dsrt");
-					var menu2ndIdL;
-					var menu2ndNameL;
-					var menu3rdIdL;
-					var menu3rdNameL;
-
-					if (e.value == 1 ) {
-						menu2ndIdL	 = drnkIdL;
-						menu2ndNameL = drnkNameL;
-					}
-					else if (e.value == 2 ) {
-						menu2ndIdL	 = dsrtIdL;
-						menu2ndNameL = dsrtNameL;
-					}
-						
-					console.log(menu2ndIdL)
-					console.log(menu2ndNameL)
-
-					target.options.length = 0;
-					
-					for (i in menu2ndNameL) {
-						var opt = document.createElement("option");
-						
-						opt.value     = menu2ndIdL[i];
-						opt.innerHTML = menu2ndNameL[i];
-						
-						target.appendChild(opt);
-					}
-					
-					console.log(target)
-				}
-				
-				</script>
-				
-				<select id = "dsrt">
-					<option> 중분류 </option>
-				</select>
-				
-				<select name="dessert" required>
-					<option> 소분류 </option>
-					
-				</select>
+				<div id="div_chk">
+					<select id="select_id_parents" required >
+						<option value="" disabled="none" selected> 대분류 </option>
+						<option value="1"> 음료 </option>
+						<option value="2"> 디저트 </option>
+					</select>
+				</div>
 			</td>
 		</tr>
-		
-		
-		
+		<tr>
+			<th> 대표메뉴2 </th>
+			<td> 
+				<div id="div_chk2">
+					<select id="select_id_parents2" required >
+						<option value="" disabled="none" selected> 대분류 </option>
+						<option value="1"> 음료 </option>
+						<option value="2"> 디저트 </option>
+					</select>
+				</div>
+			</td>
+		</tr>
 		<tr>
 			<th> 내용 </th><!--  범위 수정해야 함 -->
 			<td> 
@@ -127,4 +115,367 @@
 		</tr>
 	</table>
 </form>
+
+<script>
+	$(document).ready(function(){
+		let selectVal_parents = "";
+		let selectVal_child = "";
+		let selectVal_grandchild = "";
+		
+		$("#select_id_parents").on(
+			"change",
+			function() {
+				$("#select_id_child").remove();
+				$("#select_id_grandchild").remove();
+				$("#div_chk").append("<select id='select_id_child'></select>");
+				
+				let drnkIdL = $('#drnkIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let dsrtIdL = $('#dsrtIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				//number
+				let drnkNameL = $('#drnkNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				//string
+				let dsrtNameL = $('#dsrtNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				selectVal_parents = $(this).val();
+				
+				//console.log(drnkIdL);
+				//console.log(dsrtIdL);
+				//console.log(drnkNameL);
+				//console.log(dsrtNameL);
+				
+				//console.log("분류값", selectVal_parents);
+				
+				var menu2ndIdL;
+				var menu2ndNameL;
+				
+				if(selectVal_parents == "1" ) {
+					menu2ndIdL 		= drnkIdL;
+					menu2ndNameL 	= drnkNameL;
+				}
+				else if(selectVal_parents == "2" ) {
+					menu2ndIdL 		= dsrtIdL;
+					menu2ndNameL 	= dsrtNameL;
+				}
+				console.log("menu2ndIdL", menu2ndIdL);
+				console.log("menu2ndNameL", menu2ndNameL);
+				
+				
+				$("#select_id_child").empty();
+				
+				for( i in menu2ndNameL ){
+					$("#select_id_child").append("<option value='"+menu2ndIdL[i]+"'>"+menu2ndNameL[i]+"</option>");
+				}
+			}//function
+		);//on
+		
+		// select_id_child 동적으로 생성되었기 때문에 재할당을 해주어서 체인지 이벤트를 걸어줌
+		$(document).on(
+			"change", "#select_id_child",
+			function(){
+				$("#select_id_grandchild").remove();
+				$("#div_chk").append("<select id='select_id_grandchild'></select>");
+				
+				// drink Id
+				let rm0IdL = $('#rm0IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm1IdL = $('#rm1IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm2IdL = $('#rm2IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm3IdL = $('#rm3IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm4IdL = $('#rm4IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm5IdL = $('#rm5IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm6IdL = $('#rm6IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm7IdL = $('#rm7IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm8IdL = $('#rm8IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				// dessert Id
+				let sm0IdL = $('#sm0IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm1IdL = $('#sm1IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm2IdL = $('#sm2IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm3IdL = $('#sm3IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm4IdL = $('#sm4IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm5IdL = $('#sm5IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm6IdL = $('#sm6IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				//drink Name
+				let rm0NameL = $('#rm0NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm1NameL = $('#rm1NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm2NameL = $('#rm2NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm3NameL = $('#rm3NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm4NameL = $('#rm4NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm5NameL = $('#rm5NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm6NameL = $('#rm6NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm7NameL = $('#rm7NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm8NameL = $('#rm8NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				//dessert Name
+				let sm0NameL = $('#sm0NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm1NameL = $('#sm1NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm2NameL = $('#sm2NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm3NameL = $('#sm3NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm4NameL = $('#sm4NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm5NameL = $('#sm5NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm6NameL = $('#sm6NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				selectVal_child = $(this).val();
+				console.log("selectVal_child", selectVal_child);
+				
+				var menu3rdIdL;
+				var menu3rdNameL;
+				
+				if (selectVal_child == 0 && selectVal_parents == 1) {
+					menu3rdIdL		= rm0IdL;
+					menu3rdNameL	= rm0NameL;
+				}
+				else if(selectVal_child == 1 && selectVal_parents == 1) {
+					menu3rdIdL		= rm1IdL;
+					menu3rdNameL	= rm1NameL;
+				}
+				else if(selectVal_child == 2 && selectVal_parents == 1) {
+					menu3rdIdL		= rm2IdL;
+					menu3rdNameL	= rm2NameL;
+				}
+				else if(selectVal_child == 3 && selectVal_parents == 1) {
+					menu3rdIdL		= rm3IdL;
+					menu3rdNameL	= rm3NameL;
+				}
+				else if(selectVal_child == 4 && selectVal_parents == 1) {
+					menu3rdIdL		= rm4IdL;
+					menu3rdNameL	= rm4NameL;
+				}
+				else if(selectVal_child == 5 && selectVal_parents == 1) {
+					menu3rdIdL		= rm5IdL;
+					menu3rdNameL	= rm5NameL;
+				}
+				else if(selectVal_child == 6 && selectVal_parents == 1) {
+					menu3rdIdL		= rm6IdL;
+					menu3rdNameL	= rm6NameL;
+				}
+				else if(selectVal_child == 7 && selectVal_parents == 1) {
+					menu3rdIdL		= rm7IdL;
+					menu3rdNameL	= rm7NameL;
+				}
+				else if(selectVal_child == 8 && selectVal_parents == 1) {
+					menu3rdIdL		= rm8IdL;
+					menu3rdNameL	= rm8NameL;
+				}else if(selectVal_child == 0 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm0IdL;
+					menu3rdNameL	= sm0NameL;
+				}else if(selectVal_child == 1 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm1IdL;
+					menu3rdNameL	= sm1NameL;
+				}
+				else if(selectVal_child == 2 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm2IdL;
+					menu3rdNameL	= sm2NameL;
+				}
+				else if(selectVal_child == 3 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm3IdL;
+					menu3rdNameL	= sm3NameL;
+				}
+				else if(selectVal_child == 4 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm4IdL;
+					menu3rdNameL	= sm4NameL;
+				}
+				else if(selectVal_child == 5 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm5IdL;
+					menu3rdNameL	= sm5NameL;
+				}
+				else if(selectVal_child == 6 && selectVal_parents == 2) {	
+					menu3rdIdL		= sm6IdL;
+					menu3rdNameL	= sm6NameL;
+				}
+				$("#select_id_grandchild").empty();
+				
+				for( i in menu3rdNameL ){
+					$("#select_id_grandchild").append("<option value='"+menu3rdIdL[i]+"'>"+menu3rdNameL[i]+"</option>");
+				}
+				
+				
+			}//function
+		);//on
+	});//function/ready
+</script>
+<script>
+	$(document).ready(function(){
+		let selectVal_parents2 = "";
+		let selectVal_child2 = "";
+		let selectVal_grandchild2 = "";
+		
+		$("#select_id_parents2").on(
+			"change",
+			function() {
+				$("#select_id_child2").remove();
+				$("#select_id_grandchild2").remove();
+				$("#div_chk2").append("<select id='select_id_child2'></select>");
+				
+				let drnkIdL = $('#drnkIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let dsrtIdL = $('#dsrtIdList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				//number
+				let drnkNameL = $('#drnkNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				//string
+				let dsrtNameL = $('#dsrtNameList').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				selectVal_parents2 = $(this).val();
+				
+				//console.log(drnkIdL);
+				//console.log(dsrtIdL);
+				//console.log(drnkNameL);
+				//console.log(dsrtNameL);
+				
+				//console.log("분류값", selectVal_parents);
+				
+				var menu2ndIdL;
+				var menu2ndNameL;
+				
+				if(selectVal_parents2 == "1" ) {
+					menu2ndIdL 		= drnkIdL;
+					menu2ndNameL 	= drnkNameL;
+				}
+				else if(selectVal_parents2 == "2" ) {
+					menu2ndIdL 		= dsrtIdL;
+					menu2ndNameL 	= dsrtNameL;
+				}
+				console.log("menu2ndIdL", menu2ndIdL);
+				console.log("menu2ndNameL", menu2ndNameL);
+				
+				
+				$("#select_id_child2").empty();
+				
+				for( i in menu2ndNameL ){
+					$("#select_id_child2").append("<option value='"+menu2ndIdL[i]+"'>"+menu2ndNameL[i]+"</option>");
+				}
+			}//function
+		);//on
+		
+		// select_id_child 동적으로 생성되었기 때문에 재할당을 해주어서 체인지 이벤트를 걸어줌
+		$(document).on(
+			"change", "#select_id_child2",
+			function(){
+				$("#select_id_grandchild2").remove();
+				$("#div_chk2").append("<select id='select_id_grandchild2'></select>");
+				
+				// drink Id
+				let rm0IdL = $('#rm0IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm1IdL = $('#rm1IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm2IdL = $('#rm2IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm3IdL = $('#rm3IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm4IdL = $('#rm4IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm5IdL = $('#rm5IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm6IdL = $('#rm6IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm7IdL = $('#rm7IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm8IdL = $('#rm8IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				// dessert Id
+				let sm0IdL = $('#sm0IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm1IdL = $('#sm1IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm2IdL = $('#sm2IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm3IdL = $('#sm3IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm4IdL = $('#sm4IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm5IdL = $('#sm5IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm6IdL = $('#sm6IdL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				//drink Name
+				let rm0NameL = $('#rm0NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm1NameL = $('#rm1NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm2NameL = $('#rm2NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm3NameL = $('#rm3NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm4NameL = $('#rm4NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm5NameL = $('#rm5NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm6NameL = $('#rm6NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm7NameL = $('#rm7NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let rm8NameL = $('#rm8NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				//dessert Name
+				let sm0NameL = $('#sm0NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm1NameL = $('#sm1NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm2NameL = $('#sm2NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm3NameL = $('#sm3NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm4NameL = $('#sm4NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm5NameL = $('#sm5NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				let sm6NameL = $('#sm6NameL').text().replace('[','').replace(']','').replace(/ /g,'').replace(/\'/g,'').split(',');
+				
+				selectVal_child2 = $(this).val();
+				console.log("selectVal_child2", selectVal_child2);
+				
+				var menu3rdIdL;
+				var menu3rdNameL;
+				
+				if (selectVal_child2 == 0 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm0IdL;
+					menu3rdNameL	= rm0NameL;
+				}
+				else if(selectVal_child2 == 1 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm1IdL;
+					menu3rdNameL	= rm1NameL;
+				}
+				else if(selectVal_child2 == 2 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm2IdL;
+					menu3rdNameL	= rm2NameL;
+				}
+				else if(selectVal_child2 == 3 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm3IdL;
+					menu3rdNameL	= rm3NameL;
+				}
+				else if(selectVal_child2 == 4 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm4IdL;
+					menu3rdNameL	= rm4NameL;
+				}
+				else if(selectVal_child2 == 5 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm5IdL;
+					menu3rdNameL	= rm5NameL;
+				}
+				else if(selectVal_child2 == 6 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm6IdL;
+					menu3rdNameL	= rm6NameL;
+				}
+				else if(selectVal_child2 == 7 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm7IdL;
+					menu3rdNameL	= rm7NameL;
+				}
+				else if(selectVal_child2 == 8 && selectVal_parents2 == 1) {
+					menu3rdIdL		= rm8IdL;
+					menu3rdNameL	= rm8NameL;
+				}
+				else if(selectVal_child2 == 0 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm0IdL;
+					menu3rdNameL	= sm0NameL;
+				}
+				else if(selectVal_child2 == 1 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm1IdL;
+					menu3rdNameL	= sm1NameL;
+				}
+				else if(selectVal_child2 == 2 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm2IdL;
+					menu3rdNameL	= sm2NameL;
+				}
+				else if(selectVal_child2 == 3 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm3IdL;
+					menu3rdNameL	= sm3NameL;
+				}
+				else if(selectVal_child2 == 4 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm4IdL;
+					menu3rdNameL	= sm4NameL;
+				}
+				else if(selectVal_child2 == 5 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm5IdL;
+					menu3rdNameL	= sm5NameL;
+				}
+				else if(selectVal_child2 == 6 && selectVal_parents2 == 2) {	
+					menu3rdIdL		= sm6IdL;
+					menu3rdNameL	= sm6NameL;
+				}
+				
+				$("#select_id_grandchild2").empty();
+				
+				for( i in menu3rdNameL ){
+					$("#select_id_grandchild2").append("<option value='"+menu3rdIdL[i]+"'>"+menu3rdNameL[i]+"</option>");
+				}
+				
+			
+			
+			
+			
+			}//function
+		);//on
+	});//function/ready
+</script>
 {% endblock %}

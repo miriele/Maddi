@@ -41,7 +41,6 @@ class CombListView( View ):
             if end >count :
                 end = count
             
-            md_comb   = MdComb.objects.order_by("-comb_id")[start:end]
             number    = count - (pagenum -1) * int(page_size)             #30-4*5=30-20=    10
             startpage = pagenum //int(page_block) * int(page_block) +1  # = 5//3*3+1=1*3=3+1= 4
             
@@ -59,34 +58,27 @@ class CombListView( View ):
             
             pages = range(startpage, endpage + 1)                       # 페이지들은 456 까지 나온다?
             
-            # 닉네임
-            comblist = MdComb.objects.select_related('user')
             
-            # for comb in comblist :
-                # print(comb.user.user_nick) #> 닉네임 나옴
+            
+            md_comb   = MdUser.objects.select_related('mdcomb__mdcombm__menu').values('mdcomb__comb_id', 'mdcomb__comb_tit', 'mdcomb__mdcombm__menu__menu_name', 'mdcomb__comb_nop', 'user_nick', 'mdcomb__comb_reg_ts')[start:end]
+            # logger.debug(f'md_comb : {md_comb}')
+            
+            md_comb1   = MdComb.objects.order_by("-comb_id")[start:end]
             
             # 추천수
-            comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb]
-            # logger.debug(f'comb_like : {comb_like}')
-            
-            # 조합 메뉴명
-            comb_menu = MdCombM.objects.select_related("comb", "menu")
-            # for cm in comb_menu:
-            #     for mdc in md_comb:
-            #         if mdc.comb_id == cm.comb.comb_id :
-            #             print( cm.menu.menu_name)
+            comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb1]
                 
             gid = request.session.get("gid") 
             memid = request.session.get("memid")   
+            
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
-                "comb_menu" : comb_menu,
+                "md_comb1"   : md_comb1, 
                 "comb_like" : comb_like,
-                "comblist"  : comblist,
+                "md_comb"   : md_comb,
                 "count"     : count,
                 "pagenum"   : pagenum,
-                "md_comb"   : md_comb,
                 "number"    : number,
                 "startpage" : startpage,
                 "endpage"   : endpage,
@@ -112,31 +104,126 @@ class CombWriteView( View ):
         memid   = request.session.get("memid")
         gid     = request.session.get("gid") 
         
-        md_menu = MdMenu.objects.all()
-        
         nick    = MdUser.objects.get( user_id = memid )
         
-        dsrt_t  = MdDsrtT.objects.filter(dsrt_t_id__gt=-1 ).order_by("dsrt_t_id")
-        drnk_t  = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
-        # logger.debug(f'drnk_t : {drnk_t}')
-        
-        # dsrtList = list(dsrt_t)
-        # drnkList = list(drnk_t)
+        # 2번쨰 select box
+        dsrt_t  = MdDsrtT.objects.filter(dsrt_t_id__gt= -1 ).order_by("dsrt_t_id")
+        drnk_t  = MdDrnkT.objects.filter(drnk_t_id__gt= -1 ).order_by("drnk_t_id")
         
         dsrtIdList   = [dsrt.dsrt_t_id   for dsrt in dsrt_t]
         dsrtNameList = [dsrt.dsrt_t_name for dsrt in dsrt_t]
         drnkIdList   = [drnk.drnk_t_id   for drnk in drnk_t]
         drnkNameList = [drnk.drnk_t_name for drnk in drnk_t]
         
-        logger.debug(f'dsrtNameList : {dsrtNameList}')
+        # 3번째 select box    9/7개...
+        dr_m0 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 0 ) 
+        # logger.debug(f'dr_m0 : {dr_m0}')
+        dr_m1 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 1 )
+        dr_m2 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 2 )
+        dr_m3 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 3 )
+        dr_m4 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 4 )
+        dr_m5 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 5 )
+        dr_m6 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 6 )
+        dr_m7 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 7 )
+        dr_m8 = MdMenu.objects.filter( dsrt_t_id = -1, drnk_t_id = 8 )
+        
+        ds_m0 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 0 )   
+        ds_m1 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 1 )
+        ds_m2 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 2 )
+        ds_m3 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 3 )
+        ds_m4 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 4 )
+        ds_m5 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 5 )
+        ds_m6 = MdMenu.objects.filter( drnk_t_id = -1 ,dsrt_t_id = 6 )
+        
+        # drink id
+        rm0IdL = [rm0.menu_id  for rm0 in dr_m0]
+        rm1IdL = [rm1.menu_id  for rm1 in dr_m1]
+        rm2IdL = [rm2.menu_id  for rm2 in dr_m2]
+        rm3IdL = [rm3.menu_id  for rm3 in dr_m3]
+        rm4IdL = [rm4.menu_id  for rm4 in dr_m4]
+        rm5IdL = [rm5.menu_id  for rm5 in dr_m5]
+        rm6IdL = [rm6.menu_id  for rm6 in dr_m6]
+        rm7IdL = [rm7.menu_id  for rm7 in dr_m7]
+        rm8IdL = [rm8.menu_id  for rm8 in dr_m8]
+        
+        # dessert id
+        sm0IdL = [sm0.menu_id  for sm0 in ds_m0]
+        sm1IdL = [sm1.menu_id  for sm1 in ds_m1]
+        sm2IdL = [sm2.menu_id  for sm2 in ds_m2]
+        sm3IdL = [sm3.menu_id  for sm3 in ds_m3]
+        sm4IdL = [sm4.menu_id  for sm4 in ds_m4]
+        sm5IdL = [sm5.menu_id  for sm5 in ds_m5]
+        sm6IdL = [sm6.menu_id  for sm6 in ds_m6]
+        
+        # drink name
+        rm0NameL = [rm0.menu_name  for rm0 in dr_m0]
+        # logger.debug(f'rm0NList : {rm0NList}')
+        rm1NameL = [rm1.menu_name  for rm1 in dr_m1]
+        rm2NameL = [rm2.menu_name  for rm2 in dr_m2]
+        rm3NameL = [rm3.menu_name  for rm3 in dr_m3]
+        rm4NameL = [rm4.menu_name  for rm4 in dr_m4]
+        rm5NameL = [rm5.menu_name  for rm5 in dr_m5]
+        rm6NameL = [rm6.menu_name  for rm6 in dr_m6]
+        rm7NameL = [rm7.menu_name  for rm7 in dr_m7]
+        rm8NameL = [rm8.menu_name  for rm8 in dr_m8]
+        
+        # dessert name
+        sm0NameL = [sm0.menu_name  for sm0 in ds_m0]
+        sm1NameL = [sm1.menu_name  for sm1 in ds_m1]
+        sm2NameL = [sm2.menu_name  for sm2 in ds_m2]
+        sm3NameL = [sm3.menu_name  for sm3 in ds_m3]
+        sm4NameL = [sm4.menu_name  for sm4 in ds_m4]
+        sm5NameL = [sm5.menu_name  for sm5 in ds_m5]
+        sm6NameL = [sm6.menu_name  for sm6 in ds_m6]
+        
+        
+        # logger.debug(f'dsrtNameList : {dsrtNameList}')
+        
+        
         
         context = {
             "dsrtIdList"   : list(dsrtIdList),
             "dsrtNameList" : list(dsrtNameList),
             "drnkIdList"   : list(drnkIdList),
             "drnkNameList" : list(drnkNameList),
+            
+            "rm0IdL"  : rm0IdL,
+            "rm1IdL"  : rm1IdL,
+            "rm2IdL"  : rm2IdL,
+            "rm3IdL"  : rm3IdL,
+            "rm4IdL"  : rm4IdL,
+            "rm5IdL"  : rm5IdL,
+            "rm6IdL"  : rm6IdL,
+            "rm7IdL"  : rm7IdL,
+            "rm8IdL"  : rm8IdL,
+            
+            "sm0IdL"  : sm0IdL,
+            "sm1IdL"  : sm1IdL,
+            "sm2IdL"  : sm2IdL,
+            "sm3IdL"  : sm3IdL,
+            "sm4IdL"  : sm4IdL,
+            "sm5IdL"  : sm5IdL,
+            "sm6IdL"  : sm6IdL,
+            
+            "rm0NameL"  : rm0NameL,
+            "rm1NameL"  : rm1NameL,
+            "rm2NameL"  : rm2NameL,
+            "rm3NameL"  : rm3NameL,
+            "rm4NameL"  : rm4NameL,
+            "rm5NameL"  : rm5NameL,
+            "rm6NameL"  : rm6NameL,
+            "rm7NameL"  : rm7NameL,
+            "rm8NameL"  : rm8NameL,
+
+            "sm0NameL"  : sm0NameL,
+            "sm1NameL"  : sm1NameL,
+            "sm2NameL"  : sm2NameL,
+            "sm3NameL"  : sm3NameL,
+            "sm4NameL"  : sm4NameL,
+            "sm5NameL"  : sm5NameL,
+            "sm6NameL"  : sm6NameL,
+            
             "nick"         : nick,
-            "md_menu"      : md_menu,
             "memid"        : memid,
             "gid"          : gid,
             }
@@ -153,11 +240,14 @@ class CombWriteView( View ):
             comb_img = request.FILES.get("comb_img", ""), 
             comb_reg_ts = datetime.now(),
             )
-        dto.save()
+        # dto.save()
         
         ####################
         # 태그 값 받아와서 저장해야 함
         ####################33
+        # select_id_grandchild
+        menu_tag1 = request.POST.get("select_id_grandchild", "")
+        logger.debug(f'menu_tag1 : {menu_tag1}')
         
         return redirect("/md_combi/combwrite")      ###### 태그 완료후 이동 주소 수정해야 함
 
@@ -176,7 +266,8 @@ class CombDView( View ):
         gid     = request.session.get("gid") 
         
         comb_id = request.GET["comb_id"]
-        # logger.debug(f'comb_id : {comb_id}')
+        # comb_id = int(comb_id)
+        logger.debug(f'comb_id : {comb_id}')
         
         pagenum = request.GET["pagenum"]
         number  = request.GET["number"]
@@ -185,7 +276,6 @@ class CombDView( View ):
         user    = MdUser.objects.get( user_id = memid )
         
         # 선택한 추천조합 정보
-        
         comb    = MdComb.objects.get( comb_id = comb_id )
 
         # 추천글을 작성한 유저의 닉네임
@@ -193,8 +283,7 @@ class CombDView( View ):
         
         # 선택한 메뉴(태그 값)
         menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
-        # for me in menu :
-            # logger.debug(f'me.menu.menu_name : {me.menu.menu_name}')
+
         # 추천수
         likeC   = MdCLike.objects.filter(comb = comb_id).count()
         
@@ -205,7 +294,6 @@ class CombDView( View ):
         comb_like = MdCLike.objects.filter( comb_id = comb_id)
         result = 0
         for like in comb_like :
-            # logger.debug(f'like.user_id : {like.user_id}')
             if like.user_id == memid :
                 result = 1
                 break
@@ -214,10 +302,8 @@ class CombDView( View ):
         context = {
             "memid"     : memid,
             "gid"       : gid,
-            
             "pagenum"   :pagenum,
             "number"    : number,
-            
             "comb_id"   : comb_id,
             "user"      :user,
             "comb"      : comb,
@@ -283,10 +369,6 @@ class CLikeView( View ):
             
         return HttpResponse(result) 
             
-        
-        
-    
-    
     
 
     
