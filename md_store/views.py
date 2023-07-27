@@ -235,7 +235,7 @@ class ImageStoreView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = 2883543
+        stor_m_id = 1
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -247,15 +247,18 @@ class MenuInfoView(View):
             menu = stor_m.menu
             dsrt_t = menu.dsrt_t
             drnk_t = menu.drnk_t
-                
+            cate = 1
+            
             context = {
                 'dto': storem,
                 'stor_m_pric': storem.stor_m_pric,
                 'stor_m_name': storem.stor_m_name,
                 'stor_m_cal': storem.stor_m_cal,
+                'stor_m_id': storem.stor_m_id,
                 'stor_m_info': storem.stor_m_info,
                 'stor_m_img': storem.stor_m_img,
                 'menu_type': menu_type,
+                'cate' : cate
             }
 
             return render(request, 'md_store/menuinfo.html', context)
