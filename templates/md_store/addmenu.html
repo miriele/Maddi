@@ -17,11 +17,11 @@
 	        <th> 메뉴 이미지 </th>
 	        <th colspan="2"> 메뉴 상세정보 </th>
 	    </tr>
-	    <tr>
-	    	<tr>
-	        	<td rowspan="10"><img src="/media/{{ stor_m_img }}" width="300" height="300"></td>
-	        </tr>
-	    </tr>
+	     <tr>
+                <td rowspan="10">
+                    <img id="imgmenuPreview" src="#" alt="Image Preview" style="max-width: 300px; max-height: 300px; display: none;">
+                </td>
+            </tr>
 	    <tr>
 	        <th>메뉴명</th>
 	         <td colspan="2">
@@ -123,7 +123,7 @@
 	    </tr>
 	    <tr>
 	        <th colspan="3">
-	        	<input class="inputbutton" type="button" value="메뉴이미지선택" onclick="location='imagemenu'">
+	        	<input class="input" type="file" name="imgmenu" accept="image/*" id="imgmenuInput">
 	        	<input class="inputbutton" type="submit" value="메뉴등록">
 	            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">	
 	        </th>
@@ -131,5 +131,23 @@
 	</table>
     </form>
 </body>
+<script>
+    function readImageFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
+            reader.onload = function(e) {
+                var imgPreview = document.getElementById('imgmenuPreview');
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'inline-block'; // 이미지 미리보기를 보이도록 설정
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('imgmenuInput').addEventListener('change', function() {
+        readImageFile(this);
+    });
+</script>
 {% endblock %}

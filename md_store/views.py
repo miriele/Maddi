@@ -123,8 +123,7 @@ class AddMenuView(View):
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
         algy_t_list = request.POST.getlist("algy[]") 
-        
-        imgmenu = None
+        imgmenu = request.FILES["imgmenu"]
         
         new_stormenu = MdStorM.objects.create(
             stor_id = stor_id,
@@ -153,13 +152,7 @@ class ImageMenuView(View):
         context = {}
         return HttpResponse(template.render(context, request))
     def post(self, request):
-        stor_m_id = 2883543
-        storm = MdStorM.objects.get(stor_m_id=stor_m_id)
-        imgmenu = request.FILES["imgmenu"]
-        storm.stor_m_img = imgmenu
-        storm.save()
-        
-        return redirect("md_store:addmenusuc")
+        pass
     
 class StoreView(View):
     @method_decorator( csrf_exempt )
@@ -241,7 +234,7 @@ class ImageStoreView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = 2871620
+        stor_m_id = 2883550
         menu_id = 253
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
