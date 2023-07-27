@@ -27,7 +27,7 @@ class AddJumjuView(View):
         user_bir = user.user_bir
         
         #매장정보
-        stor_id = 1
+        stor_id = 6
         store = MdStor.objects.get(stor_id=stor_id)
         stor_t_id = store.stor_t_id
         
@@ -65,7 +65,7 @@ class AddJumjuView(View):
         return render(request, 'md_store/addjumju.html', context)
     
     def post(self, request):
-        stor_id = 1
+        stor_id = 6
         reg = MdStorReg.objects.get(stor_id=stor_id)
         reg_num = request.POST["regnum"]
         reg.reg_num = reg_num
@@ -83,7 +83,7 @@ class ImageRegView(View):
         return HttpResponse( template.render( context, request ) )
     def post(self, request):
         user_id = "abc001"
-        stor_id = 1
+        stor_id = 6
         imgreg = request.FILES["imgreg"]
         reg_sub_ts = timezone.now()
 
