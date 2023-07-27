@@ -1,15 +1,15 @@
-from django import template
 from django.db.models.aggregates import Count, Sum
 from django.db.models import F
 from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
 from django.template import loader
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
-from md_order.models import MdOrdrM
-from md_store.models import MdStorM, MdStor, MdMenu, MdBjd, MdAreaT
+from md_admin.models import MdSrch
 from md_combi.models import MdCombM, MdComb
+from md_order.models import MdOrdrM
+from md_store.models import MdStorM, MdStor, MdMenu, MdBjd
 import logging
 
 logger = logging.getLogger(__name__)
@@ -75,20 +75,21 @@ class MainView(View):
             result_dict[comb_id]['menu_names'].append(menu_name)
             
         # logger.debug(result_dict)
+        logger.debug(f'memid : {memid}')
     
         if memid:
             context = {
-                "memid":memid,
-				"gid" :gid,
-                "tdtos":drink_orders,
-                "ddtos":dsrt_orders,
-                "rdtos":result_dict,
+                "memid" :memid,
+				"gid"   :gid,
+                "tdtos" :drink_orders,
+                "ddtos" :dsrt_orders,
+                "rdtos" :result_dict,
                 }
         else:
             context={
-                "tdtos":drink_orders,
-                "ddtos":dsrt_orders,
-                "rdtos":result_dict,
+                "tdtos" :drink_orders,
+                "ddtos" :dsrt_orders,
+                "rdtos" :result_dict,
                 }
         return HttpResponse(template.render(context,request))
 
@@ -130,6 +131,22 @@ class SearchView(View):
         
         logger.debug(f'store_list: {store_list}')
         logger.debug(f'store_cnt: {len(store_list)}')
+        
+        user_id = request.session.get("memid")
+        # bjd_code = MdBjd.objects.filter(bjd_name=bjdName).values('bjd_code').first()['bjd_code']
+        bjd_code = MdBjd.objects.filter(bjd_name=bjdName).first()
+        logger.debug(f'user_id  : {user_id}')
+        logger.debug(f'bjd_code : {bjd_code}')
+        # logger.debug(f'srch_ts  : {timezone.localtime()}')
+        logger.debug(f'srch_ts  : {timezone.now()}')
+        
+        searchInfo = MdSrch(
+            user_id   = user_id,
+            bjd_code  = bjd_code,
+            srch_word = searchText,
+            srch_ts   = timezone.now(),
+            )
+        searchInfo.save()
 
         context = {
             "store_list" : store_list,
@@ -156,6 +173,6 @@ class SearchWord(View):
         queryset    = MdMenu.objects.filter(menu_name__contains=search_word)[:10]
         menulist    = [menu.menu_name for menu in queryset]
         menudict    = dict(zip(range(0, len(menulist)), menulist))
-        logger.debug(f'menudict: {json.dumps(menudict)}')
+        # logger.debug(f'menudict: {json.dumps(menudict)}')
         return HttpResponse(json.dumps(menudict), content_type ="application/json")
         
