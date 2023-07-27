@@ -103,7 +103,7 @@ class SearchView(View):
 
     def post(self, request):
         template   = loader.get_template("md_main/searchlist.html")
-        searchText = request.POST["searchtext"]
+        searchText = request.POST["searchword"]
         bjdName    = request.POST["bjd_name"]
         
         logger.debug(f'searchText : {searchText}\tbjdName : {bjdName}')
