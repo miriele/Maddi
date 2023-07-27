@@ -3,15 +3,15 @@ from md_store.models import MdBjd
 
 
 class MdSrch(models.Model):
-    srch_id = models.AutoField(primary_key=True, db_comment='°Ë»öID')
-    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='È¸¿øID')
-    bjd_code = models.ForeignKey(MdBjd, models.DO_NOTHING, db_column='bjd_code', db_comment='¹ıÁ¤µ¿ÄÚµå')
-    srch_word = models.CharField(max_length=60, db_comment='°Ë»ö¾î')
-    srch_ts = models.DateTimeField(db_comment='°Ë»ö½Ã°¢')
+    srch_id = models.AutoField(primary_key=True, db_comment='ê²€ìƒ‰ID')
+    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='íšŒì›ID')
+    bjd_code = models.ForeignKey(MdBjd, models.DO_NOTHING, db_column='bjd_code', db_comment='ë²•ì •ë™ì½”ë“œ')
+    srch_word = models.CharField(max_length=60, db_comment='ê²€ìƒ‰ì–´')
+    srch_ts = models.DateTimeField(db_comment='ê²€ìƒ‰ì‹œê°')
 
     class Meta:
         managed = False
         db_table = 'md_srch'
-        db_table_comment = '°Ë»öÅë°è'
+        db_table_comment = 'ê²€ìƒ‰í†µê³„'
 
 
