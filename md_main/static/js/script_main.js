@@ -44,6 +44,32 @@ $(function() {
 			}	// var callback = function(result, status)
 		}
 	);	// $("input[name='differlocate']").on(
+		
+	$("input[name='searchword']").on(
+		"keyup",
+		function(event) {
+			var csrfToken = "{{ csrf_token }}";
+			$.ajax(
+				{
+					url  : "searchword",
+					type : "POST",
+					data : {
+						search_word : $("input[name='searchword']").val(),
+						csrfmiddlewaretoken: csrfToken,
+					},	// data : {
+					datatype : "text",
+					success : function(data) {
+						menu_list = Object.values(data);
+						console.log(menu_list);
+					},	// success : function(data) {
+					error : function(request, status, error) {
+						console.log(error);
+						//$("").html("서버요청실패");
+					}
+				}
+			)	// $.ajax(
+		}	// function(event) {
+	);	// $("input[name='searchword']").on(
 });	// $(function()
 
 var windowHeight	= $(window).height();

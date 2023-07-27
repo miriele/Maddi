@@ -144,3 +144,18 @@ class MapView(View):
         # print(addr) 
         context = {}
         return HttpResponse(template.render(context,request))
+
+import json
+class SearchWord(View):
+    @method_decorator( csrf_exempt )
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
+    def post(self, request):
+        search_word = request.POST["search_word"]
+        queryset    = MdMenu.objects.filter(menu_name__contains=search_word)[:10]
+        menulist    = [menu.menu_name for menu in queryset]
+        menudict    = dict(zip(range(0, len(menulist)), menulist))
+        logger.debug(f'menudict: {json.dumps(menudict)}')
+        return HttpResponse(json.dumps(menudict), content_type ="application/json")
+        

@@ -4,4 +4,5 @@ urlpatterns = [
      path("main",       views.MainView.as_view(),   name="main"),
      path("searchlist", views.SearchView.as_view(), name="searchlist"),
      path("map",        views.MapView.as_view(),    name="map"),
+     path("searchword", views.SearchWord.as_view(), name="searchword"),
      ]
