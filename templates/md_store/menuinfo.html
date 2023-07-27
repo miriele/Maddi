@@ -9,13 +9,10 @@
 {% endblock %}
 {% block content %}
 <!-- 확인용 발표 전 삭제 -->
-{{ stor_m_name }}
-{{ stor_m_id }}
-{{ menu_type }}
-{{ stor_m_cal }}
-{{ cate }}
-{{ drnk_t_id }}
-{{ dsrt_t_id }} 
+cate : {{ cate }}
+drnk_t : {{ drnk_t }}
+dsrt_t : {{ dsrt_t } 
+ice : {{ ice }} 
 <form method="post" action="menuinfo" name="updateform">
 <input type="hidden" name="stor_id" value="{{ stor_m_id }}">
 	        <table>
@@ -107,7 +104,7 @@
 	    <tr>
             <th> 알러지 </th>
 				<td>
-					<select name="algy" class="input">
+					<select name="algy" class="input" >
 					        <option value="-1">==알러지===</option>
 					        <option value="0">계란</option>
 					        <option value="1">우유</option>
@@ -140,4 +137,28 @@
 	    </tr>
 	</table>
 </form>
+
+<script>
+//페이지가 로드될 때 실행되는 함수인데 js로 빼놓으면 동작을 안해서 우선 여기 포함시켰습니다.
+document.addEventListener("DOMContentLoaded", function() {
+    var cateSelect = document.getElementById("cate");
+    var dsrtSelect = document.getElementById("typedsrt");
+    var drnkSelect = document.getElementById("typedrnk");
+    var iceSelect = document.getElementById("ice");
+    
+    var cate = "{{ cate }}"; 
+    var dsrt_t = "{{ dsrt_t }}";
+    var drnk_t = "{{ drnk_t }}";
+    var ice = "{{ ice }}";
+
+    cateSelect.value = cate;
+    dsrtSelect.value = dsrt_t;
+    drnkSelect.value = drnk_t;
+    iceSelect.value = ice;
+
+    handleCateChange();
+
+    cateSelect.addEventListener("change", handleCateChange);
+  });
+</script>
 {% endblock %}

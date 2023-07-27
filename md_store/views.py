@@ -245,7 +245,8 @@ class ImageStoreView(View):
 
 class MenuInfoView(View):
     def get(self, request):
-        stor_m_id = 1
+        stor_m_id = 2871620
+        menu_id = 253
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -253,16 +254,27 @@ class MenuInfoView(View):
                 menu_type = "일반"
             else:
                 menu_type = "시그니처"
-            stor_m = MdStorM.objects.get(stor_m_id=stor_m_id)
-            menu = stor_m.menu
-            dsrt_t = menu.dsrt_t
-            drnk_t = menu.drnk_t
-            cate = 1
+            menu = MdMenu.objects.get(menu_id=menu_id)
+            dsrt_t = menu.dsrt_t_id
+            drnk_t = menu.drnk_t_id
+            
+            cate = ""
+            
+            if dsrt_t == -1:
+                cate = -1
+            elif drnk_t == -1:
+                cate = 0
+            else:
+                cate = 1 
             
             context = {
                 'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
+                'ice' : storem.ice_t_id,
+                'stor_m_id': storem.stor_m_id,
                 'stor_m_name': storem.stor_m_name,
+                'stor_m_pric': storem.stor_m_pric,
+                'dsrt_t' : dsrt_t,
+                'drnk_t' : drnk_t,
                 'stor_m_cal': storem.stor_m_cal,
                 'stor_m_id': storem.stor_m_id,
                 'stor_m_info': storem.stor_m_info,
@@ -295,9 +307,6 @@ class MenuListView(View):
         stor_m_id = request.POST["stor_m_id"]
         return HttpResponse(request)
     
-
-      
-
 
 class StoreUserView(View):
     @method_decorator( csrf_exempt )
