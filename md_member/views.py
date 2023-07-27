@@ -360,64 +360,16 @@ class MyOrderListView( View ):
             
             pages = range(startpage, endpage + 1) 
             
-            #주문 내역/ordr_id, ordr_ord_ts / 주문 매장 명
-            md_ordr = MdOrdr.objects.filter( user_id= memid ).order_by("-ordr_id")[start:end]
-            # revs = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('ordr__ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'ordr__mdordrm__stor_m__stor_m_name', 'ordr__mdordrm__ordr_num', ' ordr__mdordrm__stor_m__stor_m_pric', 'ordr__ordr_ord_ts','ordr__ordr_com_ts','rev_id', 'ordr_id', 'ordr__ordr_id')
+            # 주문 번호 / 매장명 / 주문메뉴 / 총 금액 >ordr_num|mul:stor_m_pric /주문일시 /주문 완료일/+리뷰 작성일?리뷰의 주문 아이디?
             
-            
-            
-            ordr_id     = 0
-            stor_m_id   = 0
-            stor_id     = 0
-            stor_name   = 0
-            stom_m_pric = 0
-            for mo in md_ordr:
-                ordr_id = mo.ordr_id
-                md_ordr_m = MdOrdrM.objects.filter(ordr_id = ordr_id)
-                
-                for mom in md_ordr_m :
-                    stor_m_id = mom.stor_m_id 
-                    md_stor_m = MdStorM.objects.filter(stor_m_id = stor_m_id)
-                    
-                    for msm in md_stor_m :
-                        stor_id = msm.stor_id
-                        stor_m_pric = msm.stor_m_pric
-                        md_stor = MdStor.objects.filter(stor_id = stor_id )
-                        
-                        for ms in md_stor:
-                            stor_name = ms.stor_name
-                            # logger.debug(f'ms.stor_name   : {ms.stor_name  }')
-                            
-            # 주문메뉴id /메뉴 이름
-            ordr_m = MdOrdrM.objects.select_related('ordr', 'stor_m')
-            
-            #날씨
-            weather = MdOrdr.objects.select_related('weather').filter(user = memid)
-            
+            odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id = memid).order_by("-ordr_id").values('ordr_id', 'mdordrm__stor_m__stor__stor_name', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_pric', 'ordr_ord_ts', 'ordr_com_ts')[start:end]
+
             # 리뷰 버튼
-            rev = MdReview.objects.select_related('ordr').order_by("-ordr_id")
-            
-            
-            # for r in rev:
-            #     logger.debug(f'r.rev_id  : {r.rev_id }')
-            
-            
-            # rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts', 'ordr__user_id', 'ordr__mdordrm__stor_m__stor_m_pric', 'ordr__mdordrm__ordr_num', 'ordr__ordr_ord_ts','ordr__ordr_com_ts')
-                            
+            rev = MdReview.objects.all().order_by("-ordr_id")
             
             context = {
-                # "revs"      : revs,
-                
-                "stor_name" : stor_name,
-                "md_stor"   : md_stor,
-                "md_stor_m" : md_stor_m,
-                
-                "weather"   : weather,
-                "ordr_m"    : ordr_m,
-                "md_ordr"   : md_ordr,
+                "odtos"     : odtos,
                 "rev"       : rev,
-                # "rdtos" : rdtos,
-                
                 "memid"     : memid,
                 "gid"       : gid,
                 "count"     : count,

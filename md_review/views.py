@@ -113,7 +113,6 @@ class RevwriteView( View ):
         
         ordr_id     =  request.POST.get("ordr_id","")
         
-        
         md_tag0 = request.POST.get("md_tag0","")
         md_tag1 = request.POST.getlist("md_tag1","")
         # logger.debug(f' md_tag1  : { md_tag1 }')
@@ -154,9 +153,9 @@ class RevwriteView( View ):
                     tag_id = tag_id
                     )
                 tag1.save()
-            
+      
         
-        return redirect("/md_review/revwrite?ordr_id=2&pagenum=2&number=1")
+        return redirect("/md_member/myorderlist")
     
     
     
