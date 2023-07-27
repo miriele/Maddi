@@ -8,7 +8,7 @@
 <h2>점주등록</h2>
 {% endblock %}
 {% block content %}
-<form method="post" action="addjumju" name="inputform">
+<form method="post" action="addjumju" name="inputform" enctype="multipart/form-data">
     <input type="hidden" name="stor_id" value="{{ stor_id }}">
     <input type="hidden" name="user_id" value="{{ user_id }}">
     <table>
@@ -54,10 +54,10 @@
                     <tr>
                         <th rowspan="2" >사업자등록증</th>
                          <td>
-					            <img src="/media/{{ reg_img }}" width="200" height="200">
+					         <img id="imgregPreview" src="#" alt="Image Preview" style="max-width: 300px; max-height: 300px; display: none;">
 					    </td>
                         <th>
-                            <input class="inputbutton" type="button" value="파일선택" onclick="location='imagereg'">
+                            <input class="input" type="file" name="imgreg" accept="image/*" id="imgregInput">
                         </th>
                     </tr>
                 </table>
@@ -100,4 +100,23 @@
         </td>
     </tr>
 </form>
+<script>
+    function readImageFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imgPreview = document.getElementById('imgregPreview');
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'inline-block'; // 이미지 미리보기를 보이도록 설정
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('imgregInput').addEventListener('change', function() {
+        readImageFile(this);
+    });
+</script>
 {% endblock %}

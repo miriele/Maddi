@@ -25,3 +25,5 @@ function handleCateChange() {
       iceSelect.style.display = "inline-block";
     }
   }
+  
+  

@@ -65,43 +65,21 @@ class AddJumjuView(View):
         return render(request, 'md_store/addjumju.html', context)
     
     def post(self, request):
-        stor_id = 6
-        reg = MdStorReg.objects.get(stor_id=stor_id)
-        reg_num = request.POST["regnum"]
-        reg.reg_num = reg_num
-        reg.save()
-        
-        return redirect("md_store:addjumjusuc")
-    
-class ImageRegView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return View.dispatch(self, request, *args, **kwargs)
-    def get(self, request):
-        template = loader.get_template("md_store/imagereg.html")
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self, request):
         user_id = "abc001"
         stor_id = 6
+        reg_num = request.POST["regnum"]
         imgreg = request.FILES["imgreg"]
         reg_sub_ts = timezone.now()
-
-        # MdStorReg 모델에서 stor_id가 1인 데이터 조회
-        try:
-            reg = MdStorReg.objects.get(stor_id=stor_id)
-        except MdStorReg.DoesNotExist:
-            # 데이터가 없을 경우, 새로 생성하여 저장
-            reg = MdStorReg(
-                user_id=user_id,
-                stor_id=stor_id,
-                reg_sub_ts=reg_sub_ts,
-            )
-
-        reg.reg_img = imgreg
-        reg.save()
         
-        return redirect( "md_store:addjumju")
+        new_jumju = MdStorReg.objects.create(
+            user_id = user_id,
+            stor_id = stor_id,
+            reg_num = reg_num,
+            reg_img  = imgreg,
+            reg_sub_ts = reg_sub_ts,
+        )
+        
+        return redirect("md_store:addjumjusuc")
 
 class AddMenuView(View):
     def get(self, request):
@@ -143,17 +121,7 @@ class AddMenuView(View):
             
         return redirect( "md_store:addmenu")
     
-class ImageMenuView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return View.dispatch(self, request, *args, **kwargs)
-    def get(self, request):
-        template = loader.get_template("md_store/imagemenu.html")
-        context = {}
-        return HttpResponse(template.render(context, request))
-    def post(self, request):
-        pass
-    
+
 class StoreView(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
