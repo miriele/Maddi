@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
+from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy, MdIce
 from md_member.models import MdUser
 
 from django.utils import timezone
@@ -116,35 +116,31 @@ class AddMenuView(View):
     def post(self, request):
         stor_id = 4
         menu_id = 1
-        ice_t_id = request.POST["menucate"]
+        ice_t_id = request.POST["ice"]
         menu_t_id = request.POST["menutype"]
-        stor_m_pric = request.POST["menuprice"]
+        stor_m_pric = request.POST["menupric"]
         stor_m_name = request.POST["menuname"]
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
-        algy_t_id = request.POST["algy"]
+        algy_t_list = request.POST.getlist("algy[]") 
         
         imgmenu = None
         
         new_stormenu = MdStorM.objects.create(
             stor_id = stor_id,
             menu_id = menu_id,
-            ice_t_id = ice_t_id,
             menu_t_id = menu_t_id,
             stor_m_pric = stor_m_pric,
             stor_m_name = stor_m_name,
             stor_m_cal = stor_m_cal,
             stor_m_info = stor_m_info,
             stor_m_img = imgmenu,
+            ice_t_id = ice_t_id,
             )
         
-        if MdMAlgy.objects.filter(menu_id=menu_id, algy_t_id=algy_t_id).exists():
-            pass
-        else:
-            new_algy = MdMAlgy.objects.create(
-                menu_id=menu_id, 
-                algy_t_id=algy_t_id
-                )
+        for algy_t_id in algy_t_list:
+            if not MdMAlgy.objects.filter(menu_id=menu_id, algy_t_id=algy_t_id).exists():
+                MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
             
         return redirect( "md_store:addmenu")
     

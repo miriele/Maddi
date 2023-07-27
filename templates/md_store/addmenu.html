@@ -49,7 +49,7 @@
 				<tr>
 					<td>
 					    <select name="typedsrt" id="typedsrt" class="input" style="display: none;">
-					        <option value="9">==선택2==</option>
+					        <option value="-1">==선택2==</option>
 					        <option value="0">빵</option>
 					        <option value="1">푸딩</option>
 					        <option value="2">케이크</option>
@@ -59,7 +59,7 @@
 					        <option value="6">쿠키</option>
 					    </select>
 					    <select name="typedrnk" id="typedrnk" class="input" style="display: none;">
-					    	<option value="9">==선택2==</option>
+					    	<option value="-1">==선택2==</option>
 					        <option value="0">스무디</option>
 					        <option value="1">쉐이크</option>
 					        <option value="2">에이드</option>
@@ -74,11 +74,10 @@
 				</tr>
 				<tr>
 					<td>
-					    <select name="ice" id="ice" class="input" style="display: none;">
-					    	<option value="9">==선택3==</option>
-	                        <option value="0"> ICE </option>
-	                        <option value="1"> HOT </option>
-                    	</select>
+					   <select name="ice" id="ice" class="input" style="display: none;">
+						    <option value="0" selected> ICE </option>
+						    <option value="1"> HOT </option>
+						</select>
 					</td>
 				</tr>
 		 </tr>
@@ -94,27 +93,27 @@
 		        <input class="input" type="text" name="menukcal" maxlength="20" style="width:250px" value="{{ stor_m_cal }}" onclick="clearInput(this)">
 		    </td>
 	    </tr>
-	   
-	    <tr>
-            <th> 알러지 </th>
+		<tr>
+		    <th rowspan="2"> 알러지 </th>
+		    <td>
+		        <label><input type="checkbox" name="algy[]" value="0"> 계란</label>
+		        <label><input type="checkbox" name="algy[]" value="1"> 우유</label>
+		        <label><input type="checkbox" name="algy[]" value="2"> 땅콩</label>
+		        <label><input type="checkbox" name="algy[]" value="3"> 대두</label>
+		        <label><input type="checkbox" name="algy[]" value="4"> 밀</label>
+		        <label><input type="checkbox" name="algy[]" value="5"> 새우</label>
+		    </td>
+		    <tr>
 				<td>
-					<select name="algy" class="input">
-					        <option value="-1">==알러지===</option>
-					        <option value="0">계란</option>
-					        <option value="1">우유</option>
-					        <option value="2">땅콩</option>
-					        <option value="3">대두</option>
-					        <option value="4">밀</option>
-					        <option value="5">새우</option>
-					        <option value="6">돼지고기</option>
-					        <option value="7">복숭아</option>
-					        <option value="8">토마토</option>
-					        <option value="9">아황산류</option>
-					        <option value="10">호두</option>
-					        <option value="11">닭고기</option>
-					        <option value="12">쇠고기</option>
-					</select>
-				</td>
+			    	<label><input type="checkbox" name="algy[]" value="6"> 돼지고기</label>
+			        <label><input type="checkbox" name="algy[]" value="7"> 복숭아</label>
+			        <label><input type="checkbox" name="algy[]" value="8"> 토마토</label>
+			        <label><input type="checkbox" name="algy[]" value="9"> 아황산류</label>
+			        <label><input type="checkbox" name="algy[]" value="10"> 호두</label>
+			        <label><input type="checkbox" name="algy[]" value="11"> 닭고기</label>
+			        <label><input type="checkbox" name="algy[]" value="12"> 쇠고기</label>
+		        </td>
+		     </tr>
 		</tr>
 	    <tr>
 	        <th> 메뉴 소개 </th>
