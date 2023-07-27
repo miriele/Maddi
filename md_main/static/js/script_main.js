@@ -11,7 +11,8 @@ $(function() {
 		navigator.geolocation.getCurrentPosition(
 			function(data) {
 				// initializeMap('kakaomap', data.coords);
-				kakaomap.panTo(data.coords);
+				var moveLatLon = new kakao.maps.LatLng(data.coords.latitude, data.coords.longitude)
+				kakaomap.panTo(moveLatLon);
 			}
 		)	// navigator.geolocation.getCurrentPosition(
 	} else {
@@ -44,7 +45,7 @@ $(function() {
 			}	// var callback = function(result, status)
 		}
 	);	// $("input[name='differlocate']").on(
-		
+
 	$("input[name='searchword']").on(
 		"keyup",
 		function(event) {
@@ -59,19 +60,67 @@ $(function() {
 					},	// data : {
 					datatype : "text",
 					success : function(data) {
-						menu_list = Object.values(data);
+						$(".rel-srch-words").empty();
+						
+						var menu_list = Object.values(data);
 						console.log(menu_list);
+						
+						const $ul = $("<ul>");
+						
+						for(let menu of menu_list) {
+							$ul.append("<li>" + menu + "</li>");
+						}
+						
+						$(".rel-srch-words").append($ul);
+						$(".rel-srch-words").show();
+						
+						
 					},	// success : function(data) {
 					error : function(request, status, error) {
 						console.log(error);
 						//$("").html("서버요청실패");
-					}
+					}	// error : function(request, status, error)
 				}
 			)	// $.ajax(
 		}	// function(event) {
 	);	// $("input[name='searchword']").on(
+	
+	$(document).on(
+		"click",
+		function(event) {
+			const hasSearchWord = event.target.closest(".rel-srch-words");
+			if(!hasSearchWord && $(".rel-srch-words").css("display")==="block") {
+				closeKeywords();
+			}
+		}	// function(event)
+	);	// $(document).on(
+	
+	$(document).on(
+		"keyup",
+		function(event) {
+			if(event.key === "Escape") {
+				closeKeywords();
+			}
+		}	// function(event)
+	);	// $(document).on(
+	
+	$(".rel-srch-words").on(
+		"click",
+		function(event) {
+			$("input[name='searchword']").val(event.target.textContent);
+			closeKeywords();
+		}	// function(event)
+	);	// $("input[name='searchword']").on(
 });	// $(function()
 
+////////// 연관 검색어 //////////
+function closeKeywords() {
+	$(".rel-srch-words").empty();
+	$(".rel-srch-words").hide();
+}
+
+
+////////// 카카오 맵 //////////
 var windowHeight	= $(window).height();
 var	windowWidth		= $(window).width();
 
@@ -97,7 +146,6 @@ function setLayoutSize() {
 }
 
 
-////////// kakaomap //////////
 var	kakaomap;
 
 function initializeMap(div, coords) {
