@@ -281,5 +281,43 @@ $(function() {
 	        }
 	      }
 	    }
-	 });		 		 			 		
+	 });
+	 
+	//키워드 워드클라우드
+	 var data_list = $('#data_list').text()
+	
+	 var dataarray = data_list.replace("[","'[").replaceAll("'x'","x").replaceAll("'value'","value").replace("]","]'")
+	
+	 var jsonData = dataarray.replace(/'/g, '"');
+	 var data = jsonData.replace(/^"|"$/g, "");
+	 var validJsonString = data.replace(/([{,])(\s*)([a-zA-Z0-9_]+?)\s*:/g, '$1"$3":');
+	 //console.log(validJsonString)
+	
+	 var resultObject = JSON.parse(validJsonString);
+	 //console.log((resultObject));
+	 
+	 var wordCloudData = [];
+	 
+	 //형식에 맞게 출력
+	 for (var i = 0; i < resultObject.length; i++) {
+            wordCloudData.push({
+                "x": resultObject[i].x,
+                "value": resultObject[i].weight
+            });
+        }
+        
+	 //console.log(wordCloudData)
+	 
+	 // WordCloud를 생성하고 데이터를 설정
+	 var chart = anychart.tagCloud(wordCloudData);
+	 //console.log(resultObject);
+	 // 차트의 제목을 설정
+	 chart.title("Tag Cloud Chart: Basic Sample");
+	
+	  // WordCloud가 그려질 컨테이너를 지정
+	 chart.container("container");
+	
+	  // 차트를 그림
+	 chart.draw();
+	 
  })

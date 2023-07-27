@@ -18,6 +18,9 @@ from django.db.models.expressions import Case
 from _datetime import date
 from django.db.models.functions.text import Substr
 import collections
+from md_admin.models import MdSrch
+import json
+
 
 
 
@@ -29,7 +32,7 @@ class UserlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts") #회원리스트
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts").order_by("-user_reg_ts") #회원리스트
         context ={
             "count":count,
             "users":users,
@@ -377,7 +380,7 @@ class IntereView(View):
         #뽑아온 리스트를 key값순으로 sort하기위해 dict 생성
         dict_inter = {}
         dict_inter = collections.Counter(inter)
-        print(dict_inter)
+        # print(dict_inter)
         #sort한 key들을 다시 리스트로 넣기
         list_inter = []
         for key,value in sorted(dict_inter.items()):
@@ -617,4 +620,34 @@ class IaoView(View):
             "list_welmaddi" : list_welmaddi,
             "upwelyearlist" : upwelyearlist
             }
-        return HttpResponse(template.render(context,request))     
+        return HttpResponse(template.render(context,request))
+
+# 키워드 통계
+class KeywordView(View):
+    def get(self,request):
+        template = loader.get_template("md_admin/keystatis.html")
+        keyword = MdSrch.objects.values("srch_word")
+        keyword = list(m['srch_word'] for m in keyword)
+        dict_keyword = {}
+        dict_keyword = dict(collections.Counter(keyword))
+        dict_keyword = dict(dict_keyword)
+        # print(dict_keyword)
+        
+        textlist = []
+        weightlist = []
+        for key,value in dict_keyword.items():
+            textlist.append(key)
+            weightlist.append(value)
+        #print(textlist)
+        #print(weightlist)
+        
+        
+        data_list = []
+        #json형태의 맞게 list append
+        for text,weight in zip(textlist,weightlist):
+            data_list.append({"x":text,"weight":weight})
+        
+        context = {
+            "data_list" : data_list,
+            }
+        return HttpResponse(template.render(context,request))

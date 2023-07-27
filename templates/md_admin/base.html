@@ -7,6 +7,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script src = "{%static 'js/script_admin.js'%}"></script>
+	<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-bundle.min.js"></script>
 	<title>통계</title>
 </head>
 
@@ -16,17 +17,19 @@
 		<a href="/md_admin/userlist">회원관리</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/reviewlist">리뷰관리</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/sregistlist">점주등록신청관리</a> &nbsp;&nbsp;&nbsp;
-		<h4>통계</h4>
+		<h4>회원통계</h4>
 		<a href="/md_admin/genstatis">성별통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/agestatis">연령통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/interestatis">관심사통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/storestatis">등록매장통계</a> &nbsp;&nbsp;&nbsp;
+		<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;	
 		<a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/drnkstatis">회원정보기반 음료통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/bdrnkstatis">구매기반 음료통계</a> &nbsp;&nbsp;&nbsp;
 		<a href="/md_admin/iaostatis">회원유입&이탈 통계</a> &nbsp;&nbsp;&nbsp;
+		<h4>사이트통계</h4>
+		<a href="/md_admin/storestatis">등록매장통계</a> &nbsp;&nbsp;&nbsp;
+		<a href ="/md_admin/keystatis">검색통계</a> &nbsp;&nbsp;&nbsp;
 	{%endblock%}
 	{%block content%}
 	
