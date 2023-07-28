@@ -31,25 +31,29 @@
 					{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
 				</td>
 				<td>
-					<a href="combd?comb_id={{ c.mdcomb__comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
-						{{ c.mdcomb__comb_tit }}					<!-- 제목 -->
+					<a href="combd?comb_id={{ c.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
+						{{ c.comb_tit }}					<!-- 제목 -->
 					</a>
 				</td>
 				<td	align="center">							<!-- 조합메뉴 -->
-					/{{ c.mdcomb__mdcombm__menu__menu_name }}							
+					{% for mn in menu_name %}
+						{% if mn.comb_id == c.comb_id %} 
+							/{{ mn.menu.menu_name }}
+						{% endif %}
+					{% endfor %}						
 				</td>
 				<td>
-					{{ c.mdcomb__comb_nop }}						<!-- 인원 -->
+					{{ c.comb_nop }}						<!-- 인원 -->
 				</td>
 				<td><!-- 닉네임 -->
-					{{ c.user_nick }}
+					{{ c.user.user_nick }}
 				</td>
 				<td>
-					{{ c.mdcomb__comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
+					{{ c.comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
 				</td>
 				<td>
 					{% for cid, cnt in comb_like %}
-						{% if c.mdcomb__comb_id == cid %}
+						{% if c.comb_id == cid %}
 							{{cnt}}
 						{% endif %}
 					{% endfor %}
