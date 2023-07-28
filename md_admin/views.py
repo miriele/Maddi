@@ -20,6 +20,8 @@ from django.db.models.functions.text import Substr
 import collections
 from md_admin.models import MdSrch
 import json
+from _collections import defaultdict
+
 
 
 
@@ -398,6 +400,7 @@ class IntereView(View):
     def get(self,request):
         template = loader.get_template("md_admin/interestatis.html")
         #회원들의 관심사 전체 고른 수
+        today = datetime.today().year
         count = MdUIntr.objects.all().count()
         inter = MdUIntr.objects.values("intr_t").order_by("intr_t")
         inter_name = MdIntrT.objects.values("intr_t_name").order_by("intr_t_id")
@@ -410,20 +413,205 @@ class IntereView(View):
         #뽑아온 리스트를 key값순으로 sort하기위해 dict 생성
         dict_inter = {}
         dict_inter = collections.Counter(inter)
-        # print(dict_inter)
         #sort한 key들을 다시 리스트로 넣기
         list_inter = []
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
         # print(len(list_inter))
-        # print(len(inter_name))
-  
-        #print(list_inter)
-        #print(inter_name)
+        # 남성회원들의 관심사
+        maninter = MdUIntr.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("intr_t","year").order_by("intr_t")
+        # print(maninter)
         
+        maninter_list = list(maninter)
+        up_agelist = []
+        up_interlist = []
+        # print(maninter)
+        # print(type(maninter_list[0][1]))
+        for myear in maninter_list:
+            minter = myear[0]
+            myear = int(myear[1])
+            age = today - myear
+            #print(age)
+            if(age >=10 and age<20):
+                age = '10대'
+            elif(age>=20 and age<30):
+                age = '20대'
+            elif(age>=30 and age<40):
+                age = '30대'
+            elif(age>=40 and age<50):
+                age = '40대'
+            elif(age>=50 and age<60):
+                age = '50대'
+            else:
+                age = '60대이상'
+            up_agelist.append(age)
+            up_interlist.append(minter)
+        
+        #print(len(up_agelist))
+        #print(len(up_interlist))
+        
+        ziptup = list(zip(up_agelist,up_interlist))
+        #print(ziptup)
+        
+        ziplist = [list(row) for row in ziptup]
+        # print(ziplist)
+        
+        teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
+        twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
+        thr_manlist = [i[1] for i in ziplist if i[0]=='30대']
+        fou_manlist = [i[1] for i in ziplist if i[0]=='40대']
+        fiv_manlist = [i[1] for i in ziplist if i[0]=='50대']
+        ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
+        
+        manteen_dict = collections.Counter(teen_manlist)
+        mantwe_dict = collections.Counter(twe_manlist)
+        manthr_dict = collections.Counter(thr_manlist)
+        manfou_dict = collections.Counter(fou_manlist)
+        manfiv_dict = collections.Counter(fiv_manlist)
+        manord_dict = collections.Counter(ord_manlist)
+        
+        
+        manteen_list = []
+        mantwe_list = []
+        manthr_list = []
+        manfou_list = []
+        manfiv_list = []
+        manord_list = []
+        for i in range(len(inter_name)):
+            manteen_list.append(0)
+            mantwe_list.append(0)
+            manthr_list.append(0)
+            manfou_list.append(0)
+            manfiv_list.append(0)
+            manord_list.append(0)
+        # print(manteen_list)
+        
+        for key,value in sorted(manteen_dict.items()):
+            for index,val in enumerate(manteen_list):
+                manteen_list[key] = value
+
+        for key,value in sorted(mantwe_dict.items()):
+            for index,val in enumerate(mantwe_list):
+                mantwe_list[key] = value
+
+        for key,value in sorted(manthr_dict.items()):
+            for index,val in enumerate(manthr_list):
+                manthr_list[key] = value
+
+        for key,value in sorted(manfou_dict.items()):
+            for index,val in enumerate(manfou_list):
+                manfou_list[key] = value                                        
+
+        for key,value in sorted(manfiv_dict.items()):
+            for index,val in enumerate(manfiv_list):
+                manfiv_list[key] = value
+                
+        for key,value in sorted(manord_dict.items()):
+            for index,val in enumerate(manord_list):
+                manord_list[key] = value                
+
+# 여성회원들의 관심사
+        womaninter = MdUIntr.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("intr_t","year").order_by("intr_t")
+        womaninter_list = list(womaninter)
+        #print(womaninter)
+        wup_agelist = []
+        wup_interlist = []
+        
+        for wmyear in womaninter_list:
+            womaninter = wmyear[0]
+            wmyear = int(wmyear[1])
+            womanage = today - wmyear
+            if(womanage >=10 and womanage<20):
+                womanage = '10대'
+            elif(womanage>=20 and womanage<30):
+                womanage = '20대'
+            elif(womanage>=30 and womanage<40):
+                womanage = '30대'
+            elif(womanage>=40 and womanage<50):
+                womanage = '40대'
+            elif(womanage>=50 and womanage<60):
+                womanage = '50대'
+            else:
+                womanage = '60대이상'
+            wup_agelist.append(womanage)
+            wup_interlist.append(womaninter)
+        # print(up_agelist)
+        # print(up_interlist)
+        
+        wziptup = list(zip(wup_agelist,wup_interlist))
+        #print(ziptup)
+        
+        wziplist = [list(row) for row in wziptup]
+        # print(wziplist)
+        
+        teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
+        twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
+        thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
+        fou_womanlist = [i[1] for i in wziplist if i[0]=='40대']
+        fiv_womanlist = [i[1] for i in wziplist if i[0]=='50대']
+        ord_womanlist = [i[1] for i in wziplist if i[0]=='60대이상']
+        
+        womanteen_dict = collections.Counter(teen_womanlist)
+        womantwe_dict = collections.Counter(twe_womanlist)
+        womanthr_dict = collections.Counter(thr_womanlist)
+        womanfou_dict = collections.Counter(fou_womanlist)
+        womanfiv_dict = collections.Counter(fiv_womanlist)
+        womanord_dict = collections.Counter(ord_womanlist)
+        
+        
+        womanteen_list = []
+        womantwe_list = []
+        womanthr_list = []
+        womanfou_list = []
+        womanfiv_list = []
+        womanord_list = []
+        for i in range(len(inter_name)):
+            womanteen_list.append(0)
+            womantwe_list.append(0)
+            womanthr_list.append(0)
+            womanfou_list.append(0)
+            womanfiv_list.append(0)
+            womanord_list.append(0) 
+        
+        for key,value in sorted(womanteen_dict.items()):
+            for index,val in enumerate(womanteen_list):
+                womanteen_list[key] = value
+
+        for key,value in sorted(womantwe_dict.items()):
+            for index,val in enumerate(womantwe_list):
+                womantwe_list[key] = value
+
+        for key,value in sorted(womanthr_dict.items()):
+            for index,val in enumerate(womanthr_list):
+                womanthr_list[key] = value
+
+        for key,value in sorted(womanfou_dict.items()):
+            for index,val in enumerate(womanfou_list):
+                womanfou_list[key] = value                                        
+
+        for key,value in sorted(womanfiv_dict.items()):
+            for index,val in enumerate(womanfiv_list):
+                womanfiv_list[key] = value
+                
+        for key,value in sorted(womanord_dict.items()):
+            for index,val in enumerate(womanord_list):
+                womanord_list[key] = value                
+       
         context = {
             "list_inter": list_inter,
-            "inter_name": inter_name
+            "inter_name": inter_name,
+            "manteen_list": manteen_list,
+            "mantwe_list" : mantwe_list,
+            "manthr_list" : manthr_list,
+            "manfou_list" : manfou_list,
+            "manfiv_list" : manfiv_list,
+            "manord_list" : manord_list,
+            "womanteen_list": womanteen_list,
+            "womantwe_list" : womantwe_list,
+            "womanthr_list" : womanthr_list,
+            "womanfou_list" : womanfou_list,
+            "womanfiv_list" : womanfiv_list,
+            "womanord_list" : womanord_list,            
             }
         return HttpResponse(template.render(context,request))
 
@@ -431,9 +619,11 @@ class IntereView(View):
 class TasteView(View):
     def get(self,request):
         template = loader.get_template("md_admin/tastestatis.html")
-        #입맛 id지정 수
+        
+        #입맛 전체 회원 id지정 수
         tast = MdUTast.objects.values("tast_t").order_by("tast_t")
         tast = list(m['tast_t'] for m in tast)
+        
         dict_tast = {}
         dict_tast = collections.Counter(tast)
         list_tast = []
@@ -444,6 +634,9 @@ class TasteView(View):
         tast_n = MdTastT.objects.values("tast_t_name").order_by("tast_t_id")
         tast_n = list(m['tast_t_name'] for m in tast_n)
         #print(tast_n)
+        
+        #남성 회원
+        
         
         context = {
             "list_tast": list_tast,

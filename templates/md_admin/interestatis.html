@@ -1,10 +1,87 @@
 {% extends "md_admin/base.html" %}
 
 {% block content %}
-<h2>관리자 통계페이지-관심사</h2>
+<h2>관리자 통계페이지-전체</h2>
 	<div>
-	  <canvas id="inter"></canvas>
+	  <canvas id="inter" width = "500" height = "500"></canvas>
 	</div>
 	<span id = "list_inter" hidden>{{list_inter}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	<span id = "inter_name" hidden>{{inter_name}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<h3>남성 관심사</h3><br>
+
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="inter_manteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manteen_list" hidden>{{manteen_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="inter_mantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "mantwe_list" hidden>{{mantwe_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="inter_manthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manthr_list" hidden>{{manthr_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="inter_manfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfou_list" hidden>{{manfou_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="inter_manfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfiv_list" hidden>{{manfiv_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div>
+		<h4>60대 이상</h4>
+	  	<canvas id="inter_manord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manord_list" hidden>{{manord_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+
+	
+	<h3>여성 관심사</h3>
+	
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="inter_womanteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanteen_list" hidden>{{womanteen_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="inter_womantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womantwe_list" hidden>{{womantwe_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="inter_womanthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanthr_list" hidden>{{womanthr_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="inter_womanfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfou_list" hidden>{{womanfou_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="inter_womanfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfiv_list" hidden>{{womanfiv_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>60대 이상</h4>
+	  	<canvas id="inter_womanord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanord_list" hidden>{{womanord_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 {% endblock %}
