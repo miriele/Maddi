@@ -3,8 +3,85 @@
 {% block content %}
 <h2>관리자 통계페이지-입맛</h2>
 	<div>
-	  <canvas id="taste"></canvas>
+	  <canvas id="taste" width = "500" height = "500"></canvas>
 	</div>
 	<span id = "list_tast" hidden>{{list_tast}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	<span id = "tast_n" hidden>{{tast_n}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+<h3>남성 입맛취향</h3><br>
+
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="tast_manteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manteen_tlist" hidden>{{manteen_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="tast_mantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "mantwe_tlist" hidden>{{mantwe_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="tast_manthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manthr_tlist" hidden>{{manthr_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="tast_manfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfou_tlist" hidden>{{manfou_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="tast_manfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfiv_tlist" hidden>{{manfiv_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div>
+		<h4>60대 이상</h4>
+	  	<canvas id="tast_manord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manord_tlist" hidden>{{manord_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	<br>
+<h3>여성 입맛취향</h3><br>
+
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="tast_womanteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanteen_tlist" hidden>{{womanteen_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="tast_womantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womantwe_tlist" hidden>{{womantwe_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="tast_womanthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanthr_tlist" hidden>{{womanthr_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="tast_womanfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfou_tlist" hidden>{{womanfou_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="tast_womanfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfiv_tlist" hidden>{{womanfiv_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>60대 이상</h4>
+	  	<canvas id="tast_womanord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanord_tlist" hidden>{{womanord_tlist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+
 {% endblock %}
