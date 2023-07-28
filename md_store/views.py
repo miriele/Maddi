@@ -8,6 +8,7 @@ from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy, MdIce
 from md_member.models import MdUser
 
 from django.utils import timezone
+import logging
 ##################################################
     # 이주림
     # 지금은 비록 하드 코드로 박았지만..
@@ -125,7 +126,6 @@ class StoreView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def get(self, request):
         stor_id = 1
         try:
@@ -166,13 +166,13 @@ class StoreView(View):
 
     def post(self, request):
         stor_id = request.POST["stor_id"]
-        stor_tel = request.POST.get("tel")
+        stor_tel = request.POST["tel"]
 
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             store.stor_tel = stor_tel
 
-            imgstor = request.FILES["imgstor"]  # 파일을 가져올 때 request.FILES.get() 사용
+            imgstor = request.FILES["imgstor"]
             if imgstor:
                 store.stor_img = imgstor
 
@@ -185,9 +185,12 @@ class StoreView(View):
 
 
 class MenuInfoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        stor_m_id = 2883550
-        menu_id = 253
+        stor_m_id = 2883541
+        menu_id = 1
         try:
             storem = MdStorM.objects.get(stor_m_id=stor_m_id)
             
@@ -195,6 +198,7 @@ class MenuInfoView(View):
                 menu_type = "일반"
             else:
                 menu_type = "시그니처"
+                
             menu = MdMenu.objects.get(menu_id=menu_id)
             dsrt_t = menu.dsrt_t_id
             drnk_t = menu.drnk_t_id
@@ -228,7 +232,44 @@ class MenuInfoView(View):
 
         except MdStorM.DoesNotExist:
             return HttpResponseNotFound()
+    
+    def post(self, request):
+        stor_m_id = 2883541
+        menu_id = 1
+        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+    
+        ice_t_id = request.POST["ice"]
+        menu_t_id = request.POST["menutype"]
+        stor_m_pric = request.POST["menupric"]
+        stor_m_name = request.POST["menuname"]
+        stor_m_cal = request.POST["menukcal"]
+        stor_m_info = request.POST["menuinfo"]
+        algy_t_list = request.POST.getlist("algy[]")
+        imgmenuinfo = request.FILES["imgmenuinfo"]
+    
+        stor_m_id = stor_m_id
+        storem.ice_t_id = ice_t_id
+        storem.menu_t_id = menu_t_id
+        storem.stor_m_pric = stor_m_pric
+        storem.stor_m_name = stor_m_name
+        storem.stor_m_cal = stor_m_cal
+        storem.stor_m_info = stor_m_info
+        storem.stor_m_img = imgmenuinfo
+        storem.save()
+    
+        # 알러지 정보를 업데이트
+        existing_algy_t_ids = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
+        new_algy_t_ids = [int(algy_t_id) for algy_t_id in algy_t_list]
+    
+        # 기존 알러지를 삭제하고 새로운 알러지 정보를 추가
+        MdMAlgy.objects.filter(menu_id=menu_id).exclude(algy_t_id__in=new_algy_t_ids).delete()
+        for algy_t_id in new_algy_t_ids:
+            if algy_t_id not in existing_algy_t_ids:
+                MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
+    
+        return redirect("md_store:menulist")
 
+    
 class MenuListView(View):
     def get(self, request):
         stor_id = 1
