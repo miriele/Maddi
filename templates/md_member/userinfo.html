@@ -55,7 +55,7 @@
 			<tr>
 				<th> 대표이미지 </th>
 				<td>
-					<img src="/media/{{dtos.user_img}}" width="50" height="50" name="img_d" border-radius="50%">
+					<img src="/media/{{dtos.user_img}}" onerror="this.onerror=null; this.src='/media/images/no image.png';" width="50" height="50" name="img_d" border-radius="50%">
 					<input class="input" type="file" name="user_img" accept="image/*" >
 					<hr>
 				</td>

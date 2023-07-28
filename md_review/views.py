@@ -32,7 +32,7 @@ class ReviewView( View ):
         
         
         count   = MdReview.objects.count()
-        rdtos   = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name','ordr__mdordrm__stor_m__stor_id', 'rev_ts', 'ordr__user__user_nick', "ordr__user__user_img", 'rev_cont', 'rev_star')
+        rdtos   = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name','ordr__mdordrm__stor_m__stor_id', 'rev_ts', 'ordr__user__user_nick', "ordr__user__user_img", 'rev_cont', 'rev_star', 'rev_img')
         user    = MdOrdr.objects.select_related('user')
         
         
