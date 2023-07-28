@@ -121,84 +121,68 @@ class AddMenuView(View):
             
         return redirect( "md_store:addmenu")
     
-
 class StoreView(View):
-    @method_decorator( csrf_exempt )
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return View.dispatch(self, request, *args, **kwargs) 
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         stor_id = 1
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             stor_t_id = store.stor_t_id
-            
+
             if store.stor_t_id == 0:
                 stor_type = "개인"
             else:
                 stor_type = "프랜차이즈"
-            
+
             if store.stor_tel:
                 stor_tel = store.stor_tel
             else:
                 stor_tel = "등록된 연락처가 없습니다"
-                
+
             if store.user_id:
-                user_ids= store.user_id
+                user_ids = store.user_id
             else:
                 user_ids = "등록된 점주가 없습니다"
-            
+
             stor_img = store.stor_img
-            
+
             context = {
                 'dto': store,
                 'stor_type': stor_type,
                 'stor_tel': stor_tel,
-                'stor_id' : stor_id,
-                'stor_t_id' : stor_t_id,
-                'stor_img' : stor_img,
-                'user_ids' : user_ids
+                'stor_id': stor_id,
+                'stor_t_id': stor_t_id,
+                'stor_img': stor_img,
+                'user_ids': user_ids
             }
-            
+
             return render(request, 'md_store/store.html', context)
-        
-        except MdStor.DoesNotExist:
-            return HttpResponseNotFound()
-        
-    def post(self, request):
-        stor_id = request.POST["stor_id"]
-        stor_tel = request.POST.get("tel")
-        
-        try:
-            store = MdStor.objects.get(stor_id=stor_id)
-            store.stor_tel = stor_tel
-            store.save()
-            
-            return redirect("md_store:store")
-        
+
         except MdStor.DoesNotExist:
             return HttpResponseNotFound()
 
-class ImageStoreView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return View.dispatch(self, request, *args, **kwargs)
-    def get(self, request):
-        template = loader.get_template("md_store/imagestore.html")
-        context = {}
-        return HttpResponse( template.render( context, request ) )
     def post(self, request):
-        stor_id =1
-        store = MdStor.objects.get(stor_id=stor_id)
-        imgstor = request.FILES["imgstor"]
-    
-        store.stor_img = imgstor
-        stor_t_id = store.stor_t_id
-        bjd_code = store.bjd_code
-        area_t = store.area_t
-    
-        store.save()
-    
-        return redirect("md_store:store")
+        stor_id = request.POST["stor_id"]
+        stor_tel = request.POST.get("tel")
+
+        try:
+            store = MdStor.objects.get(stor_id=stor_id)
+            store.stor_tel = stor_tel
+
+            imgstor = request.FILES["imgstor"]  # 파일을 가져올 때 request.FILES.get() 사용
+            if imgstor:
+                store.stor_img = imgstor
+
+            store.save()
+
+            return redirect("md_store:store")
+
+        except MdStor.DoesNotExist:
+            return HttpResponseNotFound()
+
 
 class MenuInfoView(View):
     def get(self, request):
