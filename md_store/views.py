@@ -4,11 +4,31 @@ from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy, MdIce
+from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
 from md_member.models import MdUser
-
 from django.utils import timezone
-import logging
+
+
+class TestStoreView(View):
+    def get(self, request):
+        try:
+            store_list = MdStor.objects.filter(stor_id__gte=12012, stor_id__lte=1)
+
+            context = {
+                'store_list': store_list,
+            }
+
+            return render(request, 'md_store/teststore.html', context)
+
+        except MdStor.DoesNotExist:
+            return HttpResponseNotFound()
+
+    def post(self, request):
+        pass
+
+
+
+
 ##################################################
     # 이주림
     # 지금은 비록 하드 코드로 박았지만..
@@ -72,7 +92,7 @@ class AddJumjuView(View):
         imgreg = request.FILES["imgreg"]
         reg_sub_ts = timezone.now()
         
-        new_jumju = MdStorReg.objects.create(
+        MdStorReg.objects.create(
             user_id = user_id,
             stor_id = stor_id,
             reg_num = reg_num,
@@ -104,7 +124,7 @@ class AddMenuView(View):
         algy_t_list = request.POST.getlist("algy[]") 
         imgmenu = request.FILES["imgmenu"]
         
-        new_stormenu = MdStorM.objects.create(
+        MdStorM.objects.create(
             stor_id = stor_id,
             menu_id = menu_id,
             menu_t_id = menu_t_id,
@@ -127,7 +147,7 @@ class StoreView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        stor_id = 1
+        stor_id = 3 
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             stor_t_id = store.stor_t_id
@@ -165,7 +185,7 @@ class StoreView(View):
             return HttpResponseNotFound()
 
     def post(self, request):
-        stor_id = request.POST["stor_id"]
+        stor_id = 3
         stor_tel = request.POST["tel"]
 
         try:
@@ -285,8 +305,6 @@ class MenuListView(View):
         except MdStorM.DoesNotExist:
             return HttpResponseNotFound()
     def post(self, request):
-        stor_id = request.POST["stor_id"]
-        stor_m_id = request.POST["stor_m_id"]
         return HttpResponse(request)
     
 
@@ -341,7 +359,6 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        context = {}
         user_id = "abc001"
         user = MdUser.objects.get(user_id=user_id)
         user_name = user.user_name

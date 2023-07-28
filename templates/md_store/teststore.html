@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>메뉴 목록</title>
+</head>
+<body>
+    <h1>메뉴 목록</h1>
+    {% if store_list %}
+    <table>
+        <tr>
+            <th>매장이름</th>
+         	<th>매장이미지</th>
+        </tr>
+        {% for store in store_list %}
+        <tr>
+        	<td>
+        		{{ store.stor_name }}
+        	</td>
+            <td>
+               <img src="/media/images/{{ store.stor_img }}.jpg" width="300" height="300">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+   	 <p>해당 매장이 없습니다.</p>
+    {% endif %}
+
+</body>
+</html>

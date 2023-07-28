@@ -84,25 +84,23 @@ class OrderInfoView(View):
 
 class CartView(View):
     def post(self, request):
-        stor_m_id = request.POST["stor_m_id"]
-        user_id = "abc001" # 추후에 세션에서 받음 
-        bucknum = int(request.POST["bucknum"])
-        buck_num = bucknum
-        
-        # buck_reg_ts에 현재 시각 저장
-        buck_reg_ts = timezone.now()
-        
-        new_buck = MdBuck.objects.create(user_id=user_id, stor_m_id=stor_m_id, buck_num=buck_num, buck_reg_ts=buck_reg_ts)
+        user_id = "abc001"
         buck_id = 60
+        buck_reg_ts = timezone.now()
+        bucknum = int(request.POST["bucknum"])
+        stor_m_id = request.POST["stor_m_id"]
+        
+        MdBuck.objects.create(
+            user_id=user_id, 
+            stor_m_id=stor_m_id,
+            buck_num=bucknum, 
+            buck_reg_ts=buck_reg_ts
+             )
+        
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         buckprice = bucknum * storem.stor_m_pric
         buck_reg_ts = timezone.now()
         
-        if storem.menu_t_id == 0:
-            menu_type = "일반"
-        else:
-            menu_type = "시그니처"
-                
         context = {
                 'dto': storem,
                 'stor_m_pric': storem.stor_m_pric,
@@ -115,8 +113,6 @@ class CartView(View):
             }
         
         return redirect("md_order:orderinfo")
-
-
     
 class OrderView(View):
     def post(self, request):

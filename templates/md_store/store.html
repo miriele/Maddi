@@ -1,6 +1,7 @@
 {% load static %}
 <script src="{% static 'js/script_store.js' %}"></script>	
 {% block title %}
+<html>
 <head>
     <title>점주_매장관리</title>
 </head>
@@ -20,7 +21,11 @@
 	        </th>
 	    </tr>
 	    <tr>
-	        <th rowspan="7"><img src="/media/{{ stor_img }}" width="300" height="300"></th>
+	    	{% if stor_img %}
+	        	<th rowspan="7"> <img src="/media/{{ stor_img }}" width="300" height="300"> </th>
+	        {% else %}
+		    	<p>등록된 이미지가 없습니다.</p>
+		    {% endif %}
 	    </tr>
 	    <tr>
 	        <th rowspan="7">
@@ -82,5 +87,5 @@
         readImageFile(this);
     });
 </script>
-
+</html>
 {% endblock %}
