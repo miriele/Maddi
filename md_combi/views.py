@@ -60,10 +60,24 @@ class CombListView( View ):
             
             
             
-            md_comb   = MdUser.objects.select_related('mdcomb__mdcombm__menu').values('mdcomb__comb_id', 'mdcomb__comb_tit', 'mdcomb__mdcombm__menu__menu_name', 'mdcomb__comb_nop', 'user_nick', 'mdcomb__comb_reg_ts')[start:end]
+            md_comb   = MdComb.objects.select_related('user').order_by('-comb_id')[start:end]
+            menu_name = MdCombM.objects.select_related('menu').order_by("-comb_id")
+             
             # logger.debug(f'md_comb : {md_comb}')
+            for c in md_comb:
+                for mn in menu_name :
+                    if mn.comb_id == c.comb_id :
+                        logger.debug(f' mn.menu.menu_name : { mn.menu.menu_name}')
+                # logger.debug(f'c.user.user_id : {c.user.user_id}')
+                # logger.debug(f'c.comb_tit : {c.comb_tit}')
             
+            
+            # 추천수 용
             md_comb1   = MdComb.objects.order_by("-comb_id")[start:end]
+            
+           
+            # for mname in menu_name:
+                # logger.debug(f'mname.comb_id : {mname.comb_id}')
             
             # 추천수
             comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb1]
@@ -74,9 +88,10 @@ class CombListView( View ):
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
-                "md_comb1"   : md_comb1, 
+                "md_comb1"  : md_comb1, 
                 "comb_like" : comb_like,
                 "md_comb"   : md_comb,
+                "menu_name" : menu_name,
                 "count"     : count,
                 "pagenum"   : pagenum,
                 "number"    : number,
@@ -232,24 +247,42 @@ class CombWriteView( View ):
     def post(self, request):
         user_id = request.session.get("memid")
         
+        comb_reg_ts = datetime.now()
+        
         dto = MdComb(
             user_id = user_id,
             comb_tit = request.POST["comb_tit"],
             comb_nop = request.POST["comb_nop"],
             comb_cont = request.POST["comb_cont"],
             comb_img = request.FILES.get("comb_img", ""), 
-            comb_reg_ts = datetime.now(),
+            comb_reg_ts = comb_reg_ts,
             )
-        # dto.save()
+        dto.save()
         
-        ####################
-        # 태그 값 받아와서 저장해야 함
-        ####################33
-        # select_id_grandchild
-        menu_tag1 = request.POST.get("select_id_grandchild", "")
+        menu_tag1 = request.POST["select_id_grandchild"]  # 태그 1값
         logger.debug(f'menu_tag1 : {menu_tag1}')
         
-        return redirect("/md_combi/combwrite")      ###### 태그 완료후 이동 주소 수정해야 함
+        menu_tag2 = request.POST["select_id_grandchild2"]
+        logger.debug(f'menu_tag2 : {menu_tag2}')
+        
+        comb_id = MdComb.objects.filter(user_id = user_id).order_by("-comb_reg_ts").first()
+        logger.debug(f'comb_id : {comb_id}')
+        
+        
+        tag1 = MdCombM(
+            comb_id = comb_id.comb_id,
+            menu_id = menu_tag1,
+            )
+        tag1.save()
+        
+        tag2 = MdCombM(
+            comb_id = comb_id.comb_id,
+            menu_id = menu_tag2,
+            )
+        tag2.save()
+        
+        
+        return redirect("/md_combi/comblist")      ###### 태그 완료후 이동 주소 수정해야 함
 
     
     
@@ -371,34 +404,21 @@ class CLikeView( View ):
             
     
 
-    
 
-    
-    
-    '''
-import json    
-class SelectBView(View ):
-    def get(self, request):
-        
-        drnk_t = MdDrnkT.objects.all()      #음료분류
-        print
-        dsrt_t = MdDsrtT.objects.all()      # 디저트 분류
-        md_menu = MdMenu.objects.all()      # 메뉴
-        
-        context = {
-            'drnk_t': drnk_t,
-            'dsrt_t': dsrt_t,
-            'md_menu' : md_menu,
-        }
-        return render(request, 'profile_update.html', context=context)
-    
-'''    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
