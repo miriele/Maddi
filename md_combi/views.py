@@ -114,11 +114,10 @@ class CombWriteView( View ):
         return View.dispatch(self, request, *args, **kwargs)
     def get(self, request ):
         
-        template = loader.get_template( "md_combi/combwrite.html" )
-        
         memid   = request.session.get("memid")
         gid     = request.session.get("gid") 
-        
+            
+        template = loader.get_template( "md_combi/combwrite.html" )
         nick    = MdUser.objects.get( user_id = memid )
         
         # 2번쨰 select box
@@ -191,11 +190,6 @@ class CombWriteView( View ):
         sm5NameL = [sm5.menu_name  for sm5 in ds_m5]
         sm6NameL = [sm6.menu_name  for sm6 in ds_m6]
         
-        
-        # logger.debug(f'dsrtNameList : {dsrtNameList}')
-        
-        
-        
         context = {
             "dsrtIdList"   : list(dsrtIdList),
             "dsrtNameList" : list(dsrtNameList),
@@ -243,7 +237,7 @@ class CombWriteView( View ):
             "gid"          : gid,
             }
         return HttpResponse(template.render( context, request ) )
-    
+
     def post(self, request):
         user_id = request.session.get("memid")
         
@@ -305,50 +299,92 @@ class CombDView( View ):
         pagenum = request.GET["pagenum"]
         number  = request.GET["number"]
         
-        # 로그인한 회원 정보
-        user    = MdUser.objects.get( user_id = memid )
-        
-        # 선택한 추천조합 정보
-        comb    = MdComb.objects.get( comb_id = comb_id )
-
-        # 추천글을 작성한 유저의 닉네임
-        nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
-        
-        # 선택한 메뉴(태그 값)
-        menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
-
-        # 추천수
-        likeC   = MdCLike.objects.filter(comb = comb_id).count()
-        
-        # 댓글 갖고있는거 빼옴
-        reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
-        
-        # 로그인한 회원이 추천을 했나 안했나 확인용
-        comb_like = MdCLike.objects.filter( comb_id = comb_id)
-        result = 0
-        for like in comb_like :
-            if like.user_id == memid :
-                result = 1
-                break
-        # logger.debug(f'result : {result}')
-            
-        context = {
-            "memid"     : memid,
-            "gid"       : gid,
-            "pagenum"   :pagenum,
-            "number"    : number,
-            "comb_id"   : comb_id,
-            "user"      :user,
-            "comb"      : comb,
-            "nick"      : nick,
-            "menu"      : menu,
-            "likeC"     : likeC,
-            "reply"     : reply,
-            "comb_like" : comb_like,
-            "result"    : result,
-            }
-        return HttpResponse(template.render( context, request ) )
+        if memid :
+            # 로그인한 회원 정보
+            user    = MdUser.objects.get( user_id = memid )
+            logger.debug(f'user.user_img : {user.user_img}')
+            # 선택한 추천조합 정보
+            comb    = MdComb.objects.get( comb_id = comb_id )
     
+            # 추천글을 작성한 유저의 닉네임
+            nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
+            
+            # 선택한 메뉴(태그 값)
+            menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
+    
+            # 추천수
+            likeC   = MdCLike.objects.filter(comb = comb_id).count()
+            
+            # 댓글 갖고있는거 빼옴
+            reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
+            
+            # 로그인한 회원이 추천을 했나 안했나 확인용
+            comb_like = MdCLike.objects.filter( comb_id = comb_id)
+            result = 0
+            for like in comb_like :
+                if like.user_id == memid :
+                    result = 1
+                    break
+            # logger.debug(f'result : {result}')
+                
+            context = {
+                "memid"     : memid,
+                "gid"       : gid,
+                "pagenum"   :pagenum,
+                "number"    : number,
+                "comb_id"   : comb_id,
+                "user"      :user,
+                "comb"      : comb,
+                "nick"      : nick,
+                "menu"      : menu,
+                "likeC"     : likeC,
+                "reply"     : reply,
+                "comb_like" : comb_like,
+                "result"    : result,
+                }
+            return HttpResponse(template.render( context, request ) )
+        else:
+            comb    = MdComb.objects.get( comb_id = comb_id )
+    
+            # 추천글을 작성한 유저의 닉네임
+            nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
+            
+            # 선택한 메뉴(태그 값)
+            menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
+    
+            # 추천수
+            likeC   = MdCLike.objects.filter(comb = comb_id).count()
+            
+            # 댓글 갖고있는거 빼옴
+            reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
+            
+            # 로그인한 회원이 추천을 했나 안했나 확인용
+            comb_like = MdCLike.objects.filter( comb_id = comb_id)
+            result = 0
+            for like in comb_like :
+                if like.user_id == memid :
+                    result = 1
+                    break
+            # logger.debug(f'result : {result}')
+                
+            context = {
+                "memid"     : memid,
+                "gid"       : gid,
+                "pagenum"   :pagenum,
+                "number"    : number,
+                "comb_id"   : comb_id,
+                "comb"      : comb,
+                "nick"      : nick,
+                "menu"      : menu,
+                "likeC"     : likeC,
+                "reply"     : reply,
+                "comb_like" : comb_like,
+                "result"    : result,
+                }
+            return HttpResponse(template.render( context, request ) )
+            
+            
+            
     def post(self, request ): # 댓글용 ajax....?
         
         memid = request.session.get("memid")
