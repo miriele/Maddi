@@ -271,7 +271,13 @@ class OrdrListView(View):
         for order in orders:
             context_m = []
             order_menus = MdOrdrM.objects.filter(ordr_id=order.ordr_id)
-
+            
+            if order.ordr_com_ts is None:
+                order_status = '접수완료'
+            else:
+                order_status = '처리완료'
+            
+            
             for order_menu in order_menus:
                 stor_m = MdStorM.objects.get(stor_m_id=order_menu.stor_m_id)
                 context_m.append({
@@ -281,37 +287,26 @@ class OrdrListView(View):
                     'ordr_num': order_menu.ordr_num,
                 })
 
-            if order.ordr_com_ts is None:
-                order_status = '접수완료'
-            else:
-                order_status = '처리완료'
             
             
             
-            context.append({
-                'ordr_id': order.ordr_id,
-                'user_id': order.user_id,
-                'weather_id': order.weather_id,
-                'weather_name': order.weather.weather_name,
-                'ordr_temp': order.ordr_temp,
-                'ordr_ord_ts': order.ordr_ord_ts,
-                'ordr_com_ts': order.ordr_com_ts,
-                'stor_m_name': stor_m.stor_m_name,
-                'order_status': order_status,  
-                'order_menus': context_m,
-            })
+                context.append({
+                        'ordr_id': order.ordr_id,
+                        'user_id': order.user_id,
+                        'weather_id': order.weather_id,
+                        'weather_name': order.weather.weather_name,
+                        'ordr_temp': order.ordr_temp,
+                        'ordr_ord_ts': order.ordr_ord_ts,
+                        'ordr_com_ts': order.ordr_com_ts,
+                        'stor_m_name': stor_m.stor_m_name,
+                        'order_status': order_status,  
+                        'order_menus': context_m,
+                    })
         
 
 
         return render(request, 'md_order/orderlist.html', {'context': context})
     
-class OrdrAlertView (View):
-    def get(self,request):
-        template = loader.get_template( "md_order/orderlist.html" )
-        context = {}
-        return HttpResponse( template.render( context, request ) )
-    def post(self,request):
-        pass
 
 class OrdrDoneView (View):
     def post(self, request):
