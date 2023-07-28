@@ -4,18 +4,16 @@
 
 <head>
 	<meta charset = "utf-8">
-	<title>Welcome Maddi</title>
+	<title>Maddi</title>
 	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
-	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
+	<script type="text/javascript" src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script src = "{%static 'js/script_main.js'%}"></script>
+	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript" src = "{%static 'js/script_main.js'%}"></script>
 </head>
 	
 <body>
-
-<!-- 카테고리 버튼 -->
-{% block topbar %}
+{% block header %}
 	<div style="text-align: right;">
 	{% if memid %}
 		<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
@@ -30,44 +28,46 @@
 	</div>
 {% endblock %}
 	
-<!-- 검색창 -->
-{%block search%}
-	<div class="search-section">
+{% block search %}
+	<div class="main_area_title">
 		<h1 class="title" align='center'>Maddi</h1>
 	</div>
-	<div class="searchform">
+	<div class="main_area_search">
 		{%csrf_token%}
 		<form method="post" id="search" action="searchlist">
 			<input type="hidden" name="bjd_name" value=""/>
 			<input type="search" name="searchword" maxlength="60"
-				   laceholder="무엇을 찾아 드릴까요?" autocomplete="off"
-				   style="width: 210px;"/>
-		    <input type="submit" value="검색"/>
+				laceholder="검색할 메뉴를 입력하세요" autocomplete="off"
+				style="width: 210px;"/>
+			<input type="submit" value="검색"/>
+		</form>
+	</div>
+	<div class="main_area_recommend">
+		<div class="main_area_recommend_left">
+		{%block content%}
+		{% endblock %}
+		</div>
+		<div class="main_area_recommend_right">
 			<input type = "button" name = "differlocate" value = "다른위치설정"><br>
 			<div class="rel-srch-words">
 			</div>			
-		</form>
+			<div class="main_area_map">
+				<div id="kakaomap" class="kakaomap" style="width:100%;height:75%;position:relative;overflow:hidden;"></div>
+				<span id="centerAddr" style="display: block;"></span>	
+			</div>	
+		</div>
 	</div>
-{%endblock%}
+{% endblock %}
 
-{%block mapview%}
-	<div>
-    	<div id="kakaomap" class="areaMap" style="width:100%;height:75%;position:relative;overflow:hidden;"></div>
-		<span id="centerAddr" style="display: block;"></span>	
-	</div>	
-{%endblock%}
-
-<!-- content -->
-{% block content %}
+{% block search_result %}
 {% endblock %}
 
 <!-- footer -->
-{% block footer%}
+{% block footer %}
 	<footer class = "footer">
 		<hr>
 		<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
 	</footer>
 {% endblock %}
-
 </body>
 </html>

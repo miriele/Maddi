@@ -3,37 +3,39 @@
 {%block content%}
 
 {% if memid %}
-<section class = "recommend-list">
-	<h2 class = "title">추천메뉴</h2><br>
+<div class = "recommend-list">
+	<h2 class = "title">고객님을 위한 맞춤 메뉴</h2><br>
 	업데이트 중입니다.
-</section>
+</div>
 {% endif%}
 
-<section class = "drink-list">
+<div class = "drink-list">
 	<h2 class = "title">음료</h2>
 	{% for tdto in tdtos %}
 		{{tdto.stor_m__menu__menu_img}}<br>
 		<a>{{tdto.stor_m__menu__menu_name}}</a><br>
 	{% endfor %}
-</section>
+</div>
 
-<section class = "dessert-list">
+<div class = "dessert-list">
 	<h2 class = "title">디저트</h2>
 	{% for ddto in ddtos %}
 		{{ddto.stor_m__menu__menu_img}}<br>
 		<a>{{ddto.stor_m__menu__menu_name}}</a><br>
 	{% endfor %}
-</section>
+</div>
  
-<section class = "recommend-list">
+<div class = "recommend-list">
 	<h2 class = "title">추천조합</h2>
 	{%for comb_id, comb_info in rdtos.items%}
-		{{comb_info.comb_img.url}}<br>
-		{%for menu in comb_info.menu_names%}
+		{% if comb_info.comb_img %}
+			{{comb_info.comb_img.url}}<br>
+		{% endif %}
+		{% for menu in comb_info.menu_names %}
 			{{menu}}&nbsp;
-		{%endfor%}
+		{% endfor %}
 		<br>
 		{{comb_info.comb_tit}}<br><br>
 	{%endfor%}	
-</section>	
+</div>	
 {%endblock%}

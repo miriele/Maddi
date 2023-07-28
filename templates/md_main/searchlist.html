@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<h2><span>검색결과:{{count}}</span></h2><br>
-<section class="search-list">
+<h2>검색결과:{{count}}</h2>
+<div class="main_search_result">
 {% if count == 0 %}
 	조회된 매장이 없습니다 다른 검색어로 입력해 주세요.
 {% else %}
@@ -32,5 +32,5 @@
 	{% endfor %}
 	</table>
 {% endif %}
-</section>
+</div>
 {% endblock %}

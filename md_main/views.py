@@ -10,6 +10,7 @@ from md_admin.models import MdSrch
 from md_combi.models import MdCombM, MdComb
 from md_order.models import MdOrdrM
 from md_store.models import MdStorM, MdStor, MdMenu, MdBjd
+import json
 import logging
 
 logger = logging.getLogger(__name__)
@@ -154,15 +155,7 @@ class SearchView(View):
             }
         return HttpResponse(template.render(context, request))
 
-class MapView(View):
-    def get(self, request):
-        template = loader.get_template("md_main/map.html")
-        # addr = request.GET("centerAddr")
-        # print(addr) 
-        context = {}
-        return HttpResponse(template.render(context,request))
 
-import json
 class SearchWord(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):

@@ -141,8 +141,8 @@ function setLayoutSize() {
 	
 	//console.log(height, mapHeight)
 
-	$('.areaMap').css({'width' : mapWidth +'px'});
-	$('.areaMap').css({'height': mapHeight+'px'});
+	$('.kakaomap').css({'width' : mapWidth +'px'});
+	$('.kakaomap').css({'height': mapHeight+'px'});
 }
 
 
