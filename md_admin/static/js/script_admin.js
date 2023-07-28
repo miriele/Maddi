@@ -899,6 +899,7 @@ $(function() {
 	      }
 	    }
 	 });
+
 	//회원디저트취향(전체)
 	 var dsrtcount = $('#list_dsrt').text()
 	 var dsrtname = $('#dsrt_n').text()
@@ -906,9 +907,9 @@ $(function() {
 	 var dsrtarray = dsrtcount.replace("[","").replace("]","").split(',');
 	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
 	 
-	 var stor = $('#dsrt')
+	 var dsrt = $('#dsrt')
 	 
-	 new Chart(stor, {
+	 new Chart(dsrt, {
 	    type: 'bar',
 	    data: {
 	      labels: ndsrtarray, 
@@ -928,7 +929,180 @@ $(function() {
 	    }
 	 });
 
-	//회원음료취향(전체)
+	//남성회원디저트취향(10대)
+	 var mteendsrtcount = $('#manteen_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var mteendsrtarray = mteendsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_manteen = $('#dsrt_manteen')
+	 
+	 new Chart(dsrt_manteen, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: mteendsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//남성회원디저트취향(20대)
+	 var mtwedsrtcount = $('#mantwe_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var mtwedsrtarray = mtwedsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_mantwe = $('#dsrt_mantwe')
+	 
+	 new Chart(dsrt_mantwe, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: mtwedsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//남성회원디저트취향(30대)
+	 var mthrdsrtcount = $('#manthr_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var mthrdsrtarray = mthrdsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_manthr = $('#dsrt_manthr')
+	 
+	 new Chart(dsrt_manthr, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: mthrdsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//남성회원디저트취향(40대)
+	 var mfoudsrtcount = $('#manfou_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var mfoudsrtarray = mfoudsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_manfou = $('#dsrt_manfou')
+	 
+	 new Chart(dsrt_manfou, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: mfoudsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//남성회원디저트취향(50대)
+	 var mfivdsrtcount = $('#manfiv_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var mfivdsrtarray = mfivdsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_manfiv = $('#dsrt_manfiv')
+	 
+	 new Chart(dsrt_manfiv, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: mfivdsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//남성회원디저트취향(60대이상)
+	 var morddsrtcount = $('#manord_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var morddsrtarray = morddsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_manord = $('#dsrt_manord')
+	 
+	 new Chart(dsrt_manord, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: morddsrtarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	 	 	 	 	 	 
+	//전체회원음료취향
 	 var drnkcount = $('#list_drnk').text()
 	 var drnkname = $('#drnk_n').text()
 	 
@@ -956,6 +1130,7 @@ $(function() {
 	      }
 	    }
 	 });
+	 
 	//구매기반음료취향(전체)
 	 var bdrnkcount = $('#list_bdrnk').text()
 	 var bdrnkname = $('#bdrnk_n').text()
@@ -1013,6 +1188,10 @@ $(function() {
 	      }
 	    }
 	 });
+	 
+	 
+	 
+	 
 	//회원유입
 	 var wusercount = $('#list_welmaddi').text()
 	 var wuserday = $('#upwelyearlist').text()

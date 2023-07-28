@@ -239,7 +239,6 @@ class SregistinfoView(View):
         id = request.POST["id"]
         users = MdUser.objects.filter(user_id=id).update(user_g=6)
         
-         
         return redirect("/md_admin/sregistlist")
 
 # 통계페이지
@@ -399,7 +398,7 @@ class AgestatisView(View):
 class IntereView(View):
     def get(self,request):
         template = loader.get_template("md_admin/interestatis.html")
-# 전체 회원들의 관심사 전체 고른 수
+        # 전체 회원들의 관심사 전체 고른 수
         today = datetime.today().year
         count = MdUIntr.objects.all().count()
         inter = MdUIntr.objects.values("intr_t").order_by("intr_t")
@@ -418,7 +417,7 @@ class IntereView(View):
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
         # print(len(list_inter))
-# 남성회원들의 관심사
+        # 남성회원들의 관심사
         maninter = MdUIntr.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("intr_t","year").order_by("intr_t")
         # print(maninter)
         
@@ -634,7 +633,7 @@ class TasteView(View):
         tast_n = list(m['tast_t_name'] for m in tast_n)
         #print(tast_n)
         
-#남성 회원 입맛
+        #남성 회원 입맛
         mantast = MdUTast.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("tast_t","year").order_by("tast_t")
         mantast_list = list(mantast)
         
@@ -720,7 +719,7 @@ class TasteView(View):
             for index,val in enumerate(manord_tlist):
                 manord_tlist[key] = value         
  
-#여성 회원 입맛
+        #여성 회원 입맛
         wmantast = MdUTast.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("tast_t","year").order_by("tast_t")
         wmantast_list = list(wmantast)
         
@@ -833,25 +832,14 @@ class StoreView(View):
         #매장구분 개인/프랜차이즈
         pstor = MdStor.objects.filter(stor_t=0).count()
         fstor = MdStor.objects.exclude(stor_t=0).count()
-        
-        #프랜차이즈 가맹점 수
-        # ps = MdStor.objects.select_related("stor_t").exclude(stor_t=0).values("stor_t__stor_t_name").order_by("stor_t__stor_t_id")
-        # print(ps)
-        #
-        # ps = list(m['stor_t__stor_t_name'] for m in ps)
-        # print(ps)
-        #
-        # dict_ps = {}
-        # dict_ps = collections.Counter(ps)
-        # print(dict_ps)
-        # list_ps = []
-        # for key,value in sorted(dict_ps.items()):
-        #     list_ps.append(value)
-        # print(type(list_ps))
-        #프랜차이즈 구분(9개의 프랜차이즈 매장과 1개 기타매장으로 합칠예정)
-        
-        #print(pstor)
-        #print(fstor)
+
+        #개인매장등록일
+        # pregstor = MdStorReg.objects.select_related("stor").filter(stor__stor_t=0 , reg_con_ts__isnull = False).values("reg_con_ts")
+        # #프랜차이즈매장등록일
+        # fregstor = MdStorReg.objects.select_related("stor").exclude(stor__stor_t=0 , reg_con_ts = None).values("reg_con_ts")
+        # print(str(fregstor.query))
+        # print(pregstor)
+        # print(fregstor)
         
         stor_list = [pstor,fstor]
         
@@ -865,7 +853,7 @@ class StoreView(View):
 class DsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/dsrtstatis.html")
-        
+        today = datetime.today().year
         #사용자 디저트 기입한 수 리스트
         dsrt = MdUDsrt.objects.values("dsrt_t").order_by("dsrt_t")
         dsrt = list(m['dsrt_t'] for m in dsrt)
@@ -879,8 +867,98 @@ class DsrtView(View):
         #디저트분류명 리스트
         dsrt_n = MdDsrtT.objects.values("dsrt_t_name")
         dsrt_n = list(m['dsrt_t_name'] for m in dsrt_n)
-        # print(dsrt_n)
         
+        
+        # print(dsrt_n)
+                     
+        #남성회원 디저트 취향
+        mandsrt = MdUDsrt.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("dsrt_t","year").order_by("dsrt_t")
+        mandsrt_list = list(mandsrt)
+        
+        up_agelist = []
+        up_dsrtlist = []
+        
+        for myear in mandsrt_list:
+            mdsrt = myear[0]
+            myear = int(myear[1])
+            age = today - myear
+            #print(age)
+            if(age >=10 and age<20):
+                age = '10대'
+            elif(age>=20 and age<30):
+                age = '20대'
+            elif(age>=30 and age<40):
+                age = '30대'
+            elif(age>=40 and age<50):
+                age = '40대'
+            elif(age>=50 and age<60):
+                age = '50대'
+            else:
+                age = '60대이상'
+            up_agelist.append(age)
+            up_dsrtlist.append(mdsrt)
+
+        ziptup = list(zip(up_agelist,up_dsrtlist))
+        #print(ziptup)
+        
+        ziplist = [list(row) for row in ziptup]
+        # print(ziplist)
+        
+        teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
+        twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
+        thr_manlist = [i[1] for i in ziplist if i[0]=='30대']
+        fou_manlist = [i[1] for i in ziplist if i[0]=='40대']
+        fiv_manlist = [i[1] for i in ziplist if i[0]=='50대']
+        ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
+        # print(teen_manlist)
+        
+        manteen_dict = collections.Counter(teen_manlist)
+        mantwe_dict = collections.Counter(twe_manlist)
+        manthr_dict = collections.Counter(thr_manlist)
+        manfou_dict = collections.Counter(fou_manlist)
+        manfiv_dict = collections.Counter(fiv_manlist)
+        manord_dict = collections.Counter(ord_manlist)        
+        
+        manteen_dslist = []
+        mantwe_dslist = []
+        manthr_dslist = []
+        manfou_dslist = []
+        manfiv_dslist = []
+        manord_dslist = []
+        for i in range(len(dsrt_n)-1):
+            manteen_dslist.append(0)
+            mantwe_dslist.append(0)
+            manthr_dslist.append(0)
+            manfou_dslist.append(0)
+            manfiv_dslist.append(0)
+            manord_dslist.append(0)
+        # print(manteen_list)
+ 
+        for key,value in sorted(manteen_dict.items()):
+            for index,val in enumerate(manteen_dslist):
+                manteen_dslist[key] = value
+    
+        for key,value in sorted(mantwe_dict.items()):
+            for index,val in enumerate(mantwe_dslist):
+                mantwe_dslist[key] = value
+    
+        for key,value in sorted(manthr_dict.items()):
+            for index,val in enumerate(manthr_dslist):
+                manthr_dslist[key] = value
+    
+        for key,value in sorted(manfou_dict.items()):
+            for index,val in enumerate(manfou_dslist):
+                manfou_dslist[key] = value                                        
+    
+        for key,value in sorted(manfiv_dict.items()):
+            for index,val in enumerate(manfiv_dslist):
+                manfiv_dslist[key] = value
+                
+        for key,value in sorted(manord_dict.items()):
+            for index,val in enumerate(manord_dslist):
+                manord_dslist[key] = value                 
+        
+        # print(len(manteen_dslist))
         # 디저트 분류 리스트 '없음' 제거
         dsrt_n.remove('없음' )
         # print(dsrt_n)
@@ -888,6 +966,12 @@ class DsrtView(View):
         context = {
             "dsrt_n" : dsrt_n,
             "list_dsrt" : list_dsrt,
+            "manteen_dslist" : manteen_dslist,
+            "mantwe_dslist" : mantwe_dslist,
+            "manthr_dslist" : manthr_dslist,
+            "manfou_dslist" : manfou_dslist,
+            "manfiv_dslist" : manfiv_dslist,
+            "manord_dslist" : manord_dslist,
             }
         return HttpResponse(template.render(context,request))
     
