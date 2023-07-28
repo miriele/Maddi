@@ -31,6 +31,61 @@ $(function() {
 	    }
 	 });
 	 
+	 //남성회원 연령대 분포
+	 var managecount = $('#man_agecount').text()
+	 var manarrayage = managecount.replace("[","").replace("]","").split(',');
+	 
+	 var gender_man = $('#gender_man')
+	 
+	 new Chart(gender_man, {
+	    type: 'bar',
+	    data: {
+	      labels: ['10대','20대','30대','40대','50대','60대이상'],
+	      datasets: [{
+	        label: '# of Votes',
+	        data: manarrayage, 
+	        borderWidth: 1,
+	        borderColor: '#36A2EB',
+	        backgroundColor: '#9BD0F5',
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	 //여성회원 연령대 분포
+	 var womanagecount = $('#woman_agecount').text()
+	 var womanarrayage = womanagecount.replace("[","").replace("]","").split(',');
+	 
+	 var gender_woman = $('#gender_woman')
+	 
+	 new Chart(gender_woman, {
+	    type: 'bar',
+	    data: {
+	      labels: ['10대','20대','30대','40대','50대','60대이상'],
+	      datasets: [{
+	        label: '# of Votes',
+	        data: womanarrayage, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
 	 //연령통계(전체)
 	 var agecount = $('#agecount').text()
 	 var arrayage = agecount.replace("[","").replace("]","").split(',');
@@ -285,9 +340,9 @@ $(function() {
 	 
 	//키워드 워드클라우드
 	 var data_list = $('#data_list').text()
-	
+	 //console.log(data_list)
 	 var dataarray = data_list.replace("[","'[").replaceAll("'x'","x").replaceAll("'value'","value").replace("]","]'")
-	
+	 
 	 var jsonData = dataarray.replace(/'/g, '"');
 	 var data = jsonData.replace(/^"|"$/g, "");
 	 var validJsonString = data.replace(/([{,])(\s*)([a-zA-Z0-9_]+?)\s*:/g, '$1"$3":');
@@ -311,8 +366,7 @@ $(function() {
 	 // WordCloud를 생성하고 데이터를 설정
 	 var chart = anychart.tagCloud(wordCloudData);
 	 //console.log(resultObject);
-	 // 차트의 제목을 설정
-	 chart.title("Tag Cloud Chart: Basic Sample");
+
 	
 	  // WordCloud가 그려질 컨테이너를 지정
 	 chart.container("container");

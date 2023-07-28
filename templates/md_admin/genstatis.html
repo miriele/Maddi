@@ -1,7 +1,9 @@
 {% extends "md_admin/base.html" %}
 <h2>관리자 통계페이지</h2>
 {% block content %}
-<h2>관리자 통계페이지-성별분포</h2><br>
+<h2>관리자 통계페이지-성별분포</h2><br><br><br>
+
+<h3>전체회원</h3>
 	<div>
 	  <canvas id="gender"></canvas>
 	</div>
@@ -10,6 +12,21 @@
 회원수:{{count}}명<br>
 남성:{{menper}}%<br>
 여성:{{womenper}}%
+
+<h3>남성회원 - 연령대 분포</h3>
+	<div>
+	  <canvas id="gender_man"></canvas>
+	</div>
+	<span id = "man_agecount" hidden>{{man_agecount}}</span>
+남성회원수:{{mancount}}명<br>
+	
+<h3>여성회원 - 연령대 분포</h3>	
+	<div>
+	  <canvas id="gender_woman"></canvas>
+	</div>
+	<span id = "woman_agecount" hidden>{{woman_agecount}}</span>
+여성회원수:{{womancount}}명<br>
+
 {% endblock %}
 
 

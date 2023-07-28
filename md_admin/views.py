@@ -240,11 +240,15 @@ class SregistinfoView(View):
          
         return redirect("/md_admin/sregistlist")
 
+# 통계페이지
+
 # 가입회원 성별 통계        
 class GenstatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/genstatis.html")
         count = MdUser.objects.count()
+        mancount = MdUser.objects.filter(gen=0).count()
+        womancount = MdUser.objects.filter(gen=1).count()
        
         #성별/인원수
         gend = [] # 성별이름 담을 리스트
@@ -254,13 +258,13 @@ class GenstatisView(View):
         #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
 
-        #print(gen)
+        # print(gen)
         #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
         
         #쿼리셋을 list로 만듦
         gen_list = list(gen)
         
-        #print(gen_list)
+        # print(gen_list)
         #[{'gen__gen_name': '남자\r', 'gen__count': 79}, 
         #{'gen__gen_name': '여자\r', 'gen__count': 61}]
         
@@ -277,7 +281,7 @@ class GenstatisView(View):
         inwon.extend(gencount)
         
         # print(gend)
-        # print(inwon)
+        # print(inwon)    
 
         #남성회원 비율
         menper = inwon[0]/sum(inwon) * 100
@@ -288,18 +292,40 @@ class GenstatisView(View):
         womenper = round(womenper,2)  
         # print(womenper)        
         
-        #연령대
+        #남성_연령대 분포
         today = datetime.today().year
-        # print(type(today))
-        muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=0).values("year")
-        # print(userbir)
-        year = list(m['year'] for m in muserbir)
-        year = list(map(int,year))
-        age = list(map(lambda x:x - today , year))
-        age = list(map(abs,age))
-        # print(age)
-        # print(year)
 
+        muserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=0).values("year")
+        man_year = list(m['year'] for m in muserbir)
+        man_year = list(map(int,man_year))
+        man_age = list(map(lambda x:x - today , man_year))
+        man_age = list(map(abs,man_age))
+                
+        man_teen = list(filter(lambda x: x<20 and x >=10, man_age))
+        man_twe = list(filter(lambda x: x<30 and x >=20, man_age))
+        man_thr = list(filter(lambda x: x<40 and x >=30, man_age))
+        man_fou = list(filter(lambda x: x<50 and x >=40, man_age))
+        man_fif = list(filter(lambda x: x<60 and x >=50, man_age))
+        man_older = list(filter(lambda x: x >=60, man_age))
+        man_agecount = [len(man_teen),len(man_twe),len(man_thr),len(man_fou),len(man_fif),len(man_older)]        
+        # print(man_agecount)
+        
+        #여성_연령대 분포
+        wmuserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=1).values("year")
+        wo_year = list(m['year'] for m in wmuserbir)
+        wo_year = list(map(int,wo_year))
+        woman_age = list(map(lambda x:x - today , wo_year))
+        woman_age = list(map(abs,woman_age))
+                
+        woman_teen = list(filter(lambda x: x<20 and x >=10, woman_age))
+        woman_twe = list(filter(lambda x: x<30 and x >=20, woman_age))
+        woman_thr = list(filter(lambda x: x<40 and x >=30, woman_age))
+        woman_fou = list(filter(lambda x: x<50 and x >=40, woman_age))
+        woman_fif = list(filter(lambda x: x<60 and x >=50, woman_age))
+        woman_older = list(filter(lambda x: x >=60, woman_age))
+        woman_agecount = [len(woman_teen),len(woman_twe),len(woman_thr),len(woman_fou),len(woman_fif),len(woman_older)]        
+        # print(woman_agecount)
+        
         #데이터 TEMPLATE로 넘기기
         context = {
             "inwon"     : inwon,
@@ -307,6 +333,10 @@ class GenstatisView(View):
             "menper"    : menper,
             "womenper"  : womenper,
             "count"     : count,
+            "mancount"  : mancount,
+            "womancount": womancount,
+            "man_agecount" : man_agecount,
+            "woman_agecount": woman_agecount,
             }
         return HttpResponse(template.render(context,request))
     
@@ -643,7 +673,7 @@ class KeywordView(View):
         
         
         data_list = []
-        #json형태의 맞게 list append
+        #json 형태의 맞게 list append
         for text,weight in zip(textlist,weightlist):
             data_list.append({"x":text,"weight":weight})
         
