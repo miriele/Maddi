@@ -104,10 +104,8 @@ class SearchView(View):
         return View.dispatch(self, request, *args, **kwargs)    
 
     def post(self, request):
-        template   = loader.get_template("md_main/searchlist.html")
-        searchText = request.POST["searchword"]
+        searchText = request.POST["search_word"]
         bjdName    = request.POST["bjd_name"]
-        
         logger.debug(f'searchText : {searchText}\tbjdName : {bjdName}')
         
         subquery_sb = MdStorM.objects.filter(
@@ -129,16 +127,13 @@ class SearchView(View):
                             'stor_img',
                             'area_t_name'
                         )
-        
         logger.debug(f'store_list: {store_list}')
         logger.debug(f'store_cnt: {len(store_list)}')
         
-        user_id = request.session.get("memid")
-        # bjd_code = MdBjd.objects.filter(bjd_name=bjdName).values('bjd_code').first()['bjd_code']
+        user_id  = request.session.get("memid")
         bjd_code = MdBjd.objects.filter(bjd_name=bjdName).first()
         logger.debug(f'user_id  : {user_id}')
         logger.debug(f'bjd_code : {bjd_code}')
-        # logger.debug(f'srch_ts  : {timezone.localtime()}')
         logger.debug(f'srch_ts  : {timezone.now()}')
         
         searchInfo = MdSrch(
@@ -150,10 +145,11 @@ class SearchView(View):
         searchInfo.save()
 
         context = {
-            "store_list" : store_list,
-            "count" : len(store_list),
+            "menu_name"  : searchText,
+            "count"      : len(store_list),
+            "store_list" : list(store_list),
             }
-        return HttpResponse(template.render(context, request))
+        return HttpResponse(json.dumps(context), content_type="application/json")
 
 
 class SearchWord(View):
@@ -167,5 +163,5 @@ class SearchWord(View):
         menulist    = [menu.menu_name for menu in queryset]
         menudict    = dict(zip(range(0, len(menulist)), menulist))
         # logger.debug(f'menudict: {json.dumps(menudict)}')
-        return HttpResponse(json.dumps(menudict), content_type ="application/json")
+        return HttpResponse(json.dumps(menudict), content_type="application/json")
         

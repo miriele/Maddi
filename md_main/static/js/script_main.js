@@ -39,14 +39,12 @@ $(function() {
 					//console.log(lat, long)
 					var moveLatLon = new kakao.maps.LatLng(lat, long);
 					kakaomap.panTo(moveLatLon); 
-					
-					
 				 }
 			}	// var callback = function(result, status)
 		}
 	);	// $("input[name='differlocate']").on(
 
-	$("input[name='searchword']").on(
+	$("input[name='search_word']").on(
 		"keyup",
 		function(event) {
 			var csrfToken = "{{ csrf_token }}";
@@ -55,7 +53,7 @@ $(function() {
 					url  : "searchword",
 					type : "POST",
 					data : {
-						search_word : $("input[name='searchword']").val(),
+						search_word : $("input[name='search_word']").val(),
 						csrfmiddlewaretoken: csrfToken,
 					},	// data : {
 					datatype : "text",
@@ -73,17 +71,15 @@ $(function() {
 						
 						$(".rel-srch-words").append($ul);
 						$(".rel-srch-words").show();
-						
-						
 					},	// success : function(data) {
 					error : function(request, status, error) {
-						//console.log(error);
+						console.log(error);
 						//$("").html("서버요청실패");
 					}	// error : function(request, status, error)
 				}
 			)	// $.ajax(
 		}	// function(event) {
-	);	// $("input[name='searchword']").on(
+	);	// $("input[name='search_word']").on(
 	
 	$(document).on(
 		"click",
@@ -107,11 +103,65 @@ $(function() {
 	$(".rel-srch-words").on(
 		"click",
 		function(event) {
-			$("input[name='searchword']").val(event.target.textContent);
+			$("input[name='search_word']").val(event.target.textContent);
 			closeKeywords();
 		}	// function(event)
-	);	// $("input[name='searchword']").on(
+	);	// $("input[name='search_word']").on(
+
+	$("input[name='main_btn_search']").on(
+		"click",
+		function(event) {
+			var csrfToken = "{{ csrf_token }}";
+			$.ajax(
+				{
+					url  : "searchlist",
+					type : "POST",
+					data : {
+						search_word : $("input[name='search_word']").val(),
+						bjd_name    : $("input[name='bjd_name']").val(),
+						csrfmiddlewaretoken: csrfToken,
+					},	// data : {
+					datatype : "text",
+					success : function(data) {
+						//console.log(data);
+						var content = `
+							<h3>[${data.menu_name}] 판매 매장 : ${data.count}</h3>
+							${data.count === 0 ? '판매 중인 매장이 없습니다.' : `
+								<table>
+								${data.store_list.map(function(store, index) {
+									return `
+									${index % 2 === 0 ? '<tr>' : ''}
+										<td>
+											<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id=${store.stor_id}'">
+												<table>
+													<tr>
+														<td rowspan="2">${store.stor_img}</td>
+														<td>${store.stor_name}</td>
+													</tr>
+													<tr>
+														<td>${store.area_t_name}</td>
+													</tr>
+												</table>
+											</div>
+										</td>
+									${index % 2 !== 0 ? '</tr>' : ''}
+									`;
+								}).join('')}
+								</table>
+							`}
+							`;
+						$('.main_search_result').html(content);
+					},	// success : function(data) {
+					error : function(request, status, error) {
+						console.log(error);
+						//$("").html("서버요청실패");
+					}	// error : function(request, status, error)
+				}
+			)	// $.ajax(
+		}	// function(event) {
+	);	// $("input[name='search_word']").on(
 });	// $(function()
+
 
 ////////// 연관 검색어 //////////
 function closeKeywords() {
@@ -143,16 +193,18 @@ function setLayoutSize() {
 	$('.recommend-list').css({'width' : windowWidth-mapWidth +'px'});
 	
 	
-	let elementRel	= $('.search_input');
-	let relWidth	= elementRel[0].offsetWidth;
-	let relHeight	= elementRel[0].offsetHeight;
-	let relPosX		= elementRel[0].offsetLeft;
-	let relPosY		= elementRel[0].offsetTop;
-	console.log(elementRel);
-	console.log(relWidth, relHeight, relPosX, relPosY);
-	console.log("setLayoutSize");
+	let searchInput	= $('.search_input');
+	let relWidth	= searchInput[0].offsetWidth;
+	let relHeight	= searchInput[0].offsetHeight;
+	let relPosX		= searchInput[0].offsetLeft;
+	let relPosY		= searchInput[0].offsetTop;
+//	console.log(elementRel);
+//	console.log(relWidth, relHeight, relPosX, relPosY);
+//	console.log("setLayoutSize");
 	
-	$('.rel-srch-words')
+	$('.rel-srch-words').css({'top': relPosY+relHeight+'px'});
+	$('.rel-srch-words').css({'left': relPosX+'px'});
+	$('.rel-srch-words').css({'width' : relWidth +'px'});
 }
 
 

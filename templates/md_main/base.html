@@ -37,13 +37,12 @@
 
 	{% block search %}
 	<div class="main_area_search">
-		{%csrf_token%}
-		<form method="post" id="search" action="searchlist">
+		<form method="post" id="search">
 			<input type="hidden" name="bjd_name" value=""/>
-			<input type="search" name="searchword" class="search_input"
+			<input type="search" name="search_word" class="search_input"
 				maxlength="60" autocomplete="off"
-				laceholder="검색할 메뉴를 입력하세요"/>
-			<input type="submit" value="검색"/>
+				placeholder="검색할 메뉴를 입력하세요"/>
+			<input type="button" name="main_btn_search" value="검색"/>
 		</form>
 		<div class="rel-srch-words"></div>
 	</div>

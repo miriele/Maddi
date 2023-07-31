@@ -42,36 +42,6 @@
 {%endblock%}
 
 {% block content_lower %}
-<h3>[{{menu_name}}] 판매 매장 : {{count}}</h3>
-
 <div class="main_search_result">
-	{% if count == 0 %}
-	판매 중인 매장이 없습니다.
-	{% else %}
-	<table>
-	{% for store in store_list %}
-		{% if forloop.counter0|divisibleby:2%}
-		<tr>
-		{% endif %}
-			<td>
-				<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id={{store.stor_id}}'">
-					<table>
-						<tr>
-							<td rowspan="2">{{store.stor_img}}</td>
-							<td>{{store.stor_name}}</td>
-						</tr>
-						<tr>
-							<td>{{store.area_t_name}}</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-
-		{% if not forloop.counter0|divisibleby:2%}
-		</tr>
-		{% endif %}
-	{% endfor %}
-	</table>
-	{% endif %}
 </div>
 {% endblock %}

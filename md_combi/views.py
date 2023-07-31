@@ -20,10 +20,11 @@ page_block = 3
 class CombListView( View ):
 
     def get(self, request ):
-        gid = request.session.get("gid") 
-        memid = request.session.get("memid")   
-        logger.debug(f'memid : {memid}')
+        gid   = request.session.get("gid")
+        memid = request.session.get("memid")
         
+        logger.debug(f'memid : {memid}')
+
         template = loader.get_template( "md_combi/comblist.html" )
         count    = MdComb.objects.all().count()
 
