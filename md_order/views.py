@@ -14,7 +14,6 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        cart_data = request.session.get('cart_data')
         stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -65,15 +64,13 @@ class OrderInfoView(View):
         else:
             algy_n = "없음"
 
-        
-        bucknum = int(request.POST.get('bucknum', 1)) 
-        
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
             menu_type = "시그니처"
             
-        # 주문 수량이 0 이하일 때 1로 설정
+        bucknum = int(request.POST.get('bucknum', 1))
+         
         if bucknum <= 0:
             bucknum = 1
 
@@ -99,36 +96,42 @@ class OrderInfoView(View):
 
 class CartView(View):
     def post(self, request):
+        # 사용자 정보와 주문 정보를 가져오는 로직 (예를 들어 어떤 방식으로 가져오는지 확인해야 함)
         user_id = "abc001"
         buck_id = 60
         buck_reg_ts = timezone.now()
         bucknum = int(request.POST["bucknum"])
         stor_m_id = request.POST.get('stor_m_id')
-        
+
+        # MdBuck에 주문 정보를 저장
         MdBuck.objects.create(
-            user_id=user_id, 
+            user_id=user_id,
             stor_m_id=stor_m_id,
-            buck_num=bucknum, 
+            buck_num=bucknum,
             buck_reg_ts=buck_reg_ts
-             )
-        
+        )
+
+        # MdStorM 객체를 가져와서 가격을 계산하고 필요한 정보들을 세션에 저장
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         buckprice = bucknum * storem.stor_m_pric
-        buck_reg_ts = timezone.now()
-        
-        request.session['cart_data'] = {
-            'dto': storem,
+
+        # 필요한 정보들만 딕셔너리로 추출하여 세션에 저장
+        cart_data = {
+            'stor_m_id': stor_m_id,
             'stor_m_pric': storem.stor_m_pric,
             'stor_id': storem.stor_id,
             'stor_m_name': storem.stor_m_name,
             'buck_id': None,  # 이 부분은 CartView에서 생성된 buck_id를 저장해야 한다면 해당하는 값으로 변경
             'bucknum': bucknum,
             'buckprice': buckprice,
-            'buck_reg_ts': buck_reg_ts,
+            'buck_reg_ts': buck_reg_ts.strftime('%Y-%m-%d %H:%M:%S'),  # 문자열로 변환하여 저장
         }
-        
+
+        # 세션에 저장
+        request.session['cart_data'] = cart_data
+
         # orderinfo 페이지로 리디렉션
-        return redirect("md_order:orderinfo")
+        return redirect(reverse('md_order:orderinfo_view') + f'?stor_m_id={stor_m_id}')
     
 class OrderView(View):
     def post(self, request):

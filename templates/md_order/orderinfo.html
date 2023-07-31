@@ -21,13 +21,12 @@
 	    </tr>
 	    <tr>
 		    <td colspan="2">
-				<form method="post">
-				    {% csrf_token %}
-				    <input type="hidden" name="stor_m_id" value="{{ stor_m_id }}"> 
-				    <input class="input" type="text"  id="bucknum" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}" readonly>
-				    <button type="button" id="incrementButton">+</button>
-				    <button type="button" id="decrementButton">-</button>
-				</form>
+				<form method="post" action="md_order/orderinfo/?stor_m_id={{ stor_m_id }}">
+		            {% csrf_token %}
+		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}">
+		           	<button type="submit" name="bucknum" value="{{ bucknum|add:'1' }}">+</button>
+		            <button type="submit" name="bucknum" value="{{ bucknum|add:'-1' }}">-</button>
+		        </form>
 		    </td>
 		<tr>
 	    	<td>&nbsp;{{ buckprice }}</td>
