@@ -3,9 +3,86 @@
 {% block content %}
 <h2>관리자 통계페이지-디저트취향(구매기반)</h2><br>
 	<div>
-		<h4>음료취향-전체회원</h4>
+		<h4>음료취향(구매기반)-전체회원</h4>
 	  	<canvas id="bdsrt"></canvas>
 	</div>
-	<span id = "list_bdsrt" hidden>{{list_bdsrt}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	<span id = "bdsrt_list" hidden>{{bdsrt_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	<span id = "bdsrt_n" hidden>{{bdsrt_n}}</span>
+	
+	<h3>남성 구매기반 음료취향</h3><br>
+
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="bdsrt_manteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manteen_bdslist" hidden>{{manteen_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="bdsrt_mantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "mantwe_bdslist" hidden>{{mantwe_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="bdsrt_manthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manthr_bdslist" hidden>{{manthr_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="bdsrt_manfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfou_bdslist" hidden>{{manfou_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="bdsrt_manfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manfiv_bdslist" hidden>{{manfiv_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div>
+		<h4>60대 이상</h4>
+	  	<canvas id="bdsrt_manord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "manord_bdslist" hidden>{{manord_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+
+	<h3>여성 구매기반 음료취향</h3><br>
+
+	<div style = "float:left;">
+		<h4>10대</h4>
+	  	<canvas id="bdsrt_womanteen" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanteen_bdslist" hidden>{{womanteen_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = "float:left;">
+		<h4>20대</h4>
+	  	<canvas id="bdsrt_womantwe" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womantwe_bdslist" hidden>{{womantwe_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>30대</h4>
+	  	<canvas id="bdsrt_womanthr" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanthr_bdslist" hidden>{{womanthr_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>40대</h4>
+	  	<canvas id="bdsrt_womanfou" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfou_bdslist" hidden>{{womanfou_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div style = float:left;>
+		<h4>50대</h4>
+	  	<canvas id="bdsrt_womanfiv" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanfiv_bdslist" hidden>{{womanfiv_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div>
+		<h4>60대 이상</h4>
+	  	<canvas id="bdsrt_womanord" width = "300" height = "300"></canvas>
+	</div>
+	<span id = "womanord_bdslist" hidden>{{womanord_bdslist}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+	
 {% endblock %}
