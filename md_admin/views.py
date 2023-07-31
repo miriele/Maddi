@@ -1071,6 +1071,7 @@ class DsrtView(View):
 class DrnkView(View):
     def get(self,request):
         template = loader.get_template("md_admin/drnkstatis.html")
+        today = datetime.today().year
         #사용자 음료 기입한 수 리스트
         drnk = MdUDrnk.objects.values("drnk_t").order_by("drnk_t")
         drnk = list(m['drnk_t'] for m in drnk)
@@ -1085,15 +1086,193 @@ class DrnkView(View):
         #음료분류명 리스트
         drnk_n = MdDrnkT.objects.values("drnk_t_name")
         drnk_n = list(m['drnk_t_name'] for m in drnk_n)
-        # print(dsrt_n)
+        
+         
+        #남성회원 음료취향
+        mandrnk = MdUDrnk.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("drnk_t","year").order_by("drnk_t")
+        mandrnk_list = list(mandrnk)
+        
+        up_agelist = []
+        up_drnklist = []
+        
+        for myear in mandrnk_list:
+            mdrnk = myear[0]
+            myear = int(myear[1])
+            age = today - myear
+            #print(age)
+            if(age >=10 and age<20):
+                age = '10대'
+            elif(age>=20 and age<30):
+                age = '20대'
+            elif(age>=30 and age<40):
+                age = '30대'
+            elif(age>=40 and age<50):
+                age = '40대'
+            elif(age>=50 and age<60):
+                age = '50대'
+            else:
+                age = '60대이상'
+            up_agelist.append(age)         
+            up_drnklist.append(mdrnk)
+            
+        ziptup = list(zip(up_agelist,up_drnklist))
+        ziplist = [list(row) for row in ziptup]
+        
+        teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
+        twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
+        thr_manlist = [i[1] for i in ziplist if i[0]=='30대']
+        fou_manlist = [i[1] for i in ziplist if i[0]=='40대']
+        fiv_manlist = [i[1] for i in ziplist if i[0]=='50대']
+        ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
+        
+        manteen_drnk = collections.Counter(teen_manlist)
+        mantwe_drnk = collections.Counter(twe_manlist)
+        manthr_drnk = collections.Counter(thr_manlist)
+        manfou_drnk = collections.Counter(fou_manlist)
+        manfiv_drnk = collections.Counter(fiv_manlist)
+        manord_drnk = collections.Counter(ord_manlist)        
+        
+        manteen_drlist = []
+        mantwe_drlist = []
+        manthr_drlist = []
+        manfou_drlist = []
+        manfiv_drlist = []
+        manord_drlist = []
+        
+        for i in range(len(drnk_n)-1):
+            manteen_drlist.append(0)
+            mantwe_drlist.append(0)
+            manthr_drlist.append(0)
+            manfou_drlist.append(0)
+            manfiv_drlist.append(0)
+            manord_drlist.append(0)
+ 
+        for key,value in sorted(manteen_drnk.items()):
+            for index,val in enumerate(manteen_drlist):
+                manteen_drlist[key] = value
+    
+        for key,value in sorted(mantwe_drnk.items()):
+            for index,val in enumerate(mantwe_drlist):
+                mantwe_drlist[key] = value
+    
+        for key,value in sorted(manthr_drnk.items()):
+            for index,val in enumerate(manthr_drlist):
+                manthr_drlist[key] = value
+    
+        for key,value in sorted(manfou_drnk.items()):
+            for index,val in enumerate(manfou_drlist):
+                manfou_drlist[key] = value                                        
+    
+        for key,value in sorted(manfiv_drnk.items()):
+            for index,val in enumerate(manfiv_drlist):
+                manfiv_drlist[key] = value
+                
+        for key,value in sorted(manord_drnk.items()):
+            for index,val in enumerate(manord_drlist):
+                manord_drlist[key] = value        
+        #여성 음료 취향
+        womandrnk = MdUDrnk.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("drnk_t","year").order_by("drnk_t")
+        womandrnk_list = list(womandrnk)
+        
+        wup_agelist = []
+        wup_drnklist = []
+        
+        for wmyear in womandrnk_list:
+            wmdrnk = wmyear[0]
+            wmyear = int(wmyear[1])
+            wage = today - wmyear
+            #print(age)
+            if(wage >=10 and wage<20):
+                wage = '10대'
+            elif(wage>=20 and wage<30):
+                wage = '20대'
+            elif(wage>=30 and wage<40):
+                wage = '30대'
+            elif(wage>=40 and wage<50):
+                wage = '40대'
+            elif(wage>=50 and wage<60):
+                wage = '50대'
+            else:
+                wage = '60대이상'
+            wup_agelist.append(wage)         
+            wup_drnklist.append(wmdrnk)
+            
+        wziptup = list(zip(wup_agelist,wup_drnklist))  
+        wziplist = [list(row) for row in wziptup]
+
+        
+        teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
+        twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
+        thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
+        fou_womanlist = [i[1] for i in wziplist if i[0]=='40대']
+        fiv_womanlist = [i[1] for i in wziplist if i[0]=='50대']
+        ord_womanlist = [i[1] for i in wziplist if i[0]=='60대이상']
+        
+        womanteen_drnk = collections.Counter(teen_womanlist)
+        womantwe_drnk = collections.Counter(twe_womanlist)
+        womanthr_drnk = collections.Counter(thr_womanlist)
+        womanfou_drnk = collections.Counter(fou_womanlist)
+        womanfiv_drnk = collections.Counter(fiv_womanlist)
+        womanord_drnk = collections.Counter(ord_womanlist)        
+        
+        womanteen_drlist = []
+        womantwe_drlist = []
+        womanthr_drlist = []
+        womanfou_drlist = []
+        womanfiv_drlist = []
+        womanord_drlist = []
+        
+        for i in range(len(drnk_n)-1):
+            womanteen_drlist.append(0)
+            womantwe_drlist.append(0)
+            womanthr_drlist.append(0)
+            womanfou_drlist.append(0)
+            womanfiv_drlist.append(0)
+            womanord_drlist.append(0)
+ 
+        for key,value in sorted(womanteen_drnk.items()):
+            for index,val in enumerate(womanteen_drlist):
+                womanteen_drlist[key] = value
+    
+        for key,value in sorted(womantwe_drnk.items()):
+            for index,val in enumerate(womantwe_drlist):
+                womantwe_drlist[key] = value
+    
+        for key,value in sorted(womanthr_drnk.items()):
+            for index,val in enumerate(womanthr_drlist):
+                womanthr_drlist[key] = value
+    
+        for key,value in sorted(womanfou_drnk.items()):
+            for index,val in enumerate(womanfou_drlist):
+                womanfou_drlist[key] = value                                        
+    
+        for key,value in sorted(womanfiv_drnk.items()):
+            for index,val in enumerate(womanfiv_drlist):
+                womanfiv_drlist[key] = value
+                
+        for key,value in sorted(womanord_drnk.items()):
+            for index,val in enumerate(womanord_drlist):
+                womanord_drlist[key] = value                
+        
         
         # 음료 분류 리스트 '없음' 제거
         drnk_n.remove('없음')
         # print(dsrt_n)    
-        
         context = {
             "drnk_n" : drnk_n,
             "list_drnk" : list_drnk,
+            "manteen_drlist" : manteen_drlist,
+            "mantwe_drlist" : mantwe_drlist,
+            "manthr_drlist" : manthr_drlist,
+            "manfou_drlist" : manfou_drlist,
+            "manfiv_drlist" : manfiv_drlist,
+            "manord_drlist" : manord_drlist,
+            "womanteen_drlist" : womanteen_drlist,
+            "womantwe_drlist" : womantwe_drlist,
+            "womanthr_drlist" : womanthr_drlist,
+            "womanfou_drlist" : womanfou_drlist,
+            "womanfiv_drlist" : womanfiv_drlist,
+            "womanord_drlist" : womanord_drlist,           
             }
            
         return HttpResponse(template.render(context,request))
