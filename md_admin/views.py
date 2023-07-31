@@ -1558,7 +1558,6 @@ class BdsrtView(View):
         ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
 
         manteen_bdsrt = collections.Counter(teen_manlist)
-        print(manteen_bdsrt)
         mantwe_bdsrt = collections.Counter(twe_manlist)
         manthr_bdsrt = collections.Counter(thr_manlist)
         manfou_bdsrt = collections.Counter(fou_manlist)
@@ -1816,8 +1815,302 @@ class KeywordView(View):
         #json 형태의 맞게 list append
         for text,weight in zip(textlist,weightlist):
             data_list.append({"x":text,"weight":weight})
+         
+        #검색 키워드 - 회원
+        mem_keyword = MdSrch.objects.filter(user_id__isnull = False).values("srch_word","user_id")
+        # print(m_keyword)
+        mem_keyword = list(m['srch_word'] for m in mem_keyword)
+        dict_memkeyword = {}
+        dict_memkeyword = dict(collections.Counter(mem_keyword))
+        dict_memkeyword = dict(dict_memkeyword)
+        
+        mem_textlist = []
+        mem_weightlist = []   
+        
+        for key,value in dict_memkeyword.items():
+            mem_textlist.append(key)
+            mem_weightlist.append(value)
+            
+        memdata_list = []
+        
+        for text,weight in zip(mem_textlist,mem_weightlist):
+            memdata_list.append({"x":text,"weight":weight})
+            
+        #검색 키워드 - 비회원
+        nmem_keyword = MdSrch.objects.filter(user_id__isnull = True).values("srch_word","user_id")
+        # print(m_keyword)
+        nmem_keyword = list(m['srch_word'] for m in nmem_keyword)
+        dict_nmemkeyword = {}
+        dict_nmemkeyword = dict(collections.Counter(nmem_keyword))
+        dict_nmemkeyword = dict(dict_nmemkeyword)
+        
+        nmem_textlist = []
+        nmem_weightlist = []   
+        
+        for key,value in dict_nmemkeyword.items():
+            nmem_textlist.append(key)
+            nmem_weightlist.append(value)
+            
+        nmemdata_list = []
+        
+        for text,weight in zip(nmem_textlist,nmem_weightlist):
+            nmemdata_list.append({"x":text,"weight":weight})            
+        
+        
+        #검색 키워드 - 남성
+        today = datetime.today().year
+        man_keyword = MdSrch.objects.annotate(year = Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("srch_word","year")
+        man_keyword_list = list(man_keyword)
+        # print(man_keyword)
+ 
+        up_agelist = []
+        up_keywordlist = []
+        
+        for myear in man_keyword_list:
+            mkeyword = myear[0]
+            myear = int(myear[1])
+            age = today - myear
+            if(age >=10 and age<20):
+                age = '10대'
+            elif(age>=20 and age<30):
+                age = '20대'
+            elif(age>=30 and age<40):
+                age = '30대'
+            elif(age>=40 and age<50):
+                age = '40대'
+            elif(age>=50 and age<60):
+                age = '50대'
+            else:
+                age = '60대이상'
+            up_agelist.append(age)     
+            up_keywordlist.append(mkeyword) 
+
+        ziptup = list(zip(up_agelist,up_keywordlist))
+        ziplist = [list(row) for row in ziptup]                
+        
+        teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
+        twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
+        thr_manlist = [i[1] for i in ziplist if i[0]=='30대']
+        fou_manlist = [i[1] for i in ziplist if i[0]=='40대']
+        fiv_manlist = [i[1] for i in ziplist if i[0]=='50대']
+        ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
+        
+        manteen_keyword = collections.Counter(teen_manlist)
+        mantwe_keyword = collections.Counter(twe_manlist)
+        manthr_keyword = collections.Counter(thr_manlist)
+        manfou_keyword = collections.Counter(fou_manlist)
+        manfiv_keyword = collections.Counter(fiv_manlist)
+        manord_keyword = collections.Counter(ord_manlist)
+        
+        manteen_dict = dict(manteen_keyword)
+        mantwe_dict = dict(mantwe_keyword)
+        manthr_dict = dict(manthr_keyword)
+        manfou_dict = dict(manfou_keyword)
+        manfiv_dict = dict(manfiv_keyword)
+        manord_dict = dict(manord_keyword)
+        
+        #10대남성
+        manteen_textlist = []
+        manteen_weightlist = []
+        #20대남성
+        mantwe_textlist = []
+        mantwe_weightlist = []
+        #30대남성  
+        manthr_textlist = []
+        manthr_weightlist = []
+        #40대남성  
+        manfou_textlist = []
+        manfou_weightlist = []
+        #50대남성  
+        manfiv_textlist = []
+        manfiv_weightlist = []
+        #60대이상남성
+        manord_textlist = []
+        manord_weightlist = []                                   
+         
+        for key,value in manteen_dict.items():
+            manteen_textlist.append(key)
+            manteen_weightlist.append(value)
+
+        for key,value in mantwe_dict.items():
+            mantwe_textlist.append(key)
+            mantwe_weightlist.append(value)
+            
+        for key,value in manthr_dict.items():
+            manthr_textlist.append(key)
+            manthr_weightlist.append(value)
+            
+        for key,value in manfou_dict.items():
+            manfou_textlist.append(key)
+            manfou_weightlist.append(value)
+            
+        for key,value in manfiv_dict.items():
+            manfiv_textlist.append(key)
+            manfiv_weightlist.append(value)
+            
+        for key,value in manord_dict.items():
+            manord_textlist.append(key)
+            manord_weightlist.append(value) 
+                                   
+        manteen_list = []
+        mantwe_list = []
+        manthr_list = []
+        manfou_list = []
+        manfiv_list = []
+        manord_list = []
+        
+        for text,weight in zip(manteen_textlist,manteen_weightlist):
+            manteen_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(mantwe_textlist,mantwe_weightlist):
+            mantwe_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(manthr_textlist,manthr_weightlist):
+            manthr_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(manfou_textlist,manfou_weightlist):
+            manfou_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(manfiv_textlist,manfiv_weightlist):
+            manfiv_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(manord_textlist,manord_weightlist):
+            manord_list.append({"x":text,"weight":weight})    
+
+        #검색 키워드 - 여성
+        woman_keyword = MdSrch.objects.annotate(year = Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("srch_word","year")
+        woman_keyword_list = list(woman_keyword)
+        # print(man_keyword)
+ 
+        wup_agelist = []
+        wup_keywordlist = []
+        
+        for wmyear in woman_keyword_list:
+            wmkeyword = wmyear[0]
+            wmyear = int(wmyear[1])
+            wage = today - wmyear
+            if(wage >=10 and wage<20):
+                wage = '10대'
+            elif(wage>=20 and wage<30):
+                wage = '20대'
+            elif(wage>=30 and wage<40):
+                wage = '30대'
+            elif(wage>=40 and wage<50):
+                wage = '40대'
+            elif(wage>=50 and wage<60):
+                wage = '50대'
+            else:
+                wage = '60대이상'
+            wup_agelist.append(wage)     
+            wup_keywordlist.append(wmkeyword) 
+
+        wziptup = list(zip(wup_agelist,wup_keywordlist))
+        wziplist = [list(row) for row in wziptup]                
+        
+        teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
+        twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
+        thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
+        fou_womanlist = [i[1] for i in wziplist if i[0]=='40대']
+        fiv_womanlist = [i[1] for i in wziplist if i[0]=='50대']
+        ord_womanlist = [i[1] for i in wziplist if i[0]=='60대이상']
+        
+        womanteen_keyword = collections.Counter(teen_womanlist)
+        womantwe_keyword = collections.Counter(twe_womanlist)
+        womanthr_keyword = collections.Counter(thr_womanlist)
+        womanfou_keyword = collections.Counter(fou_womanlist)
+        womanfiv_keyword = collections.Counter(fiv_womanlist)
+        womanord_keyword = collections.Counter(ord_womanlist)
+        
+        womanteen_dict = dict(womanteen_keyword)
+        womantwe_dict = dict(womantwe_keyword)
+        womanthr_dict = dict(womanthr_keyword)
+        womanfou_dict = dict(womanfou_keyword)
+        womanfiv_dict = dict(womanfiv_keyword)
+        womanord_dict = dict(womanord_keyword)
+        
+        #10대여성
+        womanteen_textlist = []
+        womanteen_weightlist = []
+        #20대여성
+        womantwe_textlist = []
+        womantwe_weightlist = []
+        #30대여성  
+        womanthr_textlist = []
+        womanthr_weightlist = []
+        #40대여성  
+        womanfou_textlist = []
+        womanfou_weightlist = []
+        #50대여성  
+        womanfiv_textlist = []
+        womanfiv_weightlist = []
+        #60대이상여성
+        womanord_textlist = []
+        womanord_weightlist = []                                   
+         
+        for key,value in womanteen_dict.items():
+            womanteen_textlist.append(key)
+            womanteen_weightlist.append(value)
+
+        for key,value in womantwe_dict.items():
+            womantwe_textlist.append(key)
+            womantwe_weightlist.append(value)
+            
+        for key,value in womanthr_dict.items():
+            womanthr_textlist.append(key)
+            womanthr_weightlist.append(value)
+            
+        for key,value in womanfou_dict.items():
+            womanfou_textlist.append(key)
+            womanfou_weightlist.append(value)
+            
+        for key,value in womanfiv_dict.items():
+            womanfiv_textlist.append(key)
+            womanfiv_weightlist.append(value)
+            
+        for key,value in womanord_dict.items():
+            womanord_textlist.append(key)
+            womanord_weightlist.append(value) 
+                                   
+        womanteen_list = []
+        womantwe_list = []
+        womanthr_list = []
+        womanfou_list = []
+        womanfiv_list = []
+        womanord_list = []
+        
+        for text,weight in zip(womanteen_textlist,womanteen_weightlist):
+            womanteen_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(womantwe_textlist,womantwe_weightlist):
+            mantwe_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(womanthr_textlist,womanthr_weightlist):
+            womanthr_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(womanfou_textlist,womanfou_weightlist):
+            womanfou_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(womanfiv_textlist,womanfiv_weightlist):
+            womanfiv_list.append({"x":text,"weight":weight})
+            
+        for text,weight in zip(womanord_textlist,womanord_weightlist):
+            womanord_list.append({"x":text,"weight":weight})                       
         
         context = {
             "data_list" : data_list,
+            "memdata_list" : memdata_list,
+            "nmemdata_list" : nmemdata_list,
+            "manteen_list" : manteen_list,
+            "mantwe_list" : mantwe_list,
+            "manthr_list" : manthr_list,
+            "manfou_list" : manfou_list,
+            "manfiv_list" : manfiv_list,
+            "manord_list" : manord_list,
+            "womanteen_list" : womanteen_list,
+            "womantwe_list" : womantwe_list,
+            "womanthr_list" : womanthr_list,
+            "womanfou_list" : womanfou_list,
+            "womanfiv_list" : womanfiv_list,
+            "womanord_list" : womanord_list,            
             }
         return HttpResponse(template.render(context,request))

@@ -2,9 +2,94 @@
 
 {% block content %}
 <h2>관리자 통계페이지-키워드</h2><br>
-	<h4>키워드통계</h4>
+<h4>키워드통계 - 전체사용자</h4>	
 	<div class="chart-area">
-		<div id="container" style="width: 800px; height: 600px;"></div>
+		<div id="container" style="width: 600px; height: 600px;"></div>
 	</div>
 	<span id = "data_list" hidden>{{data_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div class="chart-area"  style = "float : left;">
+		<h4>키워드통계 - 회원</h4>	
+		<div id="container_mem" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "memdata_list" hidden>{{memdata_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div class="chart-area" style = "float : left;">
+	<h4>키워드통계 - 비회원</h4>
+		<div id="container_nmem" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "nmemdata_list" hidden>{{nmemdata_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+
+	<div class="chart-area" style = "clear : both; float : left;">
+		<h4>키워드통계 - 10대남성</h4>
+		<div id="container_manteen" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "manteen_list" hidden>{{manteen_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 20대남성</h4>	
+		<div id="container_mantwe" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "mantwe_list" hidden>{{mantwe_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+
+	<div class="chart-area" style = "float : left;">
+	<h4>키워드통계 - 30대남성</h4>	
+		<div id="container_manthr" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "manthr_list" hidden>{{manthr_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+	
+	<div class="chart-area" style = "float : left;">
+	<h4>키워드통계 - 40대남성</h4>
+		<div id="container_manfou" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "manfou_list" hidden>{{manfou_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+		
+	<div class="chart-area" style = "float : left;">
+	<h4>키워드통계 - 50대남성</h4>
+		<div id="container_manfiv" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "manfiv_list" hidden>{{manfiv_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+	
+	<div class="chart-area" style = "float : left;">
+	<h4>키워드통계 - 60대이상남성</h4>	
+		<div id="container_manord" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "manord_list" hidden>{{manord_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div class="chart-area" style = "clear : both; float : left;">
+		<h4>키워드통계 - 10대여성</h4>
+		<div id="container_womanteen" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womanteen_list" hidden>{{womanteen_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 20대여성</h4>	
+		<div id="container_womantwe" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womantwe_list" hidden>{{womantwe_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 30대여성</h4>	
+		<div id="container_womanthr" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womanthr_list" hidden>{{womanthr_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+	
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 40대여성</h4>
+		<div id="container_womanfou" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womanfou_list" hidden>{{womanfou_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+		
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 50대여성</h4>
+		<div id="container_womanfiv" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womanfiv_list" hidden>{{womanfiv_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->	
+	
+	<div class="chart-area" style = "float : left;">
+		<h4>키워드통계 - 60대이상여성</h4>	
+		<div id="container_womanord" style="width: 300px; height: 300px;"></div>
+	</div>
+	<span id = "womanord_list" hidden>{{womanord_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->			
+							
 {% endblock %}
