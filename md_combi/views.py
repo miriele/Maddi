@@ -20,13 +20,18 @@ page_block = 3
 class CombListView( View ):
 
     def get(self, request ):
+        gid = request.session.get("gid") 
+        memid = request.session.get("memid")   
+        logger.debug(f'memid : {memid}')
         
         template = loader.get_template( "md_combi/comblist.html" )
         count    = MdComb.objects.all().count()
 
         if count == 0 :     #30
             context = {
-                "count" :count,
+                "count" : count,
+                "memid" : memid,
+                "gid"   : gid,
                 }
         else :
             pagenum = request.GET.get( "pagenum" )              #5
@@ -74,17 +79,12 @@ class CombListView( View ):
             
             # 추천수 용
             md_comb1   = MdComb.objects.order_by("-comb_id")[start:end]
-            
-           
-            # for mname in menu_name:
-                # logger.debug(f'mname.comb_id : {mname.comb_id}')
-            
             # 추천수
             comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb1]
                 
             gid = request.session.get("gid") 
             memid = request.session.get("memid")   
-            
+            logger.debug(f'memid : {memid}')
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
