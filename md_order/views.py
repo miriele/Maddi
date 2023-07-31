@@ -18,16 +18,15 @@ class OrderInfoView(View):
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
 
-        algy_n = "없음" 
-
-        # 알러지 정보가 있을 경우에만 조회해서 algy_n 값을 설정
-        try:
-            algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+        algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        
+        if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
             if algyn.algy_t_name is not None:
                 algy_n = algyn.algy_t_name
-        except MdMAlgy.DoesNotExist:
-            pass
+        else:
+            algy_n = "없음"
+
         
         if storem.menu_t_id == 0:
             menu_type = "일반"
@@ -56,16 +55,15 @@ class OrderInfoView(View):
     def post(self, request):
         stor_m_id = request.POST.get('stor_m_id')
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        algy_n = "없음" 
-
-        # 알러지 정보가 있을 경우에만 조회해서 algy_n 값을 설정
-        try:
-            algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+        algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        
+        if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
             if algyn.algy_t_name is not None:
                 algy_n = algyn.algy_t_name
-        except MdMAlgy.DoesNotExist:
-            pass
+        else:
+            algy_n = "없음"
+
         
         bucknum = int(request.POST.get('bucknum', 1)) 
         
