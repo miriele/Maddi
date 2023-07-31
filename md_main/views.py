@@ -94,9 +94,6 @@ class MainView(View):
                 }
         return HttpResponse(template.render(context,request))
 
-    def post(self,request):
-        pass
-
 
 class SearchView(View):
     @method_decorator(csrf_exempt)

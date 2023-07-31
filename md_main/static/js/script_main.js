@@ -47,14 +47,22 @@ $(function() {
 	$("input[name='search_word']").on(
 		"keyup",
 		function(event) {
-			var csrfToken = "{{ csrf_token }}";
+			if(event.key === "Enter") {
+				closeKeywords();
+				$("input[name='main_btn_search']").click();
+				return;
+			} else if(event.key === "Escape") {
+				closeKeywords();
+				return;
+			}
+
 			$.ajax(
 				{
 					url  : "searchword",
 					type : "POST",
 					data : {
 						search_word : $("input[name='search_word']").val(),
-						csrfmiddlewaretoken: csrfToken,
+						csrfmiddlewaretoken: "{{ csrf_token }}",
 					},	// data : {
 					datatype : "text",
 					success : function(data) {
@@ -92,10 +100,10 @@ $(function() {
 	);	// $(document).on(
 	
 	$(document).on(
-		"keyup",
+		"keydown",
 		function(event) {
-			if(event.key === "Escape") {
-				closeKeywords();
+			if(event.key === "Enter") {
+				event.preventDefault();
 			}
 		}	// function(event)
 	);	// $(document).on(
@@ -111,7 +119,6 @@ $(function() {
 	$("input[name='main_btn_search']").on(
 		"click",
 		function(event) {
-			var csrfToken = "{{ csrf_token }}";
 			$.ajax(
 				{
 					url  : "searchlist",
@@ -119,7 +126,7 @@ $(function() {
 					data : {
 						search_word : $("input[name='search_word']").val(),
 						bjd_name    : $("input[name='bjd_name']").val(),
-						csrfmiddlewaretoken: csrfToken,
+						csrfmiddlewaretoken: "{{ csrf_token }}",
 					},	// data : {
 					datatype : "text",
 					success : function(data) {
