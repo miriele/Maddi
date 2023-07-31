@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 125#request.GET['stor_m_id']
+        stor_m_id = request.GET['stor_m_id']
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
 
@@ -53,7 +53,7 @@ class OrderInfoView(View):
 
 
     def post(self, request):
-        stor_m_id = request.POST.get('stor_m_id')
+        stor_m_id = request.POST["stor_m_id"]
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
         

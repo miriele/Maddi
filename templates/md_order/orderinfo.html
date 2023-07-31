@@ -19,16 +19,6 @@
 	        <th>가격</th>
 	        <td>&nbsp;{{ stor_m_pric }}</td>
 	    </tr>
-  		<tr>
-		    <td colspan="2">
-		        <form method="post">
-		            {% csrf_token %}
-		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}">
-		            <button type="submit" name="bucknum" value="{{ bucknum|add:'1' }}">+</button>
-		            <button type="submit" name="bucknum" value="{{ bucknum|add:'-1' }}">-</button>
-		        </form>
-		    </td>
-		</tr>
 		<tr>
 	    	<td>&nbsp;{{ buckprice }}</td>
 	    </tr>
