@@ -7,9 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
 from md_member.models import MdUser
 from django.utils import timezone
-import logging
+from md_favorite.models import MdFavorite
+from asgiref.server import logger
+from datetime import datetime
 
-logger = logging.getLogger(__name__)
 
 class TestStoreView(View):
     def get(self, request):
@@ -299,6 +300,16 @@ class StoreUserView(View):
         return View.dispatch(self, request, *args, **kwargs) 
     def get(self, request):
         stor_id = request.GET.get("stor_id")
+        memid    = request.session.get("memid")
+        
+        result = 0
+        md_fav = MdFavorite.objects.filter(stor = stor_id)
+            
+        for fav in md_fav :
+            logger.debug(f'fav : {fav}')
+            # if fav.user_id == memid :
+                # result = 1
+                # break
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
@@ -322,7 +333,9 @@ class StoreUserView(View):
             stor_img_str = str(store.stor_img)
             stor_img = stor_img_str.replace(' /images', '')
             
+            
             context = {
+                "result" : result,
                 'dto': store,
                 'stor_type': stor_type,
                 'stor_tel': stor_tel,
@@ -368,4 +381,41 @@ class AddMenuSucView(View):
         context = {}
         
         return HttpResponse( template.render( context, request ) )
+    
+    
+# 즐겨찾기용 옮김
+class AddFavView( View ):
+    @method_decorator( csrf_exempt )
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+    def post(self, request ):
+        memid = request.session.get("memid")
+        gid   = request.session.get("gid")
+        
+        stor_id = request.POST.get("stor_id","")    #7
+        
+        logger.debug(f'stor_id : {stor_id}')
+        
+        favo = MdFavorite.objects.filter( user = memid, stor = stor_id ).count()
+        logger.debug(f'favo : {favo}')
+        
+        result = 0
+        
+        if favo == 0 :
+            favo = MdFavorite(
+                user_id    = memid,
+                stor_id    = stor_id,
+                fav_reg_ts = datetime.now()
+                )
+            favo.save()
+            result = 1
+        else :
+            favo = MdFavorite.objects.filter( user = memid, stor = stor_id )
+            favo.delete()
+            result = 0
+            
+        logger.debug(f'result : {result}')
+
+        return HttpResponse(result)
+
     

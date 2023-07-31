@@ -1,10 +1,21 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style_menulist.css' %}">
+<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
+<script src = "{%static 'js/script_favorite.js'%}"></script>
 {% block title %} 
 <title>사용자_매장정보</title>
 {% endblock %}
 {% block content %}
+{% csrf_token %}
 <h2>사용자_매장정보</h2>
+<form method="post" action="addfav"name="addfavform">
+	<input type="hidden" name="stor_id" value="{{stor_id}}"><!-- 수정 -->
+	{% if result == 0 %}
+		<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+	{% else %}
+		<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+	{% endif %}
+</form>
 <form method="post" action="storeuser" name="updateform">
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 
@@ -14,6 +25,10 @@
 	        <th>
 	        	<input class="inputbutton" type="button" value="점주등록"
 						onclick="location='addjumju'">					
+	        </th>
+	        <th>
+	        	<input type="button" name="reviewgo" value="리뷰 보기"
+	        		onclick="location='/md_review/review?stor_id={{stor_id}}'">
 	        </th>
 	    </tr>
 	    <tr>

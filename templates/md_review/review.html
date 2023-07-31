@@ -11,7 +11,7 @@
 		</tr>
 	{% else %}
 		{% for rdto in rdtos %}
-			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}	<!-- #######수정해야 함 -->
+			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}
 				<tr>
 					<td>매장명 ※ {{ rdto.ordr__mdordrm__stor_m__stor__stor_name }} ※ </td>
 					<!-- ##########구분 용 지울 예정 -->
@@ -45,8 +45,7 @@
 				<tr>
 					<td> {{ rdto.rev_cont }} </td>
 				</tr>
-				
-			{% endif %}	
+			{% endif %}
 		{% endfor %}
 	{% endif %}
 	</table>

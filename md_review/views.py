@@ -23,31 +23,20 @@ class ReviewView( View ):
         memid = request.session.get("memid")
         gid = request.session.get("gid")
         
-        # stor_id = request.GET["stor_id"]
-        ##########################
-        # 윤제희 / 매장 메이지랑 연결해서 
-        # stor_id받아올수 있게 되면 수정 예정
-        #
-        # 필요 한거
-        # 매장명
-        # 리뷰 작성한 회원 이미지
-        # 리뷰 작성한 회원 이름
-        # 회원의 별점(연결)
-        # 작성일
-        # 태그
-        # 이미지
-        # 내용
-        #########################
-        stor_id = 49
+        stor_id = request.GET["stor_id"]
+        
+        stor_id = int(stor_id)
+        logger.debug(f' stor_id  : { stor_id }')
         
         count   = MdReview.objects.count()      #나옴
+        
         rdtos   = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name','ordr__mdordrm__stor_m__stor_id', 'rev_ts', 'ordr__user__user_nick', "ordr__user__user_img", 'rev_cont', 'rev_star', 'rev_img')
+        # logger.debug(f' rdtos  : { rdtos }')
         
         tags    = MdRevT.objects.select_related('tag', 'rev').values('tag__tag_name', 'rev__rev_id')
-        # logger.debug(f' tags  : { tags }')
         
         user    = MdOrdr.objects.select_related('user')
-        
+        # logger.debug(f' user  : { user }')
         context = {
             "memid"     : memid,
             "gid"       : gid,
@@ -163,22 +152,4 @@ class RevwriteView( View ):
                 tag1.save()
         
         return redirect("/md_member/myorderlist")
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     

@@ -27,8 +27,8 @@
 			<th> 작성자 </th>
 			<td> 
 				{% for n in nick %}
-          				{{ n.user.user_id }}
-          			{% endfor %}
+          			{{ n.user.user_id }}
+          		{% endfor %}
 			</td>
 		</tr>
 		<tr>
@@ -79,7 +79,7 @@
 			<th colspan="3"> 댓글 <hr> </th>
 		</tr>
 		<tr>
-			<td><!-- 미리 넣어둔 사진 들은 images/가 추가된 사진이 아니라서 images/써줘야 나옴 >> 다하고 수정하기 -->
+			<td>
 				<img src="/media/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
 				{{user.user_nick }} 
 			</td>

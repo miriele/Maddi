@@ -79,7 +79,7 @@ class InputView ( View ):
 
         # 이미지 업로드 안 했을 시 기본으로 저장
         if user_img  == None :
-            user_img = "images/default_user.jpg"
+            user_img = "default_user.jpg"
         else :
             user_img 
         
@@ -225,7 +225,7 @@ class UserInfoView( View ):
         logger.debug(user_img)  
         # 이미지 업로드 안 했을 시 기본으로 저장
         if user_img  == None :
-            user_img = "images/default_user.jpg"
+            user_img = "default_user.jpg"
         else :
             user_img 
             
