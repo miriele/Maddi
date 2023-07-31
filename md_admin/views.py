@@ -1712,6 +1712,7 @@ class BdsrtView(View):
 class IaoView(View):
     def get(self,request):
         template = loader.get_template("md_admin/iaostatis.html")
+        #유입률
         #회원가입일 가져오기
         welmaddi = MdUser.objects.values("user_reg_ts").order_by("user_reg_ts")
         welmaddi = list(m["user_reg_ts"] for m in welmaddi)
@@ -1749,10 +1750,45 @@ class IaoView(View):
             if i not in upwelyearlist:
                 upwelyearlist.append(i)
         
-        #print(upwelyearlist)
+        
+        #이탈율
+        #회원정지일 가져오기
+        exmaddi = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
+        exmaddi = list(m["user_ext_ts"] for m in exmaddi)
+        #회원가입일 데이터 타입 str로 변경
+        exmaddi = list(map(str,exmaddi))
+       
+        #회원정지일 연월로 자르기 
+        exlist = []
+        for i in range(len(exmaddi)):            
+            exlist.append(exmaddi[i][0:7])
+        #print(wellist)
+        
+        #해당연월 정지된 수
+        dict_exmaddi = {}
+        dict_exmaddi = collections.Counter(exlist)
+        
+        list_exmaddi = []
+        for key,value in sorted(dict_exmaddi.items()):
+            list_exmaddi.append(value)
+   
+        #연월 값 뽑기
+        exyear = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
+        exyear = list(m["user_ext_ts"] for m in exyear)
+        exyear = list(map(str,exmaddi)) 
+        
+        #중복값 제거
+        upexyearlist = []
+        for i in upexyearlist:
+            if i not in exyear:
+                upexyearlist.append(0)        
+        print(upexyearlist)
+        
+        
         context = {
             "list_welmaddi" : list_welmaddi,
-            "upwelyearlist" : upwelyearlist
+            "upwelyearlist" : upwelyearlist,
+            "upexyearlist" : upexyearlist,
             }
         return HttpResponse(template.render(context,request))
 

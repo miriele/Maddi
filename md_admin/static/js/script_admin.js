@@ -2464,6 +2464,35 @@ $(function() {
 	    }
 	 });
 	 
+	 //회원이탈
+	 var eusercount = $('#list_exmaddi').text()
+	 var euserday = $('#upwelyearlist').text()
+	 
+	 var wuserarray = eusercount.replace("[","").replace("]","").split(',');
+	 var euserdayarray = euserday.replace("[","").replace("]","").split(',');
+
+	 var exiao = $('#exiao')
+	 
+	 new Chart(exiao, {
+	    type: 'line',
+	    data: {
+	      labels: euserdayarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wuserarray, 
+	        borderWidth: 1
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	 
+	 
 	//키워드 워드클라우드
 	 var data_list = $('#data_list').text()
 	 //console.log(data_list)
