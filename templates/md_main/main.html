@@ -1,32 +1,33 @@
 {% extends "md_main/base.html"%}
 
-{%block content%}
-
+{%block recommend%}
 {% if memid %}
-<div class = "recommend-list">
-	<h2 class = "title">고객님을 위한 맞춤 메뉴</h2><br>
-	업데이트 중입니다.
+<div class = "block-list">
+	<div class="list-title">{{user_name}} 고객님을 위한 맞춤 메뉴</div>
+	<span style="text-align: center;">
+		업데이트 중입니다.
+	</span>
 </div>
 {% endif%}
 
-<div class = "drink-list">
-	<h2 class = "title">음료</h2>
+<div class = "block-list">
+	<div class="list-title">추천 음료</div>
 	{% for tdto in tdtos %}
 		{{tdto.stor_m__menu__menu_img}}<br>
 		<a>{{tdto.stor_m__menu__menu_name}}</a><br>
 	{% endfor %}
 </div>
 
-<div class = "dessert-list">
-	<h2 class = "title">디저트</h2>
+<div class = "block-list">
+	<div class="list-title">추천 디저트</div>
 	{% for ddto in ddtos %}
 		{{ddto.stor_m__menu__menu_img}}<br>
 		<a>{{ddto.stor_m__menu__menu_name}}</a><br>
 	{% endfor %}
 </div>
  
-<div class = "recommend-list">
-	<h2 class = "title">추천조합</h2>
+<div class = "block-list">
+	<div class="list-title">추천 조합</div>
 	{%for comb_id, comb_info in rdtos.items%}
 		{% if comb_info.comb_img %}
 			{{comb_info.comb_img.url}}<br>
@@ -39,3 +40,38 @@
 	{%endfor%}	
 </div>	
 {%endblock%}
+
+{% block content_lower %}
+<h3>[{{menu_name}}] 판매 매장 : {{count}}</h3>
+
+<div class="main_search_result">
+	{% if count == 0 %}
+	판매 중인 매장이 없습니다.
+	{% else %}
+	<table>
+	{% for store in store_list %}
+		{% if forloop.counter0|divisibleby:2%}
+		<tr>
+		{% endif %}
+			<td>
+				<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id={{store.stor_id}}'">
+					<table>
+						<tr>
+							<td rowspan="2">{{store.stor_img}}</td>
+							<td>{{store.stor_name}}</td>
+						</tr>
+						<tr>
+							<td>{{store.area_t_name}}</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+
+		{% if not forloop.counter0|divisibleby:2%}
+		</tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+	{% endif %}
+</div>
+{% endblock %}

@@ -63,7 +63,7 @@ $(function() {
 						$(".rel-srch-words").empty();
 						
 						var menu_list = Object.values(data);
-						console.log(menu_list);
+						//console.log(menu_list);
 						
 						const $ul = $("<ul>");
 						
@@ -77,7 +77,7 @@ $(function() {
 						
 					},	// success : function(data) {
 					error : function(request, status, error) {
-						console.log(error);
+						//console.log(error);
 						//$("").html("서버요청실패");
 					}	// error : function(request, status, error)
 				}
@@ -134,15 +134,25 @@ $(window).on('resize', function() {
 });
 
 function setLayoutSize() {
-	height = windowHeight*0.4;
-	
-	var	mapWidth		= windowWidth; 
-	var	mapHeight		= height>300 ? 300 : height;
-	
+	let	mapWidth	= windowWidth>300  ? 300 : width; 
+	let	mapHeight	= windowHeight*0.4>300 ? 300 : height;
 	//console.log(height, mapHeight)
 
 	$('.kakaomap').css({'width' : mapWidth +'px'});
 	$('.kakaomap').css({'height': mapHeight+'px'});
+	$('.recommend-list').css({'width' : windowWidth-mapWidth +'px'});
+	
+	
+	let elementRel	= $('.search_input');
+	let relWidth	= elementRel[0].offsetWidth;
+	let relHeight	= elementRel[0].offsetHeight;
+	let relPosX		= elementRel[0].offsetLeft;
+	let relPosY		= elementRel[0].offsetTop;
+	console.log(elementRel);
+	console.log(relWidth, relHeight, relPosX, relPosY);
+	console.log("setLayoutSize");
+	
+	$('.rel-srch-words')
 }
 
 
@@ -193,10 +203,10 @@ function searchDetailAddrFromCoords(coords, callback) {
 function displayCenterInfo(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
 		// 지도에 현재 법정동 위치 표시 해주기
-		var infoDiv = document.getElementById('centerAddr');
-		var cur_loc = '현재위치 : ' + result[0].address.address_name;
-		
-		infoDiv.innerHTML = cur_loc; 
+//		var infoDiv = document.getElementById('centerAddr');
+//		var cur_loc = '현재위치 : ' + result[0].address.address_name;
+
+//		infoDiv.innerHTML = cur_loc; 
 		
 		// 검색할 때 법정동 코드 얻기 위해 법정동 설정
 		var element_bjd = $("input[name='bjd_name']");
@@ -216,12 +226,10 @@ function displayCenterInfo(result, status) {
 		var bjd_name = states_l[states_s.indexOf(region1)];
 		bjd_name += ' ' + region2;
 		bjd_name += ' ' + region3[0];
-
-		console.log(bjd_name);
-		console.log(kakaomap.getLevel())
+		//console.log(bjd_name);
 		
 		element_bjd.val(bjd_name);
-		
-		console.log(element_bjd.val())
+		//console.log(element_bjd.val())
+		//console.log(kakaomap.getLevel())
 	}    
 }
