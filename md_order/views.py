@@ -16,40 +16,39 @@ class OrderInfoView(View):
     def get(self, request):
         stor_m_id = request.GET['stor_m_id']
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
+        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+        algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy_n = algyn.algy_t_name
+        if storem.menu_t_id == 0:
+            menu_type = "일반"
+        else:
+            menu_type = "시그니처"
 
-        try:
-            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        buckprice = bucknum * storem.stor_m_pric
 
-            if storem.menu_t_id == 0:
-                menu_type = "일반"
-            else:
-                menu_type = "시그니처"
+        context = {
+            'dto': storem,
+            'stor_m_pric': storem.stor_m_pric,
+            'stor_m_name': storem.stor_m_name,
+            'stor_m_cal': storem.stor_m_cal,
+            'stor_m_info': storem.stor_m_info,
+            'stor_m_img': storem.stor_m_img,
+            'menu_type': menu_type,
+            'bucknum': bucknum,
+            'buckprice': buckprice,
+            'stor_m_id' : stor_m_id,
+            'algy_n' : algy_n 
+        }
 
-            buckprice = bucknum * storem.stor_m_pric
+        return render(request, 'md_order/orderinfo.html', context)
 
-            context = {
-                'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_m_name': storem.stor_m_name,
-                'stor_m_cal': storem.stor_m_cal,
-                'stor_m_info': storem.stor_m_info,
-                'stor_m_img': storem.stor_m_img,
-                'menu_type': menu_type,
-                'bucknum': bucknum,
-                'buckprice': buckprice,
-                'stor_m_id' : stor_m_id 
-            }
-
-            return render(request, 'md_order/orderinfo.html', context)
-
-        except MdStorM.DoesNotExist:
-            return HttpResponseNotFound()
 
     def post(self, request):
         stor_m_id = request.POST.get('stor_m_id')
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
-        algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+        
         bucknum = int(request.POST.get('bucknum', 1))  # 기본값 1
 
         if storem.menu_t_id == 0:
@@ -62,7 +61,7 @@ class OrderInfoView(View):
             bucknum = 1
 
         buckprice = bucknum * storem.stor_m_pric
-        algy_n = algyn.algy_t_name
+        
         
         context = {
             'dto': storem,
@@ -76,7 +75,6 @@ class OrderInfoView(View):
             'bucknum': bucknum,
             'buckprice': buckprice,
             'stor_m_id' : stor_m_id,
-            'algy_n' : algy_n 
         }
 
         return render(request, 'md_order/orderinfo.html', context)
