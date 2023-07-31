@@ -5,36 +5,41 @@
 <div class = "block-list">
 	<div class="list-title">{{user_name}} 고객님을 위한 맞춤 메뉴</div>
 	<div class="list-content">
-		Coming Soon<br>
-		: DJango Machine Learning Project에 추천시스템이 탑재됩니다.
+		[Coming Soon]<br>
+		DJango Machine Learning Project에 추천시스템이 탑재됩니다.
 	</div>
 </div>
 {% endif%}
 
 <div class = "block-list">
 	<div class="list-title">추천 음료</div>
-	{% for tdto in tdtos %}
 	<div class="list-content">
-		<img src="/media/images/{{tdto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
-		{{tdto.stor_m__menu__menu_name}}
-	</div>
+	{% for tdto in tdtos %}
+		<div class="list-item">
+			<img src="/media/images/{{tdto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
+			{{tdto.stor_m__menu__menu_name}}
+		</div>
 	{% endfor %}
+	</div>
 </div>
 
 <div class = "block-list">
 	<div class="list-title">추천 디저트</div>
-	{% for ddto in ddtos %}
 	<div class="list-content">
-		<img src="/media/images/{{ddto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
-		{{ddto.stor_m__menu__menu_name}}
-	</div>
+	{% for ddto in ddtos %}
+		<div class="list-item">
+			<img src="/media/images/{{ddto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
+			{{ddto.stor_m__menu__menu_name}}
+		</div>
 	{% endfor %}
+	</div>
 </div>
  
 <div class = "block-list">
 	<div class="list-title">추천 조합</div>
-	{%for comb_id, comb_info in rdtos.items%}
 	<div class="list-content">
+	{%for comb_id, comb_info in rdtos.items%}
+		<div class="list-item">
 		{% if comb_info.comb_img %}
 		<img src="{{comb_info.comb_img.url}}" class="main_recommend_img"><br>
 		{% endif %}
@@ -42,8 +47,9 @@
 
 		<br>
 		{{comb_info.comb_tit}}
-	</div>
+		</div>
 	{%endfor%}	
+	</div>
 </div>	
 {%endblock%}
 

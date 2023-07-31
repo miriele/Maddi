@@ -191,8 +191,11 @@ $(window).on('resize', function() {
 });
 
 function setLayoutSize() {
-	let	mapWidth	= windowWidth>300  ? 300 : width; 
-	let	mapHeight	= windowHeight*0.4>300 ? 300 : height;
+	let MAX_SIZE	= 400;
+	let width		= windowWidth*0.25;
+	let height		= windowHeight*0.4;
+	let	mapWidth	= width >MAX_SIZE ? MAX_SIZE : width; 
+	let	mapHeight	= height>MAX_SIZE ? MAX_SIZE : height;
 	//console.log(height, mapHeight)
 
 	$('.kakaomap').css({'width' : mapWidth +'px'});

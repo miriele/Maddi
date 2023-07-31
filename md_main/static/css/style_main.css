@@ -38,6 +38,11 @@ div {
 }
 
 .list-content {
+    font-size: 12px;
+    display: inline-block;
+}
+
+.list-item {
     width: 130px;
     font-size: 12px;
     text-align: center;
