@@ -80,7 +80,7 @@
 		</tr>
 		<tr>
 			<td><!-- 미리 넣어둔 사진 들은 images/가 추가된 사진이 아니라서 images/써줘야 나옴 >> 다하고 수정하기 -->
-				<img src="/media/images/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+				<img src="/media/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
 				{{user.user_nick }} 
 			</td>
 		</tr>
@@ -107,7 +107,7 @@
 		{% for re in reply %}
 		<tr>
 			<td>
-				<img src="/media/images/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+				<img src="/media/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
 				{{re.user.user_nick }} / {{ re.c_reply_ts |date:"Y-m-d H:i" }}
 			</td>
 		</tr>

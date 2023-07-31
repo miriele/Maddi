@@ -11,20 +11,31 @@
 		</tr>
 	{% else %}
 		{% for rdto in rdtos %}
-			{% if rdto.ordr__mdordrm__stor_m__stor_id == 1 %}	<!-- #######수정해야 함 -->
+			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}	<!-- #######수정해야 함 -->
 				<tr>
-					<td>매장명 ※ {{ rdto.ordr__mdordrm__stor_m__stor__stor_name }}※ </td>
+					<td>매장명 ※ {{ rdto.ordr__mdordrm__stor_m__stor__stor_name }} ※ </td>
 					<!-- ##########구분 용 지울 예정 -->
 				</tr>
 				<tr>
 					<td>
-						<img src="/media/images/{{rdto.ordr__user__user_img}}" onerror="this.onerror=null; this.src='/media/images/no image.png';" width="50" height="50" name="img_r" border-radius="50%">
+						<img src="/media/{{rdto.ordr__user__user_img}}" onerror="this.onerror=null; this.src='/media/images/no image.png';" width="50" height="50" name="img_r" border-radius="50%">
 						{{ rdto.ordr__user__user_nick }} /
-						{{ rdto.rev_star }}
+						★{{ rdto.rev_star }}
 					</td>
 				</tr>
 				<tr>
 					<td> {{ rdto.rev_ts | date:"y-m-d" }} </td>
+				</tr>
+				<tr>
+					<td>
+						{% for tag in tags %}
+							{% if tag.rev__rev_id == rdto.rev_id %}
+								<div style="border:1px solid darkblue; border-radius: 5px;">
+									태그 : {{ tag.tag__tag_name }}
+								</div>
+							{% endif %}
+						{% endfor %}
+					</td><!-- 태그 -->
 				</tr>
 				<tr>
 					<td>
