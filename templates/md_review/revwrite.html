@@ -47,9 +47,23 @@
 			</td>
 		</tr>
 		<tr>
-			<th> 이미지 첨부 </th> <!-- 썸네일 가능하면 -->
+			<th> 이미지 첨부 </th> 
 			<td>
-				<input class="input" type="file" name="rev_img" accept="image/*" >
+				<input class="input" type="file" name="rev_img" accept="image/*" onchange="readURL(this);">
+				<img id="preview" style="width:150px;">
+				<script>
+					function readURL(input) {
+						if (input.files && input.files[0]) {
+						    var reader = new FileReader();
+						    reader.onload = function(e) {
+						      document.getElementById('preview').src = e.target.result;
+						    };
+						    reader.readAsDataURL(input.files[0]);
+						  } else {
+						    document.getElementById('preview').src = "";
+						  }
+						}
+				</script>
 			</td>
 		</tr>
 		<tr>
