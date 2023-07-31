@@ -135,7 +135,7 @@ $(function() {
 											<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id=${store.stor_id}'">
 												<table>
 													<tr>
-														<td rowspan="2">${store.stor_img}</td>
+														<td rowspan="2"><img src="/media/images/${store.stor_img}" class="main_search_result_img"></td>
 														<td>${store.stor_name}</td>
 													</tr>
 													<tr>
@@ -234,8 +234,8 @@ function initializeMap(div, coords) {
 	kakaomap = new kakao.maps.Map(container, options);	// 지도 생성 및 객체 리턴
 	
 	// 줌 컨트롤 생성
-	var zoomControl = new kakao.maps.ZoomControl();
-	kakaomap.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+//	var zoomControl = new kakao.maps.ZoomControl();
+//	kakaomap.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
 
 	searchDetailAddrFromCoords(kakaomap.getCenter(), displayCenterInfo);
 	

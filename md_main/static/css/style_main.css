@@ -37,6 +37,14 @@ div {
     margin-bottom: 5px;
 }
 
+.list-content {
+    width: 130px;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
 .rel-srch-words {
     z-index: 10;
     background-color: white;
@@ -68,4 +76,14 @@ div {
 .rel-srch-words li {
     list-style: none;
     padding-left: 10px;
+}
+
+.main_recommend_img {
+    width: 100px;
+    height: 75px;
+}
+
+.main_search_result_img {
+    width: 100px;
+    height: 75px;
 }
