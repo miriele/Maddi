@@ -26,3 +26,14 @@ function clearInput(input) {
             inputElement.value = 1;
         }
     }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+  const incrementButton = document.getElementById("incrementButton");
+  const bucknumInput = document.getElementById("bucknum");
+
+  incrementButton.addEventListener("click", function () {
+    let currentBucknum = parseInt(bucknumInput.value);
+    currentBucknum += 1;
+    bucknumInput.value = currentBucknum;
+  });
+});
