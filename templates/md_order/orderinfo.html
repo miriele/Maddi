@@ -10,7 +10,7 @@
 <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 	<table>
 	    <tr>
-	        <th rowspan="6"><img src="/media/images/{{ stor_m_img }}.png" width="200" height="200"></th>
+	        <th rowspan="6"><img src="/media/images/{{ stor_m_img }}" width="200" height="200"></th>
 	    </tr>
 	    <tr>
 	        <th>메뉴명</th>
@@ -22,12 +22,9 @@
 	    </tr>
 	    <tr>
 		    <td colspan="2">
-		        <form method="post">
-		            {% csrf_token %}
-		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}" onclick="clearInput(this)">
-		            <button type="submit" name="bucknum" value="{{ bucknum|add:'-1' }}">-</button>
-		            <button type="submit" name="bucknum" value="{{ bucknum|add:'1' }}">+</button>
-		        </form>
+		    		<input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}">
+				    <button type="submit" name="bucknum_p" >+</button>
+				    <button type="submit" name="bucknum_m">-</button>
 		    </td>
 		</tr>
 		<tr>
@@ -48,7 +45,7 @@
 		        <input type="hidden" name="bucknum" value="{{ bucknum }}">
 		        <input class="inputbutton" type="submit" value="바로주문">
 		      </form>
-	          </td>
+	        </td>
         </tr>
 	    <tr>
 	        <th colspan="3"> 상세정보</th>
@@ -64,8 +61,8 @@
 	        <td>&nbsp;{{ menu_type }}</td>
 	    </tr>
 	    <tr>
-		    <th>카테고리</th>
-		    <td>&nbsp;{{ dsrt_t_name }}</td>
+		    <th>알러지</th>
+		    <td>&nbsp;{{ algy_n }}</td>
 		</tr>
 
 	    <tr>

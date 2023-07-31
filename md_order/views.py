@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from md_store.models import MdStorM
+from md_store.models import MdStorM, MdMAlgy, MdAlgyT
 from django.http.response import HttpResponseNotFound, HttpResponse
 from md_order.models import MdBuck, MdOrdrM, MdOrdr
 from django.utils import timezone
@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = 8852
+        stor_m_id = request.GET['stor_m_id']
         bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
 
         try:
@@ -47,40 +47,39 @@ class OrderInfoView(View):
 
     def post(self, request):
         stor_m_id = request.POST.get('stor_m_id')
+        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+        algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+        bucknum = int(request.POST.get('bucknum', 1))  # 기본값 1
 
-        try:
-            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-            bucknum = int(request.POST.get('bucknum', 1))  # 기본값 1
+        if storem.menu_t_id == 0:
+            menu_type = "일반"
+        else:
+            menu_type = "시그니처"
 
-            if storem.menu_t_id == 0:
-                menu_type = "일반"
-            else:
-                menu_type = "시그니처"
+        # 주문 수량이 0 이하일 때 1로 설정
+        if bucknum <= 0:
+            bucknum = 1
 
-            # 주문 수량이 0 이하일 때 1로 설정
-            if bucknum <= 0:
-                bucknum = 1
+        buckprice = bucknum * storem.stor_m_pric
+        algy_n = algyn.algy_t_name
+        
+        context = {
+            'dto': storem,
+            'stor_m_pric': storem.stor_m_pric,
+            'stor_id': storem.stor_id,
+            'stor_m_name': storem.stor_m_name,
+            'stor_m_cal': storem.stor_m_cal,
+            'stor_m_info': storem.stor_m_info,
+            'stor_m_img': storem.stor_m_img,
+            'menu_type': menu_type,
+            'bucknum': bucknum,
+            'buckprice': buckprice,
+            'stor_m_id' : stor_m_id,
+            'algy_n' : algy_n 
+        }
 
-            buckprice = bucknum * storem.stor_m_pric
-
-            context = {
-                'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_id': storem.stor_id,
-                'stor_m_name': storem.stor_m_name,
-                'stor_m_cal': storem.stor_m_cal,
-                'stor_m_info': storem.stor_m_info,
-                'stor_m_img': storem.stor_m_img,
-                'menu_type': menu_type,
-                'bucknum': bucknum,
-                'buckprice': buckprice,
-                'stor_m_id' : stor_m_id 
-            }
-
-            return render(request, 'md_order/orderinfo.html', context)
-
-        except MdStorM.DoesNotExist:
-            return HttpResponseNotFound()
+        return render(request, 'md_order/orderinfo.html', context)
 
 class CartView(View):
     def post(self, request):
@@ -88,7 +87,7 @@ class CartView(View):
         buck_id = 60
         buck_reg_ts = timezone.now()
         bucknum = int(request.POST["bucknum"])
-        stor_m_id = request.POST["stor_m_id"]
+        stor_m_id = request.POST.get('stor_m_id')
         
         MdBuck.objects.create(
             user_id=user_id, 
@@ -121,7 +120,6 @@ class OrderView(View):
         bucknum = int(request.POST["bucknum"])
         buck_num = bucknum
         
-        # buck_reg_ts에 현재 시각 저장
         buck_reg_ts = timezone.now()
         new_buck = MdBuck.objects.create(user_id=user_id, stor_m_id=stor_m_id, buck_num=buck_num, buck_reg_ts=buck_reg_ts)
         buck_id = 60
@@ -150,6 +148,7 @@ class OrderView(View):
 class BuckView(View):
     def get(self, request):
         try:
+            stor_m_id = request.POST.get('stor_m_id')
             bucks = MdBuck.objects.select_related('stor_m__stor')
             context = {}
 

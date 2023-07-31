@@ -17,7 +17,7 @@
 	        </th>
 	    </tr>
 	    <tr>
-	        <th rowspan="7"><img src="/media/{{ stor_img }}" width="300" height="300"></th>
+	        <th rowspan="7"><img src="/media/images/{{ stor_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_id={{store.stor_id}}'"></th>
 	    </tr>
 	    <tr>
 	        <th>매장명</th>
@@ -60,7 +60,7 @@
 	        {% for menu in menu_list %}
 	        <tr>
 	        	<td>
-	               <img src="/media/images/{{ menu.stor_m_img }}.png" width="300" height="300">
+	               <img src="/media/images/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_m_id={{menu.stor_m_id}}'">
 	            </td>
 	            <td>{{ menu.stor_m_name }}</td>
 	            <td>{{ menu.stor_m_pric }}</td>

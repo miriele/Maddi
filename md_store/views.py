@@ -167,8 +167,9 @@ class StoreView(View):
             else:
                 user_ids = "등록된 점주가 없습니다"
 
-            stor_img = store.stor_img
+            stor_img = str(store.stor_img).replace('images/', '')
 
+            
             context = {
                 'dto': store,
                 'stor_type': stor_type,
@@ -289,25 +290,6 @@ class MenuInfoView(View):
     
         return redirect("md_store:menulist")
 
-    
-class MenuListView(View):
-    def get(self, request):
-        stor_id = 1
-        try:
-            menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
-
-            context = {
-                'menu_list': menu_list,
-            }
-
-            return render(request, 'md_store/menulist.html', context)
-
-        except MdStorM.DoesNotExist:
-            return HttpResponseNotFound()
-    def post(self, request):
-        return HttpResponse(request)
-    
-
 class StoreUserView(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
@@ -334,7 +316,8 @@ class StoreUserView(View):
             else:
                 user_ids = "등록된 점주가 없습니다"
             
-            stor_img = store.stor_img
+            stor_img_str = str(store.stor_img)
+            stor_img = stor_img_str.replace(' /images', '')
             
             context = {
                 'dto': store,
