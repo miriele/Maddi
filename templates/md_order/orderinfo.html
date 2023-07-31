@@ -19,6 +19,16 @@
 	        <th>가격</th>
 	        <td>&nbsp;{{ stor_m_pric }}</td>
 	    </tr>
+	    <tr>
+		    <td colspan="2">
+				<form method="post">
+				    {% csrf_token %}
+				    <input type="hidden" name="stor_m_id" value="{{ stor_m_id }}"> 
+				    <input class="input" type="text"  id="bucknum" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}" readonly>
+				    <button type="button" id="incrementButton">+</button>
+				    <button type="button" id="decrementButton">-</button>
+				</form>
+		    </td>
 		<tr>
 	    	<td>&nbsp;{{ buckprice }}</td>
 	    </tr>
@@ -26,11 +36,11 @@
 		    <td colspan="2">
 		      <!-- 장바구니 버튼은 CartView로 폼 전송 -->
 		      <form method="post" action="{% url 'md_order:cart' %}">
-		        {% csrf_token %}
-		        <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-		        <input type="hidden" name="bucknum" value="{{ bucknum }}">
-		        <input class="inputbutton" type="submit" value="장바구니">
-		      </form>
+			    {% csrf_token %}
+			    <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+			    <input type="hidden" name="bucknum" value="{{ bucknum }}">
+			    <input class="inputbutton" type="submit" value="장바구니">
+			</form>
 	          <form method="post" action="{% url 'md_order:order' %}">
 		        {% csrf_token %}
 		        <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
@@ -66,4 +76,26 @@
 	    </tr>
 	</table>
 </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	  const incrementButton = document.getElementById("incrementButton");
+	  const decrementButton = document.getElementById("decrementButton");
+	  const bucknumInput = document.getElementById("bucknum");
+
+	  incrementButton.addEventListener("click", function () {
+	    let currentBucknum = parseInt(bucknumInput.value);
+	    currentBucknum += 1;
+	    bucknumInput.value = currentBucknum;
+	  });
+
+	  decrementButton.addEventListener("click", function () {
+	    let currentBucknum = parseInt(bucknumInput.value);
+	    if (currentBucknum > 1) {
+	      currentBucknum -= 1;
+	      bucknumInput.value = currentBucknum;
+	    }
+	  });
+	});
+</script>
 {% endblock %}

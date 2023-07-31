@@ -14,7 +14,8 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = request.GET['stor_m_id']
+        cart_data = request.session.get('cart_data')
+        stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
 
@@ -115,17 +116,18 @@ class CartView(View):
         buckprice = bucknum * storem.stor_m_pric
         buck_reg_ts = timezone.now()
         
-        context = {
-                'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_id': storem.stor_id,
-                'stor_m_name': storem.stor_m_name,
-                'buck_id' : buck_id,
-                'bucknum': bucknum,
-                'buckprice': buckprice,
-                'buck_reg_ts' : buck_reg_ts,
-            }
+        request.session['cart_data'] = {
+            'dto': storem,
+            'stor_m_pric': storem.stor_m_pric,
+            'stor_id': storem.stor_id,
+            'stor_m_name': storem.stor_m_name,
+            'buck_id': None,  # 이 부분은 CartView에서 생성된 buck_id를 저장해야 한다면 해당하는 값으로 변경
+            'bucknum': bucknum,
+            'buckprice': buckprice,
+            'buck_reg_ts': buck_reg_ts,
+        }
         
+        # orderinfo 페이지로 리디렉션
         return redirect("md_order:orderinfo")
     
 class OrderView(View):

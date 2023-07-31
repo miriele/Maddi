@@ -1,11 +1,33 @@
 {% extends "md_admin/base.html" %}
 
 {% block content %}
-<h2>관리자 통계페이지-등록매장현황</h2><br>
-등록매장:{{scount}}
+<h2>관리자 통계페이지-매장현황</h2><br>
+
 	<div>
 		<h4>개인/프랜차이즈구분</h4>
+		등록매장:{{scount}}
 	  	<canvas id="stor"></canvas>
 	</div>
 	<span id = "stor_count" hidden>{{stor_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+	
+	<div>
+		<h4>사이트 내 프랜차이즈 매장 현황 (상위 20개)</h4>
+		<h5>프랜차이즈 매장 수 : {{fcount}}</h5>
+		<table border = "1">
+		<thead>	
+			<tr>
+				<th>순위</th>
+				<th>매장명</th>
+				<th>매장수</th>
+			</tr>
+		</thead>	
+			{%for list in fregstor_ziplist%}
+				<tr>
+					<td align = "center">{{list.0}}위</td>
+					<td align = "center">{{list.1}}</td>
+					<td align = "center">{{list.2}}</td>
+				</tr>	
+			{%endfor%}	
+		</table>
+	</div>
 {% endblock %}

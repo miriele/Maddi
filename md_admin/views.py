@@ -804,7 +804,7 @@ class TasteView(View):
         for key,value in sorted(womanord_dict.items()):
             for index,val in enumerate(womanord_tlist):
                 womanord_tlist[key] = value     
-               
+              
         context = {
             "list_tast": list_tast,
             "tast_n"   : tast_n,
@@ -833,19 +833,44 @@ class StoreView(View):
         pstor = MdStor.objects.filter(stor_t=0).count()
         fstor = MdStor.objects.exclude(stor_t=0).count()
 
-        #개인매장등록일
-        # pregstor = MdStorReg.objects.select_related("stor").filter(stor__stor_t=0 , reg_con_ts__isnull = False).values("reg_con_ts")
-        # #프랜차이즈매장등록일
-        # fregstor = MdStorReg.objects.select_related("stor").exclude(stor__stor_t=0 , reg_con_ts = None).values("reg_con_ts")
-        # print(str(fregstor.query))
-        # print(pregstor)
+        #프랜차이즈 매장 분포
+        fregstor = MdStor.objects.select_related("stor_t").exclude(stor_t__stor_t_id=0).values_list("stor_t__stor_t_name")
+        fcount =  MdStor.objects.select_related("stor_t").exclude(stor_t__stor_t_id=0).values_list("stor_t__stor_t_name").count()
+        fregstor = list(fregstor)
         # print(fregstor)
+        fregstor_dict = collections.Counter(fregstor)
+        # print(fregstor_dict)
         
+        fregstor_namelist = []
+        fregstor_countlist = []
+        
+        #상위 20개 출력
+        for key,value in sorted(fregstor_dict.items(),key = lambda item:item[1],reverse = True)[:20]:   
+            fregstor_namelist.append(key)
+            fregstor_countlist.append(value)
+        # print(fregstor_namelist)
+        # print(fregstor_countlist)
+        
+        freg_stor = []
+        for i in range(len(fregstor_namelist)):
+            freg_stor.append(fregstor_namelist[i][0])
+        # print(freg_stor)
+        freg_lank = []
+        for i in range(len(fregstor_namelist)):
+            freg_lank.append(i)
+        freg_lank = [i+1 for i in freg_lank]
+        # print(freg_lank)
+        fregstor_zip = list(zip(freg_lank,freg_stor,fregstor_countlist))
+        fregstor_ziplist = [list(row) for row in fregstor_zip]
+        # print(fregstor_ziplist)
         stor_list = [pstor,fstor]
+        
         
         context = {
             "scount" : scount,
-            "stor_list" : stor_list, 
+            "fcount" : fcount,
+            "stor_list" : stor_list,
+            "fregstor_ziplist" : fregstor_ziplist,
             }
         return HttpResponse(template.render(context,request))
 
