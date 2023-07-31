@@ -958,6 +958,92 @@ class DsrtView(View):
             for index,val in enumerate(manord_dslist):
                 manord_dslist[key] = value                 
         
+        #여성 디저트 취향
+        womandsrt = MdUDsrt.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("dsrt_t","year").order_by("dsrt_t")
+        womandsrt_list = list(womandsrt)
+        
+        wup_agelist = []
+        wup_dsrtlist = []
+        
+        for wmyear in womandsrt_list:
+            wmdsrt = wmyear[0]
+            wmyear = int(wmyear[1])
+            wage = today - wmyear
+            #print(age)
+            if(wage >=10 and wage<20):
+                wage = '10대'
+            elif(wage>=20 and wage<30):
+                wage = '20대'
+            elif(wage>=30 and wage<40):
+                wage = '30대'
+            elif(wage>=40 and wage<50):
+                wage = '40대'
+            elif(wage>=50 and wage<60):
+                wage = '50대'
+            else:
+                wage = '60대이상'
+            wup_agelist.append(wage)
+            wup_dsrtlist.append(wmdsrt)
+
+        wziptup = list(zip(wup_agelist,wup_dsrtlist))
+        #print(ziptup)
+        
+        wziplist = [list(row) for row in wziptup]
+        # print(ziplist)
+        
+        teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
+        twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
+        thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
+        fou_womanlist = [i[1] for i in wziplist if i[0]=='40대']
+        fiv_womanlist = [i[1] for i in wziplist if i[0]=='50대']
+        ord_womanlist = [i[1] for i in wziplist if i[0]=='60대이상']
+        # print(teen_manlist)
+        
+        womanteen_dict = collections.Counter(teen_womanlist)
+        womantwe_dict = collections.Counter(twe_womanlist)
+        womanthr_dict = collections.Counter(thr_womanlist)
+        womanfou_dict = collections.Counter(fou_womanlist)
+        womanfiv_dict = collections.Counter(fiv_womanlist)
+        womanord_dict = collections.Counter(ord_womanlist)        
+        
+        womanteen_dslist = []
+        womantwe_dslist = []
+        womanthr_dslist = []
+        womanfou_dslist = []
+        womanfiv_dslist = []
+        womanord_dslist = []
+        for i in range(len(dsrt_n)-1):
+            womanteen_dslist.append(0)
+            womantwe_dslist.append(0)
+            womanthr_dslist.append(0)
+            womanfou_dslist.append(0)
+            womanfiv_dslist.append(0)
+            womanord_dslist.append(0)
+        # print(manteen_list)
+ 
+        for key,value in sorted(womanteen_dict.items()):
+            for index,val in enumerate(womanteen_dslist):
+                womanteen_dslist[key] = value
+    
+        for key,value in sorted(womantwe_dict.items()):
+            for index,val in enumerate(womantwe_dslist):
+                womantwe_dslist[key] = value
+    
+        for key,value in sorted(womanthr_dict.items()):
+            for index,val in enumerate(womanthr_dslist):
+                womanthr_dslist[key] = value
+    
+        for key,value in sorted(womanfou_dict.items()):
+            for index,val in enumerate(womanfou_dslist):
+                womanfou_dslist[key] = value                                        
+    
+        for key,value in sorted(womanfiv_dict.items()):
+            for index,val in enumerate(womanfiv_dslist):
+                womanfiv_dslist[key] = value
+                
+        for key,value in sorted(womanord_dict.items()):
+            for index,val in enumerate(womanord_dslist):
+                womanord_dslist[key] = value            
         # print(len(manteen_dslist))
         # 디저트 분류 리스트 '없음' 제거
         dsrt_n.remove('없음' )
@@ -972,6 +1058,12 @@ class DsrtView(View):
             "manfou_dslist" : manfou_dslist,
             "manfiv_dslist" : manfiv_dslist,
             "manord_dslist" : manord_dslist,
+            "womanteen_dslist" : womanteen_dslist,
+            "womantwe_dslist" : womantwe_dslist,
+            "womanthr_dslist" : womanthr_dslist,
+            "womanfou_dslist" : womanfou_dslist,
+            "womanfiv_dslist" : womanfiv_dslist,
+            "womanord_dslist" : womanord_dslist,            
             }
         return HttpResponse(template.render(context,request))
     

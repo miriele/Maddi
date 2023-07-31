@@ -1101,7 +1101,189 @@ $(function() {
 	        }
 	      }
 	    }
-	 });	 	 	 	 	 	 
+	 });
+
+	//여성회원디저트취향(10대)
+	 var wmteendsrtcount = $('#womanteen_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmteendsrtarray = wmteendsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womanteen = $('#dsrt_womanteen')
+	 
+	 new Chart(dsrt_womanteen, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmteendsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//여성회원디저트취향(20대)
+	 var wmtwedsrtcount = $('#womantwe_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmtwedsrtarray = wmtwedsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womantwe = $('#dsrt_womantwe')
+	 
+	 new Chart(dsrt_womantwe, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmtwedsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//여성회원디저트취향(30대)
+	 var wmthrdsrtcount = $('#womanthr_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmthrdsrtarray = wmthrdsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womanthr = $('#dsrt_womanthr')
+	 
+	 new Chart(dsrt_womanthr, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmthrdsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//여성회원디저트취향(40대)
+	 var wmfoudsrtcount = $('#womanfou_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmfoudsrtarray = wmfoudsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womanfou = $('#dsrt_womanfou')
+	 
+	 new Chart(dsrt_womanfou, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmfoudsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//여성회원디저트취향(50대)
+	 var wmfivdsrtcount = $('#womanfiv_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmfivdsrtarray = wmfivdsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womanfiv = $('#dsrt_womanfiv')
+	 
+	 new Chart(dsrt_womanfiv, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmfivdsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });
+	 
+	//여성회원디저트취향(60대이상)
+	 var wmorddsrtcount = $('#womanord_dslist').text()
+	 var dsrtname = $('#dsrt_n').text()
+	 
+	 var wmorddsrtarray = wmorddsrtcount.replace("[","").replace("]","").split(',');
+	 var ndsrtarray = dsrtname.replace("[","").replace("]","").split(',');
+	 
+	 var dsrt_womanord = $('#dsrt_womanord')
+	 
+	 new Chart(dsrt_womanord, {
+	    type: 'bar',
+	    data: {
+	      labels: ndsrtarray, 
+	      datasets: [{
+	        label: '# of Votes',
+	        data: wmorddsrtarray, 
+	        borderWidth: 1,
+	        backgroundColor: '#F08080'
+	      }]
+	    },
+	    options: {
+			responsive: false,
+	      scales: {
+	        y: {
+	          beginAtZero: true
+	        }
+	      }
+	    }
+	 });	 
+	 
+	  	 	 	 	 
 	//전체회원음료취향
 	 var drnkcount = $('#list_drnk').text()
 	 var drnkname = $('#drnk_n').text()
