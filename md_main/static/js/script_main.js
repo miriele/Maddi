@@ -191,7 +191,7 @@ $(window).on('resize', function() {
 });
 
 function setLayoutSize() {
-	let MAX_SIZE	= 400;
+	let MAX_SIZE	= 450;
 	let width		= windowWidth*0.25;
 	let height		= windowHeight*0.4;
 	let	mapWidth	= width >MAX_SIZE ? MAX_SIZE : width; 

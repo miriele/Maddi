@@ -7,7 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
 from md_member.models import MdUser
 from django.utils import timezone
+import logging
 
+logger = logging.getLogger(__name__)
 
 class TestStoreView(View):
     def get(self, request):
@@ -86,11 +88,13 @@ class AddJumjuView(View):
         return render(request, 'md_store/addjumju.html', context)
     
     def post(self, request):
-        user_id = "abc001"
-        stor_id = 6
-        reg_num = request.POST["regnum"]
-        imgreg = request.FILES["imgreg"]
-        reg_sub_ts = timezone.now()
+        user_id     = "abc001"
+        stor_id     = 6
+        reg_num     = request.POST["regnum"]
+        imgreg      = request.FILES["imgreg"]
+        reg_sub_ts  = timezone.now()
+        
+        logger.debug(f'imgreg : {imgreg}')
         
         MdStorReg.objects.create(
             user_id = user_id,
@@ -194,8 +198,10 @@ class StoreView(View):
             store.stor_tel = stor_tel
 
             imgstor = request.FILES["imgstor"]
+
             if imgstor:
                 store.stor_img = imgstor
+                logger.debug(f'imgreg : {imgstor}')
 
             store.save()
 

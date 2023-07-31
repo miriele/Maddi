@@ -18,7 +18,7 @@ class MdReview(models.Model):
     rev_star = models.DecimalField(max_digits=2, decimal_places=1, db_comment='리뷰별점')
     rev_ts = models.DateTimeField(db_comment='작성일시')
     rev_cont = models.CharField(max_length=300, blank=True, null=True, db_comment='리뷰내용')
-    rev_img = models.ImageField(max_length=100, blank=True, null=True, db_comment='이미지경로', upload_to="images")
+    rev_img = models.ImageField(max_length=100, blank=True, null=True, db_comment='이미지경로')
 
     class Meta:
         managed = False

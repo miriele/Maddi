@@ -94,7 +94,7 @@ class MdUser(models.Model):
     user_pass = models.CharField(max_length=20, db_comment='비밀번호')
     user_name = models.CharField(max_length=30, db_comment='회원이름')
     user_bir = models.DateField(db_comment='생년월일')
-    user_img = models.ImageField(max_length=100, db_comment='이미지', upload_to="images")
+    user_img = models.ImageField(max_length=100, db_comment='이미지')
     user_reg_ts = models.DateTimeField(db_comment='가입일시')
     user_ext_ts = models.DateTimeField(blank=True, null=True, db_comment='탈퇴일시')
 
