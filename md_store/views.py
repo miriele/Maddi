@@ -210,52 +210,49 @@ class MenuInfoView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        stor_m_id = 2883541
-        menu_id = 1
-        try:
-            storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        
+        stor_m_id = 125
+        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        menu_id = storem.menu_id
             
-            if storem.menu_t_id == 0:
-                menu_type = "일반"
-            else:
-                menu_type = "시그니처"
-                
-            menu = MdMenu.objects.get(menu_id=menu_id)
-            dsrt_t = menu.dsrt_t_id
-            drnk_t = menu.drnk_t_id
+        if storem.menu_t_id == 0:
+            menu_type = "일반"
+        else:
+            menu_type = "시그니처"
             
-            cate = ""
-            
-            if dsrt_t == -1:
-                cate = -1
-            elif drnk_t == -1:
-                cate = 0
-            else:
-                cate = 1 
-            
-            context = {
-                'dto': storem,
-                'ice' : storem.ice_t_id,
-                'stor_m_id': storem.stor_m_id,
-                'stor_m_name': storem.stor_m_name,
-                'stor_m_pric': storem.stor_m_pric,
-                'dsrt_t' : dsrt_t,
-                'drnk_t' : drnk_t,
-                'stor_m_cal': storem.stor_m_cal,
-                'stor_m_id': storem.stor_m_id,
-                'stor_m_info': storem.stor_m_info,
-                'stor_m_img': storem.stor_m_img,
-                'menu_type': menu_type,
-                'cate' : cate
-            }
+        menu = MdMenu.objects.get(menu_id=menu_id)
+        dsrt_t = menu.dsrt_t_id
+        drnk_t = menu.drnk_t_id
+        
+        cate = ""
+        
+        if dsrt_t == -1:
+            cate = -1   #음료
+        elif drnk_t == -1:
+            cate = 0    #디저트
+        else:
+            cate = 1    #선택
+        
+        context = {
+            'dto': storem,
+            'ice' : storem.ice_t_id,
+            'stor_m_id': storem.stor_m_id,
+            'stor_m_name': storem.stor_m_name,
+            'stor_m_pric': storem.stor_m_pric,
+            'dsrt_t' : dsrt_t,
+            'drnk_t' : drnk_t,
+            'stor_m_cal': storem.stor_m_cal,
+            'stor_m_id': storem.stor_m_id,
+            'stor_m_info': storem.stor_m_info,
+            'stor_m_img': storem.stor_m_img,
+            'menu_type': menu_type,
+            'cate' : cate
+        }
 
-            return render(request, 'md_store/menuinfo.html', context)
-
-        except MdStorM.DoesNotExist:
-            return HttpResponseNotFound()
+        return render(request, 'md_store/menuinfo.html', context)
     
     def post(self, request):
-        stor_m_id = 2883541
+        stor_m_id = 125
         menu_id = 1
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
     

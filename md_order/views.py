@@ -14,13 +14,21 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        stor_m_id = request.GET['stor_m_id']
-        bucknum = int(request.GET.get('bucknum', 1))  # 기본값 1
+        stor_m_id = 125#request.GET['stor_m_id']
+        bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
-        algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
-        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        algy_n = algyn.algy_t_name
+
+        algy_n = "없음" 
+
+        # 알러지 정보가 있을 경우에만 조회해서 algy_n 값을 설정
+        try:
+            algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+            algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+            if algyn.algy_t_name is not None:
+                algy_n = algyn.algy_t_name
+        except MdMAlgy.DoesNotExist:
+            pass
+        
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
@@ -48,14 +56,24 @@ class OrderInfoView(View):
     def post(self, request):
         stor_m_id = request.POST.get('stor_m_id')
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        
-        bucknum = int(request.POST.get('bucknum', 1))  # 기본값 1
+        algy_n = "없음" 
 
+        # 알러지 정보가 있을 경우에만 조회해서 algy_n 값을 설정
+        try:
+            algy = MdMAlgy.objects.get(menu_id=storem.menu_id)
+            algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+            if algyn.algy_t_name is not None:
+                algy_n = algyn.algy_t_name
+        except MdMAlgy.DoesNotExist:
+            pass
+        
+        bucknum = int(request.POST.get('bucknum', 1)) 
+        
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
             menu_type = "시그니처"
-
+            
         # 주문 수량이 0 이하일 때 1로 설정
         if bucknum <= 0:
             bucknum = 1
@@ -75,6 +93,7 @@ class OrderInfoView(View):
             'bucknum': bucknum,
             'buckprice': buckprice,
             'stor_m_id' : stor_m_id,
+            'algy_n' : algy_n 
         }
 
         return render(request, 'md_order/orderinfo.html', context)
