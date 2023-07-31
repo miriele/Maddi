@@ -23,9 +23,6 @@ import json
 from _collections import defaultdict
 
 
-
-
-
 # 로그
 logger = logging.getLogger( __name__ )
 
@@ -61,10 +58,10 @@ class UserinfoView(View):
     def post(self,request):
         id = request.POST["id"]
         usrg = MdUserG.objects.get(user_g_id=request.POST["user_g"])
+        # print(usrg)
         users = MdUser.objects.get(user_id=id)
         
         # logger.debug(f'usrg : {usrg}')
-        
         newusers=MdUser(
             user_id = id,
             user_name = users.user_name,
@@ -77,7 +74,12 @@ class UserinfoView(View):
             user_g = usrg,                    
         )
         newusers.save()
-           
+        
+        if(MdUser.objects.filter(user_g_id=2)):
+            users = MdUser.objects.filter(user_id=id).update(user_ext_ts=datetime.now())
+        # logger.debug(f'users : {users}')
+        else:
+            users = MdUser.objects.filter(user_id=id).update(user_ext_ts= None)
         return redirect("/md_admin/userlist")
 
 # 리뷰리스트
@@ -864,7 +866,6 @@ class StoreView(View):
         fregstor_ziplist = [list(row) for row in fregstor_zip]
         # print(fregstor_ziplist)
         stor_list = [pstor,fstor]
-        
         
         context = {
             "scount" : scount,
@@ -1786,33 +1787,32 @@ class IaoView(View):
         exlist = []
         for i in range(len(exmaddi)):            
             exlist.append(exmaddi[i][0:7])
-        #print(wellist)
+        exlist = [str(i) for i in exlist if i !='None']    
+        print(exlist)
         
         #해당연월 정지된 수
         dict_exmaddi = {}
         dict_exmaddi = collections.Counter(exlist)
-        
+        # print(dict_exmaddi)
         list_exmaddi = []
-        for key,value in sorted(dict_exmaddi.items()):
+        for key,value in sorted(dict_exmaddi.items()):       
             list_exmaddi.append(value)
+        
+        list_exmaddi = [int(i) for i in list_exmaddi if i !='None']  
+        print(list_exmaddi)
    
         #연월 값 뽑기
         exyear = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
+        # print(exyear)
         exyear = list(m["user_ext_ts"] for m in exyear)
-        exyear = list(map(str,exmaddi)) 
-        
-        #중복값 제거
-        upexyearlist = []
-        for i in upexyearlist:
-            if i not in exyear:
-                upexyearlist.append(0)        
-        print(upexyearlist)
-        
-        
+        # print(exyear)
+        exyear = list(map(str,exmaddi))
+      
         context = {
             "list_welmaddi" : list_welmaddi,
             "upwelyearlist" : upwelyearlist,
-            "upexyearlist" : upexyearlist,
+            "exlist" : exlist,
+            "list_exmaddi" : list_exmaddi,
             }
         return HttpResponse(template.render(context,request))
 

@@ -2466,8 +2466,8 @@ $(function() {
 	 
 	 //회원이탈
 	 var eusercount = $('#list_exmaddi').text()
-	 var euserday = $('#upwelyearlist').text()
-	 
+	 var euserday = $('#exlist').text()
+
 	 var wuserarray = eusercount.replace("[","").replace("]","").split(',');
 	 var euserdayarray = euserday.replace("[","").replace("]","").split(',');
 
