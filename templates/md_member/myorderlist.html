@@ -52,8 +52,14 @@
 					{% if o.ordr_com_ts == None %}
 						<input class="inputbutton" type="button" value="리뷰 작성" disabled >
 					{% else %}
-                		<a href="/md_review/revwrite?ordr_id={{ o.ordr_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}">
-                		리뷰 작성</a>
+						{% for r in rev %}
+							{% if  r.ordr_id == o.ordr_id %}
+								"있음"
+							{% else %}
+	                			<a href="/md_review/revwrite?ordr_id={{ o.ordr_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}">
+	                			리뷰 작성</a>
+	                		{% endif %}
+	                	{% endfor %}
 					{% endif %}
 				</td>
 			</tr>

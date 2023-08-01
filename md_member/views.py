@@ -358,15 +358,30 @@ class MyOrderListView( View ):
             if endpage > pagecount :
                 endpage = pagecount
             
-            pages = range(startpage, endpage + 1) 
+            pages = range(startpage, endpage + 1)
             
             # 주문 번호 / 매장명 / 주문메뉴 / 총 금액 >ordr_num|mul:stor_m_pric /주문일시 /주문 완료일/+리뷰 작성일?리뷰의 주문 아이디?
-            
             odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id = memid).order_by("-ordr_id").values('ordr_id', 'mdordrm__stor_m__stor__stor_name', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_pric', 'ordr_ord_ts', 'ordr_com_ts')[start:end]
-
-            # 리뷰 버튼
-            rev = MdReview.objects.all().order_by("-ordr_id")
             
+            # 리뷰 버튼
+            rev = MdReview.objects.select_related('ordr').filter(ordr__user_id = memid ).values('ordr_id')
+            logger.debug(f' rev : { rev  }')
+            #  logger.debug(f' review : { "리뷰 없음"  }')
+                        
+            
+            
+            
+            # rev_list = list(rev)
+            # rev_id_ele = list([m['ordr_id'] for m in rev_list])
+            # print(rev_id_ele)
+                
+            # for o in odtos:
+            #     for r in rev:
+            #         logger.debug(f' r  : { r.ordr_id }')
+            # ordr_id.append(r)
+            # logger.debug(f' r  : {ordr_id}')
+        
+
             context = {
                 "odtos"     : odtos,
                 "rev"       : rev,
