@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-<meta charset="UTF-8">
-<title>회원정보</title>
-</head>
 {% extends "md_admin/base.html" %}
 <body>
 {%block content%}
 <h2>회원관리</h2>
-	<h2>현재 회원 수:{{count}}</h2>
+	<h2>가입회원 수:{{count}}</h2>
+        <form class="d-flex" method="POST" action="{% url 'md_admin:search' %}">
+        {%csrf_token%}   
+            <input type="search" placeholder="Search" name="searched">
+            <button type="submit"> Search </button>
+        </form>	
 	<table border = "1">
 		<tr>
 			<th style="width:7%"> 아이디 </th>
@@ -17,13 +15,7 @@
 			<th style="width:7%"> 회원등급 </th>
 			<th style="width:7%"> 회원가입일 </th>
 		</tr>
-	{% if count == 0 %}
-		<tr>
-			<td colspan="6" align="center">
-				등록된 회원이 없습니다.
-			</td>
-		</tr>
-	{%else%}
+		<tbody id = "tbody">
 		{%for user in users%}
 			<tr>
 				<td align = "center">
@@ -42,8 +34,6 @@
 				</td>												
 			</tr>
 		{%endfor%}
-	{%endif%}		
+			</tbody>
 	</table>
 {%endblock%}
-</body>
-</html>

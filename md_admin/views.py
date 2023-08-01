@@ -32,11 +32,20 @@ class UserlistView(View):
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
         users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts").order_by("-user_reg_ts") #회원리스트
+            
         context ={
-            "count":count,
-            "users":users,
+            "count" : count,
+            "users" : users,         
             }
         return HttpResponse(template.render(context,request))
+
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        search_user = MdUser.objects.filter(user_id__contains=searched)
+        return render(request,"md_admin/searched.html",{"searched":searched,"search_user":search_user})
+    else:
+        return render(request,"md_admin/searched.html",{})
     
 # 회원상세정보
 class UserinfoView(View):
@@ -54,6 +63,8 @@ class UserinfoView(View):
             "users":users,  
              }
         return HttpResponse(template.render(context,request))
+    
+    
 # 회원등급수정
     def post(self,request):
         id = request.POST["id"]
@@ -191,7 +202,7 @@ class SregistinfoView(View):
         #등록신청한 회원의 등급 -> 6(점주)로 수정     
         id = request.POST["id"]
         users = MdUser.objects.filter(user_id=id).update(user_g=6)
-        
+        stor_jumju = MdStor.objects.update(user=id)
         return redirect("/md_admin/sregistlist")
 
 # 통계페이지

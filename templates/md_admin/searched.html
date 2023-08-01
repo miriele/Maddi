@@ -1,0 +1,45 @@
+{% extends "md_admin/base.html" %}
+<body>
+{% block content %}
+<h2>회원관리</h2>
+	<form method="POST" action="{% url 'md_admin:search' %}">
+    {%csrf_token%}   
+      	<input type="search" placeholder="Search" name="searched">
+        <button type="submit"> Search </button>
+   </form>	
+        <table border = "1">
+			<tr>
+				<th style="width:7%"> 아이디 </th>
+				<th style="width:7%"> 이름 </th>
+				<th style="width:7%"> 회원등급 </th>
+				<th style="width:7%"> 회원가입일 </th>
+			</tr>
+		<tbody id = "tbody">
+		{% if searched %}
+		{% for info in search_user %}
+           	<tr>
+           		<td align = "center">
+           			<a href = "userinfo?id={{info.user_id}}">
+           				{{ info.user_id }}
+           			</a>
+           		</td>
+	           	<td align = "center">
+					{{ info.user_name }}
+				</td>
+	           	<td align = "center">
+					{{ info.user_g.user_g_name }}
+				</td>
+				<td align = "center">
+					{{info.user_reg_ts|date:"Y-m-d H:i"}}
+				</td>														
+           	</tr>
+            {% endfor %}
+            {%else%}
+            	<tr>
+            		<td colspan = "4" align = "center">
+            			조회된아이디가 없습니다.
+            		</td>
+            	</tr>
+            {% endif %}
+        </tbody>
+{% endblock %}

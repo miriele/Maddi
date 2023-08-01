@@ -1,5 +1,6 @@
 from django.urls.conf import path
 from md_admin import views
+from .views import search
 
 app_name = "md_admin"
 
@@ -21,4 +22,5 @@ urlpatterns = [
     path("bdsrtstatis",     views.BdsrtView.as_view(),          name = "bdsrtstatis"),  # 회원통계 - 구매정보 디저트취향
     path("iaostatis",       views.IaoView.as_view(),            name = "iaostatis"),    # 회원통계 - 유입/이탈 
     path("keystatis",       views.KeywordView.as_view(),        name = "keystatis"),    # 통계 - 검색키워드
+    path('searched',        views.search,                       name = 'search'),
     ]

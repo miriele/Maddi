@@ -5,27 +5,30 @@
 
 <h3>전체회원</h3>
 	<div>
-	  <canvas id="gender"></canvas>
+	  <canvas id="gender" width = "500" height = "500"></canvas>
 	</div>
 	<span id = "inwon" hidden>{{inwon}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	<span id = "gend" hidden>{{gend}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기  -->
 회원수:{{count}}명<br>
 남성:{{menper}}%<br>
-여성:{{womenper}}%
+여성:{{womenper}}%<br>
 
-<h3>남성회원 - 연령대 분포</h3>
-	<div>
-	  <canvas id="gender_man"></canvas>
+	<div style = "float:left;">
+		<h3>남성회원 - 연령대 분포</h3>
+	  		<canvas id="gender_man" width = "300" height = "300"></canvas>
+	  		남성회원수:{{mancount}}명<br>
 	</div>
 	<span id = "man_agecount" hidden>{{man_agecount}}</span>
-남성회원수:{{mancount}}명<br>
+
 	
-<h3>여성회원 - 연령대 분포</h3>	
-	<div>
-	  <canvas id="gender_woman"></canvas>
+
+	<div style = "float:left;">
+		<h3>여성회원 - 연령대 분포</h3>	
+	  	<canvas id="gender_woman" width = "300" height = "300"></canvas>
+	  	여성회원수:{{womancount}}명<br>
 	</div>
 	<span id = "woman_agecount" hidden>{{woman_agecount}}</span>
-여성회원수:{{womancount}}명<br>
+
 
 {% endblock %}
 
