@@ -356,7 +356,7 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        user_id = request.POST['memid']
+        user_id = request.session.get("memid")
         user = MdUser.objects.get(user_id=user_id)
         user_name = user.user_name
         
