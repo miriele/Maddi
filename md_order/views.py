@@ -100,7 +100,7 @@ class OrderInfoView(View):
 
 class CartView(View):
     def post(self, request):
-        user_id = request.POST['memid']
+        user_id = request.POST['user_id']
         buck_reg_ts = timezone.now()
         bucknum = int(request.POST["bucknum"])
         stor_m_id = request.POST.get('stor_m_id')
@@ -136,7 +136,7 @@ class CartView(View):
 class OrderView(View):
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
-        user_id = request.POST['memid']
+        user_id = request.POST['user_id']
         bucknum = int(request.POST["bucknum"])
         buck_num = bucknum
         
