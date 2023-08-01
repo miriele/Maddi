@@ -29,9 +29,6 @@ class TestStoreView(View):
     def post(self, request):
         pass
 
-
-
-
 ##################################################
     # 이주림
     # 지금은 비록 하드 코드로 박았지만..

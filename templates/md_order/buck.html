@@ -10,6 +10,7 @@
 {% if context %}
 <form method="post" action="{% url 'md_order:buckdelordr' %}">
     {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{ user_id }}">
     {% for store_name, store_data_list in context.items %}
 	<table>
 		<tr>

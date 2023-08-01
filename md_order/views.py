@@ -14,6 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
+        user_id = request.session.get('user_id')
         stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -46,7 +47,8 @@ class OrderInfoView(View):
             'bucknum': bucknum,
             'buckprice': buckprice,
             'stor_m_id' : stor_m_id,
-            'algy_n' : algy_n 
+            'algy_n' : algy_n,
+            'user_id' :user_id
         }
 
         return render(request, 'md_order/orderinfo.html', context)
@@ -56,6 +58,7 @@ class OrderInfoView(View):
         stor_m_id = request.POST["stor_m_id"]
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        user_id = request.POST['user_id']
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
@@ -96,8 +99,7 @@ class OrderInfoView(View):
 
 class CartView(View):
     def post(self, request):
-        user_id = "abc001"
-        buck_id = 60
+        user_id = request.POST['user_id']
         buck_reg_ts = timezone.now()
         bucknum = int(request.POST["bucknum"])
         stor_m_id = request.POST.get('stor_m_id')
@@ -119,7 +121,6 @@ class CartView(View):
             'stor_m_pric': storem.stor_m_pric,
             'stor_id': storem.stor_id,
             'stor_m_name': storem.stor_m_name,
-            'buck_id': buck_id,  
             'bucknum': bucknum,
             'buckprice': buckprice,
             'buck_reg_ts': buck_reg_ts.strftime('%Y-%m-%d %H:%M:%S'), 
@@ -134,13 +135,19 @@ class CartView(View):
 class OrderView(View):
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
-        user_id = "abc001" # 추후에 세션에서 받음 
+        user_id = request.POST['user_id']
         bucknum = int(request.POST["bucknum"])
         buck_num = bucknum
         
         buck_reg_ts = timezone.now()
-        new_buck = MdBuck.objects.create(user_id=user_id, stor_m_id=stor_m_id, buck_num=buck_num, buck_reg_ts=buck_reg_ts)
-        buck_id = 60
+        
+        MdBuck.objects.create(
+           user_id=user_id,
+           stor_m_id=stor_m_id, 
+           buck_num=buck_num, 
+           buck_reg_ts=buck_reg_ts
+           )
+
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         buckprice = bucknum * storem.stor_m_pric
         buck_reg_ts = timezone.now()
@@ -154,7 +161,6 @@ class OrderView(View):
                 'dto': storem,
                 'stor_m_pric': storem.stor_m_pric,
                 'stor_m_name': storem.stor_m_name,
-                'buck_id' : buck_id,
                 'stor_id': storem.stor_id,
                 'bucknum': bucknum,
                 'buckprice': buckprice,
@@ -332,21 +338,3 @@ class OrdrDoneView (View):
         except MdOrdr.DoesNotExist:
             pass
         return redirect('md_order:orderlist')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

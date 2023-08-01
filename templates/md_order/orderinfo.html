@@ -7,12 +7,14 @@
 <h2> 주문하기 </h2>
 <form method="post" action="orderinfo" name="inputform">
 <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+<input type="hidden" name="user_id" value="{{ user_id }}">
 	<table>
 	    <tr>
-	        <th rowspan="6"><img src="/media/images/{{ stor_m_img }}" width="200" height="200"></th>
+	        <th rowspan="6"><img src="/media/{{ stor_m_img }}" width="200" height="200"></th>
 	    </tr>
 	    <tr>
 	        <th>메뉴명</th>
+	        <th>{{user_id}}</th>
 	        <td>&nbsp;{{ stor_m_name }}</td>
 	    </tr>
 	    <tr>
@@ -38,12 +40,14 @@
 			    {% csrf_token %}
 			    <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 			    <input type="hidden" name="bucknum" value="{{ bucknum }}">
+			    <input type="hidden" name="user_id" value="{{ user_id }}">
 			    <input class="inputbutton" type="submit" value="장바구니">
 			</form>
 	          <form method="post" action="{% url 'md_order:order' %}">
 		        {% csrf_token %}
 		        <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 		        <input type="hidden" name="bucknum" value="{{ bucknum }}">
+		        <input type="hidden" name="user_id" value="{{ user_id }}">
 		        <input class="inputbutton" type="submit" value="바로주문">
 		      </form>
 	        </td>
