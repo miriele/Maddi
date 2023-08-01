@@ -8,8 +8,9 @@
 {% csrf_token %}
 <h2>점주등록신청상세</h2>
 <form method = "post" action = "sregistinfo" name="sregistinfoform">
-<input type ="hidden" name = "reg_id" value = {{reg_id}}>
-<input type ="hidden" name = "id" value = {{reginfo.user_id}}>
+<input type = "hidden" name = "reg_id" value = {{reg_id}}>
+<input type = "hidden" name = "id" value = {{reginfo.user_id}}>
+<input type = "hidden" name = "stor_id" value = {{reginfo.stor.stor_id}}>
 
 	<table border = "1">
 		<tr>
