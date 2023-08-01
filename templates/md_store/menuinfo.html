@@ -9,6 +9,7 @@
 {% endblock %}
 {% block content %}
 <form method="post" action="{% url 'md_store:menuinfo' %}" name="updateform" enctype="multipart/form-data">
+    <input type="hidden" name="stor_id" value="{{ stor_id }}"> 
     <input type="hidden" name="stor_m_id" value="{{ stor_m_id }}"> 
     <input type="hidden" name="menu_id" value="{{ dto.menu_id }}">
     {% csrf_token %}
@@ -134,8 +135,7 @@
 	        <th colspan="3">
 	        	<input class="input" type="file" name="imgmenuinfo" accept="image/*" id="imgmenuinfoInput">
 	        	<input class="inputbutton" type="submit" value="수정" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
-	            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">	
-	        </th>
+	            <input class="inputbutton" type="reset" value="취소" onclick="location.href='/md_store/menulist?stor_id={{stor_id}}'">
 	    </tr>
 	</table>
 </form>

@@ -259,7 +259,8 @@ class MenuInfoView(View):
         stor_m_id = request.GET['stor_m_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         menu_id = storem.menu_id
-            
+        stor_id = storem.stor_id
+        
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
@@ -291,7 +292,8 @@ class MenuInfoView(View):
             'stor_m_info': storem.stor_m_info,
             'stor_m_img': storem.stor_m_img,
             'menu_type': menu_type,
-            'cate' : cate
+            'cate' : cate,
+            'stor_id' : stor_id
         }
 
         return render(request, 'md_store/menuinfo.html', context)
