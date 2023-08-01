@@ -212,9 +212,6 @@ class StoreView(View):
 class MenuListView(View):
     def get(self, request):
         stor_id =  request.GET.get("stor_id")
-        user_id =  request.session.get("memid")
-        
-    
         store = MdStor.objects.get(stor_id=stor_id)
         menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
         stor_t_id = store.stor_t_id
@@ -339,7 +336,7 @@ class MenuInfoView(View):
             if algy_t_id not in existing_algy_t_ids:
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
     
-        return redirect(reverse("md_store:menulist") + f'?stor_m_id={stor_m_id}')
+        return redirect(reverse("md_store:menuinfo") + f'?stor_m_id={stor_m_id}')
     
 class StoreUserView(View):
     @method_decorator( csrf_exempt )

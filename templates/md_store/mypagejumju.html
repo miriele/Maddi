@@ -12,9 +12,9 @@
 	    </tr>
 	    <tr>
 	    	<input type="hidden" name="stor_id" value="{{ stor_id }}">
-	    	<button type="button" onclick="location='menulist'">메뉴관리</button>
+	    	<button type="button" onclick="location.href='/md_store/menulist?stor_id={{stor_id}}'">메뉴관리</button>
 	    	<button type="button" onclick="location.href='/md_store/store?stor_id={{stor_id}}'">매장관리</button>
-	    	<button type="button" onclick="redirectToReview()">리뷰관리</button>
+	    	<button type="button" onclick="location.href='/md_review/review?stor_id={{stor_id}}'">리뷰관리</button>
 	    </tr>	
     </table>
 </body>

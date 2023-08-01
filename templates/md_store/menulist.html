@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>점주_메뉴목록</title>
+</head>
+<body>
+<h1>메뉴 목록</h1>
+<form method="post" >
+ <input type="hidden" name="stor_id" value="{{ stor_id }}">
+
+
+{% if menu_list %}
+<table>
+    <tr>
+        <th>메뉴 이미지</th>
+        <th>메뉴 이름</th>
+        <th>가격</th>
+        <th>칼로리</th>
+        <th>메뉴 소개</th>
+        <th>메뉴 타입</th>
+    </tr>
+    {% for menu in menu_list %}
+    <tr>
+        <td>
+            <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
+        </td>
+        <td>{{ menu.stor_m_name }}</td>
+        <td>{{ menu.stor_m_pric }}</td>
+        <td>{{ menu.stor_m_cal }}</td>
+        <td>{{ menu.menu.menu_info }}</td>
+        <td>{{ menu.menu_t.menu_t_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>해당 매장의 메뉴가 없습니다.</p>
+{% endif %}
+
+</body>
+</html>
