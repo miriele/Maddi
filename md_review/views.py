@@ -54,8 +54,7 @@ class RevwriteView( View ):
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
     def get(self, request ):
-        template = loader.get_template( "md_review/revwrite.html" )
-        
+
         memid = request.session.get("memid")
         gid = request.session.get("gid")
         
@@ -67,6 +66,8 @@ class RevwriteView( View ):
         pagenum = request.GET["pagenum"]
         number = request.GET["number"]
         
+        template = loader.get_template( "md_review/revwrite.html" )
+    
         # 닉네임
         nick = MdUser.objects.get(user_id = memid )
         
@@ -100,9 +101,10 @@ class RevwriteView( View ):
             "md_tag0"   : md_tag0,
             "md_tag1"   : md_tag1,
             "ordr_id"  : ordr_id,
-            
+            "pagenum" :pagenum,
             }
         return HttpResponse(template.render( context, request ) )
+    
     
     def post(self, request):
         
