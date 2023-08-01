@@ -14,7 +14,7 @@ logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        user_id = request.session.get('user_id')
+        user_id = request.session.get('memid')
         stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -58,7 +58,7 @@ class OrderInfoView(View):
         stor_m_id = request.POST["stor_m_id"]
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
-        user_id = request.POST['user_id']
+        user_id = request.session.get('memid')
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
@@ -92,14 +92,15 @@ class OrderInfoView(View):
             'bucknum': bucknum,
             'buckprice': buckprice,
             'stor_m_id' : stor_m_id,
-            'algy_n' : algy_n 
+            'algy_n' : algy_n,
+            'user_id' :user_id 
         }
 
         return render(request, 'md_order/orderinfo.html', context)
 
 class CartView(View):
     def post(self, request):
-        user_id = request.POST['user_id']
+        user_id = request.POST['memid']
         buck_reg_ts = timezone.now()
         bucknum = int(request.POST["bucknum"])
         stor_m_id = request.POST.get('stor_m_id')
@@ -135,7 +136,7 @@ class CartView(View):
 class OrderView(View):
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
-        user_id = request.POST['user_id']
+        user_id = request.POST['memid']
         bucknum = int(request.POST["bucknum"])
         buck_num = bucknum
         
