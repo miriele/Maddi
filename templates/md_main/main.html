@@ -15,8 +15,8 @@
 	<div class="list-title">추천 음료</div>
 	<div class="list-content">
 	{% for tdto in tdtos %}
-		<div class="list-item">
-			<img src="/media/images/{{tdto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
+		<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{tdto.stor_m__menu__menu_name}}'); performSearch();">
+			<img src="/media/{{tdto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
 			{{tdto.stor_m__menu__menu_name}}
 		</div>
 	{% endfor %}
@@ -27,8 +27,8 @@
 	<div class="list-title">추천 디저트</div>
 	<div class="list-content">
 	{% for ddto in ddtos %}
-		<div class="list-item">
-			<img src="/media/images/{{ddto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
+		<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{tdto.stor_m__menu__menu_name}}'); performSearch();">
+			<img src="/media/{{ddto.stor_m__menu__menu_img}}" class="main_recommend_img"><br>
 			{{ddto.stor_m__menu__menu_name}}
 		</div>
 	{% endfor %}

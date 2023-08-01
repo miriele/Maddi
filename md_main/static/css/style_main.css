@@ -88,6 +88,16 @@ div {
     height: 75px;
 }
 
+.main_search_result {
+    
+}
+
+.main_search_result_item {
+    width: 300px;
+    font-size: 12px;
+    display: inline-block;
+}
+
 .main_search_result_img {
     width: 100px;
     height: 75px;

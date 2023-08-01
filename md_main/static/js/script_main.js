@@ -116,6 +116,7 @@ $(function() {
 		}	// function(event)
 	);	// $("input[name='search_word']").on(
 
+/*
 	$("input[name='main_btn_search']").on(
 		"click",
 		function(event) {
@@ -134,27 +135,21 @@ $(function() {
 						var content = `
 							<h3>[${data.menu_name}] 판매 매장 : ${data.count}</h3>
 							${data.count === 0 ? '판매 중인 매장이 없습니다.' : `
-								<table>
 								${data.store_list.map(function(store, index) {
 									return `
-									${index % 2 === 0 ? '<tr>' : ''}
-										<td>
-											<div style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id=${store.stor_id}'">
-												<table>
-													<tr>
-														<td rowspan="2"><img src="/media/images/${store.stor_img}" class="main_search_result_img"></td>
-														<td>${store.stor_name}</td>
-													</tr>
-													<tr>
-														<td>${store.area_t_name}</td>
-													</tr>
-												</table>
-											</div>
-										</td>
-									${index % 2 !== 0 ? '</tr>' : ''}
+										<div class="main_search_result_item" style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id=${store.stor_id}'">
+											<table>
+												<tr>
+													<td rowspan="2"><img src="/media/${store.stor_img}" class="main_search_result_img"></td>
+													<td>${store.stor_name}</td>
+												</tr>
+												<tr>
+													<td>${store.area_t_name}</td>
+												</tr>
+											</table>
+										</div>
 									`;
 								}).join('')}
-								</table>
 							`}
 							`;
 						$('.main_search_result').html(content);
@@ -167,7 +162,58 @@ $(function() {
 			)	// $.ajax(
 		}	// function(event) {
 	);	// $("input[name='search_word']").on(
+*/
 });	// $(function()
+
+
+
+////////// 검색 //////////
+function setMenuName(menuName) {
+	$("input[name='search_word']").val(menuName);
+}
+
+function performSearch() {
+	$.ajax(
+		{
+			url  : "searchlist",
+			type : "POST",
+			data : {
+				search_word : $("input[name='search_word']").val(),
+				bjd_name    : $("input[name='bjd_name']").val(),
+				csrfmiddlewaretoken: "{{ csrf_token }}",
+			},	// data : {
+			datatype : "text",
+			success : function(data) {
+				//console.log(data);
+				var content = `
+					<h3>[${data.menu_name}] 판매 매장 : ${data.count}</h3>
+					${data.count === 0 ? '판매 중인 매장이 없습니다.' : `
+						${data.store_list.map(function(store, index) {
+							return `
+								<div class="main_search_result_item" style="cursor:pointer" onclick="location.href='/md_store/storeuser?stor_id=${store.stor_id}'">
+									<table>
+										<tr>
+											<td rowspan="2"><img src="/media/${store.stor_img}" class="main_search_result_img"></td>
+											<td>${store.stor_name}</td>
+										</tr>
+										<tr>
+											<td>${store.area_t_name}</td>
+										</tr>
+									</table>
+								</div>
+							`;
+						}).join('')}
+					`}
+					`;
+				$('.main_search_result').html(content);
+			},	// success : function(data) {
+			error : function(request, status, error) {
+				console.log(error);
+				//$("").html("서버요청실패");
+			}	// error : function(request, status, error)
+		}
+	)	// $.ajax(
+}	// function(event) {
 
 
 ////////// 연관 검색어 //////////
