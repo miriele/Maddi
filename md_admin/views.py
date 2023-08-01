@@ -118,48 +118,31 @@ class ReviewinfoView(View):
         template = loader.get_template("md_admin/reviewinfo.html")
         rev_id = request.GET["rev_id"]
         
-        #화면에 출력해줄 내용
-        #태그는 태그분류없이 나열
-        #리뷰이미지,    메장메뉴명,    리뷰별점,    태그명,    리뷰내용 
-        #md_review.rev_img,   md_stro_m.stor_m_name,    md_review.rev_star    md_tag.tag_name    md_review.rev_cont
+        storm = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(rev_id = rev_id).values('ordr__mdordrm__stor_m__stor_m_name')
+        storm_list = list(storm)
+        storm_list = list(m['ordr__mdordrm__stor_m__stor_m_name'] for m in storm_list)
+        print(storm_list)
         
-        # stor_m_id 를 받아오는 곳은 없어서 일단 하드코딩 해둠, 수정필요~!
-        #SELECT stor_m_name FROM md_stor_m WHERE stor_m_id = 15;(김민우)
-        storm = MdStorM.objects.filter(stor_m_id=15).values('stor_m_name')
-        
-        if storm.exists() :
-            stor_m_name = storm.first()['stor_m_name']
-            logger.debug(f'stor_m_name : {stor_m_name}')
-        else:
-            logger.debug(f'stor_m_name : 해당하는 레코드가 없습니다')
-        
-        #SELECT rev_img,rev_star,rev_cont FROM md_review WHERE rev_id = 1;(김민우)
         reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
+        reviewn_list = list(reviewn)
+        content = list(m['rev_cont'] for m in reviewn_list)
+        print(content)
+        star = list(m['rev_star'] for m in reviewn_list)
+        print(star)
+        revimage = list(m['rev_img'] for m in reviewn_list)
+        print(revimage)
         
-        if reviewn.exists() :
-            rev_img  = reviewn.first()['rev_img']
-            rev_star = reviewn.first()['rev_star']
-            rev_cont = reviewn.first()['rev_cont']
-            logger.debug(f'rev_img : {rev_img}\trev_star : {rev_star}\trev_cont : {rev_cont}\n')
-        else:
-            logger.debug(f'rev_img, rev_star, rev_cont : 해당하는 레코드가 없습니다')
-        
-        
-        #SELECT t.tag_name FROM md_tag t JOIN md_rev_t rt ON t.tag_id = rt.tag_id WHERE rt.rev_id = 1;(김민우)
         tagn = MdTag.objects.filter(mdrevt__rev_id=rev_id).values('tag_name')
-        
-        if tagn.exists() :
-            for item in tagn :
-                tag_name = item['tag_name']
-                logger.debug(f'tag_name : {tag_name}')
-        else:
-            logger.debug(f'tag_name : 해당하는 레코드가 없습니다')
+        tagn_list = list(tagn)
+        tagn_list = list(m['tag_name'] for m in tagn_list)
 
         context ={
             "rev_id":rev_id,
-            "strom":storm,
-            "reviewn":reviewn,
-            "tagn":tagn,
+            "storm_list":storm_list,
+            "content":content,
+            "star" : star,
+            "revimage" : revimage,
+            "tagn_list":tagn_list,
             }
         return HttpResponse(template.render(context,request))
    

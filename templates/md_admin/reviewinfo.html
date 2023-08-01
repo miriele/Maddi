@@ -8,25 +8,45 @@
 {% csrf_token %}
 <h2>리뷰상세정보</h2>
 <form method = "post" action = "reviewinfo" name="reviewinfoform">
-<input type ="hidden" name = "rev_id" value = {{rev_id}}>
+<input type = "hidden" name = "rev_id" value = {{rev_id}}>
 	<table border = "1">
 		<tr>
-			<th colspan="2">리뷰이미지</th>
+			{%if revimage.0%}
+				<th colspan="2"><img src="/media/{{revimage.0}}"></th>
+			{%else%}
+				<th colspan="2">이미지가 없습니다.</th>
+			{%endif%}
 		</tr>
 		<tr>
 			<td>주문내역</td>
-			<td>{{strom}}</td>
+			<td>
+				{%for menu in storm_list%}
+					{{menu}}
+				{%endfor%}
+			</td>
 		</tr>
 		<tr>
 			<td>평점</td>
-			<td>{{reviewn}}</td>
+			<td>
+				{%for s in star%}
+					{{s}}
+				{%endfor%}			
+			</td>
 		</tr>
 		<tr>
 			<td>태그</td>
-			<td>{{tagn}}</td>
+			<td>
+				{%for i in tagn_list%}
+					#{{i}}
+				{%endfor%}
+			</td>		
 		<tr>
 			<td>내용</td>
-			<td>{{reviewn}}</td>
+			<td>
+				{%for con in content%}
+					{{con}}
+				{%endfor%}			
+			</td>
 		</tr>
 		<tr>
 			<th colspan = "2">
