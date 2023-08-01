@@ -13,6 +13,8 @@ cate : {{ cate }}
 drnk_t : {{ drnk_t }}
 dsrt_t : {{ dsrt_t }}
 ice : {{ ice }} 
+
+{{stor_m_id}}
 <form method="post" action="menuinfo" name="updateform" enctype="multipart/form-data">
 <input type="hidden" name="stor_id" value="{{ stor_m_id }}">
 {% csrf_token %}

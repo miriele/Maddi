@@ -29,12 +29,6 @@ class TestStoreView(View):
     def post(self, request):
         pass
 
-##################################################
-    # 이주림
-    # 지금은 비록 하드 코드로 박았지만..
-    # 나중에 stor_id, user_id, menu_id 넘겨 받는거로 수정할 것이다!!
-##################################################
-
 class AddJumjuView(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
@@ -42,13 +36,13 @@ class AddJumjuView(View):
     def get(self, request):
         
         #회원정보
-        user_id = "abc001"
+        user_id = request.session.get('memid')
         user = MdUser.objects.get(user_id=user_id)
         user_name = user.user_name
         user_bir = user.user_bir
         
         #매장정보
-        stor_id = 6
+        stor_id = request.GET['stor_id']
         store = MdStor.objects.get(stor_id=stor_id)
         stor_t_id = store.stor_t_id
         
@@ -86,8 +80,8 @@ class AddJumjuView(View):
         return render(request, 'md_store/addjumju.html', context)
     
     def post(self, request):
-        user_id     = "abc001"
-        stor_id     = 6
+        user_id     = request.POST['user_id']
+        stor_id     = request.POST['stor_id']
         reg_num     = request.POST["regnum"]
         imgreg      = request.FILES["imgreg"]
         reg_sub_ts  = timezone.now()
@@ -114,7 +108,7 @@ class AddJumjuView(View):
 class AddMenuView(View):
     def get(self, request):
         template = loader.get_template("md_store/addmenu.html")
-        stor_id = 1  
+        stor_id = request.GET["stor_id"] 
         stor = MdStor.objects.get(stor_id=stor_id)
         context = {
             'stor_name': stor.stor_name
@@ -122,8 +116,8 @@ class AddMenuView(View):
         return HttpResponse( template.render( context, request ) )
         
     def post(self, request):
-        stor_id = 4
-        menu_id = 1
+        stor_id = request.POST["stor_id"]
+        menu_id = request.POST["menu_id"]
         ice_t_id = request.POST["ice"]
         menu_t_id = request.POST["menutype"]
         stor_m_pric = request.POST["menupric"]
@@ -156,7 +150,7 @@ class StoreView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        stor_id = 3 
+        stor_id = request.GET['stor_id'] 
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             stor_t_id = store.stor_t_id
@@ -195,7 +189,7 @@ class StoreView(View):
             return HttpResponseNotFound()
 
     def post(self, request):
-        stor_id = 3
+        stor_id = request.POST["stor_id "]
         stor_tel = request.POST["tel"]
 
         try:
@@ -222,7 +216,7 @@ class MenuInfoView(View):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         
-        stor_m_id = 125
+        stor_m_id = request.GET['stor_m_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         menu_id = storem.menu_id
             
@@ -263,8 +257,8 @@ class MenuInfoView(View):
         return render(request, 'md_store/menuinfo.html', context)
     
     def post(self, request):
-        stor_m_id = 125
-        menu_id = 1
+        stor_m_id = request.GET['stor_m_id']
+        menu_id = request.GET['menu_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
     
         ice_t_id = request.POST["ice"]
@@ -362,7 +356,7 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        user_id = "abc001"
+        user_id = request.POST['memid']
         user = MdUser.objects.get(user_id=user_id)
         user_name = user.user_name
         

@@ -8,6 +8,8 @@
 {% block content %}
 {% csrf_token %}
 <h2>사용자_매장정보</h2>
+{{stor_id}}
+{{memid }}
 <form method="post" action="addfav"name="addfavform">
 	<input type="hidden" name="stor_id" value="{{stor_id}}"><!-- 수정 -->
 	{% if result == 0 %}
