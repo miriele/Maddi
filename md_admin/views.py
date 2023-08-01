@@ -58,10 +58,8 @@ class UserinfoView(View):
     def post(self,request):
         id = request.POST["id"]
         usrg = MdUserG.objects.get(user_g_id=request.POST["user_g"])
-        # print(usrg)
         users = MdUser.objects.get(user_id=id)
         
-        # logger.debug(f'usrg : {usrg}')
         newusers=MdUser(
             user_id = id,
             user_name = users.user_name,
@@ -77,7 +75,6 @@ class UserinfoView(View):
         
         if(MdUser.objects.filter(user_g_id=2)):
             users = MdUser.objects.filter(user_id=id).update(user_ext_ts=datetime.now())
-        # logger.debug(f'users : {users}')
         else:
             users = MdUser.objects.filter(user_id=id).update(user_ext_ts= None)
         return redirect("/md_admin/userlist")
@@ -87,21 +84,9 @@ class ReviewlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/reviewlist.html")
         count = MdReview.objects.count()    #리뷰갯수
-        
-        # 화면에 출력해줄 내용
-        # : 사용자명, 주문번호, 매장명, 리뷰등록일
-        # : md_ordr.user_id, md_ordr.ordr_id, md_stor.stor_name, md_review.rev_ts
-        
-        # select * from md_review;(김민우)
-        # select * from md_ordr where ordr_id=1;(김민우)
-        # select * from md_ordr_m where ordr_id=1;(김민우)
-        # select * from md_stor_m where stor_m_id=15;(김민우)
-        # select * from md_stor where stor_id=1;(김민우)
-            
+   
         rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
 
-        #logger.debug(f'type(rdtos) : {type(rdtos)}\nrdtos : {rdtos}')
-        
         context ={
             "count":count,
             "rdtos":rdtos,
@@ -121,16 +106,12 @@ class ReviewinfoView(View):
         storm = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(rev_id = rev_id).values('ordr__mdordrm__stor_m__stor_m_name')
         storm_list = list(storm)
         storm_list = list(m['ordr__mdordrm__stor_m__stor_m_name'] for m in storm_list)
-        print(storm_list)
         
         reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
         reviewn_list = list(reviewn)
         content = list(m['rev_cont'] for m in reviewn_list)
-        print(content)
         star = list(m['rev_star'] for m in reviewn_list)
-        print(star)
         revimage = list(m['rev_img'] for m in reviewn_list)
-        print(revimage)
         
         tagn = MdTag.objects.filter(mdrevt__rev_id=rev_id).values('tag_name')
         tagn_list = list(tagn)
@@ -177,38 +158,25 @@ class SregistinfoView(View):
         template = loader.get_template("md_admin/sregistinfo.html")
         reg_id = request.GET["reg_id"]
         reginfo = MdStorReg.objects.get(reg_id=reg_id)
-        #화면에 출력해줄내용
-        #아이디/매장명/매장유형/사업자등록번호/등록신청일/사업자등록이미지
         
-        # 매장유형명만출력하면 가능 (김민우)
-        # SELECT stor_id FROM md_stor_reg WHERE reg_id = 5;
-        # SELECT stor_t_id FROM md_stor WHERE stor_id = 100;
-        # SELECT stor_t_name FROM md_stor_t WHERE stor_t_id = 21;
-
-        # select stor_t_name (김민우)
-        # from md_stor_reg sr, md_stor s, md_stor_t st
-        # where  sr.stor_id = s.stor_id
-        #     and s.stor_t_id = st.stor_t_id
-        #     and sr.reg_id = 5;
-        result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=reg_id).values('stor_t_name')
-
-        # if result.exists() :
-        #     stor_t_name = result.first()['stor_t_name']
-        #     logger.debug(f'stor_t_name : {stor_t_name}')
-        # else:
-        #     logger.debug(f'stor_t_name : 해당하는 레코드가 없습니다')
-        
+        result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=reg_id).values('stor_t_id')
+        stortid = list(result)
+        stortid = list(m['stor_t_id'] for m in stortid)
+        if stortid[0] != 1:
+            stortid[0] = '프랜차이즈'
+        else:
+            stortid[0] = '개인매장'    
         context ={
             "reg_id" : reg_id,
             "reginfo": reginfo,
-            "result" : result,
+            "stortid" : stortid,
             }
         return HttpResponse(template.render(context,request))
     
-# 점주등록신청 승인
+    # 점주등록신청 승인
     def post(self,request):
         reg_id = request.POST["reg_id"]
-        reginfo = MdStorReg.objects.get(reg_id=reg_id)
+        reginfo = MdStorReg.objects.select_related("user").get(reg_id=reg_id)
         
         regagree = MdStorReg(
             reg_id = reg_id,
