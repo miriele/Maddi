@@ -11,8 +11,9 @@
 			<td>{{ user_name }} 점주님 안녕하세요</td>
 	    </tr>
 	    <tr>
+	    	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	    	<button type="button" onclick="location='menulist'">메뉴관리</button>
-	    	<button type="button" onclick="location='store'">매장관리</button>	
+	    	<button type="button" onclick="location.href='/md_store/store?stor_id={{stor_id}}'">매장관리</button>
 	    	<button type="button" onclick="redirectToReview()">리뷰관리</button>
 	    </tr>	
     </table>
@@ -23,5 +24,6 @@ function redirectToReview() {
     // 리뷰관리 페이지로 이동
     window.location.href = "/md_review/review";
 }
+
 </script>
 </html>

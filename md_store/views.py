@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views import View
 from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
@@ -189,33 +189,76 @@ class StoreView(View):
             return HttpResponseNotFound()
 
     def post(self, request):
-        stor_id = request.POST["stor_id "]
+        stor_id = request.GET.get("stor_id")
         stor_tel = request.POST["tel"]
-
+    
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             store.stor_tel = stor_tel
-
-            imgstor = request.FILES["imgstor"]
-
+    
+            imgstor = request.FILES.get("imgstor")
+    
             if imgstor:
                 store.stor_img = imgstor
                 logger.debug(f'imgreg : {imgstor}')
-
+    
             store.save()
-
-            return redirect("md_store:store")
-
+    
+            return redirect(reverse("md_store:store") + f'?stor_id={stor_id}')
+    
         except MdStor.DoesNotExist:
             return HttpResponseNotFound()
 
-
+class MenuListView(View):
+    def get(self, request):
+        stor_id =  request.GET.get("stor_id")
+        user_id =  request.session.get("memid")
+        
+    
+        store = MdStor.objects.get(stor_id=stor_id)
+        menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
+        stor_t_id = store.stor_t_id
+        
+        if store.stor_t_id == 0:
+            stor_type = "개인"
+        else:
+            stor_type = "프랜차이즈"
+        
+        if store.stor_tel:
+            stor_tel = store.stor_tel
+        else:
+            stor_tel = "등록된 연락처가 없습니다"
+        
+        if store.user_id:
+            user_ids= store.user_id
+        else:
+            user_ids = "등록된 점주가 없습니다"
+        
+        stor_img_str = str(store.stor_img)
+        stor_img = stor_img_str.replace(' /images', '')
+        
+        
+        context = {
+            'dto': store,
+            'stor_type': stor_type,
+            'stor_tel': stor_tel,
+            'stor_id' : stor_id,
+            'stor_t_id' : stor_t_id,
+            'stor_img' : stor_img,
+            'user_ids' : user_ids,
+            'menu_list': menu_list,
+        }
+        
+      
+        return render(request, 'md_store/menulist.html', context)
+    def post(self,request):
+        pass
+        
 class MenuInfoView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        
         stor_m_id = request.GET['stor_m_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         menu_id = storem.menu_id
@@ -241,13 +284,13 @@ class MenuInfoView(View):
         context = {
             'dto': storem,
             'ice' : storem.ice_t_id,
-            'stor_m_id': storem.stor_m_id,
+            'stor_m_id': stor_m_id,
+            'menu_id' : menu_id,
             'stor_m_name': storem.stor_m_name,
             'stor_m_pric': storem.stor_m_pric,
             'dsrt_t' : dsrt_t,
             'drnk_t' : drnk_t,
             'stor_m_cal': storem.stor_m_cal,
-            'stor_m_id': storem.stor_m_id,
             'stor_m_info': storem.stor_m_info,
             'stor_m_img': storem.stor_m_img,
             'menu_type': menu_type,
@@ -257,8 +300,8 @@ class MenuInfoView(View):
         return render(request, 'md_store/menuinfo.html', context)
     
     def post(self, request):
-        stor_m_id = request.GET['stor_m_id']
-        menu_id = request.GET['menu_id']
+        stor_m_id = request.POST['stor_m_id']
+        menu_id = request.POST['menu_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
     
         ice_t_id = request.POST["ice"]
@@ -268,8 +311,14 @@ class MenuInfoView(View):
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
         algy_t_list = request.POST.getlist("algy[]")
-        imgmenuinfo = request.FILES["imgmenuinfo"]
-    
+        imgmenuinfo = storem.stor_m_img = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_img
+
+        if "imgmenuinfo" in request.FILES:
+            imgmenuinfo = request.FILES["imgmenuinfo"]
+            storem.stor_m_img = imgmenuinfo
+        else:
+            storem.stor_m_img = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_img
+            
         stor_m_id = stor_m_id
         storem.ice_t_id = ice_t_id
         storem.menu_t_id = menu_t_id
@@ -290,8 +339,8 @@ class MenuInfoView(View):
             if algy_t_id not in existing_algy_t_ids:
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
     
-        return redirect("md_store:menulist")
-
+        return redirect(reverse("md_store:menulist") + f'?stor_m_id={stor_m_id}')
+    
 class StoreUserView(View):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
@@ -356,12 +405,15 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        user_id = request.session.get("memid")
+        user_id = "abc001"#request.session.get("memid")
         user = MdUser.objects.get(user_id=user_id)
+        stor = MdStor.objects.get(user_id=user_id)
+        stor_id = stor.stor_id
         user_name = user.user_name
         
         context = {
-            "user_name":user_name,
+            "user_name": user_name,
+            "stor_id" : stor_id
             }
         
         return HttpResponse( template.render( context, request ) )

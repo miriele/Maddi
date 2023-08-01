@@ -7,13 +7,8 @@
 </head>
 {% endblock %}
 {% block content %}
-<!-- 확인용 발표 전 삭제 -->
-{{ stor_id }} <br>
-{{ stor_img }} <br>
-{{ stor_type }} <br>
-{{ stor_tel }} <br>
-<form method="post" action="store" name="updateform" enctype="multipart/form-data">
-	<input type="hidden" name="stor_id" value="{{ stor_id }}">
+<form method="post" >
+  <input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<table>
 	    <tr>
 	        <th colspan="3">
@@ -61,7 +56,7 @@
 	    <tr>
 	        <th colspan="3">
 	        	<input class="input" type="file" name="imgstor" accept="image/*" id="imgstorInput">
-	            <input class="inputbutton" type="submit" value="수정">
+	            <input class="inputbutton" type="submit" value="수정" onclick="location='md_store/store?stor_id={{stor_id}}'">
 	            <input class="inputbutton" type="reset" value="취소" onclick="location='mypagejumju'">
 	        </th>
 	    </tr>

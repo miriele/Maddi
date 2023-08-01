@@ -8,16 +8,10 @@
 </head>
 {% endblock %}
 {% block content %}
-<!-- 확인용 발표 전 삭제 -->
-cate : {{ cate }}
-drnk_t : {{ drnk_t }}
-dsrt_t : {{ dsrt_t }}
-ice : {{ ice }} 
-
-{{stor_m_id}}
-<form method="post" action="menuinfo" name="updateform" enctype="multipart/form-data">
-<input type="hidden" name="stor_id" value="{{ stor_m_id }}">
-{% csrf_token %}
+<form method="post" action="{% url 'md_store:menuinfo' %}" name="updateform" enctype="multipart/form-data">
+    <input type="hidden" name="stor_m_id" value="{{ stor_m_id }}"> 
+    <input type="hidden" name="menu_id" value="{{ dto.menu_id }}">
+    {% csrf_token %}
 	<table>
 	    <tr>
 	        <th colspan="3"> 메뉴관리 </th>
@@ -139,7 +133,7 @@ ice : {{ ice }}
 	    <tr>
 	        <th colspan="3">
 	        	<input class="input" type="file" name="imgmenuinfo" accept="image/*" id="imgmenuinfoInput">
-	        	<input class="inputbutton" type="submit" value="수정">
+	        	<input class="inputbutton" type="submit" value="수정" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
 	            <input class="inputbutton" type="reset" value="취소" onclick="location='menulist'">	
 	        </th>
 	    </tr>

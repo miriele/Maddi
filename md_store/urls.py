@@ -10,9 +10,9 @@ urlpatterns = [
          path("storeuser",      views.StoreUserView.as_view(),      name="storeuser"),
          path("addjumju",       views.AddJumjuView.as_view(),       name="addjumju"),
          path("addjumjusuc",    views.AddJumjuSucView.as_view(),    name="addjumjusuc"),
-         path("addmenusuc",     views.AddMenuSucView.as_view(),      name="addmenusuc"),
+         path("addmenusuc",     views.AddMenuSucView.as_view(),     name="addmenusuc"),
          path("mypagejumju",    views.MypageJumjuView.as_view(),    name="mypagejumju"),
-         
+         path("menulist",    views.MenuListView.as_view(),       name="menulist"),
          path( "addfav",        views.AddFavView.as_view(),         name="addfav"),             # 혹시 모를 즐겨찾기 추가용 url
          
          path("teststore",    views.TestStoreView.as_view(),    name="teststore"),
