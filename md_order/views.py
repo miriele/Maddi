@@ -217,7 +217,7 @@ class BuckDelOrdrView(View):
                     except MdBuck.DoesNotExist:
                         pass
                     
-                    return redirect('md_order:buck')
+                return redirect('md_order:buck')
                     
         elif action == '주문하기':
             if selected_bucks:

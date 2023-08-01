@@ -97,6 +97,13 @@ class AddJumjuView(View):
         
         logger.debug(f'imgreg : {imgreg}')
         
+        exist_stor_reg = MdStorReg.objects.filter(user_id=user_id).first()
+
+        if exist_stor_reg:
+            context = {
+            }
+            return render(request, 'md_store/addjumjufail.html', context)
+
         MdStorReg.objects.create(
             user_id = user_id,
             stor_id = stor_id,
