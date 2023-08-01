@@ -75,26 +75,4 @@
 	    </tr>
 	</table>
 </form>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-	  const incrementButton = document.getElementById("incrementButton");
-	  const decrementButton = document.getElementById("decrementButton");
-	  const bucknumInput = document.getElementById("bucknum");
-
-	  incrementButton.addEventListener("click", function () {
-	    let currentBucknum = parseInt(bucknumInput.value);
-	    currentBucknum += 1;
-	    bucknumInput.value = currentBucknum;
-	  });
-
-	  decrementButton.addEventListener("click", function () {
-	    let currentBucknum = parseInt(bucknumInput.value);
-	    if (currentBucknum > 1) {
-	      currentBucknum -= 1;
-	      bucknumInput.value = currentBucknum;
-	    }
-	  });
-	});
-</script>
 {% endblock %}
