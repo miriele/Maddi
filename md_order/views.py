@@ -274,6 +274,7 @@ class OrdrSucView (View):
 
 class OrdrListView(View):
     def get(self, request):
+        stor_id = request.GET['stor_id']
         orders = MdOrdr.objects.all()
         
         orders = MdOrdr.objects.annotate(
