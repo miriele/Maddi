@@ -96,7 +96,7 @@ class ReviewlistView(View):
         template = loader.get_template("md_admin/reviewlist.html")
         count = MdReview.objects.count()    #리뷰갯수
    
-        rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts')
+        rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts').order_by("-rev_ts")
 
         context ={
             "count":count,
@@ -114,9 +114,13 @@ class ReviewinfoView(View):
         template = loader.get_template("md_admin/reviewinfo.html")
         rev_id = request.GET["rev_id"]
         
-        storm = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(rev_id = rev_id).values('ordr__mdordrm__stor_m__stor_m_name')
-        storm_list = list(storm)
-        storm_list = list(m['ordr__mdordrm__stor_m__stor_m_name'] for m in storm_list)
+        storm = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(rev_id = rev_id).values('ordr__mdordrm__stor_m__stor_m_name','ordr__mdordrm__ordr_num')
+        storm = list(storm)
+        
+        storm_list = list(m['ordr__mdordrm__stor_m__stor_m_name'] for m in storm)
+        ordrnum_list = list(m['ordr__mdordrm__ordr_num'] for m in storm)
+        
+        print(ordrnum_list)
         
         reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
         reviewn_list = list(reviewn)
@@ -135,6 +139,7 @@ class ReviewinfoView(View):
             "star" : star,
             "revimage" : revimage,
             "tagn_list":tagn_list,
+            "ordrnum_list" : ordrnum_list,
             }
         return HttpResponse(template.render(context,request))
    
