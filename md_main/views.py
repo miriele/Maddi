@@ -101,9 +101,16 @@ class SearchView(View):
         return View.dispatch(self, request, *args, **kwargs)    
 
     def post(self, request):
-        searchText = request.POST["search_word"]
-        bjdName    = request.POST["bjd_name"]
+        searchText   = request.POST["search_word"]
+        bjdName      = request.POST["bjd_name"]
+        strLatiSouth = request.POST["latiSouth"]
+        strLatiNorth = request.POST["latiNorth"]
+        strLongWest  = request.POST["longWest"]
+        strLongEast  = request.POST["longEast"]
         logger.debug(f'searchText : {searchText}\tbjdName : {bjdName}')
+        logger.debug(f'strLatiSouth : {strLatiSouth}\tstrLatiNorth : {strLatiNorth}')
+        logger.debug(f'strLongWest : {strLongWest}\tstrLongEast : {strLongEast}')
+        logger.debug(f'type(strLatiSouth) : {type(strLatiSouth)}\tfloat(strLatiSouth) : {float(strLatiSouth)}')
         
         subquery_sb = MdStorM.objects.filter(
                             menu__menu_name=searchText
@@ -113,7 +120,11 @@ class SearchView(View):
                             bjd_code__bjd_name=bjdName,
                             area_t_id__in=MdStor.objects.filter(
                                 bjd_code__bjd_name=bjdName
-                            ).values('area_t_id')
+                            ).values('area_t_id'),
+                            stor_lati__gt=float(strLatiSouth),
+                            stor_lati__lt=float(strLatiNorth),
+                            stor_long__gt=float(strLongWest),
+                            stor_long__lt=float(strLongEast)
                         ).annotate(
                             area_t_name=F('area_t__area_t_name')
                         ).filter(

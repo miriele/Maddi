@@ -173,6 +173,10 @@ function setMenuName(menuName) {
 }
 
 function performSearch() {
+	var bounds		= kakaomap.getBounds();
+	var swLatLng	= bounds.getSouthWest();
+	var neLatLng	= bounds.getNorthEast();
+
 	$.ajax(
 		{
 			url  : "searchlist",
@@ -180,6 +184,10 @@ function performSearch() {
 			data : {
 				search_word : $("input[name='search_word']").val(),
 				bjd_name    : $("input[name='bjd_name']").val(),
+				latiSouth   : swLatLng.getLat(),
+				latiNorth   : neLatLng.getLat(),
+				longWest    : swLatLng.getLng(),
+				longEast    : neLatLng.getLng(),
 				csrfmiddlewaretoken: "{{ csrf_token }}",
 			},	// data : {
 			datatype : "text",
