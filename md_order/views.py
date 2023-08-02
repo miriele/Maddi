@@ -15,6 +15,7 @@ logger = logging.getLogger( __name__ )
 class OrderInfoView(View):
     def get(self, request):
         user_id = request.session.get('memid')
+        memid = request.session.get('memid')
         stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -37,6 +38,7 @@ class OrderInfoView(View):
         buckprice = bucknum * storem.stor_m_pric
 
         context = {
+            "memid"     : memid,
             'dto': storem,
             'stor_m_pric': storem.stor_m_pric,
             'stor_m_name': storem.stor_m_name,
@@ -173,7 +175,8 @@ class OrderView(View):
 class BuckView(View):
     def get(self, request):
         try:
-            user_id = request.session.get("memId")
+            memid = request.session.get('memid')
+            user_id = request.session.get("memid")
             stor_m_id = request.POST.get('stor_m_id')
             bucks = MdBuck.objects.select_related('stor_m__stor')
             context = {}
@@ -205,7 +208,7 @@ class BuckView(View):
 
             logger.debug(f'context : {context}')
 
-            return render(request, 'md_order/buck.html', {'context': context})
+            return render(request, 'md_order/buck.html', {'context': context, 'memid' : memid})
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
         
@@ -267,7 +270,8 @@ class BuckDelOrdrView(View):
 class OrdrSucView (View):
     def get(self,request):
         template = loader.get_template( "md_order/ordersuc.html" )
-        context = {}
+        memid = request.session.get('memid')
+        context = {"memid" : memid}
         return HttpResponse( template.render( context, request ) )
     def post(self,request):
         pass
@@ -277,7 +281,7 @@ class OrdrListView(View):
     def get(self, request):
         stor_id = request.GET['stor_id']
         orders = MdOrdr.objects.all()
-        
+        memid = request.session.get('memid')
         orders = MdOrdr.objects.annotate(
             order_status=Case(
                 When(ordr_com_ts__isnull=True, then=Value('접수완료')),
@@ -327,7 +331,7 @@ class OrdrListView(View):
         
 
 
-        return render(request, 'md_order/orderlist.html', {'context': context}) 
+        return render(request, 'md_order/orderlist.html', {'context': context, 'memid' :memid}) 
     
 
 class OrdrDoneView (View):
