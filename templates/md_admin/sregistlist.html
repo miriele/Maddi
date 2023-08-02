@@ -13,9 +13,16 @@
 				<th style="width:7%"> 아이디 </th>
 				<th style="width:7%"> 매장명 </th>
 				<th style="width:7%"> 신청일 </th>
-				<th style="width:7%"> 신청완료 </th>	
-			{%for list in reglists%}
+				<th style="width:7%"> 신청완료 </th>
 			</tr>
+			{% if count == 0 %}
+				<tr>
+					<td colspan = "5" align = "center">
+						등록없음
+					</td>
+				</tr>
+			{%else%}			
+			{%for list in reglists%}
 				<tr>
 					<td align = "center">
 						<a href = "sregistinfo?reg_id={{list.reg_id}}">{{list.user_id}}</a>				
@@ -31,6 +38,7 @@
 					</td>								
 				</tr>
 			{%endfor%}
+			{%endif%}
 		</table>
 {%endblock%}			
 </body>

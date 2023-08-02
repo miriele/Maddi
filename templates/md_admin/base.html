@@ -5,31 +5,55 @@
 <head>
 	<meta charset="UTF-8">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_admin.css'%}">
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script src = "{%static 'js/script_admin.js'%}"></script>
-	<script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-bundle.min.js"></script>
+	<script src = "{%static 'js/script_gastatis.js'%}"></script>
+	<script src = "{%static 'js/script_interstatis.js'%}"></script>
+	<script src = "{%static 'js/script_taststatis.js'%}"></script>
+	<script src = "{%static 'js/script_dsrtstatis.js'%}"></script>
+	<script src = "{%static 'js/script_drnkstatis.js'%}"></script>
+	<script src = "{%static 'js/script_bdsrtstatis.js'%}"></script>
+	<script src = "{%static 'js/script_bdrnkstatis.js'%}"></script>
+	<script src=  "https://cdn.anychart.com/releases/8.10.0/js/anychart-bundle.min.js"></script>
+	<script src = "{%static 'js/script_keystatis.js'%}"></script>
 	<title>통계</title>
 </head>
 
 <body>
 	{%block topbar%}
 		<h4>사이트관리</h4>
-		<a href="/md_admin/userlist">회원관리</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/reviewlist">리뷰관리</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/sregistlist">점주등록신청관리</a> &nbsp;&nbsp;&nbsp;
+			<ul>
+				<li>
+					<a href="/md_admin/userlist">회원관리</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/reviewlist">리뷰관리</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/sregistlist">점주등록신청관리</a> &nbsp;&nbsp;&nbsp;
+				</li>
+			</ul>
+		<br>
 		<h4>회원통계</h4>
-		<a href="/md_admin/genstatis">성별통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/agestatis">연령통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/interestatis">관심사통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;	
-		<a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/drnkstatis">회원정보기반 음료통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/bdrnkstatis">구매기반 음료통계</a> &nbsp;&nbsp;&nbsp;
-		<a href="/md_admin/iaostatis">회원유입&이탈 통계</a> &nbsp;&nbsp;&nbsp;
+			<ul>
+				<li>
+					<a href="/md_admin/genstatis">성별통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/agestatis">연령통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/interestatis">관심사통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;	
+					<a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/drnkstatis">회원정보기반 음료통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/bdrnkstatis">구매기반 음료통계</a> &nbsp;&nbsp;&nbsp;
+					<a href="/md_admin/iaostatis">회원유입&이탈 통계</a> &nbsp;&nbsp;&nbsp;
+				</li>
+			</ul>
+		<br>
 		<h4>사이트통계</h4>
-		<a href="/md_admin/storestatis">매장통계</a> &nbsp;&nbsp;&nbsp;
-		<a href ="/md_admin/keystatis">검색통계</a> &nbsp;&nbsp;&nbsp;
+			<ul>
+				<li>
+					<a href="/md_admin/storestatis">매장통계</a> &nbsp;&nbsp;&nbsp;
+					<a href ="/md_admin/keystatis">검색통계</a> &nbsp;&nbsp;&nbsp;
+				</li>
+			</ul>
+		<br>
 	{%endblock%}
 	
 	{%block content%}

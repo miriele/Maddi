@@ -161,8 +161,10 @@ class SregistlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistlist.html")
         reglists = MdStorReg.objects.select_related("stor")
+        count = MdStorReg.objects.count()
         context ={
             "reglists":reglists,
+            "count" : count
             }
         return HttpResponse(template.render(context,request))
 
@@ -1508,7 +1510,6 @@ class BdsrtView(View):
         
         for i in range(len(bdsrt_n)):
             bdsrt_list.append(0)
-        print(bdsrt_list)
         
         for key,value in sorted(dict_bdsrt.items()):
             for index,val in enumerate(bdsrt_list):
@@ -1760,7 +1761,7 @@ class IaoView(View):
         for i in range(len(exmaddi)):            
             exlist.append(exmaddi[i][0:7])
         exlist = [str(i) for i in exlist if i !='None']    
-        print(exlist)
+        # print(exlist)
         
         #해당연월 정지된 수
         dict_exmaddi = {}
@@ -1771,7 +1772,7 @@ class IaoView(View):
             list_exmaddi.append(value)
         
         list_exmaddi = [int(i) for i in list_exmaddi if i !='None']  
-        print(list_exmaddi)
+        # print(list_exmaddi)
    
         #연월 값 뽑기
         exyear = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")

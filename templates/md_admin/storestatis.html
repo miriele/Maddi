@@ -2,15 +2,14 @@
 
 {% block content %}
 <h2>관리자 통계페이지-매장현황</h2><br>
-
-	<div>
+	<div style = "float:left; margin-right:80px">
 		<h4>개인/프랜차이즈구분</h4>
-		등록매장:{{scount}}
 	  	<canvas id="stor" width = "500" height = "500"></canvas>
+	  	등록매장:{{scount}}
 	</div>
 	<span id = "stor_count" hidden>{{stor_list}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	
-	<div>
+	<div style = "float:left; margin-right:80px">
 		<h4>사이트 내 프랜차이즈 매장 현황 (상위 20개)</h4>
 		<h5>프랜차이즈 매장 수 : {{fcount}}</h5>
 		<table border = "1">

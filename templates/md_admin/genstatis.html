@@ -1,34 +1,41 @@
 {% extends "md_admin/base.html" %}
-<h2>관리자 통계페이지</h2>
 {% block content %}
-<h2>관리자 통계페이지-성별분포</h2><br><br><br>
+<h2>성별통계</h2><br>
 
-<h3>전체회원</h3>
-	<div>
+<div style = "float:left; margin-right:80px">
+	<h3>전체회원</h3>
 	  <canvas id="gender" width = "500" height = "500"></canvas>
-	</div>
-	<span id = "inwon" hidden>{{inwon}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
-	<span id = "gend" hidden>{{gend}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기  -->
-회원수:{{count}}명<br>
-남성:{{menper}}%<br>
-여성:{{womenper}}%<br>
+	  	<table border = "1">
+	  		<tr>
+  				<td>전체회원수</td>
+  				<td>남성(%)</td>
+  				<td>여성(%)</td>
+	  		</tr>
+	  		<tr>
+	  			<td>{{count}}명</td>
+	  			<td>{{menper}}</td>
+	  			<td>{{womenper}}</td>
+	  		</tr>
+	  	</table>
+</div>
+<span id = "inwon" hidden>{{inwon}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
+<span id = "gend" hidden>{{gend}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기  -->
 
-	<div style = "float:left;">
-		<h3>남성회원 - 연령대 분포</h3>
-	  		<canvas id="gender_man" width = "300" height = "300"></canvas>
+
+<div style = "float:left; margin-right:80px">
+	<h3>남성회원</h3>
+	  	<canvas id="gender_man" width = "500" height = "500"></canvas>
 	  		남성회원수:{{mancount}}명<br>
-	</div>
-	<span id = "man_agecount" hidden>{{man_agecount}}</span>
+</div>
+<span id = "man_agecount" hidden>{{man_agecount}}</span>
 
 	
-
-	<div style = "float:left;">
-		<h3>여성회원 - 연령대 분포</h3>	
-	  	<canvas id="gender_woman" width = "300" height = "300"></canvas>
+<div style = "float:left; margin-right:80px">
+	<h3>여성회원</h3>
+	  	<canvas id="gender_woman" width = "500" height = "500"></canvas>
 	  	여성회원수:{{womancount}}명<br>
-	</div>
-	<span id = "woman_agecount" hidden>{{woman_agecount}}</span>
-
+</div>
+<span id = "woman_agecount" hidden>{{woman_agecount}}</span>
 
 {% endblock %}
 

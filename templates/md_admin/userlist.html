@@ -5,8 +5,8 @@
 	<h2>가입회원 수:{{count}}</h2>
         <form class="d-flex" method="POST" action="{% url 'md_admin:search' %}">
         {%csrf_token%}   
-            <input type="search" placeholder="Search" name="searched">
-            <button type="submit"> Search </button>
+            <input type="search" placeholder="회원아이디 입력" name="searched">
+            <button type="submit"> 검색 </button>
         </form>	
 	<table border = "1">
 		<tr>
