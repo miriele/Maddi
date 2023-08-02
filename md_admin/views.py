@@ -90,6 +90,7 @@ class UserinfoView(View):
             users = MdUser.objects.filter(user_id=id).update(user_ext_ts=datetime.now())
         else:
             users = MdUser.objects.filter(user_id=id).update(user_ext_ts= None)
+               
         return redirect("/md_admin/userlist")
 
 # 리뷰리스트
@@ -1759,7 +1760,7 @@ class IaoView(View):
         exlist = []
         for i in range(len(exmaddi)):            
             exlist.append(exmaddi[i][0:7])
-        exlist = [str(i) for i in exlist if i !='None']    
+        exlist = [str(i) for i in exlist if i !='None']   
         # print(exlist)
         
         #해당연월 정지된 수
@@ -1775,16 +1776,26 @@ class IaoView(View):
    
         #연월 값 뽑기
         exyear = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
-        # print(exyear)
         exyear = list(m["user_ext_ts"] for m in exyear)
-        # print(exyear)
         exyear = list(map(str,exmaddi))
-      
+
+        exyearlist = []
+        for i in range(len(exyear)):            
+            exyearlist.append(exmaddi[i][0:7])
+        
+        #중복값 제거
+        upexyearlist = []
+        for i in exyearlist:
+            if i not in upexyearlist:
+                upexyearlist.append(i)
+                
+        upexyearlist = [str(i) for i in upexyearlist if i !='None']
+        
         context = {
             "list_welmaddi" : list_welmaddi,
-            "upwelyearlist" : upwelyearlist,
-            "exlist" : exlist,
             "list_exmaddi" : list_exmaddi,
+            "upwelyearlist" : upwelyearlist,
+            "upexyearlist" : upexyearlist,
             }
         return HttpResponse(template.render(context,request))
 
