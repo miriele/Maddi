@@ -869,7 +869,7 @@ class DsrtView(View):
         dsrt_n = list(m['dsrt_t_name'] for m in dsrt_n)
         
         
-        # print(dsrt_n)
+        
                      
         #남성회원 디저트 취향
         mandsrt = MdUDsrt.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("dsrt_t","year").order_by("dsrt_t")
@@ -1198,7 +1198,7 @@ class DrnkView(View):
             wup_agelist.append(wage)         
             wup_drnklist.append(wmdrnk)
             
-        wziptup = list(zip(wup_agelist,wup_drnklist))  
+        wziptup = list(zip(wup_agelist,wup_drnklist))
         wziplist = [list(row) for row in wziptup]
 
         
@@ -1255,9 +1255,9 @@ class DrnkView(View):
             for index,val in enumerate(womanord_drlist):
                 womanord_drlist[key] = value                
         
-        
         # 음료 분류 리스트 '없음' 제거
         drnk_n.remove('없음')
+
         # print(dsrt_n)    
         context = {
             "drnk_n" : drnk_n,
@@ -1293,7 +1293,7 @@ class BdrnkView(View):
         # 음료분류명
         bdrnk_n = MdDrnkT.objects.values("drnk_t_name").order_by("drnk_t_id")
         bdrnk_n = list(m['drnk_t_name'] for m in bdrnk_n)
-        bdrnk_n.remove('없음')
+        
         
         bdrnk_list = []
         for i in range(len(bdrnk_n)):
@@ -1303,7 +1303,6 @@ class BdrnkView(View):
             for index,val in enumerate(bdrnk_list):
                 bdrnk_list[key] = value
         
-         
         # 남성 구매기반 음료 취향        
         mbdrnk = MdOrdrM.objects.annotate(year = Substr("ordr__user__user_bir",1,4)).select_related("stor_m__menu").filter(ordr__user__gen=0).values_list("stor_m__menu__drnk_t","year")
         mbdrnk_list = list(mbdrnk)
@@ -1330,6 +1329,7 @@ class BdrnkView(View):
                 age = '60대이상'
             up_agelist.append(age)         
             up_bdrnklist.append(mbdrnk)
+            
             
         ziptup = list(zip(up_agelist,up_bdrnklist))
         ziplist = [list(row) for row in ziptup]
@@ -1406,7 +1406,7 @@ class BdrnkView(View):
             elif(wage>=30 and wage<40):
                 wage = '30대'
             elif(wage>=40 and wage<50):
-                age = '40대'
+                wage = '40대'
             elif(wage>=50 and wage<60):
                 wage = '50대'
             else:
@@ -1469,7 +1469,9 @@ class BdrnkView(View):
         for key,value in sorted(womanord_bdrnk.items()):
             for index,val in enumerate(womanord_bdrlist):
                 womanord_bdrlist[key] = value         
-
+        
+        
+        bdrnk_n.remove('없음')
         context = {
             "bdrnk_n" : bdrnk_n,
             "bdrnk_list" : bdrnk_list,
@@ -1504,7 +1506,7 @@ class BdsrtView(View):
         
         bdsrt_n = MdDsrtT.objects.values("dsrt_t_name").order_by("dsrt_t_id")
         bdsrt_n = list(m['dsrt_t_name'] for m in bdsrt_n)
-        bdsrt_n.remove('없음')       
+             
         
         bdsrt_list  = []
         
@@ -1518,7 +1520,7 @@ class BdsrtView(View):
         # 남성 구매기반 디저트 취향        
         mbdsrt = MdOrdrM.objects.annotate(year = Substr("ordr__user__user_bir",1,4)).select_related("stor_m__menu").filter(ordr__user__gen=0).values_list("stor_m__menu__dsrt_t","year")
         mbdsrt_list = list(mbdsrt)
-        # print(mbdsrt_list)
+
         
         up_agelist = []
         up_bdsrtlist = []
@@ -1543,11 +1545,9 @@ class BdsrtView(View):
            
             up_agelist.append(age)         
             up_bdsrtlist.append(mbdsrt)
-            up_bdsrtlist = [item for item in up_bdsrtlist if item != -1]
-            print(up_bdsrtlist)
-
+            
         ziptup = list(zip(up_agelist,up_bdsrtlist))
-        ziplist = [list(row) for row in ziptup]  
+        ziplist = [list(row) for row in ziptup]
 
         teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
         twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
@@ -1605,7 +1605,6 @@ class BdsrtView(View):
         # 여성 구매기반 디저트 취향        
         wmbdsrt = MdOrdrM.objects.annotate(year = Substr("ordr__user__user_bir",1,4)).select_related("stor_m__menu").filter(ordr__user__gen=1).values_list("stor_m__menu__dsrt_t","year")
         wmbdsrt_list = list(wmbdsrt)
-        # print(mbdsrt_list)
         
         wup_agelist = []
         wup_bdsrtlist = []
@@ -1614,7 +1613,7 @@ class BdsrtView(View):
             wmbdsrt = wmyear[0]
             wmyear = int(wmyear[1])
             wage = today - wmyear
-            #print(age)
+
             if(wage >=10 and wage<20):
                 wage = '10대'
             elif(wage>=20 and wage<30):
@@ -1627,14 +1626,13 @@ class BdsrtView(View):
                 wage = '50대'
             else:
                 wage = '60대이상'
-           
-            wup_agelist.append(wage)         
+            wup_agelist.append(wage)     
             wup_bdsrtlist.append(wmbdsrt)
-            wup_bdsrtlist = [item for item in wup_bdsrtlist if item != -1]
-
+         
+        
         wziptup = list(zip(wup_agelist,wup_bdsrtlist))
         wziplist = [list(row) for row in wziptup]  
-
+        
         teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
         twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
         thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
@@ -1687,7 +1685,8 @@ class BdsrtView(View):
         for key,value in sorted(womanord_bdsrt.items()):
             for index,val in enumerate(womanord_bdslist):
                 womanord_bdslist[key] = value        
-        
+                
+        bdsrt_n.remove('없음')        
         context = {
             "bdsrt_list" : bdsrt_list,
             "bdsrt_n" : bdsrt_n,
@@ -1697,7 +1696,7 @@ class BdsrtView(View):
             "manfou_bdslist" : manfou_bdslist,
             "manfiv_bdslist" : manfiv_bdslist,
             "manord_bdslist" : manord_bdslist,
-            "womanteen_bdslist" : manteen_bdslist,
+            "womanteen_bdslist" : womanteen_bdslist,
             "womantwe_bdslist" : womantwe_bdslist,
             "womanthr_bdslist" : womanthr_bdslist,
             "womanfou_bdslist" : womanfou_bdslist,
