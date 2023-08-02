@@ -7,11 +7,39 @@
 	</div>
 	<span id = "agecount" hidden>{{agecount}}</span><!--span으로 넘어온값 template단에 표시x jquery데이터넘기기 -->
 	<div style = "float:left; margin-right:80px">
-		10대: {{agecount.0}}명<br>
-		20대: {{agecount.1}}명<br>
-		30대: {{agecount.2}}명<br>
-		40대: {{agecount.3}}명<br>
-		50대: {{agecount.4}}명<br>
-		60대이상: {{agecount.5}}명<br>
+		<table border = "1">
+			<tr>
+				<td align = "center">연령대</td>
+				<td align = "center">명</td>
+			</tr>
+			<tr>
+				<td align = "center">10대</td>
+				<td align = "center">{{agecount.0}}</td>
+			</tr>
+			<tr>
+				<td align = "center">20대</td>
+				<td align = "center">{{agecount.1}}</td>
+			</tr>
+			<tr>
+				<td align = "center">30대</td>
+				<td align = "center">{{agecount.2}}</td>
+			</tr>
+			<tr>
+				<td align = "center">40대</td>
+				<td align = "center">{{agecount.3}}</td>
+			</tr>
+			<tr>
+				<td align = "center">50대</td>
+				<td align = "center">{{agecount.4}}</td>
+			</tr>
+			<tr>
+				<td align = "center">60대이상</td>
+				<td align = "center">{{agecount.5}}</td>
+			</tr>
+			<tr>
+				<td align = "center">전체</td>
+				<td align = "center">{{count}}</td>
+			</tr>
+		</table>
 	</div>
 {% endblock %}

@@ -2080,7 +2080,7 @@ class KeywordView(View):
             womanteen_list.append({"x":text,"weight":weight})
             
         for text,weight in zip(womantwe_textlist,womantwe_weightlist):
-            mantwe_list.append({"x":text,"weight":weight})
+            womantwe_list.append({"x":text,"weight":weight})
             
         for text,weight in zip(womanthr_textlist,womanthr_weightlist):
             womanthr_list.append({"x":text,"weight":weight})
