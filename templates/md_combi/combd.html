@@ -1,9 +1,8 @@
 {% extends "md_member/base.html" %}
 
-{% block title %} <h2> 추천글 보기 </h2> {% endblock %}
-
 {% block content %}
 {% csrf_token %}
+ <h2> 추천글 보기 </h2> 
 <form method="post" action="clike"name="clikeform">
 	<input type="hidden" name="comb_id" value="{{comb_id}}">
 	<input type="hidden" name="pagenum" value="{{pagenum}}">
