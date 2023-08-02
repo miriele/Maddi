@@ -407,9 +407,9 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        user_id = request.session.get("memid")
-        user = MdUser.objects.get(user_id=user_id)
-        stor = MdStor.objects.get(user_id=user_id)
+        memid = "abc001" #request.session.get("memid")
+        user = MdUser.objects.get(user_id=memid)
+        stor = MdStor.objects.get(user_id=memid)
         stor_id = stor.stor_id
         user_name = user.user_name
         

@@ -8,7 +8,6 @@ from django.template import loader
 import logging
 from django.db.models import Case, When, Value, CharField
 
-
 # 로그
 logger = logging.getLogger( __name__ )
 
@@ -280,8 +279,9 @@ class OrdrSucView (View):
 class OrdrListView(View):
     def get(self, request):
         stor_id = request.GET['stor_id']
-        orders = MdOrdr.objects.all()
+        template = loader.get_template("md_order/orderlist.html")
         memid = request.session.get('memid')
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id=memid).values('ordr_id', 'user_id', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_name', 'mdordrm__stor_m__stor__stor_id', 'ordr_ord_ts', 'ordr_com_ts')
         orders = MdOrdr.objects.annotate(
             order_status=Case(
                 When(ordr_com_ts__isnull=True, then=Value('접수완료')),
@@ -289,50 +289,14 @@ class OrdrListView(View):
                 output_field=CharField()
             )
         )
-
         orders = orders.order_by('order_status', 'ordr_com_ts')
-    
-        context = []
-
-        for order in orders:
-            context_m = []
-            order_menus = MdOrdrM.objects.filter(ordr_id=order.ordr_id)
-            
-            if order.ordr_com_ts is None:
-                order_status = '접수완료'
-            else:
-                order_status = '처리완료'
-            
-            
-            for order_menu in order_menus:
-                stor_m = MdStorM.objects.get(stor_m_id=order_menu.stor_m_id)
-                context_m.append({
-                    'ordr_m_id': order_menu.ordr_m_id,
-                    'stor_m_id': order_menu.stor_m_id,
-                    'stor_m_name': stor_m.stor_m_name,
-                    'ordr_num': order_menu.ordr_num,
-                })
-
-            
-            
-            
-                context.append({
-                        'ordr_id': order.ordr_id,
-                        'user_id': order.user_id,
-                        'weather_id': order.weather_id,
-                        'weather_name': order.weather.weather_name,
-                        'ordr_temp': order.ordr_temp,
-                        'ordr_ord_ts': order.ordr_ord_ts,
-                        'ordr_com_ts': order.ordr_com_ts,
-                        'stor_m_name': stor_m.stor_m_name,
-                        'order_status': order_status,  
-                        'order_menus': context_m,
-                    })
+        context = {
+            "odtos": odtos,
+            "stor_id" : stor_id
+        }
         
+        return HttpResponse(template.render(context, request))
 
-
-        return render(request, 'md_order/orderlist.html', {'context': context, 'memid' :memid}) 
-    
 
 class OrdrDoneView (View):
     def post(self, request):

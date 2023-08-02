@@ -11,12 +11,25 @@
 			<td>{{ user_name }} 점주님 안녕하세요</td>
 	    </tr>
 	    <tr>
-	    	<input type="hidden" name="stor_id" value="{{ stor_id }}">
-	    	<button type="button" onclick="location.href='/md_store/menulist?stor_id={{stor_id}}'">메뉴관리</button>
-	    	<button type="button" onclick="location.href='/md_store/store?stor_id={{stor_id}}'">매장관리</button>
-	    	<button type="button" onclick="location.href='/md_order/orderlist?stor_id={{stor_id}}'">주문관리</button>
-	    	<button type="button" onclick="location.href='/md_review/review?stor_id={{stor_id}}'">리뷰관리</button>
-	    	
+	    	<form method="GET" action="/md_store/menulist">
+			    <input type="hidden" name="stor_id" value="{{ stor_id }}">
+			    <button type="submit">메뉴관리</button>
+			</form>
+			
+			<form method="GET" action="/md_store/store">
+			    <input type="hidden" name="stor_id" value="{{ stor_id }}">
+			    <button type="submit">매장관리</button>
+			</form>
+			
+			<form method="GET" action="/md_order/orderlist">
+			    <input type="hidden" name="stor_id" value="{{ stor_id }}">
+			    <button type="submit">주문관리</button>
+			</form>
+			
+			<form method="GET" action="/md_review/review">
+			    <input type="hidden" name="stor_id" value="{{ stor_id }}">
+			    <button type="submit">리뷰관리</button>
+			</form>
 	    </tr>	
     </table>
 </body>
