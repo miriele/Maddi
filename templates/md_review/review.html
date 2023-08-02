@@ -1,21 +1,17 @@
 {% extends "md_member/base.html" %}
 
-{% block title %} <h2> 리뷰 목록 </h2> {% endblock %}
-
 {% block content %}
+<h2> 리뷰 목록 </h2>
 	<table border="1">
 	{% if count == 0 %}
 		<tr>
 			<td colspan="5" align="center" >
 					등록된 리뷰가 없습니다.
+			</td>
 		</tr>
 	{% else %}
 		{% for rdto in rdtos %}
 			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}
-				<tr>
-					<td>매장명 ※ {{ rdto.ordr__mdordrm__stor_m__stor__stor_name }} ※ </td>
-					<!-- ##########구분 용 지울 예정 -->
-				</tr>
 				<tr>
 					<td>
 						<img src="/media/{{rdto.ordr__user__user_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';" width="50" height="50" name="img_r" border-radius="50%">

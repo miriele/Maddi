@@ -1,8 +1,8 @@
 {% extends "md_member/base.html" %}
 
-{% block title %} <h2> 리 뷰 작 성 </h2> {% endblock %}
 {% block content %}
 {% csrf_token %}
+<h2> 리뷰작성 </h2>
 <form method="post" action="revwrite "	name="revwriteform" enctype="multipart/form-data">
 	<input type="hidden" name="ordr_id" value="{{ordr_id}}">
 	<table >
