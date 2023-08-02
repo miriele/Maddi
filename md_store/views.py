@@ -351,6 +351,7 @@ class StoreUserView(View):
     def get(self, request):
         stor_id = request.GET.get("stor_id")
         memid    = request.session.get("memid")
+        gid      = request.session.get("gid")
         
         result = 0
         md_fav = MdFavorite.objects.filter(stor = stor_id)

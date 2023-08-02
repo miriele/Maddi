@@ -173,6 +173,7 @@ class OrderView(View):
 class BuckView(View):
     def get(self, request):
         try:
+            user_id = request.session.get("memId")
             stor_m_id = request.POST.get('stor_m_id')
             bucks = MdBuck.objects.select_related('stor_m__stor')
             context = {}

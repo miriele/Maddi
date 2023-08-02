@@ -8,29 +8,28 @@
 {% block content %}
 {% csrf_token %}
 <h2>사용자_매장정보</h2>
-{{stor_id}}
-{{memid }}
-<form method="post" action="addfav"name="addfavform">
-	<input type="hidden" name="stor_id" value="{{stor_id}}"><!-- 수정 -->
-	{% if result == 0 %}
-		<input type="button" name="addfavbtn" value="즐겨찾기 등록">
-	{% else %}
-		<input type="button" name="addfavbtn" value="즐겨찾기 취소">
-	{% endif %}
-</form>
 <form method="post" action="storeuser" name="updateform">
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
+	<input type="hidden" name="user_id" value="{{ user_id }}">
 
 	<table>
 	    <tr>
 	        <th>매장정보</th>
 	        <th>
+	        	{% if gid == 1 %}
 	        	<input class="inputbutton" type="button" value="점주등록"
-						onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">					
-	        </th>
-	        <th>
+						onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
+				{% endif %}				
 	        	<input type="button" name="reviewgo" value="리뷰 보기"
 	        		onclick="location='/md_review/review?stor_id={{stor_id}}'">
+	        	<form method="post" action="addfav"name="addfavform">
+					<input type="hidden" name="stor_id" value="{{stor_id}}"><!-- 수정 -->
+					{% if result == 0 %}
+						<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+					{% else %}
+						<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+					{% endif %}
+				</form>
 	        </th>
 	    </tr>
 	    <tr>
