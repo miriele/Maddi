@@ -50,7 +50,11 @@
 			</tr>
 			<tr>
 				<th> 회원등급 </th>
-				<td> {{g_name.user_g_name }} </td>
+				{%if gid == 7%}
+				<td> <a href = "/md_admin/userlist">{{g_name.user_g_name }}</a></td>
+				{%else%}
+				<td> {{g_name.user_g_name}}</td>
+				{%endif%}
 			</tr>
 			<tr>
 				<th> 대표이미지 </th>

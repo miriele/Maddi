@@ -39,11 +39,13 @@ class UserlistView(View):
             }
         return HttpResponse(template.render(context,request))
 
+#아이디 검색
 def search(request):
     if request.method == 'POST':
         searched = request.POST['searched']
         search_user = MdUser.objects.filter(user_id__contains=searched)
-        return render(request,"md_admin/searched.html",{"searched":searched,"search_user":search_user})
+        sucount = MdUser.objects.filter(user_id__contains=searched).count()
+        return render(request,"md_admin/searched.html",{"searched":searched,"search_user":search_user,"sucount":sucount})
     else:
         return render(request,"md_admin/searched.html",{})
     
@@ -215,7 +217,6 @@ class SregistinfoView(View):
         return redirect("/md_admin/sregistlist")
 
 # 통계페이지
-
 # 가입회원 성별 통계        
 class GenstatisView(View):
     def get(self,request):

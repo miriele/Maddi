@@ -4,8 +4,8 @@
 <h2>회원관리</h2>
 	<form method="POST" action="{% url 'md_admin:search' %}">
     {%csrf_token%}   
-      	<input type="search" placeholder="Search" name="searched">
-        <button type="submit"> Search </button>
+      	<input type="search" placeholder="회원아이디 입력" name="searched">
+        <button type="submit"> 검색 </button>
    </form>	
         <table border = "1">
 			<tr>
@@ -15,7 +15,8 @@
 				<th style="width:7%"> 회원가입일 </th>
 			</tr>
 		<tbody id = "tbody">
-		{% if searched %}
+		{% if searched and sucount != 0 %}
+		<h3>조회결과: {{sucount}}</h3>
 		{% for info in search_user %}
            	<tr>
            		<td align = "center">
@@ -34,10 +35,14 @@
 				</td>														
            	</tr>
             {% endfor %}
+            {%elif searched and sucount == 0 %}
+            		<td colspan = "4" align = "center">
+            			조회된아이디가 없습니다.
+            		</td>            
             {%else%}
             	<tr>
             		<td colspan = "4" align = "center">
-            			조회된아이디가 없습니다.
+            			아이디를 입력하세요.
             		</td>
             	</tr>
             {% endif %}
