@@ -216,7 +216,7 @@ class BuckView(View):
 class BuckDelOrdrView(View):
     def post(self, request):
         selected_bucks = request.POST.getlist('selected_bucks')
-        action = request.POST.get('action', None)
+        action         = request.POST.get('action', None)
 
         if action == '선택삭제':
             if selected_bucks:
