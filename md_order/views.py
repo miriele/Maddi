@@ -178,7 +178,7 @@ class BuckView(View):
             memid = request.session.get('memid')
             user_id = request.session.get("memid")
             stor_m_id = request.POST.get('stor_m_id')
-            bucks = MdBuck.objects.select_related('stor_m__stor')
+            bucks = MdBuck.objects.select_related('stor_m__stor').filter(user_id=user_id)
             context = {}
 
             for buck in bucks:

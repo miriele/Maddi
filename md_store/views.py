@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy
+from md_store.models import MdStor, MdMenu, MdStorM, MdStorReg, MdMAlgy, MdAlgyT
 from md_member.models import MdUser
 from django.utils import timezone
 from md_favorite.models import MdFavorite
@@ -260,17 +260,15 @@ class MenuInfoView(View):
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         menu_id = storem.menu_id
         stor_id = storem.stor_id
+        menu = MdMenu.objects.get(menu_id=menu_id)
         
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
             menu_type = "시그니처"
             
-        menu = MdMenu.objects.get(menu_id=menu_id)
         dsrt_t = menu.dsrt_t_id
         drnk_t = menu.drnk_t_id
-        
-        algy_info = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
         
         cate = ""
         
@@ -296,7 +294,6 @@ class MenuInfoView(View):
             'menu_type': menu_type,
             'cate' : cate,
             'stor_id' : stor_id,
-            'algy_t_ids': algy_info,
         }
 
         return render(request, 'md_store/menuinfo.html', context)
@@ -306,7 +303,8 @@ class MenuInfoView(View):
         menu_id = request.POST['menu_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=menu_id)
-    
+        menu = MdMenu.objects.filter(menu_id=menu_id)
+
         ice_t_id = request.POST["ice"]
         menu_t_id = request.POST["menutype"]
         stor_m_pric = request.POST["menupric"]
