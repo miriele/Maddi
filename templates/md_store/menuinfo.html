@@ -19,125 +19,119 @@
 	    </tr>
 	    <tr>
 	        <th> 메뉴 이미지 </th>
-	        <th colspan="2"> 메뉴 상세정보 </th>
+            <th colspan="2"> 메뉴 상세정보 </th>
+        </tr>
+        <tr>
+            <td rowspan="10"><img src="/media/{{ stor_m_img }}" width="300" height="300"></td>
+        </tr>
+        <tr>
+            <th rowspan="7">
+                <img id="imgmenuinfoPreview" src="#" alt="Image Preview" style="max-width: 300px; max-height: 300px; display: none;">
+            </th>
 	    </tr>
-	    <tr>
-	    	<tr>
-	        	<td rowspan="10"><img src="/media/{{ stor_m_img }}" width="300" height="300"></td>
-	        </tr>
-	    </tr>
-	    <tr>
-	        <th rowspan="7">
-	            <img id="imgmenuinfoPreview" src="#" alt="Image Preview" style="max-width: 300px; max-height: 300px; display: none;">
-	        </th>
-	    </tr>
-	    <tr>
-	        <th>메뉴명</th>
-	         <td colspan="2">
-		        <input class="input" type="text" name="menuname" maxlength="20" style="width:250px" value="{{ stor_m_name }}" onclick="clearInput(this)">
-		    </td>
-	    </tr>
-	    <tr>
+        <tr>
+            <th>메뉴명</th>
+            <td colspan="2">
+                <input class="input" type="text" name="menuname" maxlength="20" style="width:250px" value="{{ stor_m_name }}" onclick="clearInput(this)">
+            </td>
+        </tr>
+        <tr>
             <th>메뉴타입</th>
             <td>
                 <select name="menutype" class="input">
-                    <option value="0">일반</option>
-                    <option value="1">시그니처</option>
+                    <option value="0" {% if dto.menu_t_id == 0 %}selected{% endif %}>일반</option>
+                    <option value="1" {% if dto.menu_t_id == 1 %}selected{% endif %}>시그니처</option>
                 </select>
             </td>
         </tr>
         <tr>
             <th rowspan="3"> 카테고리</th>
-				<td>
-				    <select name="cate" id="cate" class="input" onchange="handleCateChange()">
-				    	<option value="1">==선택1==</option>
-				        <option value="0">디저트</option>
-				        <option value="-1">음료</option>
-				    </select>
-				</td>
-				<tr>
-					<td>
-					    <select name="typedsrt" id="typedsrt" class="input" style="display: none;">
-					        <option value="9">==선택2==</option>
-					        <option value="0">빵</option>
-					        <option value="1">푸딩</option>
-					        <option value="2">케이크</option>
-					        <option value="3">파이</option>
-					        <option value="4">아이스크림</option>
-					        <option value="5">초콜릿</option>
-					        <option value="6">쿠키</option>
-					    </select>
-					    <select name="typedrnk" id="typedrnk" class="input" style="display: none;">
-					    	<option value="9">==선택2==</option>
-					        <option value="0">스무디</option>
-					        <option value="1">쉐이크</option>
-					        <option value="2">에이드</option>
-					        <option value="3">밀크티</option>
-					        <option value="4">커피</option>
-					        <option value="5">차</option>
-					        <option value="6">주스</option>
-					        <option value="7">디카페인</option>
-					        <option value="8">기타</option>
-					    </select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					    <select name="ice" id="ice" class="input" style="display: none;">
-					    	<option value="9">==선택3==</option>
-	                        <option value="0"> ICE </option>
-	                        <option value="1"> HOT </option>
-                    	</select>
-					</td>
-				</tr>
-		 </tr>
-		 <tr>
-	        <th>가격</th>
-	        <td colspan="2">
-		        <input class="input" type="text" name="menupric" maxlength="20" style="width:250px" value="{{ stor_m_pric }}" onclick="clearInput(this)">
-		    </td>
-	    </tr>
-	    <tr>
-	        <th>칼로리</th>
-	        <td colspan="2">
-		        <input class="input" type="text" name="menukcal" maxlength="20" style="width:250px" value="{{ stor_m_cal }}" onclick="clearInput(this)">
-		    </td>
-	    </tr>
-	   <tr>
-		    <th rowspan="2"> 알러지 </th>
-		    <td>
-		        <label><input type="checkbox" name="algy[]" value="0"> 계란</label>
-		        <label><input type="checkbox" name="algy[]" value="1"> 우유</label>
-		        <label><input type="checkbox" name="algy[]" value="2"> 땅콩</label>
-		        <label><input type="checkbox" name="algy[]" value="3"> 대두</label>
-		        <label><input type="checkbox" name="algy[]" value="4"> 밀</label>
-		        <label><input type="checkbox" name="algy[]" value="5"> 새우</label>
-		    </td>
-		    <tr>
-				<td>
-			    	<label><input type="checkbox" name="algy[]" value="6"> 돼지고기</label>
-			        <label><input type="checkbox" name="algy[]" value="7"> 복숭아</label>
-			        <label><input type="checkbox" name="algy[]" value="8"> 토마토</label>
-			        <label><input type="checkbox" name="algy[]" value="9"> 아황산류</label>
-			        <label><input type="checkbox" name="algy[]" value="10"> 호두</label>
-			        <label><input type="checkbox" name="algy[]" value="11"> 닭고기</label>
-			        <label><input type="checkbox" name="algy[]" value="12"> 쇠고기</label>
-		        </td>
-		     </tr>
-		</tr>
-	    <tr>
-	        <th> 메뉴 소개 </th>
-	        <td colspan="2"> 
-	        	<input class="input" type="text" name="menuinfo" maxlength="20" style="width:500px" value="{{ stor_m_info }}" onclick="clearInput(this)">
-	        </td>
-	    </tr>
-	    <tr>
-	        <th colspan="3">
-	        	<input class="input" type="file" name="imgmenuinfo" accept="image/*" id="imgmenuinfoInput">
-	        	<input class="inputbutton" type="submit" value="수정" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
-	            <input class="inputbutton" type="reset" value="취소" onclick="location.href='/md_store/menulist?stor_id={{stor_id}}'">
-	    </tr>
-	</table>
+            <td>
+                <select name="cate" id="cate" class="input" onchange="handleCateChange()">
+                    <option value="1" {% if cate == 1 %}selected{% endif %} disabled>==선택1==</option>
+                    <option value="0" {% if cate == 0 %}selected{% endif %}>디저트</option>
+                    <option value="-1" {% if cate == -1 %}selected{% endif %}>음료</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select name="typedsrt" id="typedsrt" class="input" style="display: none;">
+                    <option value="9" {% if dsrt_t == 9 %}selected{% endif %} disabled>==선택2==</option>
+                    <option value="0" {% if dsrt_t == 0 %}selected{% endif %}>빵</option>
+                    <option value="1" {% if dsrt_t == 1 %}selected{% endif %}>푸딩</option>
+                    <option value="2" {% if dsrt_t == 2 %}selected{% endif %}>케이크</option>
+                    <option value="3" {% if dsrt_t == 3 %}selected{% endif %}>파이</option>
+                    <option value="4" {% if dsrt_t == 4 %}selected{% endif %}>아이스크림</option>
+                    <option value="5" {% if dsrt_t == 5 %}selected{% endif %}>초콜릿</option>
+                    <option value="6" {% if dsrt_t == 6 %}selected{% endif %}>쿠키</option>
+                </select>
+                <select name="typedrnk" id="typedrnk" class="input" style="display: none;">
+                    <option value="9" {% if drnk_t == 9 %}selected{% endif %} disabled>==선택2==</option>
+                    <option value="0" {% if drnk_t == 0 %}selected{% endif %}>스무디</option>
+                    <option value="1" {% if drnk_t == 1 %}selected{% endif %}>쉐이크</option>
+                    <option value="2" {% if drnk_t == 2 %}selected{% endif %}>에이드</option>
+                    <option value="3" {% if drnk_t == 3 %}selected{% endif %}>밀크티</option>
+                    <option value="4" {% if drnk_t == 4 %}selected{% endif %}>커피</option>
+                    <option value="5" {% if drnk_t == 5 %}selected{% endif %}>차</option>
+                    <option value="6" {% if drnk_t == 6 %}selected{% endif %}>주스</option>
+                    <option value="7" {% if drnk_t == 7 %}selected{% endif %}>디카페인</option>
+                    <option value="8" {% if drnk_t == 8 %}selected{% endif %}>기타</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select name="ice" id="ice" class="input" style="display: none;">
+                    <option value="9" {% if ice == 9 %}selected{% endif %} disabled>==선택3==</option>
+                    <option value="0" {% if ice == 0 %}selected{% endif %}> ICE </option>
+                    <option value="1" {% if ice == 1 %}selected{% endif %}> HOT </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>가격</th>
+            <td colspan="2">
+                <input class="input" type="text" name="menupric" maxlength="20" style="width:250px" value="{{ stor_m_pric }}" onclick="clearInput(this)">
+            </td>
+        </tr>
+        <tr>
+            <th>칼로리</th>
+            <td colspan="2">
+                <input class="input" type="text" name="menukcal" maxlength="20" style="width:250px" value="{{ stor_m_cal }}" onclick="clearInput(this)">
+            </td>
+        </tr>
+        <tr>
+            <th rowspan="2"> 알러지 </th>
+            <td>
+                <label><input type="checkbox" name="algy[]" value="0" {% if "0" in algy_t_ids %}checked{% endif %}> 계란</label>
+                <label><input type="checkbox" name="algy[]" value="1" {% if "1" in algy_t_ids %}checked{% endif %}> 우유</label>
+                <label><input type="checkbox" name="algy[]" value="2" {% if "2" in algy_t_ids %}checked{% endif %}> 땅콩</label>
+                <label><input type="checkbox" name="algy[]" value="3" {% if "3" in algy_t_ids %}checked{% endif %}> 대두</label>
+                <label><input type="checkbox" name="algy[]" value="4" {% if "4" in algy_t_ids %}checked{% endif %}> 밀</label>
+                <label><input type="checkbox" name="algy[]" value="5" {% if "5" in algy_t_ids %}checked{% endif %}> 새우</label>
+                <label><input type="checkbox" name="algy[]" value="6" {% if "6" in algy_t_ids %}checked{% endif %}> 돼지고기</label>
+                <label><input type="checkbox" name="algy[]" value="7" {% if "7" in algy_t_ids %}checked{% endif %}> 복숭아</label>
+                <label><input type="checkbox" name="algy[]" value="8" {% if "8" in algy_t_ids %}checked{% endif %}> 토마토</label>
+                <label><input type="checkbox" name="algy[]" value="9" {% if "9" in algy_t_ids %}checked{% endif %}> 아황산류</label>
+                <label><input type="checkbox" name="algy[]" value="10" {% if "10" in algy_t_ids %}checked{% endif %}> 호두</label>
+                <label><input type="checkbox" name="algy[]" value="11" {% if "11" in algy_t_ids %}checked{% endif %}> 닭고기</label>
+                <label><input type="checkbox" name="algy[]" value="12" {% if "12" in algy_t_ids %}checked{% endif %}> 쇠고기</label>
+            </td>
+        </tr>
+        <tr>
+            <th> 메뉴 소개 </th>
+            <td colspan="2"> 
+                <input class="input" type="text" name="menuinfo" maxlength="20" style="width:500px" value="{{ stor_m_info }}" onclick="clearInput(this)">
+            </td>
+        </tr>
+        <tr>
+            <th colspan="3">
+                <input class="input" type="file" name="imgmenuinfo" accept="image/*" id="imgmenuinfoInput">
+                <input class="inputbutton" type="submit" value="수정" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
+                <input class="inputbutton" type="reset" value="취소" onclick="location.href='/md_store/menulist?stor_id={{stor_id}}'">
+        </tr>
+    </table>
 </form>
 
 <script>
@@ -161,24 +155,24 @@ document.addEventListener("DOMContentLoaded", function() {
     handleCateChange();
 
     cateSelect.addEventListener("change", handleCateChange);
-  });
+});
 
-    function readImageFile(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+function readImageFile(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-            reader.onload = function(e) {
-                var imgPreview = document.getElementById('imgmenuinfoPreview');
-                imgPreview.src = e.target.result;
-                imgPreview.style.display = 'inline-block'; // 이미지 미리보기를 보이도록 설정
-            };
+        reader.onload = function(e) {
+            var imgPreview = document.getElementById('imgmenuinfoPreview');
+            imgPreview.src = e.target.result;
+            imgPreview.style.display = 'inline-block'; // 이미지 미리보기를 보이도록 설정
+        };
 
-            reader.readAsDataURL(input.files[0]);
-        }
+        reader.readAsDataURL(input.files[0]);
     }
+}
 
-    document.getElementById('imgmenuinfoInput').addEventListener('change', function() {
-        readImageFile(this);
-    });
+document.getElementById('imgmenuinfoInput').addEventListener('change', function() {
+    readImageFile(this);
+});
 </script>
 {% endblock %}

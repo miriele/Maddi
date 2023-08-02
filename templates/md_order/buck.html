@@ -1,4 +1,6 @@
+{% extends "md_order/base.html" %}
 {% load static %}
+{% block content %}
 <script src="{% static 'js/script_order.js' %}"></script>
 <html>
 <head>
@@ -44,5 +46,6 @@
     <p>장바구니에 담긴 메뉴가 없습니다.</p>
    	<a href="{% url 'md_combi:comblist' %}">추천메뉴 보기</a>
     {% endif %}
+    {% endblock %}
 </body>
 </html>

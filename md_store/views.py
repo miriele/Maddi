@@ -270,6 +270,8 @@ class MenuInfoView(View):
         dsrt_t = menu.dsrt_t_id
         drnk_t = menu.drnk_t_id
         
+        algy_info = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
+        
         cate = ""
         
         if dsrt_t == -1:
@@ -293,7 +295,8 @@ class MenuInfoView(View):
             'stor_m_img': storem.stor_m_img,
             'menu_type': menu_type,
             'cate' : cate,
-            'stor_id' : stor_id
+            'stor_id' : stor_id,
+            'algy_t_ids': algy_info,
         }
 
         return render(request, 'md_store/menuinfo.html', context)
@@ -302,6 +305,7 @@ class MenuInfoView(View):
         stor_m_id = request.POST['stor_m_id']
         menu_id = request.POST['menu_id']
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy = MdMAlgy.objects.filter(menu_id=menu_id)
     
         ice_t_id = request.POST["ice"]
         menu_t_id = request.POST["menutype"]
@@ -317,7 +321,17 @@ class MenuInfoView(View):
             storem.stor_m_img = imgmenuinfo
         else:
             storem.stor_m_img = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_img
-            
+        
+        # 알러지 정보를 업데이트
+        existing_algy_t_ids = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
+        new_algy_t_ids = [int(algy_t_id) for algy_t_id in algy_t_list]
+    
+        # 기존 알러지를 삭제하고 새로운 알러지 정보를 추가
+        algy.exclude(algy_t_id__in=new_algy_t_ids).delete()
+        for algy_t_id in new_algy_t_ids:
+            if algy_t_id not in existing_algy_t_ids:
+                MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
+        
         stor_m_id = stor_m_id
         storem.ice_t_id = ice_t_id
         storem.menu_t_id = menu_t_id
@@ -327,16 +341,6 @@ class MenuInfoView(View):
         storem.stor_m_info = stor_m_info
         storem.stor_m_img = imgmenuinfo
         storem.save()
-    
-        # 알러지 정보를 업데이트
-        existing_algy_t_ids = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
-        new_algy_t_ids = [int(algy_t_id) for algy_t_id in algy_t_list]
-    
-        # 기존 알러지를 삭제하고 새로운 알러지 정보를 추가
-        MdMAlgy.objects.filter(menu_id=menu_id).exclude(algy_t_id__in=new_algy_t_ids).delete()
-        for algy_t_id in new_algy_t_ids:
-            if algy_t_id not in existing_algy_t_ids:
-                MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
     
         return redirect(reverse("md_store:menuinfo") + f'?stor_m_id={stor_m_id}')
     
@@ -404,7 +408,7 @@ class StoreUserView(View):
 class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
-        user_id = "abc001"#request.session.get("memid")
+        user_id = request.session.get("memid")
         user = MdUser.objects.get(user_id=user_id)
         stor = MdStor.objects.get(user_id=user_id)
         stor_id = stor.stor_id
@@ -431,7 +435,7 @@ class AddMenuSucView(View):
         
         return HttpResponse( template.render( context, request ) )
     
-    
+
 # 즐겨찾기용 옮김
 class AddFavView( View ):
     @method_decorator( csrf_exempt )

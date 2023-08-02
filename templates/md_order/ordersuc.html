@@ -1,3 +1,5 @@
+{% extends "md_order/base.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,3 +8,4 @@
 <body>
     <h2>주문이 완료되었습니다. 주문내역은 <a href="{% url 'md_member:myorderlist' %}" class="inputbutton">'나의 주문'</a> 에서 확인가능합니다.</h2>
 </html>
+{% endblock %}

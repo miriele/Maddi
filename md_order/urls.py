@@ -13,4 +13,3 @@ urlpatterns = [
          path( "ordersuc", views.OrdrSucView.as_view(), name="ordersuc" ),
          path( "orderdone", views.OrdrDoneView.as_view(), name="orderdone" ),
        ]
-

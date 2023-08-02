@@ -1,6 +1,7 @@
+{% extends "md_order/base.html" %}
+{% block content %}
 {% load static %}
 <script src="{% static 'js/script_order.js' %}"></script>
-{% block content %}
 <head>
     <title>주문하기</title>
 </head>
@@ -8,6 +9,7 @@
 <form method="post" action="orderinfo" name="inputform">
 <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 <input type="hidden" name="user_id" value="{{ user_id }}">
+<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<table>
 	    <tr>
 	        <th rowspan="6"><img src="/media/{{ stor_m_img }}" width="200" height="200"></th>
@@ -24,7 +26,7 @@
 		    <td colspan="2">
 				<form method="post" action="md_order/orderinfo/?stor_m_id={{ stor_m_id }}">
 		            {% csrf_token %}
-		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}">
+		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}" readonly>
 		           	<button type="submit" name="bucknum" value="{{ bucknum|add:'1' }}">+</button>
 		            <button type="submit" name="bucknum" value="{{ bucknum|add:'-1' }}">-</button>
 		        </form>
@@ -72,9 +74,6 @@
 	    <tr>
 	        <th>칼로리</th>
 	        <td>&nbsp;{{ stor_m_cal }}</td>
-	    </tr>
-	     <tr>
-	        <th colspan="3">추천조합이 출력될 예정</th>
 	    </tr>
 	</table>
 </form>
