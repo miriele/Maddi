@@ -41,9 +41,11 @@
 				<td> 
 					<select name="gen_id">
 						{% if  dtos.gen_id  == 0 %}
-							<option value="0"> 남자 </option>
-						{% else %}
+							<option value="0" selected> 남자 </option>
 							<option value="1"> 여자 </option>
+						{% else %}
+							<option value="0"> 남자 </option>
+							<option value="1" selected > 여자 </option>
 						{% endif %}
 					</select>
 				</td>
