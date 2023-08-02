@@ -1,12 +1,11 @@
 {% extends "md_member/base.html" %}
 
-{% block title %} <h2> 마이페이지-회원정보 </h2> {% endblock %}
-
 {% block content %}
 {% csrf_token %}
 	<form method="post" action="userinfo" name="userinfoform" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value="{{dtos.user_id}}">
 		<table>
+		<div style="text-align: right;">
 		<tr>
 			<th> 아이디 </th>
 				<td> &nbsp;{{ dtos.user_id }} </td>
@@ -50,11 +49,7 @@
 			</tr>
 			<tr>
 				<th> 회원등급 </th>
-				{%if gid == 7%}
-				<td> <a href = "/md_admin/userlist">{{g_name.user_g_name }}</a></td>
-				{%else%}
-				<td> {{g_name.user_g_name}}</td>
-				{%endif%}
+				<td> {{g_name.user_g_name }} </td>
 			</tr>
 			<tr>
 				<th> 대표이미지 </th>
@@ -77,7 +72,7 @@
 					</script>
 					<hr>
 				</td>
-			</tr>
+			</tr> </div>
 			<tr>
 				<th colspan="2"> 상세 정보 선택(선택입력) /1가지 이상 선택할 수 있습니다 </th>
 			</tr>

@@ -11,37 +11,37 @@
 		<script src = "{%static 'js/script_favorite.js'%}"></script>
 	</head>
 	<body>
-		{% block login %}
-		{%if memid%}
-			<input type = "button" value = "logout" onclick = "location='/md_member/logout'"><br>
-			{{memid}}님 안녕하세요.
-		{%else%}
-			<input type = "button" value = "login" onclick = "location='/md_member/login'"><br>
-		{%endif%}
+		{% block header %}
+		<div  class="header" style="text-align: right;">
+			{% block title %}
+				<div>
+					<div class="title" style="text-align: center;"><a href = "/md_main/main"><h2>Maddi</h2></a></div>
+				</div>
+			{% endblock %}
 		
-		{%endblock%}
-		{% block topbar %}<!-- 카테고리 버튼 -->
-			<a href = "/md_main/main"><h2>Maddi</h2></a>
-			
 			{% if memid %}
 				{% if gid == 1 %}
-					<a href ="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_order/buck">주문하기</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_member/myorderlist">주문 내역</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp;
-					
-					
+					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="주문하기" onclick="location='/md_order/buck'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="주문내역" onclick="location='/md_member/myorderlist'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'">&nbsp;&nbsp;&nbsp;
 				{% elif gid == 6 %}
-					<a href ="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
-					<a href ="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
+					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="점주 마이페이지" onclick="location='/md_store/mypagejumju'">&nbsp;&nbsp;&nbsp;
+				{% elif gid == 7 %}
+					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="회원관리" onclick="location='/md_admin/userlist'"> &nbsp;&nbsp;&nbsp;
 				{% endif %}
+				<input type="button" value="logout" onclick="location='/md_member/logout'">
 			{% else %}
-				<a href ="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+				<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">&nbsp;&nbsp;&nbsp;
+				<input type="button" value="login" onclick="location='/md_member/login'">
 			{% endif %}
+		</div>
 		{% endblock %}
-		
+
 		{% block content %}		
 		{% endblock %}
 
