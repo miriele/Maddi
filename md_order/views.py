@@ -326,12 +326,13 @@ class OrdrListView(View):
         
 
 
-        return render(request, 'md_order/orderlist.html', {'context': context})
+        return render(request, 'md_order/orderlist.html', {'context': context}) 
     
 
 class OrdrDoneView (View):
     def post(self, request):
         ordr_id = request.POST.get('ordr_id')
+        stor_id = request.POST['stor_id']
         try:
             ordr = MdOrdr.objects.get(pk=ordr_id)
             if ordr.ordr_com_ts is None:
@@ -339,4 +340,4 @@ class OrdrDoneView (View):
                 ordr.save()
         except MdOrdr.DoesNotExist:
             pass
-        return redirect('md_order:orderlist')
+        return redirect(reverse("md_order:orderlist") + f'?stor_id={stor_id}')
