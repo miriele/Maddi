@@ -24,7 +24,7 @@
 					</td>
 					<td>
 						{% for st in store %}
-							{% if fav.stor_id == st.stor.stor_id %}<!-- ######### 이거 정확한 주소 몰라서 일단 만들어둠 -->
+							{% if fav.stor_id == st.stor.stor_id %}
 								<a href="/md_store/storeuser?stor_id={{ st.stor.stor_id }}" style="color: darkblue">
 									{{ st.stor.stor_name }}					<!-- 매장명 -->
 								</a>

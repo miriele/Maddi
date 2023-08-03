@@ -26,12 +26,12 @@
 					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">
 					<input type="button" value="점주 마이페이지" onclick="location='/md_store/mypagejumju'">
-					<button type="button" onclick="location.href='/md_order/orderlist?stor_id={{stor_id}}'">주문관리</button>
+					<input type="button" value="주문관리" onclick="location='/md_order/orderlist?stor_id={{stor_id}}'">
 				{% elif gid == 7 %}
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">
 					<input type="button" value="회원관리" onclick="location='/md_admin/userlist'"> 
 				{% endif %}
-				<button type="button" onclick="location.href='/md_order/buck'">장바구니</button>
+				<input type="button" value="장바구니" onclick="location='/md_order/buck'">
 				<input type="button" value="logout" onclick="location='/md_member/logout'">
 			{% else %}
 				<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">

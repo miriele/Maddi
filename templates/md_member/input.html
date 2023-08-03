@@ -3,6 +3,7 @@
 {% block content %}
 {% csrf_token %}
  <h2> 회원가입 </h2>
+ <div class="userinput">
 	<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
 		<table >
 			<tr>
@@ -68,6 +69,7 @@
 					<hr>
 				</td>
 			</tr>
+			<div class="userinputT">
 			<tr>
 				<th colspan="2"> 상세 정보 선택(선택입력) /1가지 이상 선택할 수 있습니다 </th>
 			</tr>
@@ -115,6 +117,7 @@
 					{% endfor %}
 				</td>
 			</tr>
+			</div>
 			<tr>
 				<td>
 					<br>
@@ -129,5 +132,6 @@
 			</tr>	
 		</table>
 	</form>
+	</div>
 {% endblock %}
 
