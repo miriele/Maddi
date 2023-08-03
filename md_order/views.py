@@ -7,20 +7,22 @@ from django.utils import timezone
 from django.template import loader
 import logging
 from django.db.models import Case, When, Value, CharField
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 # 로그
 logger = logging.getLogger( __name__ )
 
 class OrderInfoView(View):
     def get(self, request):
-        user_id = request.session.get('memid')
-        memid = request.session.get('memid')
-        gid = request.session.get("gid")
+        user_id   = request.session.get('memid')
+        memid     = request.session.get('memid')
+        gid       = request.session.get("gid")
+        stor_id   = request.GET.get('stor_id')
         stor_m_id = request.GET.get('stor_m_id')
-        bucknum = int(request.GET.get('bucknum', 1))
-        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-
-        algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        bucknum   = int(request.GET.get('bucknum', 1))
+        storem    = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy      = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
@@ -38,20 +40,21 @@ class OrderInfoView(View):
         buckprice = bucknum * storem.stor_m_pric
 
         context = {
-            "memid": memid,
-            'dto': storem,
-            'stor_m_pric': storem.stor_m_pric,
-            'stor_m_name': storem.stor_m_name,
-            'stor_m_cal': storem.stor_m_cal,
-            'stor_m_info': storem.stor_m_info,
-            'stor_m_img': storem.stor_m_img,
-            'menu_type': menu_type,
-            'bucknum': bucknum,
-            'buckprice': buckprice,
-            'stor_m_id' : stor_m_id,
-            'algy_n' : algy_n,
-            'user_id' :user_id,
-            'gid' : gid
+            "memid"       : memid,
+            'dto'         : storem,
+            'stor_m_pric' : storem.stor_m_pric,
+            'stor_m_name' : storem.stor_m_name,
+            'stor_m_cal'  : storem.stor_m_cal,
+            'stor_m_info' : storem.stor_m_info,
+            'stor_m_img'  : storem.stor_m_img,
+            'menu_type'   : menu_type,
+            'bucknum'     : bucknum,
+            'buckprice'   : buckprice,
+            'stor_id'     : stor_id,
+            'stor_m_id'   : stor_m_id,
+            'algy_n'      : algy_n,
+            'user_id'     : user_id,
+            'gid'         : gid
         }
 
         return render(request, 'md_order/orderinfo.html', context)
@@ -102,11 +105,18 @@ class OrderInfoView(View):
         return render(request, 'md_order/orderinfo.html', context)
 
 class CartView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+    
     def post(self, request):
-        user_id = request.POST['user_id']
+        user_id     = request.POST['user_id']
         buck_reg_ts = timezone.now()
-        bucknum = int(request.POST["bucknum"])
-        stor_m_id = request.POST.get('stor_m_id')
+        bucknum     = int(request.POST["buck_num"])
+        stor_m_id   = request.POST.get('stor_m_id')
+        stor_id     = request.POST.get('stor_id')
+
+        # logger.debug(f'bucknum : {bucknum}\tstor_m_id : {stor_m_id}\tstor_id : {stor_id}')
 
         MdBuck.objects.create(
             user_id=user_id,
@@ -116,7 +126,7 @@ class CartView(View):
         )
 
         # MdStorM 객체를 가져와서 가격을 계산하고 필요한 정보들을 세션에 저장
-        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        storem    = MdStorM.objects.get(stor_m_id=stor_m_id)
         buckprice = bucknum * storem.stor_m_pric
 
         # 필요한 정보들만 딕셔너리로 추출하여 세션에 저장
@@ -134,13 +144,17 @@ class CartView(View):
         request.session['cart_data'] = cart_data
 
         # orderinfo 페이지로 리디렉션
-        return redirect(reverse('md_order:orderinfo') + f'?stor_m_id={stor_m_id}')
+        return redirect(reverse('md_store:storeuser') + f'?stor_id={stor_id}')
     
 class OrderView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+    
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
         user_id = request.POST['user_id']
-        bucknum = int(request.POST["bucknum"])
+        bucknum = int(request.POST["ordr_num"])
         buck_num = bucknum
         
         buck_reg_ts = timezone.now()
@@ -153,23 +167,7 @@ class OrderView(View):
            )
 
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        buckprice = bucknum * storem.stor_m_pric
         buck_reg_ts = timezone.now()
-        
-        if storem.menu_t_id == 0:
-            menu_type = "일반"
-        else:
-            menu_type = "시그니처"
-                
-        context = {
-                'dto': storem,
-                'stor_m_pric': storem.stor_m_pric,
-                'stor_m_name': storem.stor_m_name,
-                'stor_id': storem.stor_id,
-                'bucknum': bucknum,
-                'buckprice': buckprice,
-                'buck_reg_ts' : buck_reg_ts,
-            }
         
         return redirect("md_order:buck")
 
@@ -179,7 +177,6 @@ class BuckView(View):
             memid = request.session.get('memid')
             gid = request.session.get('gid')
             user_id = request.session.get("memid")
-            stor_m_id = request.POST.get('stor_m_id')
             bucks = MdBuck.objects.select_related('stor_m__stor').filter(user_id=user_id)
             context = {}
 
@@ -208,7 +205,7 @@ class BuckView(View):
                     else:
                         context[store_name] = [store_data]
 
-            logger.debug(f'context : {context}')
+            # logger.debug(f'context : {context}')
 
             return render(request, 'md_order/buck.html', {'context': context, 'memid' : memid, 'gid':gid})
         except MdBuck.DoesNotExist:

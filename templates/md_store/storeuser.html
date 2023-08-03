@@ -71,7 +71,7 @@
 	        {% for menu in menu_list %}
 	        <tr>
 	        	<td>
-	               <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_m_id={{menu.stor_m_id}}'">
+	               <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
 	            </td>
 	            <td>{{ menu.stor_m_name }}</td>
 	            <td>{{ menu.stor_m_pric }}</td>

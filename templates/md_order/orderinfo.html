@@ -1,13 +1,12 @@
 {% extends "md_member/base.html" %}
 {% block content %}
-<head>
-    <title>주문하기</title>
-</head>
 <h2> 주문하기 </h2>
-<form method="post" action="orderinfo" name="inputform">
-<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-<input type="hidden" name="user_id" value="{{ user_id }}">
-<input type="hidden" name="stor_id" value="{{ stor_id }}">
+
+{% csrf_token %}
+<form method="post" name="inputform">
+	<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+	<input type="hidden" name="user_id" value="{{ user_id }}">
+	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<table>
 	    <tr>
 	        <th rowspan="6"><img src="/media/{{ stor_m_img }}" width="200" height="200"></th>
@@ -18,37 +17,27 @@
 	    </tr>
 	    <tr>
 	        <th>가격</th>
-	        <td>&nbsp;{{ stor_m_pric }}</td>
+	        <td>&nbsp;<span class="menu_price">{{ stor_m_pric }}</span></td>
 	    </tr>
 	    <tr>
 		    <td colspan="2">
-				<form method="post" action="md_order/orderinfo/?stor_m_id={{ stor_m_id }}">
-		            {% csrf_token %}
-		            <input class="input" type="text" name="bucknum" maxlength="20" style="width: 250px" value="{{ bucknum }}" readonly>
-		           	<button type="submit" name="bucknum" value="{{ bucknum|add:'1' }}">+</button>
-		            <button type="submit" name="bucknum" value="{{ bucknum|add:'-1' }}">-</button>
-		        </form>
+	            <input class="input" type="text" name="num" maxlength="20" style="width: 250px" value="{{ bucknum }}" readonly>
+	            <input type="button" name="bucknum_minus" value="-" onclick = 'count_minus()'/>
+	           	<input type="button" name="bucknum_plus" value="+" onclick = 'count_plus()'/>
 		    </td>
 		<tr>
-	    	<td>&nbsp;{{ buckprice }}</td>
+	    	<td>&nbsp;<div id="price_sum">{{ buckprice }}</div></td>
 	    </tr>
 	    <tr>
 		    <td colspan="2">
-		      <!-- 장바구니 버튼은 CartView로 폼 전송 -->
-		      <form method="post" action="{% url 'md_order:cart' %}">
-			    {% csrf_token %}
-			    <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-			    <input type="hidden" name="bucknum" value="{{ bucknum }}">
-			    <input type="hidden" name="user_id" value="{{ user_id }}">
-			    <input class="inputbutton" type="submit" value="장바구니">
-			</form>
-	          <form method="post" action="{% url 'md_order:order' %}">
-		        {% csrf_token %}
-		        <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-		        <input type="hidden" name="bucknum" value="{{ bucknum }}">
-		        <input type="hidden" name="user_id" value="{{ user_id }}">
-		        <input class="inputbutton" type="submit" value="바로주문">
-		      </form>
+				<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+				<input type="hidden" name="buck_num" value="{{ bucknum }}">
+				<input type="hidden" name="user_id" value="{{ user_id }}">
+				<input type="submit" value="장바구니" formaction='cart'>
+				<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+				<input type="hidden" name="ordr_num" value="{{ bucknum }}">
+				<input type="hidden" name="user_id" value="{{ user_id }}">
+				<input type="submit" value="바로주문" formaction='order'>
 	        </td>
         </tr>
 	    <tr>
