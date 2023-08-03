@@ -30,7 +30,9 @@ class FavoriteView( View ):
         
         if count == 0 or None :     #30
             context = {
-                "count" :count,
+                "count"     :count,
+                "memid"     : memid,
+                "gid"       : gid,
                 }
         else :
             pagenum = request.GET.get( "pagenum" )              #5

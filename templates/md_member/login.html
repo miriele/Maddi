@@ -2,16 +2,17 @@
 
 {% block content %}
 {% csrf_token %}
- <h2>로그인</h2>
+<div class="login">
 	<form method="post" action="login" name="loginform">
 		<input type="hidden" name="user_g_id" value="{{ user_g_id }}" >
-		<table>
+		<table style="margin-right:auto; margin-left:auto;">
 			<tr>
 				<th colspan="3">
 					{% if message %}
 						{{ message }}
 					{% else %}
-						아이디와 비밀번호를 입력해 주세요
+					<h3> login </h3>
+						<h5>아이디와 비밀번호를 입력해 주세요</h5>
 					{% endif %}
 				</th>
 			</tr>
@@ -39,4 +40,5 @@
 			</tr>
 		</table>
 	</form>
+</div>
 {% endblock %}

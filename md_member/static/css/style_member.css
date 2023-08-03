@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+div {
+	vertical-align: middle;
+}
+
+.header {
+	text-align: right;
+	border: none; 
+	font-weight	: bold; 
+	background-color: white;
+}
+input[type="button"][value="Maddi"] {
+	border:none; 
+	font-weight:bold; 
+	font-size: 20px; 
+	background-color: white;
+	
+}
+
+input[type="button"] {
+  border: none;
+  font-weight: bold;
+  background-color: white;
+  padding: 5px 10px;
+}
+
+.header input[type="button"],
+.header button {
+  margin-right: 10px;
+}
+
+input.inputbutton[type="submit"][value="로그인"]{
+  border: none;
+  font-weight: bold;
+  background-color: #e0f1fe;
+  color: gray;
+  padding: 5px 95px;
+  border-radius: 10px;
+}
+
+input.inputbutton[type="button"][value="회원가입"]{
+  border: none;
+  font-weight: bold;
+  background-color: #e0f1fe;
+  color: gray;
+  padding: 5px 90px;
+  border-radius: 10px;
+}
+
+input.input[type="text"][name="user_id"],[type="password"]{
+	padding: 5px 10px;
+}
+
+.login {
+	top: 10%;
+	left: 50%;
+	margin-bottom :500px
+}
