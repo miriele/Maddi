@@ -23,6 +23,16 @@ class MdAreaT(models.Model):
         db_table_comment = '매장면적타입'
 
 
+class MdBh(models.Model):
+    bjd_code = models.ForeignKey('MdBjd', models.DO_NOTHING, db_column='bjd_code', db_comment='법정동코드')
+    hjd_code = models.ForeignKey('MdHjd', models.DO_NOTHING, db_column='hjd_code', db_comment='행정동코드')
+
+    class Meta:
+        managed = False
+        db_table = 'md_bh'
+        db_table_comment = '법정동행정동'
+
+
 class MdBjd(models.Model):
     bjd_code = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0, db_comment='법정동코드')
     bjd_name = models.CharField(max_length=80, db_comment='법정동명')
@@ -51,6 +61,18 @@ class MdDsrtT(models.Model):
         managed = False
         db_table = 'md_dsrt_t'
         db_table_comment = '디저트분류'
+
+
+class MdHjd(models.Model):
+    hjd_code = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0, db_comment='행정동코드')
+    hjd_name = models.CharField(max_length=80, db_comment='행정동명')
+    hjd_x = models.SmallIntegerField(db_comment='격자X')
+    hjd_y = models.SmallIntegerField(db_comment='격자Y')
+
+    class Meta:
+        managed = False
+        db_table = 'md_hjd'
+        db_table_comment = '행정동코드'
 
 
 class MdIce(models.Model):
