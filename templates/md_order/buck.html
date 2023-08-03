@@ -15,9 +15,9 @@
     {% csrf_token %}
     <input type="hidden" name="user_id" value="{{ user_id }}">
     {% for store_name, store_data_list in context.items %}
-	<table>
+	<table border = "1">
 		<tr>
-			<th colspan="4">[ {{store_name}} ]</th>
+			<th colspan="5">[ {{store_name}} ]</th>
 		</tr>
 		<tr>
 			<th> 선택 </th>
@@ -45,7 +45,8 @@
  </form>
     {% else %}
     <p>장바구니에 담긴 메뉴가 없습니다.</p>
-   	<a href="{% url 'md_combi:comblist' %}">추천메뉴 보기</a>
+   	<a href="{% url 'md_combi:comblist' %}">추천메뉴 보기</a><br>
+    <input type = "button" value = "뒤로가기" onclick = "location='/md_main/main'">
     {% endif %}
     {% endblock %}
 </body>

@@ -62,6 +62,6 @@ function count_minus(){
 	$("input[name=buck_num]").val(num);
 	$("input[name=ordr_num]").val(num);
 	$("#price_sum").text(price*num);
-	
+
 //	console.log(num);
 }

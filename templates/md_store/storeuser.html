@@ -7,23 +7,17 @@
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<input type="hidden" name="user_id" value="{{ user_id }}">
 
-	<table>
+	<table border = "1">
 	    <tr>
-	        <th>매장정보</th>
-	        <th>
-	        	{% if gid == 1 %}
-	        	<input class="inputbutton" type="button" value="점주등록"
-						onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
-				{% endif %}				
-	        	<input type="button" name="reviewgo" value="리뷰 보기"
-	        		onclick="location='/md_review/review?stor_id={{stor_id}}'">
+	        <th colspan = "2">매장정보</th>
+	        <th align = "right">
 	        	<form method="post" action="addfav"name="addfavform">
-					<input type="hidden" name="stor_id" value="{{stor_id}}"><!-- 수정 -->
-					{% if result == 0 %}
-						<input type="button" name="addfavbtn" value="즐겨찾기 등록">
-					{% else %}
-						<input type="button" name="addfavbtn" value="즐겨찾기 취소">
-					{% endif %}
+					<input type="hidden" name="stor_id" value="{{stor_id}}">
+						{% if result == 0 %}
+							<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+						{% else %}
+							<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+						{% endif %}
 				</form>
 	        </th>
 	    </tr>
@@ -55,37 +49,45 @@
 	        <th>매장인기시간대</th>
 	        <td colspan="2">&nbsp;</td>
 	    </tr>
-	    	</table>
+	    <tr>
+	    	<th>
+	        	{% if gid == 1 %}
+	        	<input class="inputbutton" type="button" value="점주등록" onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
+				{% endif %}
+	        </th>
+	        	<th colspan = "2">
+		        	<input type="button" name="reviewgo" value="리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
+	        	</th>
+	    </tr>
+	</table>
+
 	<h1>메뉴 목록</h1>
 	    {% if menu_list %}
-	    <table>
+	    <table border = 1>
 	        <tr>
 	         	<th>메뉴 이미지</th>
 	            <th>메뉴 이름</th>
 	            <th>가격</th>
 	            <th>칼로리</th>
-	            <th>메뉴 소개</th>
-	           
+	            <th>메뉴 소개</th>           
 	            <th>메뉴 타입</th>
 	        </tr>
 	        {% for menu in menu_list %}
 	        <tr>
-	        	<td>
+	        	<th>
 	               <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
-	            </td>
-	            <td>{{ menu.stor_m_name }}</td>
-	            <td>{{ menu.stor_m_pric }}</td>
-	            <td>{{ menu.stor_m_cal }}</td>
-	            <td>{{ menu.menu.menu_info }}</td>
-	            
-	            <td>{{ menu.menu_t.menu_t_name }}</td>
+	            </th>
+	            <th>{{ menu.stor_m_name }}</th>
+	            <th>{{ menu.stor_m_pric }}원</th>
+	            <th>{{ menu.stor_m_cal }}kcal</th>
+	            <th>{{ menu.menu.menu_info }}</th>    
+	            <th>{{ menu.menu_t.menu_t_name }}</th>
 	        </tr>
 	        {% endfor %}
 	    </table>
 	    {% else %}
 	    <p>해당 매장의 메뉴가 없습니다.</p>
 	    {% endif %}
-	
 </form>
 
 {% endblock %}

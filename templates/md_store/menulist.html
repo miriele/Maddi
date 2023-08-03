@@ -11,7 +11,7 @@
 <h1>메뉴 목록</h1>
  <input type="hidden" name="stor_id" value="{{ stor_id }}">
 {% if menu_list %}
-<table>
+<table border = "1">
     <tr>
         <th>메뉴 이미지</th>
         <th>메뉴 이름</th>
@@ -25,11 +25,11 @@
         <td>
             <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_store/menuinfo?stor_m_id={{menu.stor_m_id}}'">
         </td>
-        <td>{{ menu.stor_m_name }}</td>
-        <td>{{ menu.stor_m_pric }}</td>
-        <td>{{ menu.stor_m_cal }}</td>
-        <td>{{ menu.menu.menu_info }}</td>
-        <td>{{ menu.menu_t.menu_t_name }}</td>
+        <th>{{ menu.stor_m_name }}</th>
+        <th>{{ menu.stor_m_pric }}원</th>
+        <th>{{ menu.stor_m_cal }}kcal</th>
+        <th>{{ menu.menu.menu_info }}</th>
+        <th>{{ menu.menu_t.menu_t_name }}</th>
     </tr>
     {% endfor %}
 </table>

@@ -5,9 +5,9 @@
 {% block content %}
 <form method="post" >
   <input type="hidden" name="stor_id" value="{{ stor_id }}">
-	<table>
+	<table border = "1">
 	    <tr>
-	        <th colspan="3">
+	        <th colspan="4">
 	            매장정보관리
 	        </th>
 	    </tr>
@@ -17,11 +17,6 @@
 	        {% else %}
 		    	<p>등록된 이미지가 없습니다.</p>
 		    {% endif %}
-	    </tr>
-	    <tr>
-	        <th rowspan="7">
-	            <img id="imgstorPreview" src="#" alt="Image Preview" style="max-width: 300px; max-height: 300px; display: none;">
-	        </th>
 	    </tr>
 	    <tr>
 	        <th>매장명</th>
@@ -50,10 +45,14 @@
 	        <td colspan="2">&nbsp;</td>
 	    </tr>
 	    <tr>
-	        <th colspan="3">
+	        <th colspan="4">
 	        	<input class="input" type="file" name="imgstor" accept="image/*" id="imgstorInput">
-	            <input class="inputbutton" type="submit" value="수정" onclick="location='md_store/store?stor_id={{stor_id}}'">
-	            <input class="inputbutton" type="reset" value="취소" onclick="location='mypagejumju'">
+	        </th>
+	    </tr>
+	    <tr>
+	    	<th colspan = "4">
+	    		<input class="inputbutton" type="submit" value="수정" onclick="location='md_store/store?stor_id={{stor_id}}'">
+	        	<input class="inputbutton" type="reset" value="취소" onclick="location='mypagejumju'">
 	        </th>
 	    </tr>
 	</table>
