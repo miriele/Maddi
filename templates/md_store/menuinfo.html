@@ -32,7 +32,7 @@
         <tr>
             <th>메뉴명</th>
             <td colspan="2">
-                <input class="input" type="text" name="menuname" maxlength="20" style="width:250px" value="{{ stor_m_name }}" onclick="clearInput(this)">
+                {{stor_m_name}}
             </td>
         </tr>
         <tr>
@@ -41,51 +41,6 @@
                 <select name="menutype" class="input">
                     <option value="0" >일반</option>
                     <option value="1" >시그니처</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th rowspan="3"> 카테고리</th>
-            <td>
-                <select name="cate" id="cate" class="input" onchange="handleCateChange()">
-                    <option value="1">==선택1==</option>
-                    <option value="0">디저트</option>
-                    <option value="-1">음료</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select name="typedsrt" id="typedsrt" class="input" style="display: none;">
-                    <option value="9">==선택2==</option>
-                    <option value="0">빵</option>
-                    <option value="1">푸딩</option>
-                    <option value="2">케이크</option>
-                    <option value="3">파이</option>
-                    <option value="4">아이스크림</option>
-                    <option value="5" >초콜릿</option>
-                    <option value="6">쿠키</option>
-                </select>
-                <select name="typedrnk" id="typedrnk" class="input" style="display: none;">
-                    <option value="9">==선택2==</option>
-                    <option value="0">스무디</option>
-                    <option value="1">쉐이크</option>
-                    <option value="2" >에이드</option>
-                    <option value="3" >밀크티</option>
-                    <option value="4">커피</option>
-                    <option value="5">차</option>
-                    <option value="6">주스</option>
-                    <option value="7">디카페인</option>
-                    <option value="8" >기타</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select name="ice" id="ice" class="input" style="display: none;">
-                    <option value="9">==선택3==</option>
-                    <option value="0"> ICE </option>
-                    <option value="1"> HOT </option>
                 </select>
             </td>
         </tr>
@@ -101,27 +56,22 @@
                 <input class="input" type="text" name="menukcal" maxlength="20" style="width:250px" value="{{ stor_m_cal }}" onclick="clearInput(this)">
             </td>
         </tr>
-        <tr>
-          	<th rowspan="2"> 알러지 </th>
-	        <tr>
-	            <td>
-	                <label><input type="checkbox" name="algy[]" value="0"> 계란</label>
-	                <label><input type="checkbox" name="algy[]" value="1"> 우유</label>
-	                <label><input type="checkbox" name="algy[]" value="2"> 땅콩</label>
-	                <label><input type="checkbox" name="algy[]" value="3"> 대두</label>
-	                <label><input type="checkbox" name="algy[]" value="4"> 밀</label>
-	                <label><input type="checkbox" name="algy[]" value="5"> 새우</label>
-	                <label><input type="checkbox" name="algy[]" value="6"> 돼지고기</label>
-	                <label><input type="checkbox" name="algy[]" value="7"> 복숭아</label>
-	                <label><input type="checkbox" name="algy[]" value="8"> 토마토</label>
-	                <label><input type="checkbox" name="algy[]" value="9"> 아황산류</label>
-	                <label><input type="checkbox" name="algy[]" value="10"> 호두</label>
-	                <label><input type="checkbox" name="algy[]" value="11"> 닭고기</label>
-	                <label><input type="checkbox" name="algy[]" value="12"> 쇠고기</label>
-	            </td>
-	         </tr>
-        </tr>
-        <tr>
+			<tr>
+				<th> 알러지 정보 </th>
+				<td>
+					{% for algy in md_algy_t %}
+						<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}">{{algy.algy_t_name }}
+						{% for ual in malgy %}
+							{% if ual.algy_t_id == algy.algy_t_id %}
+								<script>
+								$('input[name="md_algy_t"][value={{algy.algy_t_id}}]').attr("checked", true)
+								</script>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+					<hr>
+				</td>
+			</tr>
             <th> 메뉴 소개 </th>
             <td colspan="2"> 
                 <input class="input" type="text" name="menuinfo" maxlength="20" style="width:1000px" value="{{ stor_m_info }}" onclick="clearInput(this)">

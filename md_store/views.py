@@ -261,7 +261,15 @@ class MenuInfoView(View):
         menu_id = storem.menu_id
         stor_id = storem.stor_id
         menu = MdMenu.objects.get(menu_id=menu_id)
+        m_algy = MdMenu.objects.filter(menu_id=menu_id).values("menu_id")
+        m_algy = list(m_algy)
         
+        m_algy = list(m['menu_id'] for m in m_algy)
+        malgy = MdMAlgy.objects.filter(menu = m_algy[0])
+        print(malgy)
+
+        md_algy_t = MdAlgyT.objects.order_by("algy_t_id")
+
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
@@ -294,6 +302,8 @@ class MenuInfoView(View):
             'menu_type': menu_type,
             'cate' : cate,
             'stor_id' : stor_id,
+            'malgy' : malgy,
+            'md_algy_t' : md_algy_t,
         }
 
         return render(request, 'md_store/menuinfo.html', context)
@@ -304,11 +314,9 @@ class MenuInfoView(View):
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=menu_id)
         menu = MdMenu.objects.filter(menu_id=menu_id)
-
-        ice_t_id = request.POST["ice"]
-        menu_t_id = request.POST["menutype"]
+        
         stor_m_pric = request.POST["menupric"]
-        stor_m_name = request.POST["menuname"]
+        
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
         algy_t_list = request.POST.getlist("algy[]")
@@ -331,10 +339,7 @@ class MenuInfoView(View):
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
         
         stor_m_id = stor_m_id
-        storem.ice_t_id = ice_t_id
-        storem.menu_t_id = menu_t_id
         storem.stor_m_pric = stor_m_pric
-        storem.stor_m_name = stor_m_name
         storem.stor_m_cal = stor_m_cal
         storem.stor_m_info = stor_m_info
         storem.stor_m_img = imgmenuinfo
