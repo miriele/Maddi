@@ -1,11 +1,7 @@
-{% load static %}
-<script src="{% static 'js/script_store.js' %}"></script>	
-{% block title %}
-<html>
 <head>
     <title>점주_매장관리</title>
 </head>
-{% endblock %}
+{% extends "md_member/base.html"%}
 {% block content %}
 <form method="post" >
   <input type="hidden" name="stor_id" value="{{ stor_id }}">
@@ -82,5 +78,4 @@
         readImageFile(this);
     });
 </script>
-</html>
 {% endblock %}

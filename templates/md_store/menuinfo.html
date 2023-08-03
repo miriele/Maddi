@@ -1,13 +1,8 @@
-{% load static %}
-<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
-<script src="{% static 'js/script_store.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'css/style_menuinfo.css' %}">
-{% block title %} 
 <head>
     <title>점주_메뉴관리</title>
     <h2> 점주_메뉴관리</h2>
 </head>
-{% endblock %}
+{% extends "md_member/base.html"%}
 {% block content %}
 <form method="post" action="{% url 'md_store:menuinfo' %}" name="updateform" enctype="multipart/form-data">
     <input type="hidden" name="stor_id" value="{{ stor_id }}"> 

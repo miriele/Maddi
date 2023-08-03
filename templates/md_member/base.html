@@ -9,6 +9,8 @@
 		<script src = "{%static 'js/script_member.js'%}"></script>
 		<script src = "{%static 'js/script_comb.js'%}"></script>
 		<script src = "{%static 'js/script_favorite.js'%}"></script>
+		<script src="{% static 'js/script_store.js' %}"></script>
+		<script src="{% static 'js/script_order.js' %}"></script>
 	</head>
 	<body>
 		{% block header %}
@@ -25,16 +27,18 @@
 					<input type="button" value="장바구니" onclick="location='/md_order/buck'">&nbsp;&nbsp;&nbsp;
 					<input type="button" value="주문내역" onclick="location='/md_member/myorderlist'">&nbsp;&nbsp;&nbsp;
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
-					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'">&nbsp;&nbsp;&nbsp;
+					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'">&nbsp;&nbsp;&nbsp;		
 				{% elif gid == 6 %}
 					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">&nbsp;&nbsp;&nbsp;
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
 					<input type="button" value="점주 마이페이지" onclick="location='/md_store/mypagejumju'">&nbsp;&nbsp;&nbsp;
+					<button type="button" onclick="location.href='/md_order/orderlist?stor_id={{stor_id}}'">주문관리</button>&nbsp;&nbsp;&nbsp;
 				{% elif gid == 7 %}
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'">&nbsp;&nbsp;&nbsp;
 					<input type="button" value="회원관리" onclick="location='/md_admin/userlist'"> &nbsp;&nbsp;&nbsp;
 				{% endif %}
-				<input type="button" value="logout" onclick="location='/md_member/logout'">
+				<button type="button" onclick="location.href='/md_order/buck'">장바구니</button>&nbsp;&nbsp;&nbsp;
+				<input type="button" value="logout" onclick="location='/md_member/logout'">&nbsp;&nbsp;&nbsp;
 			{% else %}
 				<input type="button" value="추천조합" onclick="location='/md_combi/comblist'">&nbsp;&nbsp;&nbsp;
 				<input type="button" value="login" onclick="location='/md_member/login'">

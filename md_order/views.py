@@ -15,6 +15,7 @@ class OrderInfoView(View):
     def get(self, request):
         user_id = request.session.get('memid')
         memid = request.session.get('memid')
+        gid = request.session.get("gid")
         stor_m_id = request.GET.get('stor_m_id')
         bucknum = int(request.GET.get('bucknum', 1))
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -37,7 +38,7 @@ class OrderInfoView(View):
         buckprice = bucknum * storem.stor_m_pric
 
         context = {
-            "memid"     : memid,
+            "memid": memid,
             'dto': storem,
             'stor_m_pric': storem.stor_m_pric,
             'stor_m_name': storem.stor_m_name,
@@ -49,7 +50,8 @@ class OrderInfoView(View):
             'buckprice': buckprice,
             'stor_m_id' : stor_m_id,
             'algy_n' : algy_n,
-            'user_id' :user_id
+            'user_id' :user_id,
+            'gid' : gid
         }
 
         return render(request, 'md_order/orderinfo.html', context)
@@ -175,6 +177,7 @@ class BuckView(View):
     def get(self, request):
         try:
             memid = request.session.get('memid')
+            gid = request.session.get('gid')
             user_id = request.session.get("memid")
             stor_m_id = request.POST.get('stor_m_id')
             bucks = MdBuck.objects.select_related('stor_m__stor').filter(user_id=user_id)
@@ -207,7 +210,7 @@ class BuckView(View):
 
             logger.debug(f'context : {context}')
 
-            return render(request, 'md_order/buck.html', {'context': context, 'memid' : memid})
+            return render(request, 'md_order/buck.html', {'context': context, 'memid' : memid, 'gid':gid})
         except MdBuck.DoesNotExist:
             return HttpResponseNotFound()
         
@@ -270,7 +273,11 @@ class OrdrSucView (View):
     def get(self,request):
         template = loader.get_template( "md_order/ordersuc.html" )
         memid = request.session.get('memid')
-        context = {"memid" : memid}
+        gid = request.session.get('gid')
+        context = {
+            "memid" : memid,
+            "gid" : gid,   
+            }
         return HttpResponse( template.render( context, request ) )
     def post(self,request):
         pass
@@ -278,6 +285,8 @@ class OrdrSucView (View):
 
 class OrdrListView(View):
     def get(self, request):
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
         stor_id = request.GET['stor_id']
         template = loader.get_template("md_order/orderlist.html")
         memid = request.session.get('memid')
@@ -292,7 +301,9 @@ class OrdrListView(View):
         orders = orders.order_by('order_status', 'ordr_com_ts')
         context = {
             "odtos": odtos,
-            "stor_id" : stor_id
+            "stor_id" : stor_id,
+            "memid" : memid,
+            "gid" : gid,
         }
         
         return HttpResponse(template.render(context, request))

@@ -153,7 +153,9 @@ class StoreView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
-        stor_id = request.GET['stor_id'] 
+        stor_id = request.GET['stor_id']
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             stor_t_id = store.stor_t_id
@@ -183,7 +185,9 @@ class StoreView(View):
                 'stor_id': stor_id,
                 'stor_t_id': stor_t_id,
                 'stor_img': stor_img,
-                'user_ids': user_ids
+                'user_ids': user_ids,
+                'memid' : memid,
+                'gid' : gid,
             }
 
             return render(request, 'md_store/store.html', context)
@@ -214,6 +218,8 @@ class StoreView(View):
 
 class MenuListView(View):
     def get(self, request):
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
         stor_id =  request.GET.get("stor_id")
         store = MdStor.objects.get(stor_id=stor_id)
         menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
@@ -247,6 +253,8 @@ class MenuListView(View):
             'stor_img' : stor_img,
             'user_ids' : user_ids,
             'menu_list': menu_list,
+            'memid' : memid,
+            'gid' : gid,
         }
         
       
@@ -259,13 +267,12 @@ class MenuInfoView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")        
         stor_m_id = request.GET['stor_m_id']
-        
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        
         menu_id = storem.menu_id
         stor_id = storem.stor_id
-        
         menu = MdMenu.objects.get(menu_id=menu_id)
         
         m_algy = MdMAlgy.objects.filter(menu_id = menu_id)
@@ -285,21 +292,23 @@ class MenuInfoView(View):
             cate = 1    #선택
         
         context = {
-            'dto'           : storem,
-            'ice'           : storem.ice_t_id,
-            'stor_m_id'     : stor_m_id,
-            'menu_id'       : menu_id,
-            'stor_m_name'   : storem.stor_m_name,
-            'stor_m_pric'   : storem.stor_m_pric,
-            'dsrt_t'        : dsrt_t,
-            'drnk_t'        : drnk_t,
-            'stor_m_cal'    : storem.stor_m_cal,
-            'stor_m_info'   : storem.stor_m_info,
-            'stor_m_img'    : storem.stor_m_img,
-            'cate'          : cate,
-            'stor_id'       : stor_id,
-            'm_algy'        : m_algy,
-            'md_algy_t'     : md_algy_t,
+            'dto': storem,
+            'ice' : storem.ice_t_id,
+            'stor_m_id': stor_m_id,
+            'menu_id' : menu_id,
+            'stor_m_name': storem.stor_m_name,
+            'stor_m_pric': storem.stor_m_pric,
+            'dsrt_t' : dsrt_t,
+            'drnk_t' : drnk_t,
+            'stor_m_cal': storem.stor_m_cal,
+            'stor_m_info': storem.stor_m_info,
+            'stor_m_img': storem.stor_m_img,
+            'cate' : cate,
+            'stor_id' : stor_id,
+            'm_algy' : m_algy,
+            'md_algy_t' : md_algy_t,
+            'memid' : memid,
+            'gid' : gid,            
         }
 
         return render(request, 'md_store/menuinfo.html', context)
@@ -413,6 +422,8 @@ class StoreUserView(View):
                 'stor_img' : stor_img,
                 'user_ids' : user_ids,
                 'menu_list': menu_list,
+                'memid' : memid,
+                'gid' : gid,
             }
             
           
@@ -428,6 +439,7 @@ class MypageJumjuView(View):
     def get(self, request):
         template = loader.get_template("md_store/mypagejumju.html")
         memid =request.session.get("memid")
+        gid = request.session.get("gid")
         user = MdUser.objects.get(user_id=memid)
         stor = MdStor.objects.get(user_id=memid)
         stor_id = stor.stor_id
@@ -435,7 +447,9 @@ class MypageJumjuView(View):
         
         context = {
             "user_name": user_name,
-            "stor_id" : stor_id
+            "stor_id" : stor_id,
+            "memid" : memid,
+            "gid" : gid,
             }
         
         return HttpResponse( template.render( context, request ) )

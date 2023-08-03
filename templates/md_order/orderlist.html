@@ -1,10 +1,9 @@
-
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style_orderlist.css' %}">
 <html>
 <head>
     <title>주문 목록</title>
 </head>
+{% extends "md_member/base.html"%}
+{%block content%}
 <body>
     <h1>주문 목록</h1>
     <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
@@ -54,4 +53,5 @@
         {% endfor %}
     </table>
 </body>
+{%endblock%}
 </html>

@@ -5,11 +5,11 @@
 <title>점주_메뉴목록</title>
 </head>
 <body>
-<h1>메뉴 목록</h1>
+{% extends "md_member/base.html"%}
+{%block content%}
 <form method="post" >
+<h1>메뉴 목록</h1>
  <input type="hidden" name="stor_id" value="{{ stor_id }}">
-
-
 {% if menu_list %}
 <table>
     <tr>
@@ -36,6 +36,6 @@
 {% else %}
 <p>해당 매장의 메뉴가 없습니다.</p>
 {% endif %}
-
+{%endblock%}
 </body>
 </html>
