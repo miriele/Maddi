@@ -26,10 +26,15 @@ class ReviewView( View ):
         stor_id = request.GET["stor_id"]
         
         stor_id = int(stor_id)
-        logger.debug(f' stor_id  : { stor_id }')
         
-        count   = MdReview.objects.count()      #나옴
-        
+        count = 0
+        rev_count   = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(ordr__mdordrm__stor_m__stor_id = stor_id).count()      #나옴
+        # logger.debug(f' rev_count  : { rev_count }')
+        if rev_count != 0:
+            count = rev_count
+        else :
+            count = count
+            
         rdtos   = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor__user').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name','ordr__mdordrm__stor_m__stor_id', 'rev_ts', 'ordr__user__user_nick', "ordr__user__user_img", 'rev_cont', 'rev_star', 'rev_img')
         # logger.debug(f' rdtos  : { rdtos }')
         

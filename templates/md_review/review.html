@@ -9,6 +9,14 @@
 					등록된 리뷰가 없습니다.
 			</td>
 		</tr>
+		<tr>
+			<td> <br><br> </td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" value="매장으로 돌아가기" onclick="location='/md_store/storeuser?stor_id={{ stor_id }}'">
+			</td>
+		</tr>
 	{% else %}
 		{% for rdto in rdtos %}
 			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}
