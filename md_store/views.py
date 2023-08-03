@@ -315,6 +315,7 @@ class MenuInfoView(View):
         stor_m_pric = request.POST["menupric"]
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
+        menu_t_id = request.POST["menutype"]
         
         # algy_t_list = request.POST.getlist("algy[]")
         list_algy = request.POST.getlist("md_algy_t")
@@ -356,6 +357,7 @@ class MenuInfoView(View):
         storem.stor_m_cal = stor_m_cal
         storem.stor_m_info = stor_m_info
         storem.stor_m_img = imgmenuinfo
+        storem.menu_t_id = menu_t_id
         storem.save()
     
         return redirect(reverse("md_store:menuinfo") + f'?stor_m_id={stor_m_id}')
