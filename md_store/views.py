@@ -10,7 +10,10 @@ from django.utils import timezone
 from md_favorite.models import MdFavorite
 from asgiref.server import logger
 from datetime import datetime
+import logging
 
+# 로그
+logger = logging.getLogger( __name__ )
 
 class TestStoreView(View):
     def get(self, request):
@@ -257,24 +260,18 @@ class MenuInfoView(View):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         stor_m_id = request.GET['stor_m_id']
+        
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
+        
         menu_id = storem.menu_id
         stor_id = storem.stor_id
-        menu = MdMenu.objects.get(menu_id=menu_id)
-        m_algy = MdMenu.objects.filter(menu_id=menu_id).values("menu_id")
-        m_algy = list(m_algy)
         
-        m_algy = list(m['menu_id'] for m in m_algy)
-        malgy = MdMAlgy.objects.filter(menu = m_algy[0])
-        print(malgy)
-
+        menu = MdMenu.objects.get(menu_id=menu_id)
+        
+        m_algy = MdMAlgy.objects.filter(menu_id = menu_id)
+        
         md_algy_t = MdAlgyT.objects.order_by("algy_t_id")
-
-        if storem.menu_t_id == 0:
-            menu_type = "일반"
-        else:
-            menu_type = "시그니처"
-            
+        
         dsrt_t = menu.dsrt_t_id
         drnk_t = menu.drnk_t_id
         
@@ -288,22 +285,21 @@ class MenuInfoView(View):
             cate = 1    #선택
         
         context = {
-            'dto': storem,
-            'ice' : storem.ice_t_id,
-            'stor_m_id': stor_m_id,
-            'menu_id' : menu_id,
-            'stor_m_name': storem.stor_m_name,
-            'stor_m_pric': storem.stor_m_pric,
-            'dsrt_t' : dsrt_t,
-            'drnk_t' : drnk_t,
-            'stor_m_cal': storem.stor_m_cal,
-            'stor_m_info': storem.stor_m_info,
-            'stor_m_img': storem.stor_m_img,
-            'menu_type': menu_type,
-            'cate' : cate,
-            'stor_id' : stor_id,
-            'malgy' : malgy,
-            'md_algy_t' : md_algy_t,
+            'dto'           : storem,
+            'ice'           : storem.ice_t_id,
+            'stor_m_id'     : stor_m_id,
+            'menu_id'       : menu_id,
+            'stor_m_name'   : storem.stor_m_name,
+            'stor_m_pric'   : storem.stor_m_pric,
+            'dsrt_t'        : dsrt_t,
+            'drnk_t'        : drnk_t,
+            'stor_m_cal'    : storem.stor_m_cal,
+            'stor_m_info'   : storem.stor_m_info,
+            'stor_m_img'    : storem.stor_m_img,
+            'cate'          : cate,
+            'stor_id'       : stor_id,
+            'm_algy'        : m_algy,
+            'md_algy_t'     : md_algy_t,
         }
 
         return render(request, 'md_store/menuinfo.html', context)
@@ -311,15 +307,32 @@ class MenuInfoView(View):
     def post(self, request):
         stor_m_id = request.POST['stor_m_id']
         menu_id = request.POST['menu_id']
+        
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy = MdMAlgy.objects.filter(menu_id=menu_id)
         menu = MdMenu.objects.filter(menu_id=menu_id)
         
         stor_m_pric = request.POST["menupric"]
-        
         stor_m_cal = request.POST["menukcal"]
         stor_m_info = request.POST["menuinfo"]
-        algy_t_list = request.POST.getlist("algy[]")
+        
+        # algy_t_list = request.POST.getlist("algy[]")
+        list_algy = request.POST.getlist("md_algy_t")
+        # 디비서 가져온거
+        m_algy = MdMAlgy.objects.filter(menu_id =menu_id)
+        logger.debug(f'm_algy : {m_algy}')
+        
+        for ma in m_algy :
+            ma.delete()
+        
+        for a in list_algy :
+            if a :
+                dtoa = MdMAlgy(
+                    menu_id     = menu_id,
+                    algy_t_id   = a
+                    )
+                dtoa.save()
+        
         imgmenuinfo = storem.stor_m_img = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_img
 
         if "imgmenuinfo" in request.FILES:
@@ -329,14 +342,14 @@ class MenuInfoView(View):
             storem.stor_m_img = MdStorM.objects.get(stor_m_id=stor_m_id).stor_m_img
         
         # 알러지 정보를 업데이트
-        existing_algy_t_ids = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
-        new_algy_t_ids = [int(algy_t_id) for algy_t_id in algy_t_list]
+        # existing_algy_t_ids = MdMAlgy.objects.filter(menu_id=menu_id).values_list("algy_t_id", flat=True)
+        # new_algy_t_ids = [int(algy_t_id) for algy_t_id in algy_t_list]
     
         # 기존 알러지를 삭제하고 새로운 알러지 정보를 추가
-        algy.exclude(algy_t_id__in=new_algy_t_ids).delete()
-        for algy_t_id in new_algy_t_ids:
-            if algy_t_id not in existing_algy_t_ids:
-                MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
+        # algy.exclude(algy_t_id__in=new_algy_t_ids).delete()
+        # for algy_t_id in new_algy_t_ids:
+        #     if algy_t_id not in existing_algy_t_ids:
+        #         MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
         
         stor_m_id = stor_m_id
         storem.stor_m_pric = stor_m_pric

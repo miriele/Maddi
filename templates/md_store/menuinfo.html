@@ -1,4 +1,5 @@
 {% load static %}
+<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 <script src="{% static 'js/script_store.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/style_menuinfo.css' %}">
 {% block title %} 
@@ -39,8 +40,13 @@
             <th>메뉴타입</th>
             <td>
                 <select name="menutype" class="input">
-                    <option value="0" >일반</option>
-                    <option value="1" >시그니처</option>
+                	{% if dto.menu_t_id == 0 %}
+                    	<option value="0" selected>일반</option>
+                    	<option value="1" >시그니처</option>
+                    {% else %}
+                    	<option value="0">일반</option>
+	                    <option value="1" selected>시그니처</option>
+	                   {% endif %}
                 </select>
             </td>
         </tr>
@@ -61,8 +67,8 @@
 				<td>
 					{% for algy in md_algy_t %}
 						<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}">{{algy.algy_t_name }}
-						{% for ual in malgy %}
-							{% if ual.algy_t_id == algy.algy_t_id %}
+						{% for mal in m_algy %}
+							{% if mal.algy_t_id == algy.algy_t_id %}
 								<script>
 								$('input[name="md_algy_t"][value={{algy.algy_t_id}}]').attr("checked", true)
 								</script>
@@ -88,7 +94,7 @@
 
 <script>
 //페이지가 로드될 때 실행되는 함수인데 js로 빼놓으면 동작을 안해서 우선 여기 포함시켰습니다.
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     var cateSelect = document.getElementById("cate");
     var dsrtSelect = document.getElementById("typedsrt");
     var drnkSelect = document.getElementById("typedrnk");
@@ -108,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     cateSelect.addEventListener("change", handleCateChange);
 });
-
+*/
 function readImageFile(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
