@@ -15,7 +15,6 @@ input[type="button"][value="Maddi"] {
 	font-weight:bold; 
 	font-size: 20px; 
 	background-color: white;
-	
 }
 
 input[type="button"] {
@@ -48,8 +47,11 @@ input.inputbutton[type="button"][value="회원가입"]{
   border-radius: 10px;
 }
 
-input.input[type="text"][name="user_id"],[type="password"]{
+input.input[type="text"][name="user_id"],[type="password"],[name="user_name"],[name="user_nick"]{
 	padding: 5px 10px;
+}
+input[type="date"]{
+	padding: 3px 43px;
 }
 
 .login {
@@ -60,14 +62,22 @@ input.input[type="text"][name="user_id"],[type="password"]{
 .userinput{
 	top: 10%;
 	left: 50%;
-	margin-bottom :100px
+	right: 50%;
+	margin-bottom :100px;
 }
 .userinputT{
 	
 }
 
-
-
+select.select_genid {
+	width: 5%;
+	font-family: inherit;
+	text-align: center;
+}
+.userinput2{
+	left: 50%;
+	right: 50%;
+}
 
 
 
