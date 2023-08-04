@@ -7,9 +7,10 @@
 <body>
 {% extends "md_member/base.html"%}
 {%block content%}
-<form method="post" >
+<form method="post">
 <h1>메뉴 목록</h1>
  <input type="hidden" name="stor_id" value="{{ stor_id }}">
+ <input type="button" value="메뉴등록" onclick="location.href='/md_store/addmenu?stor_id={{stor_id}}'">
 {% if menu_list %}
 <table border = "1">
     <tr>

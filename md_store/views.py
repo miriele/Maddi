@@ -114,13 +114,13 @@ class AddMenuView(View):
         stor_id = request.GET["stor_id"] 
         stor = MdStor.objects.get(stor_id=stor_id)
         context = {
-            'stor_name': stor.stor_name
+            'stor_name': stor.stor_name,
+            'stor_id' : stor_id
             }
         return HttpResponse( template.render( context, request ) )
         
     def post(self, request):
         stor_id = request.POST["stor_id"]
-        menu_id = request.POST["menu_id"]
         ice_t_id = request.POST["ice"]
         menu_t_id = request.POST["menutype"]
         stor_m_pric = request.POST["menupric"]
@@ -131,22 +131,22 @@ class AddMenuView(View):
         imgmenu = request.FILES["imgmenu"]
         
         MdStorM.objects.create(
-            stor_id = stor_id,
-            menu_id = menu_id,
-            menu_t_id = menu_t_id,
-            stor_m_pric = stor_m_pric,
-            stor_m_name = stor_m_name,
-            stor_m_cal = stor_m_cal,
-            stor_m_info = stor_m_info,
-            stor_m_img = imgmenu,
-            ice_t_id = ice_t_id,
-            )
-        
+            stor_id=stor_id,
+            menu_id=menu_id,  # 새로운 MdMenu 객체의 menu_id 값을 사용
+            menu_t_id=menu_t_id,
+            stor_m_pric=stor_m_pric,
+            stor_m_name=stor_m_name,
+            stor_m_cal=stor_m_cal,
+            stor_m_info=stor_m_info,
+            stor_m_img=imgmenu,
+            ice_t_id=ice_t_id,
+        )
+                
         for algy_t_id in algy_t_list:
             if not MdMAlgy.objects.filter(menu_id=menu_id, algy_t_id=algy_t_id).exists():
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
             
-        return redirect( "md_store:addmenu")
+        return render(request, 'md_store/addmenusuc.html')
     
 class StoreView(View):
     @method_decorator(csrf_exempt)
