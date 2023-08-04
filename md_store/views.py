@@ -381,13 +381,13 @@ class StoreUserView(View):
         gid      = request.session.get("gid")
         
         result = 0
-        md_fav = MdFavorite.objects.filter(stor = stor_id)
-            
+        md_fav = MdFavorite.objects.filter(stor = stor_id, user_id =memid)
+        
         for fav in md_fav :
-            logger.debug(f'fav : {fav}')
-            # if fav.user_id == memid :
-                # result = 1
-                # break
+            logger.debug(f'fav.user_id : {fav.user_id}')
+            if fav.user_id == memid :
+                result = 1
+                break
         try:
             store = MdStor.objects.get(stor_id=stor_id)
             menu_list = MdStorM.objects.filter(stor__stor_id=stor_id)
