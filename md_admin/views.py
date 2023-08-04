@@ -59,10 +59,10 @@ class UserinfoView(View):
         template = loader.get_template("md_admin/userinfo.html")
         id = request.GET["id"]
         users = MdUser.objects.select_related("user_g").get(user_id=id)
-            
+        
         context ={
             "id":id,
-            "users":users,  
+            "users":users, 
              }
         return HttpResponse(template.render(context,request))
     
@@ -161,11 +161,17 @@ class ReviewinfoView(View):
 class SregistlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistlist.html")
-        reglists = MdStorReg.objects.select_related("stor")
-        count = MdStorReg.objects.count()
+        unsign_reglists =  MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = False)
+        sign_reglists = MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = True)
+        
+        uncount =  MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = False).count()
+        comcount = MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = True).count()
+        
         context ={
-            "reglists":reglists,
-            "count" : count
+            "unsign_reglists"   : unsign_reglists,
+            "sign_reglists"     : sign_reglists,
+            "uncount"           : uncount,
+            "comcount"          : comcount
             }
         return HttpResponse(template.render(context,request))
 

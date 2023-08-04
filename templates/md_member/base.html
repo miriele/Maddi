@@ -15,13 +15,13 @@
 	</head>
 	<body>
 		{% block header %}
-		<div  class="header">
+		<div class="header">
 			{% if memid %}
 				{% if gid == 1 %}
 					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'"> |
 					<input type="button" value="주문내역" onclick="location='/md_member/myorderlist'"> |
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
-					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'"> 
+					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'"> |
 					<input type="button" value="장바구니" onclick="location='/md_order/buck'">
 				{% elif gid == 6 %}
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
@@ -31,7 +31,7 @@
 					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
 					<input type="button" value="회원관리" onclick="location='/md_admin/userlist'"> 
 				{% endif %}
-				| <input type="button" value="logout" onclick="location='/md_member/logout'">|
+				| <input type="button" value="logout" onclick="location='/md_member/logout'">
 			{% else %}
 				<input type="button" value="추천조합" onclick="location='/md_combi/comblist'"> |
 				<input type="button" value="login" onclick="location='/md_member/login'">

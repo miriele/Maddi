@@ -7,7 +7,7 @@
 {% extends "md_admin/base.html" %}
 <body>
 {%block content%}
-	<h2>점주등록신청</h2>
+	<h2>점주등록신청-승인전</h2>
 		<table border = "1">
 			<tr>
 				<th style="width:7%"> 아이디 </th>
@@ -15,14 +15,47 @@
 				<th style="width:7%"> 신청일 </th>
 				<th style="width:7%"> 신청완료 </th>
 			</tr>
-			{% if count == 0 %}
+			{% if uncount == 0 %}
 				<tr>
 					<td colspan = "5" align = "center">
 						등록없음
 					</td>
 				</tr>
 			{%else%}			
-			{%for list in reglists%}
+			{%for list in unsign_reglists%}
+				<tr>
+					<td align = "center">
+						<a href = "sregistinfo?reg_id={{list.reg_id}}">{{list.user_id}}</a>				
+					</td>
+					<td align = "center">
+						{{list.stor.stor_name}}
+					</td>
+					<td align = "center">
+						{{list.reg_sub_ts |date:"Y-m-d H:i"}}
+					</td>
+					<td align = "center">
+						{{list.reg_con_ts | date:"Y-m-d H:i"}}
+					</td>								
+				</tr>
+			{%endfor%}
+			{%endif%}
+		</table>
+	<h2>점주등록신청-승인완료</h2>
+		<table border = "1">
+			<tr>
+				<th style="width:7%"> 아이디 </th>
+				<th style="width:7%"> 매장명 </th>
+				<th style="width:7%"> 신청일 </th>
+				<th style="width:7%"> 신청완료 </th>
+			</tr>
+			{% if comcount == 0 %}
+				<tr>
+					<td colspan = "5" align = "center">
+						승인완료 없음
+					</td>
+				</tr>
+			{%else%}			
+			{%for list in sign_reglists%}
 				<tr>
 					<td align = "center">
 						<a href = "sregistinfo?reg_id={{list.reg_id}}">{{list.user_id}}</a>				
