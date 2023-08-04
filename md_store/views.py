@@ -457,7 +457,12 @@ class MypageJumjuView(View):
 class AddJumjuSucView(View):
     def get(self, request):
         template = loader.get_template("md_store/addjumjusuc.html")
-        context = {}
+        memid = request.session.get("memid")
+        gid   = request.session.get("gid")
+        context = {
+            "memid" : memid,
+            "gid"   : gid,
+            }
         
         return HttpResponse( template.render( context, request ) )
 
