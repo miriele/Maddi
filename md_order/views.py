@@ -287,7 +287,7 @@ class OrdrListView(View):
         stor_id = request.GET['stor_id']
         template = loader.get_template("md_order/orderlist.html")
         memid = request.session.get('memid')
-        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id=memid,mdordrm__stor_m__stor__stor_id=stor_id).values('ordr_id', 'user_id', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_name', 'mdordrm__stor_m__stor__stor_id', 'ordr_ord_ts', 'ordr_com_ts')
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(mdordrm__stor_m__stor__stor_id=stor_id).values('ordr_id', 'user_id', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_name', 'mdordrm__stor_m__stor__stor_id', 'ordr_ord_ts', 'ordr_com_ts')
         orders = MdOrdr.objects.annotate(
             order_status=Case(
                 When(ordr_com_ts__isnull=True, then=Value('접수완료')),

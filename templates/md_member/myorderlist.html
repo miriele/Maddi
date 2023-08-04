@@ -53,8 +53,8 @@
 						<input class="inputbutton" type="button" value="리뷰 작성" disabled >
 					{% else %}
 						{% if  o.ordr_id in r_id %}
-							<input style="background-color:lightblue;" type="button" value="작성리뷰보기" 
-								onclick="location='/md_store/storeuser?stor_id={{o.mdordrm__stor_m__stor__stor_id}}'">
+							<input style="background-color:lightblue;" type="button" value="매장리뷰보기" 
+								onclick="location='/md_review/review?stor_id={{o.mdordrm__stor_m__stor__stor_id}}'">
 						{% else %}
                 			<input type="button" value="리뷰 작성" 
                 				onclick="location='/md_review/revwrite?ordr_id={{ o.ordr_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}'">

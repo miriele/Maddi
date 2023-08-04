@@ -22,7 +22,7 @@
 	        </th>
 	    </tr>
 	    <tr>
-	        <th rowspan="7"><img src="/media/{{ stor_img }}" width="300" height="300" ></th>
+	        <th rowspan="7"><img src="/media/{{ stor_img }}" width="100" height="75" ></th>
 	    </tr>
 	    <tr>
 	        <th>매장명</th>
@@ -56,7 +56,7 @@
 				{% endif %}
 	        </th>
 	        	<th colspan = "2">
-		        	<input type="button" name="reviewgo" value="리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
+		        	<input type="button" name="reviewgo" value="매장 리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
 	        	</th>
 	    </tr>
 	</table>
@@ -75,7 +75,7 @@
 	        {% for menu in menu_list %}
 	        <tr>
 	        	<th>
-	               <img src="/media/{{ menu.stor_m_img }}" width="300" height="300" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
+	               <img src="/media/{{ menu.stor_m_img }}" width="100" height="75" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
 	            </th>
 	            <th>{{ menu.stor_m_name }}</th>
 	            <th>{{ menu.stor_m_pric }}원</th>
