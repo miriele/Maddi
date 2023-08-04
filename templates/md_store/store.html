@@ -1,10 +1,9 @@
-<head>
-    <title>점주_매장관리</title>
-</head>
 {% extends "md_member/base.html"%}
 {% block content %}
-<form method="post" >
+{% csrf_token %}
+<form method="post" action="store" name="storeform" enctype="multipart/form-data">
   <input type="hidden" name="stor_id" value="{{ stor_id }}">
+  <input type="hidden" name="stor_img" value="{{ stor.stor_img }}">
 	<table border = "1">
 	    <tr>
 	        <th colspan="4">
@@ -12,19 +11,32 @@
 	        </th>
 	    </tr>
 	    <tr>
-	    	{% if stor_img %}
-	        	<th rowspan="7"> <img src="/media/{{ stor_img }}" width="300" height="300"> </th>
-	        {% else %}
-		    	<p>등록된 이미지가 없습니다.</p>
-		    {% endif %}
+	       	<th rowspan="7"> 
+	       		<img src="/media/{{ stor.stor_img }}" width="300" height="300" onerror="this.onerror=null; this.src='/media/no_image.png';"> 
+				<input class="input" type="file" name="Nstor_img" accept="image/*"  onchange="readURL(this);">	       		
+	       		<img id="preview" style="width:150px;">
+				<script>
+					function readURL(input) {
+						if (input.files && input.files[0]) {
+						    var reader = new FileReader();
+						    reader.onload = function(e) {
+						      document.getElementById('preview').src = e.target.result;
+						    };
+						    reader.readAsDataURL(input.files[0]);
+						  } else {
+						    document.getElementById('preview').src = "";
+						  }
+						}
+				</script>
+	       	</th>
 	    </tr>
 	    <tr>
 	        <th>매장명</th>
-	        <td colspan="2">&nbsp;{{ dto.stor_name }}</td>
+	        <td colspan="2">&nbsp;{{ stor.stor_name }}</td>
 	    </tr>
 	    <tr>
          	<th>점주</th>
-         	<td> {{ user_ids }}</td>
+         	<td> {{ stor.user_id }}</td>
         </tr>
 	    <tr>
 	        <th>매장유형</th>
@@ -32,49 +44,20 @@
 	    </tr>
 	    <tr>
 	        <th>주소</th>
-	        <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
+	        <td colspan="2">&nbsp;{{ stor.stor_addr }}</td>
 	    </tr>
 	    <tr>
 		    <th>연락처</th>
 		    <td colspan="2">
-		        <input class="input" type="text" name="tel" maxlength="20" style="width:250px" value="{{ stor_tel }}" onclick="clearInput(this)">
+		        <input class="input" type="text" name="stor_tel" maxlength="20" style="width:250px" value="{{ stor.stor_tel }}">
 		    </td>
 		</tr>
 	    <tr>
-	        <th>매장인기시간대</th>
-	        <td colspan="2">&nbsp;</td>
-	    </tr>
-	    <tr>
-	        <th colspan="4">
-	        	<input class="input" type="file" name="imgstor" accept="image/*" id="imgstorInput">
-	        </th>
-	    </tr>
-	    <tr>
 	    	<th colspan = "4">
-	    		<input class="inputbutton" type="submit" value="수정" onclick="location='md_store/store?stor_id={{stor_id}}'">
+	    		<input class="inputbutton" type="submit" value="수정">
 	        	<input class="inputbutton" type="reset" value="취소" onclick="location='mypagejumju'">
 	        </th>
 	    </tr>
 	</table>
 </form>
-
-<script>
-    function readImageFile(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var imgPreview = document.getElementById('imgstorPreview');
-                imgPreview.src = e.target.result;
-                imgPreview.style.display = 'inline-block'; // 이미지 미리보기를 보이도록 설정
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    document.getElementById('imgstorInput').addEventListener('change', function() {
-        readImageFile(this);
-    });
-</script>
 {% endblock %}

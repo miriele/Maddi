@@ -108,7 +108,6 @@ class AddJumjuView(View):
         
         return redirect("md_store:addjumjusuc")
 
-'''
 class AddMenuView(View):
     def get(self, request):
         template = loader.get_template("md_store/addmenu.html")
@@ -148,75 +147,76 @@ class AddMenuView(View):
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
             
         return render(request, 'md_store/addmenusuc.html')
-        
-''' 
+    
 class StoreView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get(self, request):
+        
         stor_id = request.GET['stor_id']
         memid = request.session.get("memid")
         gid = request.session.get("gid")
-        try:
-            store = MdStor.objects.get(stor_id=stor_id)
-            stor_t_id = store.stor_t_id
-
-            if store.stor_t_id == 0:
-                stor_type = "개인"
-            else:
-                stor_type = "프랜차이즈"
-
-            if store.stor_tel:
-                stor_tel = store.stor_tel
-            else:
-                stor_tel = "등록된 연락처가 없습니다"
-
-            if store.user_id:
-                user_ids = store.user_id
-            else:
-                user_ids = "등록된 점주가 없습니다"
-
-            stor_img = str(store.stor_img).replace('images/', '')
-
-            
-            context = {
-                'dto': store,
-                'stor_type': stor_type,
-                'stor_tel': stor_tel,
-                'stor_id': stor_id,
-                'stor_t_id': stor_t_id,
-                'stor_img': stor_img,
-                'user_ids': user_ids,
-                'memid' : memid,
-                'gid' : gid,
+        
+        stor = MdStor.objects.get(stor_id=stor_id)
+        
+        if stor.stor_t_id == 0:
+            stor_type = "개인"
+        else:
+            stor_type = "프랜차이즈"
+        
+        template = loader.get_template( "md_store/store.html")
+        context={
+            "stor_id"   :stor_id,
+            "memid"     :memid,
+            "gid"       :gid,
+            "stor"      :stor,
+            "stor_type" :stor_type,
             }
-
-            return render(request, 'md_store/store.html', context)
-
-        except MdStor.DoesNotExist:
-            return HttpResponseNotFound()
+        return HttpResponse( template.render( context, request ) )
 
     def post(self, request):
-        stor_id = request.GET.get("stor_id")
-        stor_tel = request.POST["tel"]
-    
-        try:
-            store = MdStor.objects.get(stor_id=stor_id)
-            store.stor_tel = stor_tel
-    
-            imgstor = request.FILES.get("imgstor")
-    
-            if imgstor:
-                store.stor_img = imgstor
-                logger.debug(f'imgreg : {imgstor}')
-    
-            store.save()
-    
-            return redirect(reverse("md_store:store") + f'?stor_id={stor_id}')
-    
-        except MdStor.DoesNotExist:
-            return HttpResponseNotFound()
+        
+        memid = request.session.get("memid")
+        gid = request.session.get("gid")
+        stor_id     = request.POST["stor_id"]
+        stor_img    = request.POST["stor_img"]
+        
+        Nstor_img = request.FILES.get("Nstor_img")  
+        
+        # 이미지 업로드 안 했을 시 기본으로 저장
+        if Nstor_img  == None :
+            Nstor_img = stor_img
+        else :
+            Nstor_img 
+        logger.debug(f'Nstor_img : {Nstor_img}')  
+        
+        stor = MdStor.objects.get(stor_id=stor_id)
+        
+        stor = MdStor(
+            stor_id     = stor_id,
+            stor_t_id   = stor.stor_t_id,
+            user_id     = memid,
+            bjd_code    = stor.bjd_code,
+            area_t_id   = stor.area_t_id,
+            stor_img    = Nstor_img,
+            stor_name   = stor.stor_name,
+            stor_addr   = stor.stor_addr,
+            stor_lati   = stor.stor_lati,
+            stor_long   = stor.stor_long,
+            stor_tel    = request.POST["stor_tel"],
+            stor_num    = stor.stor_num,  
+            )
+        stor.save()
+        template = loader.get_template( "md_store/mypagejumju.html")
+        context={
+            "stor_id"   :stor_id,
+            "memid"     :memid,
+            "gid"       :gid,
+            }
+        return HttpResponse( template.render( context, request ) )
+        # return redirect("/md_store/store?stor_id=request.POST['stor_id']")
+        
 
 class MenuListView(View):
     def get(self, request):
