@@ -108,6 +108,7 @@ class AddJumjuView(View):
         
         return redirect("md_store:addjumjusuc")
 
+'''
 class AddMenuView(View):
     def get(self, request):
         template = loader.get_template("md_store/addmenu.html")
@@ -147,7 +148,8 @@ class AddMenuView(View):
                 MdMAlgy.objects.create(menu_id=menu_id, algy_t_id=algy_t_id)
             
         return render(request, 'md_store/addmenusuc.html')
-    
+        
+''' 
 class StoreView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
