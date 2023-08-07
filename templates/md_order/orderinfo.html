@@ -9,55 +9,62 @@
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<table border = "1">
 	    <tr>
-	        <th rowspan="6"><img src="/media/{{ stor_m_img }}" width="200" height="200"></th>
+	        <th rowspan="4"><img src="/media/{{ stor_m_img }}" width="200" height="200"></th>
 	    </tr>
 	    <tr>
-	        <th>메뉴명</th>
+	        <th colspan="2">메뉴명</th>
 	        <td>&nbsp;{{ stor_m_name }}</td>
 	    </tr>
 	    <tr>
-	        <th>가격</th>
+	        <th colspan="2">가격</th>
 	        <td>&nbsp;<span class="menu_price">{{ stor_m_pric }}</span></td>
 	    </tr>
+	    {% if jumju %}
+		    <tr>
+		        <th colspan="2">
+		            <input class="input" type="text" name="num" maxlength="3" style="width: 25px; border:none;" value="{{ bucknum }}" readonly>
+		            <input type="button" name="bucknum_minus" value="-" onclick="count_minus()"/>
+		            <input type="button" name="bucknum_plus" value="+" onclick="count_plus()"/>
+		            <div id="price_sum">{{ buckprice }}</div>
+		        </th>
+		        <th colspan="2">
+		            <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+		            <input type="hidden" name="buck_num" value="{{ bucknum }}">
+		            <input type="hidden" name="user_id" value="{{ user_id }}">
+		            <input type="submit" value="장바구니" formaction="cart">
+		            <input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
+		            <input type="hidden" name="ordr_num" value="{{ bucknum }}">
+		            <input type="hidden" name="user_id" value="{{ user_id }}">
+		            <input type="submit" value="바로주문" formaction="order">
+		        </th>
+		    </tr>
+	    {% else %}
+		    <tr>
+			    <th colspan="3">
+			       <h5> 점주가 등록된 매장만 주문이 가능합니다.</h5>
+			    </th>
+			</tr>
+	    {% endif %}
 	    <tr>
-		    <th colspan="2">
-	            <input class="input" type="text" name="num" maxlength="3" style="width: 25px; border:none;" value="{{ bucknum }}" readonly>
-	            <input type="button" name="bucknum_minus" value="-" onclick = 'count_minus()'/>
-	           	<input type="button" name="bucknum_plus" value="+" onclick = 'count_plus()'/>
-		    	<div id="price_sum">{{ buckprice }}</div>
-		    </th>  	
-	    <tr>
-		    <th colspan="2">
-				<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-				<input type="hidden" name="buck_num" value="{{ bucknum }}">
-				<input type="hidden" name="user_id" value="{{ user_id }}">
-				<input type="submit" value="장바구니" formaction='cart'>
-				<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
-				<input type="hidden" name="ordr_num" value="{{ bucknum }}">
-				<input type="hidden" name="user_id" value="{{ user_id }}">
-				<input type="submit" value="바로주문" formaction='order'>
-	        </th>
-        </tr>
-	    <tr>
-	        <th colspan="3"> 상세정보</th>
+	        <th colspan="4"> 상세정보</th>
 	    </tr>
 	    <tr>
-	        <th colspan="3"> 메뉴 소개 </th>
+	        <th colspan="4"> 메뉴 소개 </th>
 	    </tr>
 	    <tr>
-	        <th colspan="3"> &nbsp;{{ stor_m_info }}</th>
+	        <th colspan="4"> &nbsp;{{ stor_m_info }}</th>
 	    </tr>
 	    <tr>
 	        <th>메뉴유형</th>
-	        <th colspan = "2">&nbsp;{{ menu_type }}</th>
+	        <th colspan = "3">&nbsp;{{ menu_type }}</th>
 	    </tr>
 	    <tr>
 		    <th>알러지</th>
-		    <th colspan = "2">&nbsp;{{ algy_n }}</th>
+		    <th colspan = "3">&nbsp;{{ algy_n }}</th>
 		</tr>
 	    <tr>
 	        <th>칼로리</th>
-	        <th colspan = "2">&nbsp;{{ stor_m_cal }}</th>
+	        <th colspan = "3">&nbsp;{{ stor_m_cal }}</th>
 	    </tr>
 	</table>
 </form>

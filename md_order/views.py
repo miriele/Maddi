@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,reverse
 from django.views import View
-from md_store.models import MdStorM, MdMAlgy, MdAlgyT
+from md_store.models import MdStorM, MdMAlgy, MdAlgyT, MdStor
 from django.http.response import HttpResponseNotFound, HttpResponse
 from md_order.models import MdBuck, MdOrdrM, MdOrdr
 from django.utils import timezone
@@ -23,6 +23,8 @@ class OrderInfoView(View):
         bucknum   = int(request.GET.get('bucknum', 1))
         storem    = MdStorM.objects.get(stor_m_id=stor_m_id)
         algy      = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        stor    = MdStor.objects.get(stor_id = stor_id)
+        jumju = stor.user_id
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
@@ -54,7 +56,8 @@ class OrderInfoView(View):
             'stor_m_id'   : stor_m_id,
             'algy_n'      : algy_n,
             'user_id'     : user_id,
-            'gid'         : gid
+            'gid'         : gid,
+            'jumju'       : jumju,
         }
 
         return render(request, 'md_order/orderinfo.html', context)
