@@ -11,3 +11,4 @@ Pillow==10.0.0
 PyMySQL==1.1.0
 requests==2.22.0
 webdriver-manager==3.8.6
+xmltodict==0.13.0
