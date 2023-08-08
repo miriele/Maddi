@@ -41,8 +41,8 @@ class CombListView( View ):
                 pagenum = "1"
             
             pagenum = int( pagenum )                            #5
-            start = (pagenum -1 ) * int( page_size )            #4*5=    20
-            end = start + int( page_size )                      #20+5=    25
+            start   = (pagenum -1 ) * int( page_size )            #4*5=    20
+            end     = start + int( page_size )                      #20+5=    25
             
             if end >count :
                 end = count
@@ -69,23 +69,19 @@ class CombListView( View ):
             md_comb   = MdComb.objects.select_related('user').order_by('-comb_id')[start:end]
             menu_name = MdCombM.objects.select_related('menu').order_by("-comb_id")
              
-            # logger.debug(f'md_comb : {md_comb}')
             for c in md_comb:
                 for mn in menu_name :
                     if mn.comb_id == c.comb_id :
                         logger.debug(f' mn.menu.menu_name : { mn.menu.menu_name}')
-                # logger.debug(f'c.user.user_id : {c.user.user_id}')
-                # logger.debug(f'c.comb_tit : {c.comb_tit}')
-            
             
             # 추천수 용
-            md_comb1   = MdComb.objects.order_by("-comb_id")[start:end]
+            md_comb1    = MdComb.objects.order_by("-comb_id")[start:end]
             # 추천수
-            comb_like = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb1]
+            comb_like   = [(id.comb_id, MdCLike.objects.filter(comb=id.comb_id).count()) for id in md_comb1]
                 
-            gid = request.session.get("gid") 
-            memid = request.session.get("memid")   
-            logger.debug(f'memid : {memid}')
+            gid     = request.session.get("gid") 
+            memid   = request.session.get("memid")   
+
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
@@ -118,8 +114,8 @@ class CombWriteView( View ):
         memid   = request.session.get("memid")
         gid     = request.session.get("gid") 
             
-        template = loader.get_template( "md_combi/combwrite.html" )
-        nick    = MdUser.objects.get( user_id = memid )
+        template    = loader.get_template( "md_combi/combwrite.html" )
+        nick        = MdUser.objects.get( user_id = memid )
         
         # 2번쨰 select box
         dsrt_t  = MdDsrtT.objects.filter(dsrt_t_id__gt= -1 ).order_by("dsrt_t_id")
@@ -172,7 +168,6 @@ class CombWriteView( View ):
         
         # drink name
         rm0NameL = [rm0.menu_name  for rm0 in dr_m0]
-        # logger.debug(f'rm0NList : {rm0NList}')
         rm1NameL = [rm1.menu_name  for rm1 in dr_m1]
         rm2NameL = [rm2.menu_name  for rm2 in dr_m2]
         rm3NameL = [rm3.menu_name  for rm3 in dr_m3]
@@ -233,9 +228,9 @@ class CombWriteView( View ):
             "sm5NameL"  : sm5NameL,
             "sm6NameL"  : sm6NameL,
             
-            "nick"         : nick,
-            "memid"        : memid,
-            "gid"          : gid,
+            "nick"      : nick,
+            "memid"     : memid,
+            "gid"       : gid,
             }
         return HttpResponse(template.render( context, request ) )
 
@@ -245,23 +240,20 @@ class CombWriteView( View ):
         comb_reg_ts = datetime.now()
         
         dto = MdComb(
-            user_id = user_id,
-            comb_tit = request.POST["comb_tit"],
-            comb_nop = request.POST["comb_nop"],
-            comb_cont = request.POST["comb_cont"],
-            comb_img = request.FILES.get("comb_img", ""), 
+            user_id     = user_id,
+            comb_tit    = request.POST["comb_tit"],
+            comb_nop    = request.POST["comb_nop"],
+            comb_cont   = request.POST["comb_cont"],
+            comb_img    = request.FILES.get("comb_img", ""), 
             comb_reg_ts = comb_reg_ts,
             )
         dto.save()
         
-        menu_tag1 = request.POST["select_id_grandchild"]  # 태그 1값
-        logger.debug(f'menu_tag1 : {menu_tag1}')
+        menu_tag1   = request.POST["select_id_grandchild"]  # 태그 1값
         
-        menu_tag2 = request.POST["select_id_grandchild2"]
-        logger.debug(f'menu_tag2 : {menu_tag2}')
+        menu_tag2   = request.POST["select_id_grandchild2"]
         
-        comb_id = MdComb.objects.filter(user_id = user_id).order_by("-comb_reg_ts").first()
-        logger.debug(f'comb_id : {comb_id}')
+        comb_id     = MdComb.objects.filter(user_id = user_id).order_by("-comb_reg_ts").first()
         
         
         tag1 = MdCombM(
@@ -276,8 +268,7 @@ class CombWriteView( View ):
             )
         tag2.save()
         
-        
-        return redirect("/md_combi/comblist")      ###### 태그 완료후 이동 주소 수정해야 함
+        return redirect("/md_combi/comblist")      
 
     
     
@@ -294,47 +285,44 @@ class CombDView( View ):
         gid     = request.session.get("gid") 
         
         comb_id = request.GET["comb_id"]
-        # comb_id = int(comb_id)
-        logger.debug(f'comb_id : {comb_id}')
         
         pagenum = request.GET["pagenum"]
         number  = request.GET["number"]
+        # 선택한 추천조합 정보
+        comb    = MdComb.objects.get( comb_id = comb_id )
+
+        # 추천글을 작성한 유저의 닉네임
+        nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
+        
+        # 선택한 메뉴(태그 값)
+        menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
+
+        # 추천수
+        likeC   = MdCLike.objects.filter(comb = comb_id).count()
+        
+        # 댓글 갖고있는거 빼옴
+        reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
+        
+        # 로그인한 회원이 추천을 했나 안했나 확인용
+        comb_like = MdCLike.objects.filter( comb_id = comb_id)
+        result = 0
+        for like in comb_like :
+            if like.user_id == memid :
+                result = 1
+                break
+        # logger.debug(f'result : {result}')
         
         if memid :
             # 로그인한 회원 정보
             user    = MdUser.objects.get( user_id = memid )
-            logger.debug(f'user.user_img : {user.user_img}')
-            # 선택한 추천조합 정보
-            comb    = MdComb.objects.get( comb_id = comb_id )
-    
-            # 추천글을 작성한 유저의 닉네임
-            nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
-            
-            # 선택한 메뉴(태그 값)
-            menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
-    
-            # 추천수
-            likeC   = MdCLike.objects.filter(comb = comb_id).count()
-            
-            # 댓글 갖고있는거 빼옴
-            reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
-            
-            # 로그인한 회원이 추천을 했나 안했나 확인용
-            comb_like = MdCLike.objects.filter( comb_id = comb_id)
-            result = 0
-            for like in comb_like :
-                if like.user_id == memid :
-                    result = 1
-                    break
-            # logger.debug(f'result : {result}')
                 
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
-                "pagenum"   :pagenum,
+                "pagenum"   : pagenum,
                 "number"    : number,
                 "comb_id"   : comb_id,
-                "user"      :user,
+                "user"      : user,
                 "comb"      : comb,
                 "nick"      : nick,
                 "menu"      : menu,
@@ -345,33 +333,10 @@ class CombDView( View ):
                 }
             return HttpResponse(template.render( context, request ) )
         else:
-            comb    = MdComb.objects.get( comb_id = comb_id )
-    
-            # 추천글을 작성한 유저의 닉네임
-            nick    = MdComb.objects.select_related('user').filter(comb_id = comb_id )
-            
-            # 선택한 메뉴(태그 값)
-            menu    = MdCombM.objects.select_related('comb', 'menu').filter(comb_id = comb_id)
-    
-            # 추천수
-            likeC   = MdCLike.objects.filter(comb = comb_id).count()
-            
-            # 댓글 갖고있는거 빼옴
-            reply   = MdCombR.objects.select_related('user').filter(comb = comb_id).order_by("-c_reply_ts")
-            
-            # 로그인한 회원이 추천을 했나 안했나 확인용
-            comb_like = MdCLike.objects.filter( comb_id = comb_id)
-            result = 0
-            for like in comb_like :
-                if like.user_id == memid :
-                    result = 1
-                    break
-            # logger.debug(f'result : {result}')
-                
             context = {
                 "memid"     : memid,
                 "gid"       : gid,
-                "pagenum"   :pagenum,
+                "pagenum"   : pagenum,
                 "number"    : number,
                 "comb_id"   : comb_id,
                 "comb"      : comb,
@@ -386,7 +351,7 @@ class CombDView( View ):
             
             
             
-    def post(self, request ): # 댓글용 ajax....?
+    def post(self, request ): # 댓글용 ajax
         
         memid = request.session.get("memid")
         gid = request.session.get("gid")
@@ -414,20 +379,20 @@ class CLikeView( View ):
         return View.dispatch(self, request, *args, **kwargs)
     def post(self, request ):
         
-        memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        memid   = request.session.get("memid")
+        gid     = request.session.get("gid")
         
         comb_id = request.POST.get("comb_id","")
         pagenum = request.POST.get("pagenum","")
-        number = request.POST.get("number","")
+        number  = request.POST.get("number","")
         
         like = MdCLike.objects.filter( user = memid, comb = comb_id ).count()
         
         result = 0
         if like == 0 :
             like = MdCLike(
-                comb_id = comb_id,
-                user_id = memid,
+                comb_id     = comb_id,
+                user_id     = memid,
                 like_reg_ts = datetime.now()
                 )
             like.save()

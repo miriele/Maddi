@@ -21,23 +21,26 @@ class LoginView( View ):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
+    
     def get(self, request ):
-        template = loader.get_template( "md_member/login.html" )
-        context = {}
+        template    = loader.get_template( "md_member/login.html" )
+        context     = {}
         return HttpResponse(template.render( context, request ) )
+    
     def post(self, request ):
-        user_id = request.POST["user_id"]
-        user_pass = request.POST["user_pass"]
+        user_id     = request.POST["user_id"]
+        user_pass   = request.POST["user_pass"]
         try :
-            dto = MdUser.objects.get( user_id = user_id )
+            dto     = MdUser.objects.get( user_id = user_id )
             if user_pass == dto.user_pass :
-                request.session["memid"] = user_id;
-                request.session["gid"] = dto.user_g_id;
+                request.session["memid"]    = user_id;  #세션에 아이디 집어 넣기
+                request.session["gid"]      = dto.user_g_id;
                 return redirect("/md_main/main") 
             else :
                 message = "입력하신 비밀번호가 다릅니다"
         except ObjectDoesNotExist :
             message = "입력하신 아이디가 없습니다"
+
         template = loader.get_template( "md_member/login.html" )
         context = {
                 "message" : message
@@ -56,6 +59,7 @@ class InputView ( View ):
     @method_decorator( csrf_exempt )
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
+    
     def get(self, request ):
         md_dsrt_t = MdDsrtT.objects.filter(dsrt_t_id__gt=-1 ).order_by("dsrt_t_id")
         md_drnk_t = MdDrnkT.objects.filter(drnk_t_id__gt=-1).order_by("drnk_t_id")
@@ -148,10 +152,12 @@ class InputView ( View ):
 # 아이디 중복체크
 class IdCheckView( View ):
     def get(self, request ):
+        
         user_id = request.GET.get("user_id", "")
         idcount = MdUser.objects.filter(user_id=user_id ).count()
         # idcount = MdUser.objects.filter(user_id=user_id ).annotate( Count("user_id"))
         # if idcount.count() > 0 :    >이거는 queryset방식  위에꺼 처럼 쓰면 쿼리셋 방식이 되서 서로 타입이 안 맞아 비교할수 없다 나옴
+        
         result = 0
         if idcount > 0 :
             result = 1 
@@ -163,8 +169,10 @@ class IdCheckView( View ):
 # 닉네임 중복체크
 class NickCheckView( View ):
     def get(self, request ):
+        
         user_nick = request.GET.get("iuser_nick")
         nickcount = MdUser.objects.filter(user_nick=user_nick ).count()
+        
         result = 0
         if nickcount > 0 :
             result = 1 
@@ -179,6 +187,7 @@ class UserInfoView( View ):
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
     def get(self, request ):
+        
         memid = request.session.get("memid")
         gid = request.session.get("gid")
 
@@ -200,10 +209,10 @@ class UserInfoView( View ):
         template = loader.get_template( "md_member/userinfo.html")
         context = {
             "memid"     : memid,
-            "gid"       :gid,
+            "gid"       : gid,
             
-            "dtos"      :dtos,
-            "g_name"    :g_name,
+            "dtos"      : dtos,
+            "g_name"    : g_name,
             "md_intr_t" : md_intr_t,
             "md_tast_t" : md_tast_t,
             "md_algy_t" : md_algy_t,
@@ -218,18 +227,17 @@ class UserInfoView( View ):
         
         return HttpResponse( template.render( context, request ) )
     def post(self, request ):
+        
         user_id = request.POST["user_id"]
         dto = MdUser.objects.get(user_id = user_id)
         user_img = request.FILES.get("user_img")  
         
-        logger.debug(user_img)  
         # 이미지 업로드 안 했을 시 기본으로 저장
         if user_img  == None :
             user_img = "default_user.jpg"
         else :
             user_img 
             
-        logger.debug(user_img)
         ndtos = MdUser(
             user_id = user_id,
             user_pass = request.POST["user_pass"],
@@ -245,7 +253,6 @@ class UserInfoView( View ):
         
         # 태그 받아온거
         list_dsrt = request.POST.getlist("md_dsrt_t")
-        logger.debug(list_dsrt)
         list_drnk = request.POST.getlist("md_drnk_t")
         list_algy = request.POST.getlist("md_algy_t")
         list_intr = request.POST.getlist("md_intr_t")

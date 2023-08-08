@@ -18,18 +18,20 @@ logger = logging.getLogger( __name__ )
 # 리뷰 보기 폼>매뉴 정보페이지에 합체
 class ReviewView( View ):
     def get(self, request ):
-        template = loader.get_template( "md_review/review.html" )   ########
+        template = loader.get_template( "md_review/review.html" )   
         
-        memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        memid   = request.session.get("memid")
+        gid     = request.session.get("gid")
         
         stor_id = request.GET["stor_id"]
         
         stor_id = int(stor_id)
         
-        count = 0
+        count   = 0
+        
         rev_count   = MdReview.objects.select_related('ordr__mdordrm__stor_m').filter(ordr__mdordrm__stor_m__stor_id = stor_id).count()      #나옴
         # logger.debug(f' rev_count  : { rev_count }')
+        
         if rev_count != 0:
             count = rev_count
         else :
@@ -42,6 +44,7 @@ class ReviewView( View ):
         
         user    = MdOrdr.objects.select_related('user')
         # logger.debug(f' user  : { user }')
+        
         context = {
             "memid"     : memid,
             "gid"       : gid,
@@ -105,8 +108,8 @@ class RevwriteView( View ):
             "ordr_num"  : ordr_num,
             "md_tag0"   : md_tag0,
             "md_tag1"   : md_tag1,
-            "ordr_id"  : ordr_id,
-            "pagenum" :pagenum,
+            "ordr_id"   : ordr_id,
+            "pagenum"   : pagenum,
             }
         return HttpResponse(template.render( context, request ) )
     
