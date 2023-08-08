@@ -29,7 +29,8 @@
 		{% for store_data in store_data_list %}
     	<tr>
     		<td>
-				 <input type="checkbox" name="selected_bucks" value="{{ store_data.buck_id }}">
+				<input type="hidden" name="bjd_code" value="{{store_data.bjd_code}}">
+				<input type="checkbox" name="selected_bucks" value="{{ store_data.buck_id }}">
 			</td>
 			<td>{{store_data.stor_m_name}}</td>
 			<td>{{store_data.stor_m_pric}}</td>

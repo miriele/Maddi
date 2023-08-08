@@ -37,6 +37,7 @@ class MdBh(models.Model):
 class MdBjd(models.Model):
     bjd_code = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0, db_comment='법정동코드')
     bjd_name = models.CharField(max_length=80, db_comment='법정동명')
+    hjd_codes = models.ManyToManyField('MdHjd', through='MdBh')
 
     class Meta:
         managed = False
@@ -69,6 +70,7 @@ class MdHjd(models.Model):
     hjd_name = models.CharField(max_length=80, db_comment='행정동명')
     hjd_x = models.SmallIntegerField(db_comment='격자X')
     hjd_y = models.SmallIntegerField(db_comment='격자Y')
+    bjd_codes = models.ManyToManyField(MdBjd, through='MdBh')
 
     class Meta:
         managed = False
