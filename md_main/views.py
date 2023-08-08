@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class MainView(View):
-    def get(self,request):
+    def get(self, request):
         template = loader.get_template("md_main/main.html")
         memid    = request.session.get("memid")
         gid      = request.session.get("gid")

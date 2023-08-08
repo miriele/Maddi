@@ -24,6 +24,7 @@ class MdAreaT(models.Model):
 
 
 class MdBh(models.Model):
+    bh_id = models.SmallAutoField(primary_key=True, db_comment='ID')
     bjd_code = models.ForeignKey('MdBjd', models.DO_NOTHING, db_column='bjd_code', db_comment='법정동코드')
     hjd_code = models.ForeignKey('MdHjd', models.DO_NOTHING, db_column='hjd_code', db_comment='행정동코드')
 

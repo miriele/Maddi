@@ -3,6 +3,7 @@ cx-Oracle
 Django
 django-cors-headers
 django-mathfilters
+djangorestframework
 flake8
 konlpy
 launchpadlib
