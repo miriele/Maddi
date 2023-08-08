@@ -61,8 +61,8 @@ class UserinfoView(View):
         users = MdUser.objects.select_related("user_g").get(user_id=id)
         
         context ={
-            "id":id,
-            "users":users, 
+            "id"    : id,
+            "users" : users, 
              }
         return HttpResponse(template.render(context,request))
     
@@ -102,8 +102,8 @@ class ReviewlistView(View):
         rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts').order_by("-rev_ts")
 
         context ={
-            "count":count,
-            "rdtos":rdtos,
+            "count" : count,
+            "rdtos" : rdtos,
             }
         return HttpResponse(template.render(context,request))
 
@@ -123,8 +123,6 @@ class ReviewinfoView(View):
         storm_list = list(m['ordr__mdordrm__stor_m__stor_m_name'] for m in storm)
         ordrnum_list = list(m['ordr__mdordrm__ordr_num'] for m in storm)
         
-        print(ordrnum_list)
-        
         reviewn = MdReview.objects.filter(rev_id=rev_id).values('rev_img', 'rev_star', 'rev_cont')
         reviewn_list = list(reviewn)
         content = list(m['rev_cont'] for m in reviewn_list)
@@ -136,13 +134,13 @@ class ReviewinfoView(View):
         tagn_list = list(m['tag_name'] for m in tagn_list)
 
         context ={
-            "rev_id":rev_id,
-            "storm_list":storm_list,
-            "content":content,
-            "star" : star,
-            "revimage" : revimage,
-            "tagn_list":tagn_list,
-            "ordrnum_list" : ordrnum_list,
+            "rev_id"        : rev_id,
+            "storm_list"    : storm_list,
+            "content"       : content,
+            "star"          : star,
+            "revimage"      : revimage,
+            "tagn_list"     : tagn_list,
+            "ordrnum_list"  : ordrnum_list,
             }
         return HttpResponse(template.render(context,request))
    
@@ -184,8 +182,6 @@ class SregistinfoView(View):
     def get(self,request):
         template = loader.get_template("md_admin/sregistinfo.html")
         reg_id = request.GET["reg_id"]
-        
-        # print(stor)
         reginfo = MdStorReg.objects.get(reg_id=reg_id)
         
         result = MdStorT.objects.filter(mdstor__mdstorreg__reg_id=reg_id).values('stor_t_id')
@@ -196,9 +192,9 @@ class SregistinfoView(View):
         else:
             stortid[0] = '개인매장'    
         context ={
-            "reg_id" : reg_id,
-            "reginfo": reginfo,
-            "stortid" : stortid,
+            "reg_id"    : reg_id,
+            "reginfo"   : reginfo,
+            "stortid"   : stortid,
             }
         return HttpResponse(template.render(context,request))
     
@@ -237,21 +233,11 @@ class GenstatisView(View):
         #성별/인원수
         gend = [] # 성별이름 담을 리스트
         inwon = []   # 해당 성별 인원수 담을 리스트
-        #남/여 count
-        #SELECT g.gen_name ,COUNT(*) FROM md_user u 
-        #JOIN md_gen g ON u.gen_id = g.gen_id GROUP BY g.gen_name;(김민우)
         gen = MdUser.objects.select_related('gen').values('gen__gen_name').annotate(Count('gen'))
-
-        # print(gen)
-        #<QuerySet [{'gen__gen_name': '남자\r', 'gen__count': 79}, {'gen__gen_name': '여자\r', 'gen__count': 61}]>
         
         #쿼리셋을 list로 만듦
         gen_list = list(gen)
-        
-        # print(gen_list)
-        #[{'gen__gen_name': '남자\r', 'gen__count': 79}, 
-        #{'gen__gen_name': '여자\r', 'gen__count': 61}]
-        
+         
         #key-value 리스트화
         #1.성별 key
         genname = list(m['gen__gen_name'] for m in gen_list)
@@ -263,18 +249,14 @@ class GenstatisView(View):
         #labels,data리스트에 담기
         gend.extend(genname)
         inwon.extend(gencount)
-        
-        # print(gend)
-        # print(inwon)    
-
+       
         #남성회원 비율
         menper = inwon[0]/sum(inwon) * 100
         menper = round(menper,2)
-        # print(menper)
+        
         #여성회원 비율
         womenper = inwon[1]/sum(inwon) * 100
-        womenper = round(womenper,2)  
-        # print(womenper)        
+        womenper = round(womenper,2)     
         
         #남성_연령대 분포
         today = datetime.today().year
@@ -292,7 +274,6 @@ class GenstatisView(View):
         man_fif = list(filter(lambda x: x<60 and x >=50, man_age))
         man_older = list(filter(lambda x: x >=60, man_age))
         man_agecount = [len(man_teen),len(man_twe),len(man_thr),len(man_fou),len(man_fif),len(man_older)]        
-        # print(man_agecount)
         
         #여성_연령대 분포
         wmuserbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).filter(gen=1).values("year")
@@ -308,18 +289,17 @@ class GenstatisView(View):
         woman_fif = list(filter(lambda x: x<60 and x >=50, woman_age))
         woman_older = list(filter(lambda x: x >=60, woman_age))
         woman_agecount = [len(woman_teen),len(woman_twe),len(woman_thr),len(woman_fou),len(woman_fif),len(woman_older)]        
-        # print(woman_agecount)
         
         #데이터 TEMPLATE로 넘기기
         context = {
-            "inwon"     : inwon,
-            "gend"      : gend,
-            "menper"    : menper,
-            "womenper"  : womenper,
-            "count"     : count,
-            "mancount"  : mancount,
-            "womancount": womancount,
-            "man_agecount" : man_agecount,
+            "inwon"         : inwon,
+            "gend"          : gend,
+            "menper"        : menper,
+            "womenper"      : womenper,
+            "count"         : count,
+            "mancount"      : mancount,
+            "womancount"    : womancount,
+            "man_agecount"  : man_agecount,
             "woman_agecount": woman_agecount,
             }
         return HttpResponse(template.render(context,request))
@@ -331,13 +311,10 @@ class AgestatisView(View):
         #연령대
         #오늘 날짜 구하기
         today = datetime.today().year
-        # print(type(today))
         
         #유저들의 생년월일 데이터 받아오기
         count = MdUser.objects.all().count
         userbir = MdUser.objects.annotate(year=Substr("user_bir",1,4)).values("year")
-        #print(userbir)
-        
         #나이계산
         year = list(m['year'] for m in userbir)
         year = list(map(int,year))
@@ -346,31 +323,18 @@ class AgestatisView(View):
         
         #10대 인원수
         teen = list(filter(lambda x: x<20 and x >=10, age))
-        # print(teen)
-        
         #20대 인원수
-        twe = list(filter(lambda x: x<30 and x >=20, age))
-        # print(twe)
-        
+        twe = list(filter(lambda x: x<30 and x >=20, age))  
         #30대 인원수
-        thr = list(filter(lambda x: x<40 and x >=30, age))
-        # print(thr)
-        
+        thr = list(filter(lambda x: x<40 and x >=30, age))   
         #40대 인원수
-        fou = list(filter(lambda x: x<50 and x >=40, age))
-        # print(fou)
-        
+        fou = list(filter(lambda x: x<50 and x >=40, age))      
         #50대 인원수   
         fif = list(filter(lambda x: x<60 and x >=50, age))
-        # print(fif)
-        
         #60대이상 인원수
         older = list(filter(lambda x: x >=60, age))
-        # print(older)
+        
         agecount = [len(teen),len(twe),len(thr),len(fou),len(fif),len(older)]
-   
-        # print(age)
-        # print(year)
         context = {
             "agecount"  : agecount,
             "count"     : count,
@@ -386,7 +350,6 @@ class IntereView(View):
         count = MdUIntr.objects.all().count()
         inter = MdUIntr.objects.values("intr_t").order_by("intr_t")
         inter_name = MdIntrT.objects.values("intr_t_name").order_by("intr_t_id")
-        # print(inter)
         inter = list(m['intr_t'] for m in inter)
         
         inter_name = list(m['intr_t_name'] for m in inter_name)
@@ -399,21 +362,18 @@ class IntereView(View):
         list_inter = []
         for key,value in sorted(dict_inter.items()):
             list_inter.append(value)
-        # print(len(list_inter))
+            
         # 남성회원들의 관심사
         maninter = MdUIntr.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("intr_t","year").order_by("intr_t")
-        # print(maninter)
-        
         maninter_list = list(maninter)
         up_agelist = []
         up_interlist = []
-        # print(maninter)
-        # print(type(maninter_list[0][1]))
+
         for myear in maninter_list:
             minter = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -428,16 +388,10 @@ class IntereView(View):
                 age = '60대이상'
             up_agelist.append(age)
             up_interlist.append(minter)
-        
-        #print(len(up_agelist))
-        #print(len(up_interlist))
-        
-        ziptup = list(zip(up_agelist,up_interlist))
-        #print(ziptup)
-        
+             
+        ziptup = list(zip(up_agelist,up_interlist))     
         ziplist = [list(row) for row in ziptup]
-        # print(ziplist)
-        
+
         teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
         twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
         thr_manlist = [i[1] for i in ziplist if i[0]=='30대']
@@ -452,13 +406,13 @@ class IntereView(View):
         manfiv_dict = collections.Counter(fiv_manlist)
         manord_dict = collections.Counter(ord_manlist)
         
-        
         manteen_list = []
         mantwe_list = []
         manthr_list = []
         manfou_list = []
         manfiv_list = []
         manord_list = []
+        
         for i in range(len(inter_name)):
             manteen_list.append(0)
             mantwe_list.append(0)
@@ -466,7 +420,6 @@ class IntereView(View):
             manfou_list.append(0)
             manfiv_list.append(0)
             manord_list.append(0)
-        # print(manteen_list)
         
         for key,value in sorted(manteen_dict.items()):
             for index,val in enumerate(manteen_list):
@@ -492,10 +445,9 @@ class IntereView(View):
             for index,val in enumerate(manord_list):
                 manord_list[key] = value                
 
-# 여성회원들의 관심사
+        # 여성회원들의 관심사
         womaninter = MdUIntr.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("intr_t","year").order_by("intr_t")
         womaninter_list = list(womaninter)
-        #print(womaninter)
         wup_agelist = []
         wup_interlist = []
         
@@ -517,14 +469,9 @@ class IntereView(View):
                 womanage = '60대이상'
             wup_agelist.append(womanage)
             wup_interlist.append(womaninter)
-        # print(up_agelist)
-        # print(up_interlist)
         
         wziptup = list(zip(wup_agelist,wup_interlist))
-        #print(ziptup)
-        
         wziplist = [list(row) for row in wziptup]
-        # print(wziplist)
         
         teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
         twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
@@ -546,6 +493,7 @@ class IntereView(View):
         womanfou_list = []
         womanfiv_list = []
         womanord_list = []
+        
         for i in range(len(inter_name)):
             womanteen_list.append(0)
             womantwe_list.append(0)
@@ -579,14 +527,14 @@ class IntereView(View):
                 womanord_list[key] = value                
        
         context = {
-            "list_inter": list_inter,
-            "inter_name": inter_name,
-            "manteen_list": manteen_list,
-            "mantwe_list" : mantwe_list,
-            "manthr_list" : manthr_list,
-            "manfou_list" : manfou_list,
-            "manfiv_list" : manfiv_list,
-            "manord_list" : manord_list,
+            "list_inter"    : list_inter,
+            "inter_name"    : inter_name,
+            "manteen_list"  : manteen_list,
+            "mantwe_list"   : mantwe_list,
+            "manthr_list"   : manthr_list,
+            "manfou_list"   : manfou_list,
+            "manfiv_list"   : manfiv_list,
+            "manord_list"   : manord_list,
             "womanteen_list": womanteen_list,
             "womantwe_list" : womantwe_list,
             "womanthr_list" : womanthr_list,
@@ -614,7 +562,6 @@ class TasteView(View):
         #입맛 이름
         tast_n = MdTastT.objects.values("tast_t_name").order_by("tast_t_id")
         tast_n = list(m['tast_t_name'] for m in tast_n)
-        #print(tast_n)
         
         #남성 회원 입맛
         mantast = MdUTast.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("tast_t","year").order_by("tast_t")
@@ -627,7 +574,7 @@ class TasteView(View):
             mtast = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -644,10 +591,7 @@ class TasteView(View):
             up_tastlist.append(mtast)
 
         ziptup = list(zip(up_agelist,up_tastlist))
-        #print(ziptup)
-        
         ziplist = [list(row) for row in ziptup]
-        # print(ziplist)
         
         teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
         twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
@@ -669,6 +613,7 @@ class TasteView(View):
         manfou_tlist = []
         manfiv_tlist = []
         manord_tlist = []
+        
         for i in range(len(tast_n)):
             manteen_tlist.append(0)
             mantwe_tlist.append(0)
@@ -676,7 +621,6 @@ class TasteView(View):
             manfou_tlist.append(0)
             manfiv_tlist.append(0)
             manord_tlist.append(0)
-        # print(manteen_list)
  
         for key,value in sorted(manteen_dict.items()):
             for index,val in enumerate(manteen_tlist):
@@ -713,7 +657,7 @@ class TasteView(View):
             wtast = wyear[0]
             wyear = int(wyear[1])
             womanage = today - wyear
-            #print(age)
+
             if(womanage >=10 and womanage<20):
                 womanage = '10대'
             elif(womanage>=20 and womanage<30):
@@ -730,10 +674,7 @@ class TasteView(View):
             wup_tastlist.append(wtast)
 
         wziptup = list(zip(wup_agelist,wup_tastlist))
-        #print(ziptup)
-        
         wziplist = [list(row) for row in wziptup]
-        # print(ziplist)
         
         teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
         twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
@@ -755,6 +696,7 @@ class TasteView(View):
         womanfou_tlist = []
         womanfiv_tlist = []
         womanord_tlist = []
+        
         for i in range(len(tast_n)):
             womanteen_tlist.append(0)
             womantwe_tlist.append(0)
@@ -762,7 +704,6 @@ class TasteView(View):
             womanfou_tlist.append(0)
             womanfiv_tlist.append(0)
             womanord_tlist.append(0)
-        # print(manteen_list)
  
         for key,value in sorted(womanteen_dict.items()):
             for index,val in enumerate(womanteen_tlist):
@@ -789,20 +730,20 @@ class TasteView(View):
                 womanord_tlist[key] = value     
               
         context = {
-            "list_tast": list_tast,
-            "tast_n"   : tast_n,
-            "manteen_tlist" : manteen_tlist,
-            "mantwe_tlist" : mantwe_tlist,
-            "manthr_tlist" : manthr_tlist,
-            "manfou_tlist" : manfou_tlist,
-            "manfiv_tlist" : manfiv_tlist,
-            "manord_tlist" : manord_tlist,
-            "womanteen_tlist" : womanteen_tlist,
-            "womantwe_tlist" : womantwe_tlist,
-            "womanthr_tlist" : womanthr_tlist,
-            "womanfou_tlist" : womanfou_tlist,
-            "womanfiv_tlist" : womanfiv_tlist,
-            "womanord_tlist" : womanord_tlist,            
+            "list_tast"         : list_tast,
+            "tast_n"            : tast_n,
+            "manteen_tlist"     : manteen_tlist,
+            "mantwe_tlist"      : mantwe_tlist,
+            "manthr_tlist"      : manthr_tlist,
+            "manfou_tlist"      : manfou_tlist,
+            "manfiv_tlist"      : manfiv_tlist,
+            "manord_tlist"      : manord_tlist,
+            "womanteen_tlist"   : womanteen_tlist,
+            "womantwe_tlist"    : womantwe_tlist,
+            "womanthr_tlist"    : womanthr_tlist,
+            "womanfou_tlist"    : womanfou_tlist,
+            "womanfiv_tlist"    : womanfiv_tlist,
+            "womanord_tlist"    : womanord_tlist,            
             }
         return HttpResponse(template.render(context,request))
 
@@ -820,9 +761,7 @@ class StoreView(View):
         fregstor = MdStor.objects.select_related("stor_t").exclude(stor_t__stor_t_id=0).values_list("stor_t__stor_t_name")
         fcount =  MdStor.objects.select_related("stor_t").exclude(stor_t__stor_t_id=0).values_list("stor_t__stor_t_name").count()
         fregstor = list(fregstor)
-        # print(fregstor)
         fregstor_dict = collections.Counter(fregstor)
-        # print(fregstor_dict)
         
         fregstor_namelist = []
         fregstor_countlist = []
@@ -831,28 +770,25 @@ class StoreView(View):
         for key,value in sorted(fregstor_dict.items(),key = lambda item:item[1],reverse = True)[:20]:   
             fregstor_namelist.append(key)
             fregstor_countlist.append(value)
-        # print(fregstor_namelist)
-        # print(fregstor_countlist)
         
         freg_stor = []
         for i in range(len(fregstor_namelist)):
             freg_stor.append(fregstor_namelist[i][0])
-        # print(freg_stor)
+            
         freg_lank = []
         for i in range(len(fregstor_namelist)):
             freg_lank.append(i)
+
         freg_lank = [i+1 for i in freg_lank]
-        # print(freg_lank)
         fregstor_zip = list(zip(freg_lank,freg_stor,fregstor_countlist))
         fregstor_ziplist = [list(row) for row in fregstor_zip]
-        # print(fregstor_ziplist)
         stor_list = [pstor,fstor]
         
         context = {
-            "scount" : scount,
-            "fcount" : fcount,
-            "stor_list" : stor_list,
-            "fregstor_ziplist" : fregstor_ziplist,
+            "scount"            : scount,
+            "fcount"            : fcount,
+            "stor_list"         : stor_list,
+            "fregstor_ziplist"  : fregstor_ziplist,
             }
         return HttpResponse(template.render(context,request))
 
@@ -861,6 +797,7 @@ class DsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/dsrtstatis.html")
         today = datetime.today().year
+        
         #사용자 디저트 기입한 수 리스트
         dsrt = MdUDsrt.objects.values("dsrt_t").order_by("dsrt_t")
         dsrt = list(m['dsrt_t'] for m in dsrt)
@@ -869,15 +806,11 @@ class DsrtView(View):
         list_dsrt = []
         for key,value in sorted(dict_dsrt.items()):
             list_dsrt.append(value)
-        # print(list_dsrt)
         
         #디저트분류명 리스트
         dsrt_n = MdDsrtT.objects.values("dsrt_t_name")
         dsrt_n = list(m['dsrt_t_name'] for m in dsrt_n)
         
-        
-        
-                     
         #남성회원 디저트 취향
         mandsrt = MdUDsrt.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("dsrt_t","year").order_by("dsrt_t")
         mandsrt_list = list(mandsrt)
@@ -889,7 +822,7 @@ class DsrtView(View):
             mdsrt = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -906,10 +839,7 @@ class DsrtView(View):
             up_dsrtlist.append(mdsrt)
 
         ziptup = list(zip(up_agelist,up_dsrtlist))
-        #print(ziptup)
-        
         ziplist = [list(row) for row in ziptup]
-        # print(ziplist)
         
         teen_manlist = [i[1] for i in ziplist if i[0]=='10대']
         twe_manlist = [i[1] for i in ziplist if i[0]=='20대']
@@ -917,7 +847,6 @@ class DsrtView(View):
         fou_manlist = [i[1] for i in ziplist if i[0]=='40대']
         fiv_manlist = [i[1] for i in ziplist if i[0]=='50대']
         ord_manlist = [i[1] for i in ziplist if i[0]=='60대이상']
-        # print(teen_manlist)
         
         manteen_dict = collections.Counter(teen_manlist)
         mantwe_dict = collections.Counter(twe_manlist)
@@ -932,6 +861,7 @@ class DsrtView(View):
         manfou_dslist = []
         manfiv_dslist = []
         manord_dslist = []
+        
         for i in range(len(dsrt_n)-1):
             manteen_dslist.append(0)
             mantwe_dslist.append(0)
@@ -939,7 +869,6 @@ class DsrtView(View):
             manfou_dslist.append(0)
             manfiv_dslist.append(0)
             manord_dslist.append(0)
-        # print(manteen_list)
  
         for key,value in sorted(manteen_dict.items()):
             for index,val in enumerate(manteen_dslist):
@@ -976,7 +905,7 @@ class DsrtView(View):
             wmdsrt = wmyear[0]
             wmyear = int(wmyear[1])
             wage = today - wmyear
-            #print(age)
+
             if(wage >=10 and wage<20):
                 wage = '10대'
             elif(wage>=20 and wage<30):
@@ -993,10 +922,7 @@ class DsrtView(View):
             wup_dsrtlist.append(wmdsrt)
 
         wziptup = list(zip(wup_agelist,wup_dsrtlist))
-        #print(ziptup)
-        
         wziplist = [list(row) for row in wziptup]
-        # print(ziplist)
         
         teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
         twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
@@ -1004,7 +930,6 @@ class DsrtView(View):
         fou_womanlist = [i[1] for i in wziplist if i[0]=='40대']
         fiv_womanlist = [i[1] for i in wziplist if i[0]=='50대']
         ord_womanlist = [i[1] for i in wziplist if i[0]=='60대이상']
-        # print(teen_manlist)
         
         womanteen_dict = collections.Counter(teen_womanlist)
         womantwe_dict = collections.Counter(twe_womanlist)
@@ -1019,6 +944,7 @@ class DsrtView(View):
         womanfou_dslist = []
         womanfiv_dslist = []
         womanord_dslist = []
+        
         for i in range(len(dsrt_n)-1):
             womanteen_dslist.append(0)
             womantwe_dslist.append(0)
@@ -1026,7 +952,6 @@ class DsrtView(View):
             womanfou_dslist.append(0)
             womanfiv_dslist.append(0)
             womanord_dslist.append(0)
-        # print(manteen_list)
  
         for key,value in sorted(womanteen_dict.items()):
             for index,val in enumerate(womanteen_dslist):
@@ -1051,26 +976,24 @@ class DsrtView(View):
         for key,value in sorted(womanord_dict.items()):
             for index,val in enumerate(womanord_dslist):
                 womanord_dslist[key] = value            
-        # print(len(manteen_dslist))
         # 디저트 분류 리스트 '없음' 제거
         dsrt_n.remove('없음' )
-        # print(dsrt_n)
         
         context = {
-            "dsrt_n" : dsrt_n,
-            "list_dsrt" : list_dsrt,
-            "manteen_dslist" : manteen_dslist,
-            "mantwe_dslist" : mantwe_dslist,
-            "manthr_dslist" : manthr_dslist,
-            "manfou_dslist" : manfou_dslist,
-            "manfiv_dslist" : manfiv_dslist,
-            "manord_dslist" : manord_dslist,
-            "womanteen_dslist" : womanteen_dslist,
-            "womantwe_dslist" : womantwe_dslist,
-            "womanthr_dslist" : womanthr_dslist,
-            "womanfou_dslist" : womanfou_dslist,
-            "womanfiv_dslist" : womanfiv_dslist,
-            "womanord_dslist" : womanord_dslist,            
+            "dsrt_n"            : dsrt_n,
+            "list_dsrt"         : list_dsrt,
+            "manteen_dslist"    : manteen_dslist,
+            "mantwe_dslist"     : mantwe_dslist,
+            "manthr_dslist"     : manthr_dslist,
+            "manfou_dslist"     : manfou_dslist,
+            "manfiv_dslist"     : manfiv_dslist,
+            "manord_dslist"     : manord_dslist,
+            "womanteen_dslist"  : womanteen_dslist,
+            "womantwe_dslist"   : womantwe_dslist,
+            "womanthr_dslist"   : womanthr_dslist,
+            "womanfou_dslist"   : womanfou_dslist,
+            "womanfiv_dslist"   : womanfiv_dslist,
+            "womanord_dslist"   : womanord_dslist,            
             }
         return HttpResponse(template.render(context,request))
     
@@ -1088,13 +1011,11 @@ class DrnkView(View):
         list_drnk = []
         for key,value in sorted(dict_drnk.items()):
             list_drnk.append(value)
-        # print(list_drnk)
         
         #음료분류명 리스트
         drnk_n = MdDrnkT.objects.values("drnk_t_name")
         drnk_n = list(m['drnk_t_name'] for m in drnk_n)
-        
-         
+
         #남성회원 음료취향
         mandrnk = MdUDrnk.objects.annotate(year= Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("drnk_t","year").order_by("drnk_t")
         mandrnk_list = list(mandrnk)
@@ -1106,7 +1027,7 @@ class DrnkView(View):
             mdrnk = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -1189,7 +1110,7 @@ class DrnkView(View):
             wmdrnk = wmyear[0]
             wmyear = int(wmyear[1])
             wage = today - wmyear
-            #print(age)
+
             if(wage >=10 and wage<20):
                 wage = '10대'
             elif(wage>=20 and wage<30):
@@ -1208,7 +1129,6 @@ class DrnkView(View):
         wziptup = list(zip(wup_agelist,wup_drnklist))
         wziplist = [list(row) for row in wziptup]
 
-        
         teen_womanlist = [i[1] for i in wziplist if i[0]=='10대']
         twe_womanlist = [i[1] for i in wziplist if i[0]=='20대']
         thr_womanlist = [i[1] for i in wziplist if i[0]=='30대']
@@ -1265,22 +1185,21 @@ class DrnkView(View):
         # 음료 분류 리스트 '없음' 제거
         drnk_n.remove('없음')
 
-        # print(dsrt_n)    
         context = {
-            "drnk_n" : drnk_n,
-            "list_drnk" : list_drnk,
-            "manteen_drlist" : manteen_drlist,
-            "mantwe_drlist" : mantwe_drlist,
-            "manthr_drlist" : manthr_drlist,
-            "manfou_drlist" : manfou_drlist,
-            "manfiv_drlist" : manfiv_drlist,
-            "manord_drlist" : manord_drlist,
-            "womanteen_drlist" : womanteen_drlist,
-            "womantwe_drlist" : womantwe_drlist,
-            "womanthr_drlist" : womanthr_drlist,
-            "womanfou_drlist" : womanfou_drlist,
-            "womanfiv_drlist" : womanfiv_drlist,
-            "womanord_drlist" : womanord_drlist,           
+            "drnk_n"            : drnk_n,
+            "list_drnk"         : list_drnk,
+            "manteen_drlist"    : manteen_drlist,
+            "mantwe_drlist"     : mantwe_drlist,
+            "manthr_drlist"     : manthr_drlist,
+            "manfou_drlist"     : manfou_drlist,
+            "manfiv_drlist"     : manfiv_drlist,
+            "manord_drlist"     : manord_drlist,
+            "womanteen_drlist"  : womanteen_drlist,
+            "womantwe_drlist"   : womantwe_drlist,
+            "womanthr_drlist"   : womanthr_drlist,
+            "womanfou_drlist"   : womanfou_drlist,
+            "womanfiv_drlist"   : womanfiv_drlist,
+            "womanord_drlist"   : womanord_drlist,           
             }
            
         return HttpResponse(template.render(context,request))
@@ -1301,7 +1220,6 @@ class BdrnkView(View):
         bdrnk_n = MdDrnkT.objects.values("drnk_t_name").order_by("drnk_t_id")
         bdrnk_n = list(m['drnk_t_name'] for m in bdrnk_n)
         
-        
         bdrnk_list = []
         for i in range(len(bdrnk_n)):
             bdrnk_list.append(0)
@@ -1321,7 +1239,7 @@ class BdrnkView(View):
             mbdrnk = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -1405,7 +1323,7 @@ class BdrnkView(View):
             wmbdrnk = wmyear[0]
             wmyear = int(wmyear[1])
             wage = today - wmyear
-            #print(age)
+
             if(wage >=10 and wage<20):
                 wage = '10대'
             elif(wage>=20 and wage<30):
@@ -1480,20 +1398,20 @@ class BdrnkView(View):
         
         bdrnk_n.remove('없음')
         context = {
-            "bdrnk_n" : bdrnk_n,
-            "bdrnk_list" : bdrnk_list,
-            "manteen_bdrlist" : manteen_bdrlist,
-            "mantwe_bdrlist" : mantwe_bdrlist,
-            "manthr_bdrlist" : manthr_bdrlist,
-            "manfou_bdrlist" : manfou_bdrlist,
-            "manfiv_bdrlist" : manfiv_bdrlist,
-            "manord_bdrlist" : manord_bdrlist,
+            "bdrnk_n"           : bdrnk_n,
+            "bdrnk_list"        : bdrnk_list,
+            "manteen_bdrlist"   : manteen_bdrlist,
+            "mantwe_bdrlist"    : mantwe_bdrlist,
+            "manthr_bdrlist"    : manthr_bdrlist,
+            "manfou_bdrlist"    : manfou_bdrlist,
+            "manfiv_bdrlist"    : manfiv_bdrlist,
+            "manord_bdrlist"    : manord_bdrlist,
             "womanteen_bdrlist" : womanteen_bdrlist,
-            "womantwe_bdrlist" : womantwe_bdrlist,
-            "womanthr_bdrlist" : womanthr_bdrlist,
-            "womanfou_bdrlist" : womanfou_bdrlist,
-            "womanfiv_bdrlist" : womanfiv_bdrlist,
-            "womanord_bdrlist" : womanord_bdrlist,            
+            "womantwe_bdrlist"  : womantwe_bdrlist,
+            "womanthr_bdrlist"  : womanthr_bdrlist,
+            "womanfou_bdrlist"  : womanfou_bdrlist,
+            "womanfiv_bdrlist"  : womanfiv_bdrlist,
+            "womanord_bdrlist"  : womanord_bdrlist,            
             }
         return HttpResponse(template.render(context,request))
     
@@ -1506,15 +1424,13 @@ class BdsrtView(View):
         bdsrt = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__dsrt_t")
         bdsrt = list(m['stor_m__menu__dsrt_t'] for m in bdsrt)
         # 음료분류 아이디 -1은 삭제
-        bdsrt = [item for item in bdsrt if item != -1]
-        # print(bdsrt)  
+        bdsrt = [item for item in bdsrt if item != -1]  
         dict_bdsrt = {}
         dict_bdsrt = collections.Counter(bdsrt)
         
         bdsrt_n = MdDsrtT.objects.values("dsrt_t_name").order_by("dsrt_t_id")
         bdsrt_n = list(m['dsrt_t_name'] for m in bdsrt_n)
-             
-        
+
         bdsrt_list  = []
         
         for i in range(len(bdsrt_n)):
@@ -1528,7 +1444,6 @@ class BdsrtView(View):
         mbdsrt = MdOrdrM.objects.annotate(year = Substr("ordr__user__user_bir",1,4)).select_related("stor_m__menu").filter(ordr__user__gen=0).values_list("stor_m__menu__dsrt_t","year")
         mbdsrt_list = list(mbdsrt)
 
-        
         up_agelist = []
         up_bdsrtlist = []
         
@@ -1536,7 +1451,7 @@ class BdsrtView(View):
             mbdsrt = myear[0]
             myear = int(myear[1])
             age = today - myear
-            #print(age)
+
             if(age >=10 and age<20):
                 age = '10대'
             elif(age>=20 and age<30):
@@ -1693,22 +1608,23 @@ class BdsrtView(View):
             for index,val in enumerate(womanord_bdslist):
                 womanord_bdslist[key] = value        
                 
-        bdsrt_n.remove('없음')        
+        bdsrt_n.remove('없음')
+               
         context = {
-            "bdsrt_list" : bdsrt_list,
-            "bdsrt_n" : bdsrt_n,
-            "manteen_bdslist" : manteen_bdslist,
-            "mantwe_bdslist" : mantwe_bdslist,
-            "manthr_bdslist" : manthr_bdslist,
-            "manfou_bdslist" : manfou_bdslist,
-            "manfiv_bdslist" : manfiv_bdslist,
-            "manord_bdslist" : manord_bdslist,
+            "bdsrt_list"        : bdsrt_list,
+            "bdsrt_n"           : bdsrt_n,
+            "manteen_bdslist"   : manteen_bdslist,
+            "mantwe_bdslist"    : mantwe_bdslist,
+            "manthr_bdslist"    : manthr_bdslist,
+            "manfou_bdslist"    : manfou_bdslist,
+            "manfiv_bdslist"    : manfiv_bdslist,
+            "manord_bdslist"    : manord_bdslist,
             "womanteen_bdslist" : womanteen_bdslist,
-            "womantwe_bdslist" : womantwe_bdslist,
-            "womanthr_bdslist" : womanthr_bdslist,
-            "womanfou_bdslist" : womanfou_bdslist,
-            "womanfiv_bdslist" : womanfiv_bdslist,
-            "womanord_bdslist" : womanord_bdslist,
+            "womantwe_bdslist"  : womantwe_bdslist,
+            "womanthr_bdslist"  : womanthr_bdslist,
+            "womanfou_bdslist"  : womanfou_bdslist,
+            "womanfiv_bdslist"  : womanfiv_bdslist,
+            "womanord_bdslist"  : womanord_bdslist,
             }
         return HttpResponse(template.render(context,request))
 
@@ -1727,17 +1643,14 @@ class IaoView(View):
         wellist = []
         for i in range(len(welmaddi)):            
             wellist.append(welmaddi[i][0:7])
-        #print(wellist)
         
         #해당연월 가입한 수
         dict_welmaddi = {}
         dict_welmaddi = collections.Counter(wellist)
         
-        #print(dict_welmaddi)
         list_welmaddi = []
         for key,value in sorted(dict_welmaddi.items()):
             list_welmaddi.append(value)
-        #print(list_welmaddi)
         
         #연월 값 뽑기
         welyear = MdUser.objects.values("user_reg_ts").order_by("user_reg_ts")
@@ -1754,7 +1667,6 @@ class IaoView(View):
             if i not in upwelyearlist:
                 upwelyearlist.append(i)
         
-        
         #이탈율
         #회원정지일 가져오기
         exmaddi = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
@@ -1767,18 +1679,17 @@ class IaoView(View):
         for i in range(len(exmaddi)):            
             exlist.append(exmaddi[i][0:7])
         exlist = [str(i) for i in exlist if i !='None']   
-        # print(exlist)
         
         #해당연월 정지된 수
         dict_exmaddi = {}
         dict_exmaddi = collections.Counter(exlist)
-        # print(dict_exmaddi)
+
         list_exmaddi = []
         for key,value in sorted(dict_exmaddi.items()):       
             list_exmaddi.append(value)
         
         list_exmaddi = [int(i) for i in list_exmaddi if i !='None']  
-        # print(list_exmaddi)
+
    
         #연월 값 뽑기
         exyear = MdUser.objects.values("user_ext_ts").order_by("user_ext_ts")
@@ -1798,10 +1709,10 @@ class IaoView(View):
         upexyearlist = [str(i) for i in upexyearlist if i !='None']
         
         context = {
-            "list_welmaddi" : list_welmaddi,
-            "list_exmaddi" : list_exmaddi,
-            "upwelyearlist" : upwelyearlist,
-            "upexyearlist" : upexyearlist,
+            "list_welmaddi"     : list_welmaddi,
+            "list_exmaddi"      : list_exmaddi,
+            "upwelyearlist"     : upwelyearlist,
+            "upexyearlist"      : upexyearlist,
             }
         return HttpResponse(template.render(context,request))
 
@@ -1814,25 +1725,20 @@ class KeywordView(View):
         dict_keyword = {}
         dict_keyword = dict(collections.Counter(keyword))
         dict_keyword = dict(dict_keyword)
-        # print(dict_keyword)
         
         textlist = []
         weightlist = []
         for key,value in dict_keyword.items():
             textlist.append(key)
             weightlist.append(value)
-        #print(textlist)
-        #print(weightlist)
-        
-        
+            
+        #json 형태의 맞게 list append 
         data_list = []
-        #json 형태의 맞게 list append
         for text,weight in zip(textlist,weightlist):
             data_list.append({"x":text,"weight":weight})
          
         #검색 키워드 - 회원
         mem_keyword = MdSrch.objects.filter(user_id__isnull = False).values("srch_word","user_id")
-        # print(m_keyword)
         mem_keyword = list(m['srch_word'] for m in mem_keyword)
         dict_memkeyword = {}
         dict_memkeyword = dict(collections.Counter(mem_keyword))
@@ -1852,7 +1758,6 @@ class KeywordView(View):
             
         #검색 키워드 - 비회원
         nmem_keyword = MdSrch.objects.filter(user_id__isnull = True).values("srch_word","user_id")
-        # print(m_keyword)
         nmem_keyword = list(m['srch_word'] for m in nmem_keyword)
         dict_nmemkeyword = {}
         dict_nmemkeyword = dict(collections.Counter(nmem_keyword))
@@ -1869,13 +1774,11 @@ class KeywordView(View):
         
         for text,weight in zip(nmem_textlist,nmem_weightlist):
             nmemdata_list.append({"x":text,"weight":weight})            
-        
-        
+          
         #검색 키워드 - 남성
         today = datetime.today().year
         man_keyword = MdSrch.objects.annotate(year = Substr("user__user_bir",1,4)).filter(user__gen=0).values_list("srch_word","year")
         man_keyword_list = list(man_keyword)
-        # print(man_keyword)
  
         up_agelist = []
         up_keywordlist = []
@@ -1994,7 +1897,6 @@ class KeywordView(View):
         #검색 키워드 - 여성
         woman_keyword = MdSrch.objects.annotate(year = Substr("user__user_bir",1,4)).filter(user__gen=1).values_list("srch_word","year")
         woman_keyword_list = list(woman_keyword)
-        # print(man_keyword)
  
         wup_agelist = []
         wup_keywordlist = []
@@ -2111,20 +2013,20 @@ class KeywordView(View):
             womanord_list.append({"x":text,"weight":weight})                       
         
         context = {
-            "data_list" : data_list,
-            "memdata_list" : memdata_list,
-            "nmemdata_list" : nmemdata_list,
-            "manteen_list" : manteen_list,
-            "mantwe_list" : mantwe_list,
-            "manthr_list" : manthr_list,
-            "manfou_list" : manfou_list,
-            "manfiv_list" : manfiv_list,
-            "manord_list" : manord_list,
-            "womanteen_list" : womanteen_list,
-            "womantwe_list" : womantwe_list,
-            "womanthr_list" : womanthr_list,
-            "womanfou_list" : womanfou_list,
-            "womanfiv_list" : womanfiv_list,
-            "womanord_list" : womanord_list,            
+            "data_list"         : data_list,
+            "memdata_list"      : memdata_list,
+            "nmemdata_list"     : nmemdata_list,
+            "manteen_list"      : manteen_list,
+            "mantwe_list"       : mantwe_list,
+            "manthr_list"       : manthr_list,
+            "manfou_list"       : manfou_list,
+            "manfiv_list"       : manfiv_list,
+            "manord_list"       : manord_list,
+            "womanteen_list"    : womanteen_list,
+            "womantwe_list"     : womantwe_list,
+            "womanthr_list"     : womanthr_list,
+            "womanfou_list"     : womanfou_list,
+            "womanfiv_list"     : womanfiv_list,
+            "womanord_list"     : womanord_list,            
             }
         return HttpResponse(template.render(context,request))
