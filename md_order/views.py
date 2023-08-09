@@ -301,7 +301,8 @@ class BuckDelOrdrView(View):
             logger.debug(f'nx : {nx}\tny : {ny}')
             
             # get weather info.
-            keys   = 'HWhDUnifun4TFn7nZAJYjxhrrqE20%2Fn3%2BvsK7BFCdbesAK9K7wiOBsYkYztAqmlAbVu%2FkZSeE6lyNCcq4DmK%2Bw%3D%3D'
+            # keys   = 'HWhDUnifun4TFn7nZAJYjxhrrqE20%2Fn3%2BvsK7BFCdbesAK9K7wiOBsYkYztAqmlAbVu%2FkZSeE6lyNCcq4DmK%2Bw%3D%3D'
+            keys   = 'HWhDUnifun4TFn7nZAJYjxhrrqE20/n3+vsK7BFCdbesAK9K7wiOBsYkYztAqmlAbVu/kZSeE6lyNCcq4DmK+w=='
             url    = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst'
             params ={'serviceKey' : keys,
                      'pageNo'     : '1',
