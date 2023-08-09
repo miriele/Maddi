@@ -22,7 +22,7 @@ from md_admin.models import MdSrch
 import json
 from _collections import defaultdict
 from django.utils import timezone
-
+from django.db.models import F
 
 
 # 로그
@@ -38,16 +38,44 @@ class OrderView(View):
     def get(self, request):
         
         # 주문 id/주문 매장/주문자닉네임/주문메뉴명/주문수량/주문일시/완료일시/
-        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values(
-            'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts'
-            ).order_by("-ordr_id").annotate(
-           menu_name = Concat( 'mdordrm__stor_m__stor_m_name', Value(','), 'mdordrm__stor_m__stor_m_name' ) )
+        # odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values(
+        #     'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts'
+        #     ).order_by("-ordr_id").annotate(
+        #    menu_name = Concat( 'mdordrm__stor_m__stor_m_name', Value(','), 'mdordrm__stor_m__stor_m_name' ) )
+
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').filter(ordr_com_ts = None).values(
+            'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name',
+            'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts'
+            ).order_by("-ordr_id").annotate(ordrid   = F('ordr_id'),
+                                           stor_nick = F('mdordrm__stor_m__stor__user__user_nick'),
+                                           stor_name = F('mdordrm__stor_m__stor__stor_name'),
+                                           user_nick = F('user__user_nick'),
+                                           menu_name = F('mdordrm__stor_m__stor_m_name'),
+                                           ordr_num  = F('mdordrm__ordr_num'),
+                                           ordr_ts   = F('ordr_ord_ts')
+                                           )
+        logger.debug(f'odtos : {odtos} ')
         
         # 출력하고 싶은거 = 주문번호가 같은 (그룹) 주문들의 내용은 주문메뉴 제외 한개씩 출력하고 싶음
+        order_list = dict()
+        
+        for odto in odtos :
+            order_id = odto["ordr_id"]
+            # key = f'{order_id}'
+            # if order_list.get(order_id) == None :
+            #     order_list[order_id] = key
+            order_list[order_id]["stor_nick"] = odto["mdordrm__stor_m__stor__user__user_nick"]
+            order_list[order_id]["stor_name"] = odto["mdordrm__stor_m__stor__stor_name"]
+            order_list[order_id]["user_nick"] = odto["user__user_nick"]
+            order_list[order_id]["menu_name"].append(odto["mdordrm__stor_m__stor_m_name"])
+            order_list[order_id]["ordr_num"].append(odto["mdordrm__ordr_num"])
+            order_list[order_id]["ordr_ts"]   = odto["ordr_ord_ts"]
+        
+        
         
         # odtos = odtos.annotate()
         
-        logger.debug(f'odtos : {odtos} ')
+        logger.debug(f'order_list : {order_list} ')
             
         template = loader.get_template("md_admin/order.html")
         context={
@@ -77,29 +105,7 @@ class OrderView(View):
 
         return HttpResponse(json.dumps(context), content_type="application/json")
     
-class TOrdrView(View):
-    def get(self, request):
-#         ordr_id = request.GET.get("ordr_id","")
-#         logger.debug(f'ordr_id : {ordr_id} ')
-#
-#         ordr = MdOrdr.objects.get(ordr_id = ordr_id )
-#
-#         logger.debug(f'ordr : {ordr.user_id} ')
-#
-#         dto = MdOrdr(
-#             ordr_id = ordr.ordr_id,
-#             user_id = ordr.user_id,
-#             weather_id = ordr.weather_id,
-#             ordr_temp = ordr.ordr_temp,
-#             ordr_ord_ts = ordr.ordr_ord_ts,
-#             ordr_com_ts = datetime.now()
-#             )
-#         # dto.save()
-#
-        return HttpResponse()
 
-
-    
 # 회원정보리스트
 class UserlistView(View):
     def get(self,request):
