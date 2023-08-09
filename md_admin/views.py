@@ -61,20 +61,21 @@ class OrderView(View):
         
         for odto in odtos :
             order_id = odto["ordr_id"]
-            # key = f'{order_id}'
-            # if order_list.get(order_id) == None :
-            #     order_list[order_id] = key
-            order_list[order_id]["stor_nick"] = odto["mdordrm__stor_m__stor__user__user_nick"]
-            order_list[order_id]["stor_name"] = odto["mdordrm__stor_m__stor__stor_name"]
-            order_list[order_id]["user_nick"] = odto["user__user_nick"]
+
+            if order_id not in order_list :
+                order_list[order_id] = {
+                    "stor_nick" : odto["mdordrm__stor_m__stor__user__user_nick"],
+                    "stor_name" : odto["mdordrm__stor_m__stor__stor_name"],
+                    "user_nick" : odto["user__user_nick"],
+                    "menu_name" : [],
+                    "ordr_num"  : [],
+                    "ordr_ts"   : odto["ordr_ord_ts"],
+                    "num_row"   : 0
+                    }
             order_list[order_id]["menu_name"].append(odto["mdordrm__stor_m__stor_m_name"])
             order_list[order_id]["ordr_num"].append(odto["mdordrm__ordr_num"])
-            order_list[order_id]["ordr_ts"]   = odto["ordr_ord_ts"]
-        
-        
-        
-        # odtos = odtos.annotate()
-        
+            order_list[order_id]["num_row"] += 1
+
         logger.debug(f'order_list : {order_list} ')
             
         template = loader.get_template("md_admin/order.html")
