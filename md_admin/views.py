@@ -21,6 +21,7 @@ import collections
 from md_admin.models import MdSrch
 import json
 from _collections import defaultdict
+from django.utils import timezone
 
 
 # 로그
@@ -46,24 +47,25 @@ class TestOrderView(View):
     
     def post(self, request):    # 주문완료 버튼
     
-        ordr_id = request.POST.get("ordr_id","")
+        ordr_id_temp = request.POST.get("ordr_id","")
+        ordr_id = ordr_id_temp.split('_')[-1]
         logger.debug(f'ordr_id : {ordr_id} ')
     
         ordr = MdOrdr.objects.get(ordr_id = ordr_id )
-    
         logger.debug(f'ordr : {ordr.user_id} ')
-    
-        dto = MdOrdr(
-            ordr_id = ordr.ordr_id,
-            user_id = ordr.user_id,
-            weather_id = ordr.weather_id,
-            ordr_temp = ordr.ordr_temp,
-            ordr_ord_ts = ordr.ordr_ord_ts,
-            ordr_com_ts = datetime.now()
-            )
-        # dto.save()
-    
-        return HttpResponse()
+        
+        comTime = timezone.now()
+        
+        ordr.ordr_com_ts = comTime
+        ordr.save()
+        
+        context = {
+            "comTime" : comTime.strftime("%Y년 %m월 %d일 %H:%M:%S"),
+            "ordr_id" : ordr_id,
+            }
+        logger.debug(f'context : {context} ')
+
+        return HttpResponse(json.dumps(context), content_type="application/json")
     
 class TOrdrView(View):
     def get(self, request):

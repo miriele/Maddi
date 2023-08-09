@@ -39,16 +39,13 @@
 				{% if o.ordr_com_ts %}
 					<input class="inputbutton" type="button" value="주문 완료" disabled >
 				{% else %}
-					<form method="post" action="testorder" name="testorderform">
-						<input type="hidden" name="ordr_id" id="test{{o.ordr_id}}" value="{{ o.ordr_id }}">
-						<input type="button" name="ordr_done" value="주문확인{{o.ordr_id}}" >
-					</form>
+					<input type="button" name="ordr_done" id="ordr_id_{{o.ordr_id}}" value="주문확인{{o.ordr_id}}" >
 				{% endif %}
 			</td>
 			<td align="center">
 				{{ o.ordr_ord_ts }} 	
 			</td>
-			<td align="center">
+			<td align="center" id="td_id_{{o.ordr_id}}">
 				{% if o.ordr_com_ts != None %}
 					{{ o.ordr_com_ts }} 	
 				{% endif %}
