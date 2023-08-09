@@ -1,4 +1,4 @@
-//admin/test.js
+//admin/ordr.js
 $(document).ready(
 	function() {
 		$("input[name='ordr_done']").on(
@@ -8,7 +8,7 @@ $(document).ready(
 				var csrfToken = "{{ csrf_token }}";
 				$.ajax(
 					{
-						url : "testorder",
+						url : "order",
 						type : "POST",
 						data : {
 							ordr_id : $(this).attr('id'),

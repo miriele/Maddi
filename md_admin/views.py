@@ -14,9 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateformat import DateFormat
 from datetime import datetime
 from django.db.models.aggregates import Count
-from django.db.models.expressions import Case
+from django.db.models.expressions import Case, Value
 from _datetime import date
-from django.db.models.functions.text import Substr
+from django.db.models.functions.text import Substr, Concat
 import collections
 from md_admin.models import MdSrch
 import json
@@ -24,12 +24,13 @@ from _collections import defaultdict
 from django.utils import timezone
 
 
+
 # 로그
 logger = logging.getLogger( __name__ )
 
 
-# 테스트용 지점 상관없이 전체 추문 출력/승인
-class TestOrderView(View):
+# 지점 상관없이 전체 추문 출력/승인
+class OrderView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
@@ -37,9 +38,18 @@ class TestOrderView(View):
     def get(self, request):
         
         # 주문 id/주문 매장/주문자닉네임/주문메뉴명/주문수량/주문일시/완료일시/
-        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values('ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick','mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts').order_by("-ordr_ord_ts")
-
-        template = loader.get_template("md_admin/testorder.html")
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values(
+            'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts'
+            ).order_by("-ordr_id").annotate(
+           menu_name = Concat( 'mdordrm__stor_m__stor_m_name', Value(','), 'mdordrm__stor_m__stor_m_name' ) )
+        
+        # 출력하고 싶은거 = 주문번호가 같은 (그룹) 주문들의 내용은 주문메뉴 제외 한개씩 출력하고 싶음
+        
+        # odtos = odtos.annotate()
+        
+        logger.debug(f'odtos : {odtos} ')
+            
+        template = loader.get_template("md_admin/order.html")
         context={
             "odtos": odtos,
             }
