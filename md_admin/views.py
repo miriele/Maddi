@@ -26,6 +26,68 @@ from _collections import defaultdict
 # 로그
 logger = logging.getLogger( __name__ )
 
+
+# 테스트용 지점 상관없이 전체 추문 출력/승인
+class TestOrderView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+        
+    def get(self, request):
+        
+        # 주문 id/주문 매장/주문자닉네임/주문메뉴명/주문수량/주문일시/완료일시/
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values('ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick','mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts').order_by("-ordr_ord_ts")
+
+        template = loader.get_template("md_admin/testorder.html")
+        context={
+            "odtos": odtos,
+            }
+        return HttpResponse(template.render(context, request) )
+    
+    def post(self, request):    # 주문완료 버튼
+    
+        ordr_id = request.POST.get("ordr_id","")
+        logger.debug(f'ordr_id : {ordr_id} ')
+    
+        ordr = MdOrdr.objects.get(ordr_id = ordr_id )
+    
+        logger.debug(f'ordr : {ordr.user_id} ')
+    
+        dto = MdOrdr(
+            ordr_id = ordr.ordr_id,
+            user_id = ordr.user_id,
+            weather_id = ordr.weather_id,
+            ordr_temp = ordr.ordr_temp,
+            ordr_ord_ts = ordr.ordr_ord_ts,
+            ordr_com_ts = datetime.now()
+            )
+        # dto.save()
+    
+        return HttpResponse()
+    
+class TOrdrView(View):
+    def get(self, request):
+#         ordr_id = request.GET.get("ordr_id","")
+#         logger.debug(f'ordr_id : {ordr_id} ')
+#
+#         ordr = MdOrdr.objects.get(ordr_id = ordr_id )
+#
+#         logger.debug(f'ordr : {ordr.user_id} ')
+#
+#         dto = MdOrdr(
+#             ordr_id = ordr.ordr_id,
+#             user_id = ordr.user_id,
+#             weather_id = ordr.weather_id,
+#             ordr_temp = ordr.ordr_temp,
+#             ordr_ord_ts = ordr.ordr_ord_ts,
+#             ordr_com_ts = datetime.now()
+#             )
+#         # dto.save()
+#
+        return HttpResponse()
+
+
+    
 # 회원정보리스트
 class UserlistView(View):
     def get(self,request):

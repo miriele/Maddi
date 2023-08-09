@@ -23,4 +23,6 @@ urlpatterns = [
     path("iaostatis",       views.IaoView.as_view(),            name = "iaostatis"),    # 회원통계 - 유입/이탈 
     path("keystatis",       views.KeywordView.as_view(),        name = "keystatis"),    # 통계 - 검색키워드
     path('searched',        views.search,                       name = 'search'),
+    path("testorder",       views.TestOrderView.as_view(),      name = "testorder"),    # 점주 주문 확인 처럼 테스트 확인용
+    path("tordr",           views.TOrdrView.as_view(),          name = "tordr"),        # test ajax (폼없이)
     ]
