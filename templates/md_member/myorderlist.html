@@ -6,10 +6,10 @@
 <h2> 내 주문 내역  {{nick.user_nick }} :{{count}}  </h2> 
 <table border="1">
 	<tr>
-		<th width="7%" > 번호 </th>
 		<th width="10%"> 주문번호 </th>
 		<th width="15%"> 매장명 </th>
 		<th width="20%"> 주문 메뉴 </th>
+		<th width="10%"> 주문 갯수 </th>
 		<th width="10%"> 총 금액 </th>
 		<th width="10%"> 주문일시 </th>
 		<th width="10%"> 완료일 </th>
@@ -21,43 +21,47 @@
 				작성된 글이 없습니다.
 		</tr>
 	{% else %}
-		{% for o in odtos %}
+		{% for k, v in mordr_list.items %}
 			<tr>
-				<td align="center">							<!-- 현제 번호 인덱스 -->
-					{{ number | sub:forloop.counter0 }}		
-				</td>
 				<td align="center">							<!-- 주문 번호 -->
-					{{ o.ordr_id }}						
+					{{ k }}						
 				</td>
 				<td	align="center">							<!-- 매장 명 -->
-				  	{{ o.mdordrm__stor_m__stor__stor_name }}
+				  	{{ v.stor_name }}
 				</td>
-				<td	align="center">							<!-- 주문 내역 -->
-					{{ o.mdordrm__stor_m__stor_m_name }}	&nbsp; {{ o.mdordrm__ordr_num }}개					
+				<td	align="center">							<!-- 주문 메뉴 -->
+					{% for mn in v.menu_name %}
+						{{ mn }}<br>	
+					{% endfor %}				
+				</td>
+				<td	align="center">							<!-- 주문 갯수 -->
+					{% for om in v.ordr_num %}
+						{{ om }}<br>	
+					{% endfor %}				
 				</td>
 				<td align="center">										<!-- 총 금액 -->
-					{{ o.mdordrm__ordr_num|mul:o.mdordrm__stor_m__stor_m_pric  }} 원
+					{{ v.menu_price  }} 원
 				</td>
 				<td align="center">										<!-- 주문일시 -->
-					{{ o.ordr_ord_ts |date:"y-m-d H:i" }}				
+					{{ v.ordr_ts }}				
 				</td>
 				<td align="center">										<!-- 완료일 -->
-					{% if o.ordr_com_ts == None %}
+					{% if v.com_ts == None %}
 						<pre  style="color:blue;"> 제품이 준비중입니다. </pre>
 					{% else %}
-						{{ o.ordr_com_ts |date:"y-m-d H:i" }}									
+						{{ v.com_ts }}									
 					{% endif %}
 				</td>
 				<td align="center">									<!-- 리뷰 작성 버튼 -->
-					{% if o.ordr_com_ts == None %}
+					{% if v.com_ts == None %}
 						<input class="inputbutton" type="button" value="리뷰 작성" disabled >
 					{% else %}
-						{% if  o.ordr_id in r_id %}
+						{% if  k in r_id %}
 							<input style="background-color:lightblue;" type="button" value="매장리뷰보기" 
-								onclick="location='/md_review/review?stor_id={{o.mdordrm__stor_m__stor__stor_id}}'">
+								onclick="location='/md_review/review?stor_id={{v.stor_id}}'">
 						{% else %}
                 			<input type="button" value="리뷰 작성" 
-                				onclick="location='/md_review/revwrite?ordr_id={{ o.ordr_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}'">
+                				onclick="location='/md_review/revwrite?ordr_id={{k}}&pagenum={{ pagenum }}'">
                 		{% endif %}
 					{% endif %}
 				</td>

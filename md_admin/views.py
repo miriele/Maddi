@@ -38,25 +38,21 @@ class OrderView(View):
     def get(self, request):
         
         # 주문 id/주문 매장/주문자닉네임/주문메뉴명/주문수량/주문일시/완료일시/
-        # odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').values(
-        #     'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name', 'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts'
-        #     ).order_by("-ordr_id").annotate(
-        #    menu_name = Concat( 'mdordrm__stor_m__stor_m_name', Value(','), 'mdordrm__stor_m__stor_m_name' ) )
-
+        # 출력하고 싶은거 = 주문번호가 같은 (그룹) 주문들의 내용은 주문메뉴 제외 한개씩 출력하고 싶음
         odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor__user').filter(ordr_com_ts = None).values(
             'ordr_id', 'mdordrm__stor_m__stor__user__user_nick', 'mdordrm__stor_m__stor__stor_name',
-            'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts'
-            ).order_by("-ordr_id").annotate(ordrid   = F('ordr_id'),
+            'user__user_nick', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'ordr_ord_ts', 'ordr_com_ts'
+            ).order_by("-ordr_id").annotate(
                                            stor_nick = F('mdordrm__stor_m__stor__user__user_nick'),
                                            stor_name = F('mdordrm__stor_m__stor__stor_name'),
                                            user_nick = F('user__user_nick'),
                                            menu_name = F('mdordrm__stor_m__stor_m_name'),
                                            ordr_num  = F('mdordrm__ordr_num'),
-                                           ordr_ts   = F('ordr_ord_ts')
+                                           ordr_ts   = F('ordr_ord_ts'),
+                                           com_ts    = F('ordr_com_ts')
                                            )
-        logger.debug(f'odtos : {odtos} ')
+        # logger.debug(f'odtos : {odtos} ')
         
-        # 출력하고 싶은거 = 주문번호가 같은 (그룹) 주문들의 내용은 주문메뉴 제외 한개씩 출력하고 싶음
         order_list = dict()
         
         for odto in odtos :
@@ -64,23 +60,24 @@ class OrderView(View):
 
             if order_id not in order_list :
                 order_list[order_id] = {
-                    "stor_nick" : odto["mdordrm__stor_m__stor__user__user_nick"],
-                    "stor_name" : odto["mdordrm__stor_m__stor__stor_name"],
-                    "user_nick" : odto["user__user_nick"],
+                    "stor_nick" : odto["stor_nick"],
+                    "stor_name" : odto["stor_name"],
+                    "user_nick" : odto["user_nick"],
                     "menu_name" : [],
                     "ordr_num"  : [],
-                    "ordr_ts"   : odto["ordr_ord_ts"],
+                    "ordr_ts"   : odto["ordr_ts"],
+                    "com_ts"    : odto["com_ts"],
                     "num_row"   : 0
                     }
-            order_list[order_id]["menu_name"].append(odto["mdordrm__stor_m__stor_m_name"])
-            order_list[order_id]["ordr_num"].append(odto["mdordrm__ordr_num"])
+            order_list[order_id]["menu_name"].append(odto["menu_name"])
+            order_list[order_id]["ordr_num"].append(odto["ordr_num"])
             order_list[order_id]["num_row"] += 1
 
-        logger.debug(f'order_list : {order_list} ')
-            
+        # logger.debug(f'order_list : {order_list[order_id]} ')
+
         template = loader.get_template("md_admin/order.html")
         context={
-            "odtos": odtos,
+            "order_list": order_list,
             }
         return HttpResponse(template.render(context, request) )
     
@@ -99,7 +96,7 @@ class OrderView(View):
         ordr.save()
         
         context = {
-            "comTime" : comTime.strftime("%Y년 %m월 %d일 %H:%M:%S"),
+            # "comTime" : comTime.strftime("%Y년 %m월 %d일 %H:%M:%S"),
             "ordr_id" : ordr_id,
             }
         logger.debug(f'context : {context} ')

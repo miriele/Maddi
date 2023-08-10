@@ -13,42 +13,40 @@
 			<th>주문 수량</th>
 			<th>주문완료</th>
 			<th>주문일시</th>
-			<th>완료일시</th> 
 		</tr>
-		{% for o in odtos %}
+		{% for k, v in order_list.items %}
 			<tr>
 				<td align="center">	<!-- 주문 id -->
-					{{ o.ordr_id }} 	
+					{{ k }} 	
 				</td>
 				<td align="center">	<!-- 점주 존재 여부 -->
-					{{ o.mdordrm__stor_m__stor__user__user_nick }} 	
+					{{ v.stor_nick }} 	
 				</td>
 				<td align="center">	<!-- 주문 매장명 --> 	
-					{{ o.mdordrm__stor_m__stor__stor_name }}	
+					{{ v.stor_name }}	
 				</td>
 				<td align="center">	<!--  주문자 명 -->
-					{{ o.user__user_nick }} 	
+					{{ v.user_nick }} 	
 				</td>
 				<td align="center">	<!-- 주문 메뉴명 -->
-					{{ o.menu_name }} 	
+					{% for mn in v.menu_name %}
+						{{ mn }}<br> 	
+					{% endfor %}
 				</td>
 				<td align="center">	<!-- 주문 수량 -->
-					{{ o.mdordrm__ordr_num }} 	
+					{% for on in v.ordr_num %}
+						{{ on }}개<br> 	
+					{% endfor %}
 				</td>
 				<td>
-					{% if o.ordr_com_ts %}	<!-- 주문완료 버튼 -->
+					{% if v.com_ts != None %}	<!-- 주문완료 버튼 -->
 						<input class="inputbutton" type="button" value="주문 완료" disabled >
 					{% else %}
-						<input type="button" name="ordr_done" id="ordr_id_{{o.ordr_id}}" value="주문확인{{o.ordr_id}}" >
+						<input type="button" name="ordr_done" id="ordr_id_{{k}}" value="주문확인{{k}}" >
 					{% endif %}
 				</td>
 				<td align="center">	<!--  주문일시 -->
-					{{ o.ordr_ord_ts }} 	
-				</td>
-				<td align="center" id="td_id_{{o.ordr_id}}">	<!-- 완료 일시 -->
-					{% if o.ordr_com_ts != None %}
-						{{ o.ordr_com_ts }} 	
-					{% endif %}
+					{{ v.ordr_ts }} 	
 				</td>
 			</tr>
 		{% endfor %}

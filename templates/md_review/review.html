@@ -18,22 +18,22 @@
 			</td>
 		</tr>
 	{% else %}
-		{% for rdto in rdtos %}
-			{% if rdto.ordr__mdordrm__stor_m__stor_id == stor_id %}
+		{% for k, v in rev_list.items %}
+			{% if v.stor_id == stor_id %}
 				<tr>
 					<td>
-						<img src="/media/{{rdto.ordr__user__user_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';" width="50" height="50" name="img_r" border-radius="50%">
-						{{ rdto.ordr__user__user_nick }} /
-						★{{ rdto.rev_star }}
+						<img src="/media/{{v.user_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';" width="50" height="50" name="img_r" border-radius="50%">
+						{{ v.user_nick }} /
+						★{{ v.re_star }}
 					</td>
 				</tr>
 				<tr>
-					<td> {{ rdto.rev_ts | date:"y-m-d" }} </td>
+					<td> {{ v.re_ts }} </td>
 				</tr>
 				<tr>
 					<td>
 						{% for tag in tags %}
-							{% if tag.rev__rev_id == rdto.rev_id %}
+							{% if tag.rev__rev_id == k %}
 								<div style="border:1px solid darkblue; border-radius: 5px;">
 									태그 : {{ tag.tag__tag_name }}
 								</div>
@@ -43,11 +43,11 @@
 				</tr>
 				<tr>
 					<td>
-						<img src="/media/{{rdto.rev_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';" width="50" height="50" name="img_r" border-radius="50%">
+						<img src="/media/{{v.re_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';" width="50" height="50" name="img_r" border-radius="50%">
 					</td>
 				</tr>
 				<tr>
-					<td> {{ rdto.rev_cont }} </td>
+					<td> {{ v.re_cont }} </td>
 				</tr>
 			{% endif %}
 		{% endfor %}

@@ -19,14 +19,14 @@ $(document).ready(
 							//location.reload();
 							console.log(data);
 							btnId = '#ordr_id_' + data.ordr_id;
-							tdId  = '#td_id_' + data.ordr_id;
+							//tdId  = '#td_id_' + data.ordr_id;
 
 							eleInput = $(btnId);
-							eleTd    = $(tdId);
+							//eleTd    = $(tdId);
 
 							eleInput.attr('value', '주문 완료');
 							eleInput.attr('disabled', true);
-							eleTd.text(data.comTime);
+							//eleTd.text(data.comTime);
 						},
 						error : function(request, status, error) {
 							alert("서버요청실패");

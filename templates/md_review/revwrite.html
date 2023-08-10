@@ -2,7 +2,6 @@
 
 {% block content %}
 {% csrf_token %}
-<h2> 리뷰작성 </h2>
 <form method="post" action="revwrite "	name="revwriteform" enctype="multipart/form-data">
 	<input type="hidden" name="ordr_id" value="{{ordr_id}}">
 	<table >
@@ -15,7 +14,13 @@
 		</tr>
 		<tr>
 			<th> 주문 내역  </th>
-			<td> {{m_name}} &nbsp;&nbsp; {{ ordr_num }}개</td>		
+			<td> 
+				{% for menu2 in menu %}
+					{% for m in menu2 %}
+						{{ m }}
+					{% endfor %}	개 <br>
+				{% endfor %}		
+			</td>		
 		</tr>
 		<tr>
 			<th> 별점  </th>

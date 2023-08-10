@@ -11,6 +11,7 @@ from md_order.models import MdBuck, MdOrdrM, MdOrdr
 import logging
 import requests
 import xmltodict
+from django.db.models import F
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -388,23 +389,55 @@ class OrdrListView(View):
     def get(self, request):
         memid = request.session.get("memid")
         gid = request.session.get("gid")
+        
         stor_id = request.GET['stor_id']
+        
+        odtos = MdOrdr.objects.select_related('mdordrm__stor_m', 'user'
+                ).filter(mdordrm__stor_m__stor_id = stor_id, ordr_com_ts = None 
+                    ).values(
+                        'ordr_id', 'user__user_nick', 'mdordrm__ordr_num', 
+                        'mdordrm__stor_m__stor_m_name', 'ordr_ord_ts', 'ordr_com_ts'
+                        ).order_by("-ordr_id").annotate(
+                            user_name   = F('user__user_nick'),
+                            ordr_num    = F('mdordrm__ordr_num'),
+                            menu_name   = F('mdordrm__stor_m__stor_m_name'),
+                            ordr_ts     = F('ordr_ord_ts'),
+                            com_ts      = F('ordr_com_ts'),
+                            )
+        logger.debug(f' odtos : { odtos }')
+        ordr_l = dict()
+        
+        for o in odtos :
+            order_id = o["ordr_id"]
+            
+            if order_id not in ordr_l :
+                ordr_l[order_id] = {
+                    "user_name" : o["user_name"],
+                    "ordr_num"  : [],
+                    "menu_name" : [],
+                    "ordr_ts"   : o["ordr_ts"],
+                    "com_ts"    : o["com_ts"],
+                    }
+            ordr_l[order_id]["menu_name"].append(o["menu_name"]) 
+            ordr_l[order_id]["ordr_num"].append(o["ordr_num"])     
+        
+        
+        
+        # orders = MdOrdr.objects.annotate(
+        #     order_status=Case(
+        #         When(ordr_com_ts__isnull=True, then=Value('접수완료')),
+        #         default=Value('처리완료'),
+        #         output_field=CharField()
+        #     )
+        # )
+        # orders = orders.order_by('order_status', 'ordr_com_ts')
+        
         template = loader.get_template("md_order/orderlist.html")
-        memid = request.session.get('memid')
-        odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(mdordrm__stor_m__stor__stor_id=stor_id).values('ordr_id', 'user_id', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_name', 'mdordrm__stor_m__stor__stor_id', 'ordr_ord_ts', 'ordr_com_ts')
-        orders = MdOrdr.objects.annotate(
-            order_status=Case(
-                When(ordr_com_ts__isnull=True, then=Value('접수완료')),
-                default=Value('처리완료'),
-                output_field=CharField()
-            )
-        )
-        orders = orders.order_by('order_status', 'ordr_com_ts')
         context = {
-            "odtos": odtos,
-            "stor_id" : stor_id,
-            "memid" : memid,
-            "gid" : gid,
+            "ordr_l"    : ordr_l,
+            "stor_id"   : stor_id,
+            "memid"     : memid,
+            "gid"       : gid,
         }
         
         return HttpResponse(template.render(context, request))
@@ -412,13 +445,14 @@ class OrdrListView(View):
 
 class OrdrDoneView (View):
     def post(self, request):
-        ordr_id = request.POST.get('ordr_id')
-        stor_id = request.POST['stor_id']
-        try:
-            ordr = MdOrdr.objects.get(pk=ordr_id)
-            if ordr.ordr_com_ts is None:
-                ordr.ordr_com_ts = timezone.now()
-                ordr.save()
-        except MdOrdr.DoesNotExist:
-            pass
-        return redirect(reverse("md_order:orderlist") + f'?stor_id={stor_id}')
+        pass
+        # ordr_id = request.POST.get('ordr_id')
+        # stor_id = request.POST['stor_id']
+        # try:
+        #     ordr = MdOrdr.objects.get(pk=ordr_id)
+        #     if ordr.ordr_com_ts is None:
+        #         ordr.ordr_com_ts = timezone.now()
+        #         ordr.save()
+        # except MdOrdr.DoesNotExist:
+        #     pass
+        # return redirect(reverse("md_order:orderlist") + f'?stor_id={stor_id}')

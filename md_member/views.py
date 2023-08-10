@@ -12,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from md_store.models import MdAlgyT, MdDrnkT, MdDsrtT, MdStorM, MdStor
 from md_order.models import MdOrdr, MdOrdrM
 from md_review.models import MdReview
+from django.db.models import F
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -321,6 +322,10 @@ class UserInfoView( View ):
 page_size = 20
 page_block = 3    
 class MyOrderListView( View ):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
     def get(self, request ):
         
         template = loader.get_template( "md_member/myorderlist.html")
@@ -368,7 +373,39 @@ class MyOrderListView( View ):
             pages = range(startpage, endpage + 1)
             
             # 주문 번호 / 매장명 / 주문메뉴 / 총 금액 >ordr_num|mul:stor_m_pric /주문일시 /주문 완료일/+리뷰 작성일?리뷰의 주문 아이디?
-            odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id = memid).order_by("-ordr_id").values('ordr_id', 'mdordrm__stor_m__stor__stor_name','mdordrm__stor_m__stor__stor_id', 'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_pric', 'ordr_ord_ts', 'ordr_com_ts')[start:end]
+            odtos = MdOrdr.objects.select_related('mdordrm__stor_m__stor').filter(user_id = memid).order_by("-ordr_id").values(
+                'ordr_id', 'mdordrm__stor_m__stor__stor_name','mdordrm__stor_m__stor__stor_id', 
+                'mdordrm__stor_m__stor_m_name', 'mdordrm__ordr_num', 'mdordrm__stor_m__stor_m_pric', 
+                'ordr_ord_ts', 'ordr_com_ts').annotate(
+                                                order_id = F('ordr_id'),
+                                                stor_name = F('mdordrm__stor_m__stor__stor_name'),
+                                                stor_id = F('mdordrm__stor_m__stor__stor_id'),
+                                                menu_name = F('mdordrm__stor_m__stor_m_name'),
+                                                ordr_num = F('mdordrm__ordr_num'),
+                                                menu_price = F('mdordrm__stor_m__stor_m_pric'),
+                                                ordr_ts = F('ordr_ord_ts'),
+                                                com_ts = F('ordr_com_ts'),
+                                                    )[:]
+            mordr_list = dict()
+            
+            for o in odtos :
+                order_id = o["order_id"]
+                # logger.debug(f'order_id : {order_id }')
+                
+                if order_id not in mordr_list :
+                    mordr_list[order_id]={
+                        "stor_name"     : o["stor_name"],
+                        "stor_id"       : o["stor_id"],
+                        "menu_name"     : [],
+                        "ordr_num"      : [],
+                        "menu_price"    : 0,
+                        "ordr_ts"       : o["ordr_ts"],
+                        "com_ts"        : o["com_ts"],
+                        }
+                mordr_list[order_id]["menu_name"].append(o["menu_name"])
+                mordr_list[order_id]["ordr_num"].append(o["ordr_num"])
+                mordr_list[order_id]["menu_price"] += o["menu_price"]
+                # logger.debug(f'mordr_list : {mordr_list}')
             
             # 리뷰 버튼
             rev = MdReview.objects.select_related('ordr').filter(ordr__user_id = memid ).values('ordr_id')
@@ -379,9 +416,10 @@ class MyOrderListView( View ):
                 # logger.debug(f' r : { (r.values() ) }')
                 r = r['ordr_id']
                 r_id.append(r)
-            logger.debug(f' rev : { r_id  }')
+            # logger.debug(f' rev : { r_id  }')
             
             context = {
+                "mordr_list": mordr_list,
                 "r_id"      : r_id,
                 "odtos"     : odtos,
                 "rev"       : rev,
