@@ -438,7 +438,7 @@ class OrdrListView(View):
         
         return HttpResponse(template.render(context, request))
     
-    def post(self, request):
+    def post(self, request):    # ajax 처리용
         
         ordr_id_temp = request.POST.get("ordr_id","")
         ordr_id = ordr_id_temp.split('_')[-1]

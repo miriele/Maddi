@@ -10,6 +10,7 @@ from md_combi.models import MdComb, MdCombM, MdCLike, MdCombR
 from md_member.models import MdUser
 from md_store.models import MdMenu, MdDrnkT, MdDsrtT
 from django.db.models.aggregates import Count
+from django.utils import timezone
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -354,23 +355,31 @@ class CombDView( View ):
     def post(self, request ): # 댓글용 ajax
         
         memid = request.session.get("memid")
-        gid = request.session.get("gid")
         
         comb_id         = request.POST.get("comb_id","")
-        pagenum         = request.POST.get("pagenum","")
-        number          = request.POST.get("number","")
-        c_reply_cont    = request.POST.get("c_reply_cont","")
+        user_img        = request.POST.get("user_img", "")
+        user_nick       = request.POST.get("user_nick", "")        
+        rep_cont        = request.POST.get("c_reply_cont","")
+        logger.debug(f' user_img : { user_img }')
         
-        result = 1                        
+        rep_ts = timezone.now()
+        
         dto = MdCombR(
             comb_id         = comb_id,
             user_id         = memid,
-            c_reply_cont    = c_reply_cont,
-            c_reply_ts      = datetime.now(),
+            c_reply_cont    = rep_cont,
+            c_reply_ts      = rep_ts,
             )
         dto.save()
+        
+        context = {
+            "user_img"  : user_img, 
+            "user_nick" : user_nick,
+            "rep_ts"    : rep_ts.strftime("%Y년 %m월 %d일 %H:%M:%S:"),
+            "rep_cont"  : rep_cont,
+            }
             
-        return HttpResponse()
+        return HttpResponse(json.dumps(context), content_type="application/json")
 
 # 좋아요 설정 취소
 class CLikeView( View ):

@@ -70,8 +70,8 @@
 {% csrf_token %}	
 <form method="post" action="combd"name="combdform" >
 	<input type="hidden" name="comb_id" value="{{comb_id}}">
-	<input type="hidden" name="pagenum" value="{{pagenum}}">
-	<input type="hidden" name="number" value="{{number}}">
+	<input type="hidden" name="user_img" value="{{user.user_img}}">
+	<input type="hidden" name="user_nick" value="{{user.user_nick}}">
 	<table>
 	{% if memid %}
 		<tr>
@@ -80,7 +80,7 @@
 		<tr>
 			<td>
 				<img src="/media/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-				{{user.user_nick }} 
+				{{ user.user_nick }} 
 			</td>
 		</tr>
 		<tr>
@@ -91,6 +91,7 @@
 		<tr>
 			<td>
 				<input type="button" name="replybtn" value="댓글 작성">
+				<font id = "check" size="2"></font>
 				<hr>
 			</td>
 		</tr>
@@ -102,12 +103,14 @@
 		</tr>
 	{% endif %}
 	</table>
+	<div id="new_repl">
+	</div>
 	<table>
 		{% for re in reply %}
 		<tr>
 			<td>
 				<img src="/media/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-				{{re.user.user_nick }} / {{ re.c_reply_ts |date:"Y-m-d H:i" }}
+				{{re.user.user_nick }} / {{ re.c_reply_ts }}
 			</td>
 		</tr>
 		<tr>
