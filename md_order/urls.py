@@ -11,5 +11,4 @@ urlpatterns = [
          path( "buckdelordr", views.BuckDelOrdrView.as_view(),  name="buckdelordr" ),
          path( "orderlist",   views.OrdrListView.as_view(),     name="orderlist" ),
          path( "ordersuc",    views.OrdrSucView.as_view(),      name="ordersuc" ),
-         path( "orderdone",   views.OrdrDoneView.as_view(),     name="orderdone" ),
        ]

@@ -12,6 +12,7 @@ import logging
 import requests
 import xmltodict
 from django.db.models import F
+import json
 
 # 로그
 logger = logging.getLogger( __name__ )
@@ -64,7 +65,6 @@ class OrderInfoView(View):
         }
 
         return render(request, 'md_order/orderinfo.html', context)
-
 
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
@@ -137,13 +137,13 @@ class CartView(View):
 
         # 필요한 정보들만 딕셔너리로 추출하여 세션에 저장
         cart_data = {
-            'stor_m_id': stor_m_id,
-            'stor_m_pric': storem.stor_m_pric,
-            'stor_id': storem.stor_id,
-            'stor_m_name': storem.stor_m_name,
-            'bucknum': bucknum,
-            'buckprice': buckprice,
-            'buck_reg_ts': buck_reg_ts.strftime('%Y-%m-%d %H:%M:%S'), 
+            'stor_m_id'     : stor_m_id,
+            'stor_m_pric'   : storem.stor_m_pric,
+            'stor_id'       : storem.stor_id,
+            'stor_m_name'   : storem.stor_m_name,
+            'bucknum'       : bucknum,
+            'buckprice'     : buckprice,
+            'buck_reg_ts'   : buck_reg_ts.strftime('%Y-%m-%d %H:%M:%S'), 
         }
 
         # 세션에 저장
@@ -165,10 +165,10 @@ class OrderView(View):
         buck_reg_ts = timezone.now()
         
         MdBuck.objects.create(
-           user_id=user_id,
-           stor_m_id=stor_m_id, 
-           buck_num=buck_num, 
-           buck_reg_ts=buck_reg_ts
+           user_id      = user_id,
+           stor_m_id    = stor_m_id, 
+           buck_num     = buck_num, 
+           buck_reg_ts  = buck_reg_ts
            )
 
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
@@ -374,25 +374,31 @@ class BuckDelOrdrView(View):
 class OrdrSucView (View):
     def get(self,request):
         template = loader.get_template( "md_order/ordersuc.html" )
-        memid = request.session.get('memid')
-        gid = request.session.get('gid')
+        memid   = request.session.get('memid')
+        gid     = request.session.get('gid')
         context = {
             "memid" : memid,
-            "gid" : gid,   
+            "gid"   : gid,   
             }
         return HttpResponse( template.render( context, request ) )
-    def post(self,request):
-        pass
 
 
 class OrdrListView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
     def get(self, request):
-        memid = request.session.get("memid")
-        gid = request.session.get("gid")
+        
+        memid   = request.session.get("memid")
+        gid     = request.session.get("gid")
         
         stor_id = request.GET['stor_id']
         
-        odtos = MdOrdr.objects.select_related('mdordrm__stor_m', 'user'
+        #데이터 있나 없나 확인용 count
+        count = MdOrdr.objects.select_related('mdordrm__stor_m', 'user').filter(mdordrm__stor_m__stor_id = stor_id, ordr_com_ts = None ).count()
+        logger.debug(f' count : { count }')
+        
+        odtos   = MdOrdr.objects.select_related('mdordrm__stor_m', 'user'
                 ).filter(mdordrm__stor_m__stor_id = stor_id, ordr_com_ts = None 
                     ).values(
                         'ordr_id', 'user__user_nick', 'mdordrm__ordr_num', 
@@ -404,7 +410,7 @@ class OrdrListView(View):
                             ordr_ts     = F('ordr_ord_ts'),
                             com_ts      = F('ordr_com_ts'),
                             )
-        logger.debug(f' odtos : { odtos }')
+        # logger.debug(f' odtos : { odtos }')
         ordr_l = dict()
         
         for o in odtos :
@@ -421,19 +427,9 @@ class OrdrListView(View):
             ordr_l[order_id]["menu_name"].append(o["menu_name"]) 
             ordr_l[order_id]["ordr_num"].append(o["ordr_num"])     
         
-        
-        
-        # orders = MdOrdr.objects.annotate(
-        #     order_status=Case(
-        #         When(ordr_com_ts__isnull=True, then=Value('접수완료')),
-        #         default=Value('처리완료'),
-        #         output_field=CharField()
-        #     )
-        # )
-        # orders = orders.order_by('order_status', 'ordr_com_ts')
-        
         template = loader.get_template("md_order/orderlist.html")
         context = {
+            "count"     : count,
             "ordr_l"    : ordr_l,
             "stor_id"   : stor_id,
             "memid"     : memid,
@@ -441,18 +437,26 @@ class OrdrListView(View):
         }
         
         return HttpResponse(template.render(context, request))
-
-
-class OrdrDoneView (View):
+    
     def post(self, request):
-        pass
-        # ordr_id = request.POST.get('ordr_id')
-        # stor_id = request.POST['stor_id']
-        # try:
-        #     ordr = MdOrdr.objects.get(pk=ordr_id)
-        #     if ordr.ordr_com_ts is None:
-        #         ordr.ordr_com_ts = timezone.now()
-        #         ordr.save()
-        # except MdOrdr.DoesNotExist:
-        #     pass
-        # return redirect(reverse("md_order:orderlist") + f'?stor_id={stor_id}')
+        
+        ordr_id_temp = request.POST.get("ordr_id","")
+        ordr_id = ordr_id_temp.split('_')[-1]
+        logger.debug(f'ordr_id : {ordr_id} ')
+        
+        ordr = MdOrdr.objects.get(ordr_id = ordr_id )
+        logger.debug(f'ordr : {ordr.user_id} ')
+        
+        comTime = timezone.now()
+        
+        ordr.ordr_com_ts = comTime
+        ordr.save()
+        
+        context = {
+            "comTime" : comTime.strftime("%Y년 %m월 %d일 %H:%M:%S"),
+            "ordr_id" : ordr_id,
+            }
+        logger.debug(f'context : {context} ')
+        
+        return HttpResponse(json.dumps(context), content_type="application/json")
+    

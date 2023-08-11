@@ -1,9 +1,6 @@
-<html>
-<head>
-    <title>주문 목록</title>
-</head>
-{% extends "md_member/base.html"%}
-{%block content%}
+{% extends "md_member/base.html" %}
+{% block content %}
+{% csrf_token %}
 <body>
     <h1>주문 목록</h1>
        <table border = "1">
@@ -16,37 +13,44 @@
             <th>주문 일시</th>
             <th>완료 일시</th> 
         </tr>
-        {% for k, v in ordr_l.items %}
+        {% if count == 0 %}
         	<tr>
-        		<td align="center">
-        			{{ k }} 	
+        		<td colspan="7" align="center">
+        			<pre>현재 주문된 내역이 없습니다</pre>
         		</td>
-        		<td align="center">
-        			{{ v.user_name }} 	
-        		</td>
-        		<td align="center">
-        			{% for name in v.menu_name %}
-        				{{ name }} 	<br>
-        			{% endfor %}
-        		</td>
-        		<td align="center">
-        			{% for num in v.ordr_num %}
-        				{{ num }} 	<br>
-        			{% endfor %} 	
-        		</td>
-        		<td>
-        			{% if v.com_ts == None %}
-	            	    <input type="button" name="ordr_suc" id="ordr_id_{{k}}" value="주문확인{{k}}" >
-	            	{% endif %}
-	            </td>
-        		<td align="center">
-        			{{ v.ordr_ts }} 	
-        		</td>
-        		<td align="center">
-        		</td>
-          </tr>
-        {% endfor %}
-    </table>
+        	</tr>
+        {% else %}
+	        {% for k, v in ordr_l.items %}
+	        	<tr>
+	        		<td align="center">
+	        			{{ k }} 	
+	        		</td>
+	        		<td align="center">
+	        			{{ v.user_name }} 	
+	        		</td>
+	        		<td align="center">
+	        			{% for name in v.menu_name %}
+	        				{{ name }} 	<br>
+	        			{% endfor %}
+	        		</td>
+	        		<td align="center">
+	        			{% for num in v.ordr_num %}
+	        				{{ num }} 	<br>
+	        			{% endfor %} 	
+	        		</td>
+	        		<td>
+	        			{% if v.com_ts == None %}
+		            	    <input type="button" name="ordr_suc" id="sordr_id_{{k}}" value="주문확인{{k}}" >
+		            	{% endif %}
+		            </td>
+	        		<td align="center">
+	        			{{ v.ordr_ts }} 	
+	        		</td>
+	        		<td align="center" id="td_id_{{k}}">
+	        		</td>
+	        	</tr>
+	        {% endfor %}
+		{% endif %}
+	</table>
 </body>
 {%endblock%}
-</html>
