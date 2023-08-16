@@ -3,77 +3,108 @@
 <html>
 
 <head>
-	<meta charset = "utf-8">
-	<title>Maddi</title>
-	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
-	<script type="text/javascript" src = "{%static 'js/jquery-3.6.4.js'%}"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
-	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script type="text/javascript" src = "{%static 'js/script_main.js'%}"></script>
+  <meta charset="utf-8">
+  <title>Maddi</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
+  <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 </head>
-	
+
 <body>
-	{% block header %}
-	<div style="text-align: right;">
-		{% if memid %}
-		<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-		<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
-			{% if gid == 6 %}
-			<a href="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
-			{% endif %}
-		<input type="button" value="logout" onclick="location='/md_member/logout'">
-		{% else %}
-		<input type="button" value="login" onclick="location='/md_member/login'">
-		{% endif %}
-	</div>
-	{% endblock %}
+  <div class="container">
+    <div class="col-md-12 mt-5">
+      {% block header %}
+      <div class="row">
+        <div class="col-3" style="text-align: right;">Maddi</div>
+        <div class="col-5" style="text-align:center;">
+          <form method="post" id="search">
+            <input type="hidden" name="bjd_name" value="" />
+            <input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off"
+              placeholder="검색할 메뉴를 입력해주세요" />
+            <input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
+          </form>
+          <div class="rel-srch-words"></div>
+        </div><!-- search -->
+        <div class="col-md-auto">
+          {% if memid %}
+          <a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+          <a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+          {% if gid == 6 %}
+          <a href="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
+          {% endif %}
+          <input type="button" value="logout" onclick="location='/md_member/logout'">
+          {% else %}
+          <input type="button" value="로그인" onclick="location='/md_member/login'">
+          <input type="button" value="회원가입" onclick="location='/md_member/input'">
+          {% endif %}
+        </div><!-- 로그인 -->
+      {% endblock %}
+      </div><!-- 여백 -->
+    </div><!-- row -->
+  </div><!-- container -->
 
+  <div class="container">
+  	<div class="col-md-12 mt-5"></div>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-4" style="text-align:center;">
+        {% block map %}
+        <input type="button" name="differlocate" value="다른위치설정"><br>
+        <div class="main_area_map">
+          <div id="kakaomap" class="kakaomap"></div>
+          <span id="centerAddr" style="display: block;"></span>
+        </div>
+        {% endblock %}
+      </div><!-- map -->
+      <div class="col-8" style="text-align:center;">
+        <div class="title" style="text-align:center;"><h5> Maddi의 추천</h5></div>
+        <div>
+          {% block drnkrecommend %}
+          {% endblock %}
+        </div>
+        <div>
+          {% block dsrtrecommend %}
+          {% endblock %}
+        </div>
+      </div>
+    </div><!-- row -->
+  </div><!-- container -->
 
-	{% block title %}
-	<div>
-		<div class="main_title">Maddi</div>
-	</div>
-	{% endblock %}
+  <div class="container">
+  	<div class="col-md-12 mt-5"></div>
+  </div>
+  
+  <div class="container">
+    <div class="col">
+      <div class="list-title" style="text-align:center;"><h5>추천 조합</h5></div>
+      <div>
+        {% block combirecommend %}
+        {% endblock %}
+      </div>
+    </div>
+  </div><!-- container -->
 
-	{% block search %}
-	<div class="main_area_search">
-		<form method="post" id="search">
-			<input type="hidden" name="bjd_name" value=""/>
-			<input type="text" name="search_word" class="search_input"
-				maxlength="60" autocomplete="off"
-				placeholder="검색할 메뉴를 입력하세요"/>
-			<input type="button" name="main_btn_search" value="검색" onclick="performSearch()"/>
-		</form>
-		<div class="rel-srch-words"></div>
-	</div>
-	{% endblock %}
+  <div class="container">
+  	<div class="col-md-12 mt-5"></div>
+  </div>
+  
+  <div class="container">
+    {% block content_lower %}
+    <div class="main_search_result"></div>
+    {% endblock %}
+  </div><!-- container -->
 
-	{% block content_upper %}
-	<div class="content_upper">
-		<div class="main_area_recommend_left">
-		{% block recommend %}
-		{% endblock %}
-		</div>
-		<div class="main_area_recommend_right">
-		{% block map %}
-			<input type = "button" name = "differlocate" value = "다른위치설정"><br>
-			<div class="main_area_map">
-				<div id="kakaomap" class="kakaomap"></div>
-				<span id="centerAddr" style="display: block;"></span>
-			</div>	
-		{% endblock %}
-		</div>
-	</div>
-	{% endblock %}
-
-	{% block content_lower %}
-	{% endblock %}
-
-	{% block footer %}
-	<footer class="footer">
-		<hr>
-		<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
-	</footer>
-	{% endblock %}
+  {% block footer %}
+  <footer class="footer">
+    <hr>
+    <p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+  </footer>
+  {% endblock %}
 </body>
+
 </html>
