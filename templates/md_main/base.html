@@ -1,144 +1,151 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Maddi</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
-    <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
+	<meta charset="utf-8">
+	<title>Maddi</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
+	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 </head>
 <body>
 <div class="container">
-    <div class="col-md-12 mt-5">
-        {% block header %}
-        <div class="row">
-            <div class="col-3" style="text-align: right;">Maddi</div>
-            <div class="col-5" style="text-align:center;">
-                <form method="post" id="search">
-                    <input type="hidden" name="bjd_name" value="" />
-                    <input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
-                    <input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
-                </form>
-                <div class="rel-srch-words"></div>
-            </div><!-- search -->
-            <div class="col-md-auto">
-                {% if memid %}
-                <a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-                <a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
-                <a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp;
-                {% if gid == 6 %}
-                <a href="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
-                {% endif %}
-                <a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
-                {% else %}
-                <input type="button" value="로그인" onclick="location='/md_member/login'">
-                <input type="button" value="회원가입" onclick="location='/md_member/input'">
-                {% endif %}
-            </div><!-- 로그인 -->
-        {% endblock %}
-        </div><!-- 여백 -->
-    </div><!-- row -->
-</div><!-- container -->
+	<div class="col-md-12 mt-5">
+		{% block header %}
+		<div class="row">
+			<div class="col-3" style="text-align: right;">Maddi</div>
+				<div class="col-5" style="text-align:center;">
+					<form method="post" id="search">
+						<input type="hidden" name="bjd_name" value="" />
+						<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
+						<input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
+					</form>
+				<div class="rel-srch-words"></div>
+			</div><!-- search -->
+			<div class="col-md-auto">
+				{% if memid %}
+				<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+				<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
+				<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp;
+				{% if gid == 6 %}
+				<a href="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
+				{% endif %}
+				<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+				{% else %}
+				<input type="button" value="로그인" onclick="location='/md_member/login'">
+				<input type="button" value="회원가입" onclick="location='/md_member/input'">
+				{% endif %}
+			</div><!-- 로그인 -->
+		{% endblock %}
+		</div><!-- row -->
+	</div><!-- 여백 -->
+</div><!-- contatiner -->
 
+<!-- 여백 -->
 <div class="container">
-    <div class="col-md-12 mt-5"></div>
+	<div class="col-md-12 mt-5"></div>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-4" style="text-align:center;">
-            {% block map %}
-            <input type="button" name="differlocate" value="다른위치설정" style="width: 100%;"><br>
-            <div class="main_area_map" style="float: right;">
-                <div id="kakaomap" class="kakaomap"></div>
-                <span id="centerAddr" style="display: block;"></span>
-            </div>
-            {% endblock %}
-        </div><!-- map -->
-        {% if memid %}
-        <div class="col-8" style="text-align:center;">
-            <div> 
-                {% block userrecommend %} 
-                {% endblock %}
-            </div>
-        </div>
-        <div class="container">
-            <div class="col-md-12 mt-5"></div>
-        </div>
-        
-        <div class="container">
-            <div class="col">
-                <div class="container">
-                    {% block content_lower %}
-                    <div class="main_search_result" style="text-align:center;"></div>
-                    {% endblock %}
-                </div><!-- container -->
-                
-                <div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
-                <div>
-                    {% block drnkrecommend %}
-                    {% endblock %}
-                </div>
-                <div>
-                    {% block dsrtrecommend %}
-                    {% endblock %}
-                </div>
-                <div>
-                    {% block combirecommend %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div><!-- container -->
-
-        {% else %}
-        <div class="col-8">
-            <div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
-            <div>
-                {% block dkrecommend %}
-                {% endblock %}
-            </div>
-            <div>
-                {% block dtrecommend %}
-                {% endblock %}
-            </div>
-        </div>
-        <div class="container">
-            <div class="col-md-12 mt-5"></div>
-        </div>
-        <div class="container">
-            <div class="col">
-                <div>
-                    {% block cbrecommend %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="col">
-                <div class="container">
-                    {% block cont_lower %}
-                    <div class="main_search_result" style="text-align:center;"></div>
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </div><!-- row -->
+	<div class="row">
+		<div class="col-4" style="text-align:center;">
+			{% block map %}
+			<input type="button" name="differlocate" value="다른위치설정" style="width: 100%;"><br>
+			<div class="main_area_map" style="float: right;">
+			<div id="kakaomap" class="kakaomap"></div>
+			<span id="centerAddr" style="display: block;"></span>
+			</div>
+			{% endblock %}
+		</div><!-- map -->
+		{% if memid %}
+			<div class="col-8" style="text-align:center;">
+				<div> 
+					{% block userrecommend %} 
+					{% endblock %}
+				</div>
+			</div>
+			
+			<div class="container">
+				<div class="col-md-12 mt-5"></div>
+			</div>
+			        
+			<div class="container">
+				<div class="col">
+					<div class="container">
+						{% block content_lower %}
+						<div class="main_search_result" style="text-align:center;"></div>
+						{% endblock %}
+					</div>
+		                
+			<div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
+					<div>
+						{% block drnkrecommend %}
+						{% endblock %}
+					</div>
+					<div>
+						{% block dsrtrecommend %}
+						{% endblock %}
+					</div>
+					<div>
+						{% block combirecommend %}
+						{% endblock %}
+					</div>
+				</div>
+			</div><!-- container -->
+			
+		{% else %}
+			<div class="col-8">
+				<div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
+				<div>
+					{% block dkrecommend %}
+					{% endblock %}
+				</div>
+				<div>
+					{% block dtrecommend %}
+					{% endblock %}
+				</div>
+			</div>
+			
+			<div class="container">
+				<div class="col-md-12 mt-5"></div>
+			</div>
+			
+			<div class="container">
+				<div class="col">
+					<div>
+						{% block cbrecommend %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+			
+			<div class="container">
+				<div class="col">
+					<div class="container">
+						{% block cont_lower %}
+						<div class="main_search_result" style="text-align:center;"></div>
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div><!-- row -->
 </div><!-- container -->
 
 <div class="container">
-    <div class="col-md-12 mt-5"></div>
+	<div class="col-md-12 mt-5"></div>
 </div>
 
 {% block footer %}
 <footer class="footer">
-    <hr>
-    <p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+	<hr>
+	<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
 </footer>
 {% endblock %}
+
 </body>
 </html>
