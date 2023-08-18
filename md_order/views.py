@@ -20,7 +20,6 @@ logger = logging.getLogger( __name__ )
 class OrderInfoView(View):
     def get(self, request):
         user_id   = request.session.get('memid')
-        memid     = request.session.get('memid')
         gid       = request.session.get("gid")
         stor_id   = request.GET.get('stor_id')
         stor_m_id = request.GET.get('stor_m_id')
@@ -32,12 +31,12 @@ class OrderInfoView(View):
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
+            
             if algyn.algy_t_name is not None:
                 algy_n = algyn.algy_t_name
         else:
             algy_n = "없음"
 
-        
         if storem.menu_t_id == 0:
             menu_type = "일반"
         else:
@@ -46,7 +45,6 @@ class OrderInfoView(View):
         buckprice = bucknum * storem.stor_m_pric
 
         context = {
-            "memid"       : memid,
             'dto'         : storem,
             'stor_m_pric' : storem.stor_m_pric,
             'stor_m_name' : storem.stor_m_name,
@@ -68,9 +66,9 @@ class OrderInfoView(View):
 
     def post(self, request):
         stor_m_id = request.POST["stor_m_id"]
-        storem = MdStorM.objects.get(stor_m_id=stor_m_id)
-        algy = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
-        user_id = request.session.get('memid')
+        storem    = MdStorM.objects.get(stor_m_id=stor_m_id)
+        algy      = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
+        user_id   = request.session.get('memid')
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
@@ -90,25 +88,25 @@ class OrderInfoView(View):
             bucknum = 1
 
         buckprice = bucknum * storem.stor_m_pric
-        
-        
+
         context = {
-            'dto': storem,
+            'dto'        : storem,
             'stor_m_pric': storem.stor_m_pric,
-            'stor_id': storem.stor_id,
+            'stor_id'    : storem.stor_id,
             'stor_m_name': storem.stor_m_name,
-            'stor_m_cal': storem.stor_m_cal,
+            'stor_m_cal' : storem.stor_m_cal,
             'stor_m_info': storem.stor_m_info,
-            'stor_m_img': storem.stor_m_img,
-            'menu_type': menu_type,
-            'bucknum': bucknum,
-            'buckprice': buckprice,
-            'stor_m_id' : stor_m_id,
-            'algy_n' : algy_n,
-            'user_id' :user_id 
+            'stor_m_img' : storem.stor_m_img,
+            'menu_type'  : menu_type,
+            'bucknum'    : bucknum,
+            'buckprice'  : buckprice,
+            'stor_m_id'  : stor_m_id,
+            'algy_n'     : algy_n,
+            'user_id'    : user_id 
         }
 
         return render(request, 'md_order/orderinfo.html', context)
+
 
 class CartView(View):
     @method_decorator(csrf_exempt)
@@ -151,7 +149,8 @@ class CartView(View):
 
         # orderinfo 페이지로 리디렉션
         return redirect(reverse('md_store:storeuser') + f'?stor_id={stor_id}')
-    
+
+
 class OrderView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -174,6 +173,7 @@ class OrderView(View):
         storem = MdStorM.objects.get(stor_m_id=stor_m_id)
         
         return redirect("md_order:buck")
+
 
 class BuckView(View):
     def get(self, request):

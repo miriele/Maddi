@@ -45,6 +45,18 @@ class MdBjd(models.Model):
         db_table_comment = '법정동코드'
 
 
+class MdClick(models.Model):
+    click_id = models.AutoField(primary_key=True, db_comment='클릭ID')
+    stor_m = models.ForeignKey('MdStorM', models.DO_NOTHING, db_comment='매장메뉴ID')
+    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, blank=True, null=True, db_comment='회원ID')
+    click_ts = models.DateTimeField(db_comment='클릭시각')
+
+    class Meta:
+        managed = False
+        db_table = 'md_click'
+        db_table_comment = '클릭통계'
+
+
 class MdDrnkT(models.Model):
     drnk_t_id = models.SmallIntegerField(primary_key=True, db_comment='음료분류ID')
     drnk_t_name = models.CharField(max_length=30, db_comment='음료분류명')
@@ -122,6 +134,17 @@ class MdMenuT(models.Model):
         managed = False
         db_table = 'md_menu_t'
         db_table_comment = '메뉴타입 : 1 : 일반\r\n2 : 시그니처'
+
+
+class MdRecommend(models.Model):
+    reco_id = models.AutoField(primary_key=True, db_comment='추천메뉴ID')
+    user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
+    stor_m = models.ForeignKey('MdStorM', models.DO_NOTHING, db_comment='매장메뉴ID')
+
+    class Meta:
+        managed = False
+        db_table = 'md_recommend'
+        db_table_comment = '추천메뉴'
 
 
 class MdStor(models.Model):
