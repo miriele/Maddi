@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from md_store.models import MdStorM, MdMAlgy, MdAlgyT, MdStor, MdBh
+from md_store.models import MdStorM, MdMAlgy, MdAlgyT, MdStor, MdBh, MdClick
 from md_order.models import MdBuck, MdOrdrM, MdOrdr
 import logging
 import requests
@@ -28,6 +28,13 @@ class OrderInfoView(View):
         algy      = MdMAlgy.objects.filter(menu_id=storem.menu_id).first()
         stor      = MdStor.objects.get(stor_id = stor_id)
         jumju     = stor.user_id
+        
+        # click 통계 : insert
+        MdClick.objects.create(
+            stor_m_id = stor_m_id,
+            user_id   = user_id,
+            click_ts  = timezone.now()
+            )
         
         if algy is not None:
             algyn = MdAlgyT.objects.get(algy_t_id=algy.algy_t_id)
