@@ -1,50 +1,59 @@
 {% extends "md_admin/base.html" %}
-<body>
 {% block content %}
-<h2>회원관리</h2>
-	<form method="POST" action="{% url 'md_admin:search' %}">
-    {%csrf_token%}   
-      	<input type="search" placeholder="회원아이디 입력" name="searched">
-        <button type="submit"> 검색 </button>
-   </form>	
-        <table border = "1">
-			<tr>
-				<th style="width:7%"> 아이디 </th>
-				<th style="width:7%"> 이름 </th>
-				<th style="width:7%"> 회원등급 </th>
-				<th style="width:7%"> 회원가입일 </th>
-			</tr>
-		<tbody id = "tbody">
-		{% if searched and sucount != 0 %}
-		<h3>조회결과: {{sucount}}</h3>
-		{% for info in search_user %}
-           	<tr>
-           		<td align = "center">
-           			<a href = "userinfo?id={{info.user_id}}">
-           				{{ info.user_id }}
-           			</a>
-           		</td>
-	           	<td align = "center">
-					{{ info.user_name }}
-				</td>
-	           	<td align = "center">
-					{{ info.user_g.user_g_name }}
-				</td>
-				<td align = "center">
-					{{info.user_reg_ts|date:"Y-m-d H:i"}}
-				</td>														
-           	</tr>
-            {% endfor %}
-            {%elif searched and sucount == 0 %}
-            		<td colspan = "4" align = "center">
-            			조회된아이디가 없습니다.
-            		</td>            
-            {%else%}
-            	<tr>
-            		<td colspan = "4" align = "center">
-            			아이디를 입력하세요.
-            		</td>
-            	</tr>
-            {% endif %}
-        </tbody>
+<body>
+	<div>
+		<h2>회원관리</h2>
+		<div class="row justify-content-between">
+			<div class="col-3" style="text-align:left;"> <h5>조회결과 :{{sucount}}</h></div>
+			 <div class="col-5 d-flex">
+			        <form class="d-flex" method="POST" action="{% url 'md_admin:search' %}">
+			        {%csrf_token%}   
+			            <input type="search" placeholder="회원아이디 입력" name="searched">
+			            <button type="submit"> 검색 </button>
+			        </form>	
+			</div>
+		</div>
+	</div>
+	<div>
+		<table border = "1">
+				<tr>
+					<th style="width:7%"> 아이디 </th>
+					<th style="width:7%"> 이름 </th>
+					<th style="width:7%"> 회원등급 </th>
+					<th style="width:7%"> 회원가입일 </th>
+				</tr>
+			<tbody id = "tbody">
+			{% if searched and sucount != 0 %}
+			{% for info in search_user %}
+				<tr>
+	           		<td align = "center">
+	           			<a href = "userinfo?id={{info.user_id}}">
+	           				{{ info.user_id }}
+	           			</a>
+	           		</td>
+		           	<td align = "center">
+						{{ info.user_name }}
+					</td>
+		           	<td align = "center">
+						{{ info.user_g.user_g_name }}
+					</td>
+					<td align = "center">
+						{{info.user_reg_ts|date:"Y-m-d H:i"}}
+					</td>														
+				</tr>
+				{% endfor %}
+				{%elif searched and sucount == 0 %}
+	            		<td colspan = "4" align = "center">
+	            			조회된아이디가 없습니다.
+	            		</td>            
+				{%else%}
+	            	<tr>
+	            		<td colspan = "4" align = "center">
+	            			아이디를 입력하세요.
+	            		</td>
+	            	</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
 {% endblock %}

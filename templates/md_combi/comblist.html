@@ -1,86 +1,112 @@
-{% extends "md_member/base.html" %}
+{% extends "md_main/base2.html" %}
 {% load mathfilters %}
 {% load static %}
+<head>
+	<link rel="stylesheet" href="{% static 'style_combi.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">	
+</head>
 
+<body>
 {% block content %}
-<h2> 추천 조합 ( 전체글 :{{count}} ) </h2> 
-<table border="1">
-	<tr>
-		{% if memid %}
-			<td colspan="7" align="right">	
-				<input class="inputbutton" type="button" value="글 작성" onclick="location='/md_combi/combwrite'">
-			</td>
-		{% else %}
-			<td colspan="7" align="center">
-				<p>[글 작성은 로그인 후에 이용하실수 있습니다]</p>
-			</td>
-		{% endif %}
-	</tr>
-	<tr>
-		<th width="7%" > 번호 </th>
-		<th width="35%"> 제목 </th>
-		<th width="25%"> 조합메뉴 </th>
-		<th width="7%"> 인원 </th>
-		<th width="10%"> 작성자 </th>
-		<th width="10%"> 작성일 </th>
-		<th width="6%"> 추천수 </th>
-	</tr>
-	{% if count == 0 %}		<!-- 글이 없음 -->
-		<tr>
-			<td colspan="7" align="center" >
-				작성된 글이 없습니다.
-		</tr>
-	{% else %}
-		{% for c in md_comb %}
-			<tr>
-				<td align="center">
-					{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
-				</td>
-				<td>
-					<a href="combd?comb_id={{ c.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
-						{{ c.comb_tit }}					<!-- 제목 -->
-					</a>
-				</td>
-				<td	align="center">							<!-- 조합메뉴 -->
-					{% for mn in menu_name %}
-						{% if mn.comb_id == c.comb_id %} 
-							/{{ mn.menu.menu_name }}
-						{% endif %}
-					{% endfor %}						
-				</td>
-				<td>
-					{{ c.comb_nop }}						<!-- 인원 -->
-				</td>
-				<td><!-- 닉네임 -->
-					{{ c.user.user_nick }}
-				</td>
-				<td>
-					{{ c.comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
-				</td>
-				<td>
-					{% for cid, cnt in comb_like %}
-						{% if c.comb_id == cid %}
-							{{cnt}}
-						{% endif %}
-					{% endfor %}
-				</td>
-			</tr>
-		{% endfor %}
-	{% endif %}
-</table>
-<br><br>
-{% if startpage > pageblock %}
-	<a href="comblist?pagenum={{ startpage|sub:pageblock }}">[◀]</a>
-{% endif %}
-{% for i in pages %}
-	{% if i == pagenum %}
-		<span>{{ i }}</span>
-	{% else %}
-		<a href="comblist?pagenum={{ i }}" >{{ i }}</a>
-	{% endif %}
-{% endfor %}
-{% if pagecount > endpage %}
-	<a href="comblist?pagenum={{ startpage|add:pageblock }}">[▶]</a>
-{% endif %}
 
+	<div style="text-align: center;">
+					{% if memid %}
+						<div class = "container">
+							<div class="col-md-12 mt-5"></div>
+							<div class="row">
+								<div class="col-4" style="text-align: left;">
+										<h5> {{count}}개의 글 </h5> 
+								</div>
+								<div class="col-8" style="text-align: right;" >
+										<input class="inputbutton" type="button" value="글 작성" onclick="location='/md_combi/combwrite'">
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<div class = "container">
+							<div class="col-md-12 mt-5"></div>
+							<div class="row">
+								<div class="col-4" style="text-align: left;">
+										<h5> {{count}}개의 글 </h5> 
+								</div>
+								<div class="col-8" style="text-align: right;">
+										<h5 style="text-align: right;"> [글 작성은 로그인 후에 이용하실수 있습니다]</h5>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				<div class = "container">
+					<div class="row">
+						<div class="col-2"> 번호 </div>
+						<div class="col-2"> 제목 </div>
+						<div class="col-2"> 인원 </div>
+						<div class="col-2"> 작성자 </div>
+						<div class="col-2"> 작성일 </div>
+						<div class="col-2"> 추천수 </div>
+					</div>
+				</div>
+				{% if count == 0 %}		<!-- 글이 없음 -->
+					<tr>
+						<td colspan="7" align="center" >
+							작성된 글이 없습니다.
+					</tr>
+				{% else %}
+					{% for c in md_comb %}
+					<div class = "container">
+						<div class="row">
+							<div class="col-2">
+								{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
+							</div>
+							<div class="col-2">
+								<a href="combd?comb_id={{ c.comb_id }}&pagenum={{ pagenum }}&number={{ number|sub:forloop.counter0 }}" style="color: darkblue">
+									{{ c.comb_tit }}					<!-- 제목 -->
+								</a>
+							</div>
+							<!-- 
+							<td	align="center">							<!-- 조합메뉴 
+								{% for mn in menu_name %}
+									{% if mn.comb_id == c.comb_id %} 
+										/{{ mn.menu.menu_name }}
+									{% endif %}
+								{% endfor %}						
+							</td>
+							-->
+							<div class="col-2">
+								{{ c.comb_nop }}						<!-- 인원 -->
+							</div>
+							<div class="col-2"><!-- 닉네임 -->
+								{{ c.user.user_nick }}
+							</div>
+							<div class="col-2">
+								{{ c.comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
+							</div>
+							<div class="col-2">
+								{% for cid, cnt in comb_like %}
+									{% if c.comb_id == cid %}
+										{{cnt}}
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+	</div>
+	<div style="text-align: center;">
+		<br><br>
+		{% if startpage > pageblock %}
+			<a href="comblist?pagenum={{ startpage|sub:pageblock }}">[◀]</a>
+		{% endif %}
+		{% for i in pages %}
+			{% if i == pagenum %}
+				<span>{{ i }}</span>
+			{% else %}
+				<a href="comblist?pagenum={{ i }}" >{{ i }}</a>
+			{% endif %}
+		{% endfor %}
+		{% if pagecount > endpage %}
+			<a href="comblist?pagenum={{ startpage|add:pageblock }}">[▶]</a>
+		{% endif %}
+	</div>
+</body>
 {% endblock %}	

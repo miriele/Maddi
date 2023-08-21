@@ -1,10 +1,13 @@
 {%load static%}
+
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_admin.css'%}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
 	<script src = "{%static 'js/script_admin.js'%}"></script>
 	<script src = "{%static 'js/script_gastatis.js'%}"></script>
@@ -18,55 +21,67 @@
 	<script src = "{%static 'js/script_keystatis.js'%}"></script>
 	<script src = "{%static 'js/script_ordr.js'%}"></script>
 	
-	<title>통계</title>
+	<title>관리자 페이지</title>
 </head>
 
 <body>
-	{%block topbar%}
-		<div class="title" style="text-align: right;"><input type="button" value="메인" onclick="location='/md_main/main'"></div>
-		<h4>사이트관리</h4>
-			<ul>
-				<li>
-					<a href="/md_admin/userlist">회원관리</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/reviewlist">리뷰관리</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/sregistlist">점주등록신청관리</a> &nbsp;&nbsp;&nbsp;
-				</li>
-			</ul>
-		<br>
-		<h4>회원통계</h4>
-			<ul>
-				<li>
-					<a href="/md_admin/genstatis">성별통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/agestatis">연령통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/interestatis">관심사통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/tastestatis">입맛통계</a> &nbsp;&nbsp;&nbsp;	
-					<a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/drnkstatis">회원정보기반 음료통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/bdrnkstatis">구매기반 음료통계</a> &nbsp;&nbsp;&nbsp;
-					<a href="/md_admin/iaostatis">회원유입&이탈 통계</a> &nbsp;&nbsp;&nbsp;
-				</li>
-			</ul>
-		<br>
-		<h4>사이트통계</h4>
-			<ul>
-				<li>
-					<a href="/md_admin/storestatis">매장통계</a> &nbsp;&nbsp;&nbsp;
-					<a href ="/md_admin/keystatis">검색통계</a> &nbsp;&nbsp;&nbsp;
-				</li>
-			</ul>
-		<br>
-		<h4>TEST</h4>
-			<ul>
-				<li>
-					<a href="/md_admin/order">주문확인</a> &nbsp;&nbsp;&nbsp;
-				</li>
-			</ul>
-		<br>
-	{%endblock%}
-	
+	<div class="container">
+		<div class="col-md-12 mt-5"></div>
+		<div class="col" style="text-align: center;">
+			<a href="/md_main/main">Maddi</a> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/md_member/userinfo">마이페이지</a>
+		</div>	
+	</div><!-- container -->
+	<div class="container">
+			<div class="row">
+				<div class="col-3">
+					<div class="col-md-12 mt-5"></div>
+					
+					<ul>
+						<h4>관리자 통계 페이지</h4>
+						<div class="col-md-12 mt-5"></div>
+		
+						<h4>사이트관리</h4>
+							<li><a href="/md_admin/userlist">회원관리</a></li><br>
+							<li><a href="/md_admin/reviewlist">리뷰관리</a></li><br>
+							<li><a href="/md_admin/sregistlist">점주신청관리</a></li><br>
+						<br>
+						<br>
+						<h4>회원통계</h4>
+							<li><a href="/md_admin/genstatis">성별통계</a></li><br>
+							<li><a href="/md_admin/agestatis">연령통계</a></li><br>
+							<li><a href="/md_admin/interestatis">관심사통계</a></li><br>
+							<li><a href="/md_admin/tastestatis">입맛통계</a></li><br>
+							<li><a href="/md_admin/dsrtstatis">회원정보기반 디저트취향통계</a></li><br>
+							<li><a href="/md_admin/drnkstatis">회원정보기반 음료통계</a></li><br>
+							<li><a href="/md_admin/bdsrtstatis">구매기반 디저트통계</a></li><br>
+							<li><a href="/md_admin/bdrnkstatis">구매기반 음료통계</a></li><br>
+							<li><a href="/md_admin/iaostatis">회원유입&이탈 통계</a></li><br>
+						<br>
+						<br>
+						<h4>사이트통계</h4>
+							<li><a href="/md_admin/storestatis">매장통계</a></li><br>
+							<li><a href ="/md_admin/keystatis">검색통계</a></li><br>
+					</ul>
+				</div>
+				
+				<div class="col-9">
+				
+				<div class="container">
+					<div class="col-md-12 mt-5"></div>
+				</div>
 	{%block content%}
 	
 	{%endblock%}
+				</div>
+			</div>
+		</div>
+		
+	{% block footer %}
+		<footer class="footer">
+			<hr>
+			<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+		</footer>
+	{% endblock %}
 </body>
 </html>
