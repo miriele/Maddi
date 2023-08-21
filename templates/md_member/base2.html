@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title>Welcome Maddi</title>
+		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_member.css'%}">
+		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
+		<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
+		<script src = "{%static 'js/script_member.js'%}"></script>
+		<script src = "{%static 'js/script_comb.js'%}"></script>
+		<script src = "{%static 'js/script_favorite.js'%}"></script>
+		<script src="{% static 'js/script_store.js' %}"></script>
+		<script src="{% static 'js/script_order.js' %}"></script>
+	</head>
+	<body>
+		{% block header %}
+		<div class="header">
+			{% block title %}
+				<div>
+					<div class="title" style="text-align: center;">
+						<input type="button" value="Maddi" onclick="location='/md_main/main'">
+					</div>
+				</div>
+			{% endblock %}
+		</div>
+		{% endblock %}
+
+		{% block content %}		
+		{% endblock %}
+
+		{% block footer%}<!-- footer -->
+			<footer class = "footer">
+				<hr>
+  				<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+			</footer>
+		{% endblock %}
+	</body>
+</html>
