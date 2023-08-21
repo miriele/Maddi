@@ -16,17 +16,8 @@
 		<div class="col-md-12 mt-5">
 			<div class="row">
 			{% block header %}
-				<div class="col-3" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
-				<div class="col-5" style="text-align:center;">
-					<form method="post" id="search">
-						<input type="hidden" name="bjd_name" value="" />
-						<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
-						<input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
-					</form>
-					<div class="rel-srch-words"></div>
-				</div><!-- search -->
-				
-				<div class="col-md-auto">
+				<div class="col-6" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
+				<div class="col-6" style="text-align: right;">
 					{% if memid %}
 					<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
 					<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
