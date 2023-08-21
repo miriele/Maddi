@@ -41,8 +41,8 @@
 						<div class="col-2"> 제목 </div>
 						<div class="col-2"> 인원 </div>
 						<div class="col-2"> 작성자 </div>
-						<div class="col-2"> 작성일 </div>
 						<div class="col-2"> 추천수 </div>
+						<div class="col-2"> 작성일 </div>
 					</div>
 				</div>
 				{% if count == 0 %}		<!-- 글이 없음 -->
@@ -78,14 +78,14 @@
 								{{ c.user.user_nick }}
 							</div>
 							<div class="col-2">
-								{{ c.comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
-							</div>
-							<div class="col-2">
 								{% for cid, cnt in comb_like %}
 									{% if c.comb_id == cid %}
 										{{cnt}}
 									{% endif %}
 								{% endfor %}
+							</div>
+							<div class="col-2">
+								{{ c.comb_reg_ts |date:"y-m-d H:i" }}	<!-- 작성일 -->
 							</div>
 						</div>
 					</div>

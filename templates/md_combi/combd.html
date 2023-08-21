@@ -2,121 +2,131 @@
 
 {% block content %}
 {% csrf_token %}
- <h2> 추천글 보기 </h2> 
-<form method="post" action="clike"name="clikeform">
-	<input type="hidden" name="comb_id" value="{{comb_id}}">
-	<input type="hidden" name="pagenum" value="{{pagenum}}">
-	<input type="hidden" name="number" value="{{number}}">
-	{% if memid %}
-		{% if result == 0 %}
-			<input type="button" name="clikebtn" value="좋아요">
-		{% else %}
-			<input type="button" name="clikebtn" value="좋아요 취소">
-		{% endif %}
-	{% else %}
-		<p>좋아요는 로그인 후 가능합니다</p>
-	{% endif %}
-</form>
-	<table border="1">
-		<tr>
-			<th> 글번호 </th>
-			<td> {{ number }} </td>
-		</tr>
-		<tr>
-			<th> 작성자 </th>
-			<td> 
-				{% for n in nick %}
-          			{{ n.user.user_id }}
-          		{% endfor %}
-			</td>
-		</tr>
-		<tr>
-			<th> 추천수</th>
-			<td>{{ likeC }}</td>
-		</tr>
-		<tr>
-			<th> 작성일 </th>
-			<td>{{ comb.comb_reg_ts }}</td>
-		</tr>
-		<tr>
-			<th colsapn="4">제목</th>
-			<td>{{comb.comb_tit }}</td>
-		</tr>
-		<tr>
-			<th> 조합한 메뉴</th>
-			<td> 
-				{% for m in menu %}
-					{{ m.menu.menu_name }}/
-				{% endfor %}
-			</td>
-		</tr>
-		<tr>
-			<th> 이미지 </th>
-			<td> 
-				<img src="/media/{{comb.comb_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';"  width="280" height="300" name="c_img" >
-			</td>
-		</tr>
-		<tr>
-			<th> 내용 </th>
-			<td> {{ comb.comb_cont }} </td>
-		</tr>
-		<tr>
-			<td>
-				<input class="inputbutton" type="button" value="목록으로 돌아가기"
-						onclick="location='/md_combi/comblist?comb_id={{comb_id }}&pagenum={{ pagenum }}'">
-			</td>
-		</tr>
-	</table>
-{% csrf_token %}	
-<form method="post" action="combd"name="combdform" >
-	<input type="hidden" name="comb_id" value="{{comb_id}}">
-	<input type="hidden" name="user_img" value="{{user.user_img}}">
-	<input type="hidden" name="user_nick" value="{{user.user_nick}}">
-	<table>
-	{% if memid %}
-		<tr>
-			<th colspan="3"> 댓글 <hr> </th>
-		</tr>
-		<tr>
-			<td>
-				<img src="/media/{{user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-				{{ user.user_nick }} 
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<textarea name="c_reply_cont" rows="10" cols="30"  placeholder="내용을 입력해 주세요" required></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="button" name="replybtn" value="댓글 작성">
-				<font id = "check" size="2"></font>
-				<hr>
-			</td>
-		</tr>
-	{% else %}
-		<tr>
-			<td>
-				댓글은 로그인후 작성이 가능합니다.
-			</td>
-		</tr>
-	{% endif %}
-	</table>
-	<div id="new_repl">
+<div class="col-md-12 mt-5"></div>
+
+
+<div class="col-md-12 mt-5"></div>
+
+<div class = "container">
+	<div class ="row">
+		<div class = "col-1" style="text-align: center;" >글번호</div>
+		<div class = "col-2" style="text-align: center;" >작성자</div>
+		<div class = "col-4" style="text-align: center;" >제목</div>
+		<div class = "col-4" style="text-align: center;" >조합 메뉴</div>
+		<div class = "col-1" style="text-align: center;" >추천수</div>
 	</div>
-	<table>
-		{% for re in reply %}
-		<tr>
-			<td>
-				<img src="/media/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
-				{{re.user.user_nick }} / {{ re.c_reply_ts }}
-			</td>
-		</tr>
-		<tr>
-			<td> {{re.c_reply_cont }} </td>
-		</tr>
-		{% endfor %}
-	</table>
-</form>
+	<div class ="row">
+		<div class = "col-1" style="text-align: center;" >{{ number }}</div>
+		<div class = "col-2" style="text-align: center;" >
+			{% for n in nick %}
+      			{{ n.user.user_id }}
+      		{% endfor %}
+        </div>
+		<div class = "col-4" style="text-align: center;" > {{comb.comb_tit }}</div>
+		<div class = "col-4" style="text-align: center;" >
+			{% for m in menu %}
+				{{ m.menu.menu_name }}/
+			{% endfor %}
+		</div>
+		<div class = "col-1" style="text-align: center;" >{{ likeC }}</div>
+	</div>
+</div>
+<br>
+<div class = "container">
+	<div class ="row">
+		<div class = "col-5" style="text-align: center;" > 이미지 </div> 
+		<div class = "col-7" style="text-align: center;" > 내용 </div> 
+	</div>
+	<div class ="row">
+		<div class = "col-5" style="text-align: center;" >
+			<img src="/media/{{comb.comb_img}}" onerror="this.onerror=null; this.src='/media/no_image.png';"  width="280" height="300" name="c_img" >
+		</div>
+		<div class = "col-7" style="text-align: center;" >
+			{{ comb.comb_cont }} 
+		</div>
+	</div>
+</div>
+<div class="col-md-12 mt-5"></div>
+<div class = "container">
+	<div class ="row">
+		<div class = "col" style="text-align : left;">
+			작성일 &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;{{ comb.comb_reg_ts }}
+		</div>
+	</div>
+</div>
+<div class="col-md-12 mt-5"></div>
+<div class="col-md-12 mt-5"></div>
+<div class="col-md-12 mt-5"></div>
+{% csrf_token %}	
+<div class = "container">
+	<form method="post" action="combd"name="combdform" >
+		<input type="hidden" name="comb_id" value="{{comb_id}}">
+		<input type="hidden" name="user_img" value="{{user.user_img}}">
+		<input type="hidden" name="user_nick" value="{{user.user_nick}}">
+	
+		{% if memid %}
+			<h5> 댓글 </h5>
+			<br>
+			<div class= "row">
+				<div class="col-1">
+					<img src="/media/{{user.user_img}}" width="95" height="95" name="img_r" border-radius="50%"> 
+				</div>
+				<div class="col-10" style="text-align: left;" > 
+					<div class="row">
+						<div class="col-1">
+							&nbsp;&nbsp;&nbsp{{ user.user_nick }}	
+						</div>
+						<div class="col-11" style="text-align: right;" > 
+							<form method="post" action="clike"name="clikeform">
+								<input type="hidden" name="comb_id" value="{{comb_id}}">
+								<input type="hidden" name="pagenum" value="{{pagenum}}">
+								<input type="hidden" name="number" value="{{number}}">
+								
+								{% if memid %}
+									{% if result == 0 %}
+										<input type="button" name="clikebtn" value="좋아요">
+									{% else %}
+										<input type="button" name="clikebtn" value="좋아요 취소">
+									{% endif %}
+								{% else %}
+									<p>좋아요는 로그인 후 가능합니다</p>
+								{% endif %}
+							</form>
+							<input type="button" name="replybtn" value="댓글 작성">
+							<font id = "check" size="2"></font>
+							<input class="inputbutton" type="button" value="목록으로 돌아가기"
+								onclick="location='/md_combi/comblist?comb_id={{comb_id }}&pagenum={{ pagenum }}'">
+						</div>
+						<div class="col-md-12 mt-2"></div>
+					</div>	
+					<div>
+						&nbsp;&nbsp;&nbsp;<textarea name="c_reply_cont" rows="2" cols="120"  placeholder="내용을 입력해 주세요" required></textarea>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<tr>
+				<td>
+					댓글은 로그인후 작성이 가능합니다.
+				</td>
+			</tr>
+		{% endif %}
+		</table>
+		<div id="new_repl">
+		</div>
+		<table>
+			{% for re in reply %}
+			<tr>
+				<td>
+					<img src="/media/{{re.user.user_img}}" width="50" height="50" name="img_r" border-radius="50%">
+					{{re.user.user_nick }} / {{ re.c_reply_ts }}
+				</td>
+			</tr>
+			<tr>
+				<td> {{re.c_reply_cont }} </td>
+			</tr>
+			{% endfor %}
+		</table>
+	</form>
+</div>
 {% endblock %}
