@@ -107,23 +107,25 @@ class OrderView(View):
 # 회원정보리스트
 class UserlistView(View):
     def get(self,request):
+        memid    = request.session.get("memid")
         template = loader.get_template("md_admin/userlist.html")
         count = MdUser.objects.count() #회원수  
-        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts").order_by("-user_reg_ts") #회원리스트
-            
+        users = MdUser.objects.select_related("user_g").only("user_id","user_name","user_g__user_g_name","user_reg_ts").order_by("-user_reg_ts") #회원리스트  
         context ={
             "count" : count,
-            "users" : users,         
+            "users" : users,
+            "memid" : memid,     
             }
         return HttpResponse(template.render(context,request))
 
 #아이디 검색
 def search(request):
     if request.method == 'POST':
+        memid    = request.session.get("memid")
         searched = request.POST['searched']
         search_user = MdUser.objects.filter(user_id__contains=searched)
         sucount = MdUser.objects.filter(user_id__contains=searched).count()
-        return render(request,"md_admin/searched.html",{"searched":searched,"search_user":search_user,"sucount":sucount})
+        return render(request,"md_admin/searched.html",{"searched":searched,"search_user":search_user,"sucount":sucount,"memid":memid})
     else:
         return render(request,"md_admin/searched.html",{})
     
@@ -134,13 +136,15 @@ class UserinfoView(View):
         return View.dispatch(self, request, *args, **kwargs)
         
     def get(self,request):
+        memid    = request.session.get("memid")
         template = loader.get_template("md_admin/userinfo.html")
         id = request.GET["id"]
         users = MdUser.objects.select_related("user_g").get(user_id=id)
         
         context ={
+            "memid" : memid,
             "id"    : id,
-            "users" : users, 
+            "users" : users,
              }
         return HttpResponse(template.render(context,request))
     
@@ -175,11 +179,13 @@ class UserinfoView(View):
 class ReviewlistView(View):
     def get(self,request):
         template = loader.get_template("md_admin/reviewlist.html")
+        memid    = request.session.get("memid")
         count = MdReview.objects.count()    #리뷰갯수
    
         rdtos = MdReview.objects.select_related('ordr__mdordrm__stor_m__stor').values('rev_id','ordr__user__user_id', 'ordr_id', 'ordr__mdordrm__stor_m__stor__stor_name', 'rev_ts').order_by("-rev_ts")
 
         context ={
+            "memid" : memid,
             "count" : count,
             "rdtos" : rdtos,
             }
@@ -192,6 +198,7 @@ class ReviewinfoView(View):
         return View.dispatch(self, request, *args, **kwargs)
     
     def get(self,request):
+        memid    = request.session.get("memid")
         template = loader.get_template("md_admin/reviewinfo.html")
         rev_id = request.GET["rev_id"]
         
@@ -212,6 +219,7 @@ class ReviewinfoView(View):
         tagn_list = list(m['tag_name'] for m in tagn_list)
 
         context ={
+            "memid"         : memid,
             "rev_id"        : rev_id,
             "storm_list"    : storm_list,
             "content"       : content,
@@ -236,6 +244,7 @@ class ReviewinfoView(View):
 # 점주등록신청 리스트          
 class SregistlistView(View):
     def get(self,request):
+        memid    = request.session.get("memid")
         template = loader.get_template("md_admin/sregistlist.html")
         unsign_reglists =  MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = False)
         sign_reglists = MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = True)
@@ -244,6 +253,7 @@ class SregistlistView(View):
         comcount = MdStorReg.objects.select_related("stor").exclude(reg_con_ts__isnull = True).count()
         
         context ={
+            "memid"             : memid,
             "unsign_reglists"   : unsign_reglists,
             "sign_reglists"     : sign_reglists,
             "uncount"           : uncount,
@@ -258,6 +268,7 @@ class SregistinfoView(View):
         return View.dispatch(self, request, *args, **kwargs)
         
     def get(self,request):
+        memid    = request.session.get("memid")
         template = loader.get_template("md_admin/sregistinfo.html")
         reg_id = request.GET["reg_id"]
         reginfo = MdStorReg.objects.get(reg_id=reg_id)
@@ -270,6 +281,7 @@ class SregistinfoView(View):
         else:
             stortid[0] = '개인매장'    
         context ={
+            "memid"     : memid,
             "reg_id"    : reg_id,
             "reginfo"   : reginfo,
             "stortid"   : stortid,
@@ -304,6 +316,7 @@ class SregistinfoView(View):
 class GenstatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/genstatis.html")
+        memid    = request.session.get("memid")
         count = MdUser.objects.count()
         mancount = MdUser.objects.filter(gen=0).count()
         womancount = MdUser.objects.filter(gen=1).count()
@@ -370,6 +383,7 @@ class GenstatisView(View):
         
         #데이터 TEMPLATE로 넘기기
         context = {
+            "memid"         : memid,
             "inwon"         : inwon,
             "gend"          : gend,
             "menper"        : menper,
@@ -386,6 +400,7 @@ class GenstatisView(View):
 class AgestatisView(View):
     def get(self,request):
         template = loader.get_template("md_admin/agestatis.html")
+        memid    = request.session.get("memid")
         #연령대
         #오늘 날짜 구하기
         today = datetime.today().year
@@ -414,6 +429,7 @@ class AgestatisView(View):
         
         agecount = [len(teen),len(twe),len(thr),len(fou),len(fif),len(older)]
         context = {
+            "memid"     : memid,
             "agecount"  : agecount,
             "count"     : count,
             }
@@ -423,6 +439,7 @@ class AgestatisView(View):
 class IntereView(View):
     def get(self,request):
         template = loader.get_template("md_admin/interestatis.html")
+        memid    = request.session.get("memid")
         # 전체 회원들의 관심사 전체 고른 수
         today = datetime.today().year
         count = MdUIntr.objects.all().count()
@@ -605,6 +622,7 @@ class IntereView(View):
                 womanord_list[key] = value                
        
         context = {
+            "memid"         : memid,
             "list_inter"    : list_inter,
             "inter_name"    : inter_name,
             "manteen_list"  : manteen_list,
@@ -626,6 +644,7 @@ class IntereView(View):
 class TasteView(View):
     def get(self,request):
         template = loader.get_template("md_admin/tastestatis.html")
+        memid    = request.session.get("memid")
         today = datetime.today().year
         #입맛 전체 회원 id지정 수
         tast = MdUTast.objects.values("tast_t").order_by("tast_t")
@@ -808,6 +827,7 @@ class TasteView(View):
                 womanord_tlist[key] = value     
               
         context = {
+            "memid"             : memid,
             "list_tast"         : list_tast,
             "tast_n"            : tast_n,
             "manteen_tlist"     : manteen_tlist,
@@ -829,6 +849,7 @@ class TasteView(View):
 class StoreView(View):
     def get(self,request):
         template = loader.get_template("md_admin/storestatis.html")
+        memid    = request.session.get("memid")
         scount = MdStor.objects.all().count()
         
         #매장구분 개인/프랜차이즈
@@ -863,6 +884,7 @@ class StoreView(View):
         stor_list = [pstor,fstor]
         
         context = {
+            "memid"             : memid,
             "scount"            : scount,
             "fcount"            : fcount,
             "stor_list"         : stor_list,
@@ -874,6 +896,7 @@ class StoreView(View):
 class DsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/dsrtstatis.html")
+        memid    = request.session.get("memid")
         today = datetime.today().year
         
         #사용자 디저트 기입한 수 리스트
@@ -1058,6 +1081,7 @@ class DsrtView(View):
         dsrt_n.remove('없음' )
         
         context = {
+            "memid"             : memid,
             "dsrt_n"            : dsrt_n,
             "list_dsrt"         : list_dsrt,
             "manteen_dslist"    : manteen_dslist,
@@ -1079,6 +1103,7 @@ class DsrtView(View):
 class DrnkView(View):
     def get(self,request):
         template = loader.get_template("md_admin/drnkstatis.html")
+        memid    = request.session.get("memid")
         today = datetime.today().year
         #사용자 음료 기입한 수 리스트
         drnk = MdUDrnk.objects.values("drnk_t").order_by("drnk_t")
@@ -1264,6 +1289,7 @@ class DrnkView(View):
         drnk_n.remove('없음')
 
         context = {
+            "memid"             : memid,
             "drnk_n"            : drnk_n,
             "list_drnk"         : list_drnk,
             "manteen_drlist"    : manteen_drlist,
@@ -1286,6 +1312,7 @@ class DrnkView(View):
 class BdrnkView(View):
     def get(self,request):
         template = loader.get_template("md_admin/bdrnkstatis.html")
+        memid    = request.session.get("memid")
         today = datetime.today().year
         # 구매한 음료 분류 정보
         bdrnk = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__drnk_t")
@@ -1476,6 +1503,7 @@ class BdrnkView(View):
         
         bdrnk_n.remove('없음')
         context = {
+            "memid"             : memid,
             "bdrnk_n"           : bdrnk_n,
             "bdrnk_list"        : bdrnk_list,
             "manteen_bdrlist"   : manteen_bdrlist,
@@ -1497,6 +1525,7 @@ class BdrnkView(View):
 class BdsrtView(View):
     def get(self,request):
         template = loader.get_template("md_admin/bdsrtstatis.html")
+        memid    = request.session.get("memid")
         today = datetime.today().year
         #구매한 음료 분류 정보
         bdsrt = MdOrdrM.objects.select_related("stor_m__menu").values("stor_m__menu__dsrt_t")
@@ -1689,6 +1718,7 @@ class BdsrtView(View):
         bdsrt_n.remove('없음')
                
         context = {
+            "memid"             : memid,
             "bdsrt_list"        : bdsrt_list,
             "bdsrt_n"           : bdsrt_n,
             "manteen_bdslist"   : manteen_bdslist,
@@ -1710,6 +1740,7 @@ class BdsrtView(View):
 class IaoView(View):
     def get(self,request):
         template = loader.get_template("md_admin/iaostatis.html")
+        memid    = request.session.get("memid")
         #유입률
         #회원가입일 가져오기
         welmaddi = MdUser.objects.values("user_reg_ts").order_by("user_reg_ts")
@@ -1787,6 +1818,7 @@ class IaoView(View):
         upexyearlist = [str(i) for i in upexyearlist if i !='None']
         
         context = {
+            "memid"             : memid,
             "list_welmaddi"     : list_welmaddi,
             "list_exmaddi"      : list_exmaddi,
             "upwelyearlist"     : upwelyearlist,
@@ -1798,6 +1830,7 @@ class IaoView(View):
 class KeywordView(View):
     def get(self,request):
         template = loader.get_template("md_admin/keystatis.html")
+        memid    = request.session.get("memid")
         keyword = MdSrch.objects.values("srch_word")
         keyword = list(m['srch_word'] for m in keyword)
         dict_keyword = {}
@@ -2091,6 +2124,7 @@ class KeywordView(View):
             womanord_list.append({"x":text,"weight":weight})                       
         
         context = {
+            "memid"             : memid,
             "data_list"         : data_list,
             "memdata_list"      : memdata_list,
             "nmemdata_list"     : nmemdata_list,
