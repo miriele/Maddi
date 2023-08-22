@@ -139,7 +139,7 @@ class MdMenuT(models.Model):
 class MdRecommend(models.Model):
     reco_id = models.AutoField(primary_key=True, db_comment='추천메뉴ID')
     user = models.ForeignKey('md_member.MdUser', models.DO_NOTHING, db_comment='회원ID')
-    stor_m = models.ForeignKey('MdStorM', models.DO_NOTHING, db_comment='매장메뉴ID')
+    menu = models.ForeignKey(MdMenu, models.DO_NOTHING, db_comment='메뉴ID')
 
     class Meta:
         managed = False
