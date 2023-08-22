@@ -12,13 +12,16 @@
 	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 </head>
+
+
+
 <body>
 <div class="container">
 	<div class="col-md-12 mt-5">
 		{% block header %}
 		<div class="row">
-			<div class="col-3" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
-				<div class="col-5" style="text-align:center;">
+			<div class="col-4" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
+				<div class="col-8" style="text-align:left;">
 					<form method="post" id="search">
 						<input type="hidden" name="bjd_name" value="" />
 						<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
@@ -26,20 +29,36 @@
 					</form>
 				<div class="rel-srch-words"></div>
 			</div><!-- search -->
-			<div class="col-md-auto">
+		</div>
+		<div class="row">
+			<div class="col" style="text-align:center;">
 				{% if memid %}
-				<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-				<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp;
-				<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp;
-				{% if gid == 6 %}
-				<a href="/md_store/mypagejumju">점주 마이페이지</a>&nbsp;&nbsp;&nbsp;
-				{% endif %}
-				<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
-				{% else %}
-				<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
-				<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp;
-				<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
-				{% endif %}
+						{% if gid == 1 %}
+							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;
+							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+						{% elif gid == 6 %}
+							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+						{% elif gid == 7 %}
+							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+						{% endif %}
+					{% else %}
+							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
+					{% endif %}
 			</div><!-- 로그인 -->
 		{% endblock %}
 		</div><!-- row -->
@@ -55,7 +74,7 @@
 	<div class="row">
 		<div class="col-4" style="text-align:center;">
 			{% block map %}
-			<input type="button" name="differlocate" value="다른위치설정" style="width: 100%;"><br>
+			<div style="text-align:left;"><input type="button" name="differlocate" value="다른위치설정" style="width: 250px;"></div>
 			<div class="main_area_map" style="float: right;">
 			<div id="kakaomap" class="kakaomap"></div>
 			<span id="centerAddr" style="display: block;"></span>

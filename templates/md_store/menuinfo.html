@@ -1,8 +1,11 @@
+{% extends "md_main/base2.html" %}
+
 <head>
     <title>점주_메뉴관리</title>
     <h2> 점주_메뉴관리</h2>
 </head>
-{% extends "md_member/base.html"%}
+
+
 {% block content %}
 <form method="post" action="{% url 'md_store:menuinfo' %}" name="updateform" enctype="multipart/form-data">
     <input type="hidden" name="stor_id" value="{{ stor_id }}"> 

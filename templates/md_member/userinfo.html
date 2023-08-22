@@ -1,4 +1,4 @@
-{% extends "md_member/base.html" %}
+{% extends "md_main/base2.html" %}
 
 {% block content %}
 {% csrf_token %}
@@ -166,9 +166,7 @@
 			<tr>
 				<th colspan="2">
 					<input class="inputbutton" type="submit" value="정보수정">
-					<input class="inputbutton" type="reset" value="수정취소">
-					<input class="inputbutton" type="button" value="메인으로 돌아가기"
-						onclick="location='/md_main/main'">
+					<input class="inputbutton" type="reset" value="취소">
 				</th>
 			</tr>
 		</table>

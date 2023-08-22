@@ -5,6 +5,105 @@
 	<link rel="stylesheet" href="{% static 'style_combi.css' %}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">	
 </head>
+<style>
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* 헤더 스타일 */
+header {
+  background-color: #ffcc80;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #ffb74d;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 36px;
+  color: #e65100;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  padding: 20px;
+}
+
+/* 디저트 카드 스타일 */
+.dessert-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.dessert-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.dessert-card h2 {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+/* 버튼 스타일 */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #f57c00;
+}
+
+/* 푸터 스타일 */
+footer {
+  background-color: #ffcc80;
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #ffb74d;
+}
+
+/* 아이콘 스타일 (Font Awesome 사용 예시) */
+ .icon {
+  font-size: 24px;
+  color: #e65100;
+  margin-right: 10px;
+}
+
+/* 애니메이션 효과 */
+@keyframes falling-stars {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.star {
+  position: absolute;
+  top: -20px;
+  left: calc(50% - 10px);
+  font-size: 20px;
+  animation: falling-stars 5s linear infinite;
+}
+
+
+</style>
 
 <body>
 {% block content %}
