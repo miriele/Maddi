@@ -36,8 +36,9 @@
 				{% endif %}
 				<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
 				{% else %}
-				<input type="button" value="로그인" onclick="location='/md_member/login'">
-				<input type="button" value="회원가입" onclick="location='/md_member/input'">
+				<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp;
+				<a href="'/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp;
+				<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
 				{% endif %}
 			</div><!-- 로그인 -->
 		{% endblock %}
