@@ -7,19 +7,16 @@ div {
 .header {
 	text-align: right;
 	border: none; 
-	font-weight	: bold; 
 	background-color: white;
 }
 input[type="button"][value="Maddi"] {
 	border:none; 
-	font-weight:bold; 
 	font-size: 20px; 
 	background-color: white;
 }
 
 input[type="button"] {
   border: none;
-  font-weight: bold;
   background-color: white;
   padding: 5px 10px;
 }
@@ -31,7 +28,6 @@ input[type="button"] {
 
 input.inputbutton[type="submit"][value="로그인"]{
   border: none;
-  font-weight: bold;
   background-color: #e0f1fe;
   color: gray;
   padding: 5px 95px;
@@ -40,7 +36,6 @@ input.inputbutton[type="submit"][value="로그인"]{
 
 input.inputbutton[type="button"][value="회원가입"]{
   border: none;
-  font-weight: bold;
   background-color: #e0f1fe;
   color: gray;
   padding: 5px 90px;
@@ -65,9 +60,6 @@ input[type="date"]{
 	right: 50%;
 	margin-bottom :100px;
 }
-.userinputT{
-	
-}
 
 select.select_genid {
 	width: 5%;
@@ -78,13 +70,3 @@ select.select_genid {
 	left: 50%;
 	right: 50%;
 }
-
-
-
-
-
-
-
-
-
-
