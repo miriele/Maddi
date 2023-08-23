@@ -13,7 +13,18 @@
 	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 </head>
 
+<style>
+ a:link { color:black; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: black; text-decoration: none;}
 
+footer {
+  background-color: #ffcc80;
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #ffb74d;
+}
+</style>
 
 <body>
 <div class="container">
@@ -38,12 +49,14 @@
 							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;
 							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
 						{% elif gid == 6 %}
 							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
 						{% elif gid == 7 %}
@@ -51,6 +64,7 @@
 							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
 						{% endif %}
