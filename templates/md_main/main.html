@@ -51,10 +51,10 @@
 			<div class="list-title" style="text-align:center;">추천 음료</div>
 			<div class="list-content">
 			{% for tdto in tdtos %}
-			<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ tdto.stor_m__menu__menu_name }}'); performSearch();">
-				<img src="/media/{{ tdto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
-				{{ tdto.stor_m__menu__menu_name }}
-			</div>
+				<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ tdto.stor_m__menu__menu_name }}'); performSearch();">
+					<img src="/media/{{ tdto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
+					{{ tdto.stor_m__menu__menu_name }}
+				</div>
 			{% endfor %}
 			</div>
 		</div>
@@ -68,10 +68,10 @@
 		<div class="list-title" style="text-align:center;">추천 디저트</div>
 		<div class="list-content">
 			{% for ddto in ddtos %}
-			<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ ddto.stor_m__menu__menu_name }}'); performSearch();">
-				<img src="/media/{{ ddto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
-				{{ ddto.stor_m__menu__menu_name }}
-			</div>
+				<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ ddto.stor_m__menu__menu_name }}'); performSearch();">
+					<img src="/media/{{ ddto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
+					{{ ddto.stor_m__menu__menu_name }}
+				</div>
 			{% endfor %}
 		</div>
 	</div>
@@ -84,10 +84,10 @@
 		<div class="list-title" style="text-align:center;">추천 디저트</div>
 		<div class="list-content">
 			{% for ddto in ddtos %}
-			<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ ddto.stor_m__menu__menu_name }}'); performSearch();">
-			<img src="/media/{{ ddto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
-			{{ ddto.stor_m__menu__menu_name }}
-			</div>
+				<div class="list-item" style="cursor:pointer" onclick="setMenuName('{{ ddto.stor_m__menu__menu_name }}'); performSearch();">
+					<img src="/media/{{ ddto.stor_m__menu__menu_img }}" class="main_recommend_img"><br>
+					{{ ddto.stor_m__menu__menu_name }}
+				</div>
 			{% endfor %}
 		</div>
 	</div>
@@ -99,14 +99,13 @@
 	<div class="block-list" style="text-align:center;">
 		<div class="list-title" style="text-align:center;">추천 조합</div>
 		{% for comb_id, comb_info in rdtos.items %}
-		<div class="list-item">
-		{% if comb_info.comb_img %}
-		<img src="{{ comb_info.comb_img.url }}" class="main_recommend_img"><br>
-		{% endif %}
-		{{ comb_info.menu_names|join:" + " }}
-		<br>
-		{{ comb_info.comb_tit }}
-		</div>
+			<div class="list-item">
+				{% if comb_info.comb_img %}
+					<img src="{{ comb_info.comb_img.url }}" class="main_recommend_img"><br>
+				{% endif %}
+				{{ comb_info.menu_names|join:" + " }} <br>
+				{{ comb_info.comb_tit }}
+			</div>
 		{% endfor %}
 	</div>
 </div>
@@ -117,14 +116,13 @@
 		<div class="block-list" style="text-align:center;">
 			<div class="list-title" style="text-align:center;">추천 조합</div>
 			{% for comb_id, comb_info in rdtos.items %}
-			<div class="list-item">
-			{% if comb_info.comb_img %}
-			<img src="{{ comb_info.comb_img.url }}" class="main_recommend_img"><br>
-			{% endif %}
-			{{ comb_info.menu_names|join:" + " }}
-			<br>
-			{{ comb_info.comb_tit }}
-			</div>
+				<div class="list-item">
+					{% if comb_info.comb_img %}
+						<img src="{{ comb_info.comb_img.url }}" class="main_recommend_img"><br>
+					{% endif %}
+					{{ comb_info.menu_names|join:" + " }} <br>
+					{{ comb_info.comb_tit }}
+				</div>
 			{% endfor %}
 		</div>
 	</div>

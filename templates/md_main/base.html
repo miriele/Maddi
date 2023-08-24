@@ -30,20 +30,21 @@ footer {
 <div class="container">
 	<div class="col-md-12 mt-5">
 		{% block header %}
-		<div class="row">
-			<div class="col-4" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
-				<div class="col-8" style="text-align:left;">
-					<form method="post" id="search">
-						<input type="hidden" name="bjd_name" value="" />
-						<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
-						<input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
-					</form>
-				<div class="rel-srch-words"></div>
-			</div><!-- search -->
-		</div>
-		<div class="row">
-			<div class="col" style="text-align:center;">
-				{% if memid %}
+			<div class="row">
+				<div class="col-4" style="text-align: right;"><a href="/md_main/main">Maddi</a></div>
+					<div class="col-8" style="text-align:left;"><!-- search -->
+						<form method="post" id="search">
+							<input type="hidden" name="bjd_name" value="" />
+							<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
+							<input type="button" name="main_btn_search" value="검색" onclick="performSearch()" />
+						</form>
+					<div class="rel-srch-words"></div>
+				</div><!-- search -->
+			</div><!-- row -->
+			
+			<div class="row">
+				<div class="col" style="text-align:center;"><!-- 로그인 -->
+					{% if memid %}
 						{% if gid == 1 %}
 							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
 							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
@@ -69,13 +70,13 @@ footer {
 							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
 						{% endif %}
 					{% else %}
-							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
+						<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+						<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+						<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
 					{% endif %}
-			</div><!-- 로그인 -->
+				</div><!-- 로그인 -->
+			</div><!-- row -->
 		{% endblock %}
-		</div><!-- row -->
 	</div><!-- 여백 -->
 </div><!-- contatiner -->
 
@@ -88,11 +89,11 @@ footer {
 	<div class="row">
 		<div class="col-4" style="text-align:center;">
 			{% block map %}
-			<div style="text-align:left;"><input type="button" name="differlocate" value="다른위치설정" style="width: 250px;"></div>
-			<div class="main_area_map" style="float: right;">
-			<div id="kakaomap" class="kakaomap"></div>
-			<span id="centerAddr" style="display: block;"></span>
-			</div>
+				<div style="text-align:left;"><input type="button" name="differlocate" value="다른위치설정" style="width: 250px;"></div>
+				<div class="main_area_map" style="float: right;">
+					<div id="kakaomap" class="kakaomap"></div>
+					<span id="centerAddr" style="display: block;"></span>
+				</div>
 			{% endblock %}
 		</div><!-- map -->
 		{% if memid %}
@@ -103,7 +104,7 @@ footer {
 				</div>
 			</div>
 			
-			<div class="container">
+			<div class="container">	<!-- 여백 -->
 				<div class="col-md-12 mt-5"></div>
 			</div>
 			        
@@ -111,11 +112,11 @@ footer {
 				<div class="col">
 					<div class="container">
 						{% block content_lower %}
-						<div class="main_search_result" style="text-align:center;"></div>
+							<div class="main_search_result" style="text-align:center;"></div>
 						{% endblock %}
 					</div>
 		                
-			<div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
+					<div class="title" style="text-align:center;"><h5> ==Maddi의 추천==</h5></div>
 					<div>
 						{% block drnkrecommend %}
 						{% endblock %}
@@ -161,7 +162,7 @@ footer {
 				<div class="col">
 					<div class="container">
 						{% block cont_lower %}
-						<div class="main_search_result" style="text-align:center;"></div>
+							<div class="main_search_result" style="text-align:center;"></div>
 						{% endblock %}
 					</div>
 				</div>

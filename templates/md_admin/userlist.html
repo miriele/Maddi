@@ -1,53 +1,45 @@
 {% extends "md_admin/base.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
 {%block content%}
-		<div>
-						<h2>회원관리</h2>
-						<div class="row justify-content-between">
-						<div class="col-3" style="text-align:left;"> <h5>가입회원 수:{{count}}</h5></div>
-						 <div class="col-5 d-flex">
-						        <form class="d-flex" method="POST" action="{% url 'md_admin:search' %}">
-						        {%csrf_token%}   
-						            <input type="search" placeholder="회원아이디 입력" name="searched">
-						            <button type="submit"> 검색 </button>
-						        </form>	
-						</div>
-						</div>
-						<table border = "1">
-							<tr>
-								<th style="width:7%"> 아이디 </th>
-								<th style="width:7%"> 이름 </th>
-								<th style="width:7%"> 회원등급 </th>
-								<th style="width:7%"> 회원가입일 </th>
-							</tr>
-							<tbody id = "tbody">
-								{%for user in users%}
-									<tr>
-										<td align = "center">
-											<a href = "userinfo?id={{user.user_id}}">
-												{{user.user_id}}
-											</a>
-										</td>
-										<td align = "center">
-											{{user.user_name}}
-										</td>
-										<td align = "center">
-											{{user.user_g.user_g_name}}
-										</td>
-										<td align = "center">
-											{{user.user_reg_ts|date:"Y-m-d H:i"}}
-										</td>												
-									</tr>
-								{%endfor%}
-							</tbody>
-						</table>
-					</div>
+	<div>
+		<h2>회원관리</h2>
+		<div class="row justify-content-between">
+			<div class="col-3" style="text-align:left;"> <h5>가입회원 수:{{count}}</h5></div>
+			 <div class="col-5 d-flex">
+		        <form class="d-flex" method="POST" action="{% url 'md_admin:search' %}">
+		        {%csrf_token%}   
+		            <input type="search" placeholder="회원아이디 입력" name="searched">
+		            <button type="submit"> 검색 </button>
+		        </form>	
+			</div>
+		</div>
+		<table border = "1">
+			<tr>
+				<th style="width:7%"> 아이디 </th>
+				<th style="width:7%"> 이름 </th>
+				<th style="width:7%"> 회원등급 </th>
+				<th style="width:7%"> 회원가입일 </th>
+			</tr>
+			<tbody id = "tbody">
+				{%for user in users%}
+					<tr>
+						<td align = "center">
+							<a href = "userinfo?id={{user.user_id}}">
+								{{user.user_id}}
+							</a>
+						</td>
+						<td align = "center">
+							{{user.user_name}}
+						</td>
+						<td align = "center">
+							{{user.user_g.user_g_name}}
+						</td>
+						<td align = "center">
+							{{user.user_reg_ts|date:"Y-m-d H:i"}}
+						</td>												
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
 {%endblock%}
-</body>
-</html>

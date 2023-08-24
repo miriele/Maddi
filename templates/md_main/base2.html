@@ -2,77 +2,74 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Maddi</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
-	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
-</head>
+	<head>
+		<meta charset="utf-8">
+		<title>Maddi</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
+		<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
+	</head>
+	<style>
+		 a:link { color:black; text-decoration: none;}
+		 a:visited { color: black; text-decoration: none;}
+		 a:hover { color: black; text-decoration: none;}
+	</style>
 
-
-
-<style>
-
- a:link { color:black; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: black; text-decoration: none;}
-
-</style>
-
-<body>
-{% block header %}
-	<header class="header">
-		<div class="col-md-12 mt-5">
-			<div class="row">
-				<div class="col" style="text-align: center;"><a href="/md_main/main">Maddi</a></div>
-			</div>
-			<div class="row">
-				<div class="col" style="text-align: center;">
-					{% if memid %}
-						{% if gid == 1 %}
-							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
-						{% elif gid == 6 %}
-							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
-						{% elif gid == 7 %}
-							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
-						{% endif %}
-					{% else %}
-							<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;
-							<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
-					{% endif %}
+	<body>
+		{% block header %}
+		<header class="header">
+			<div class="col-md-12 mt-5">
+				<div class="row">
+					<div class="col" style="text-align: center;"><a href="/md_main/main">Maddi</a></div>
 				</div>
-			{% endblock %}
-			</div><!-- row -->
-		</div><!-- 여백 -->
-	</header><!-- container -->
-	{% block content %}		
-	{% endblock %}
-	{% block footer %}
-		<footer class="footer">
-			<hr>
-			<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
-		</footer>
-	{% endblock %}
-</body>
+				<div class="row">
+					<div class="col" style="text-align: center;">
+						{% if memid %}
+							{% if gid == 1 %}
+								<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+							{% elif gid == 6 %}
+								<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+							{% elif gid == 7 %}
+								<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;
+							{% endif %}
+						{% else %}
+								<a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;
+								<a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;
+						{% endif %}
+					</div>
+				</div><!-- row -->
+			</div><!-- 여백 -->
+		</header><!-- container -->
+		{% endblock %}
+		
+		{% block content %}		
+		{% endblock %}
+		
+		{% block footer %}
+			<footer class="footer">
+				<hr>
+				<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+			</footer>
+		{% endblock %}
+	</body>
 </html>

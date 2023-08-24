@@ -20,6 +20,7 @@ logger = logging.getLogger( __name__ )
 class OrderInfoView(View):
     def get(self, request):
         user_id   = request.session.get('memid')
+        memid     = request.session.get('memid')
         gid       = request.session.get("gid")
         stor_id   = request.GET.get('stor_id')
         stor_m_id = request.GET.get('stor_m_id')
@@ -52,6 +53,7 @@ class OrderInfoView(View):
         buckprice = bucknum * storem.stor_m_pric
 
         context = {
+            "memid"       : memid,
             'dto'         : storem,
             'stor_m_pric' : storem.stor_m_pric,
             'stor_m_name' : storem.stor_m_name,
