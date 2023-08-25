@@ -1,141 +1,187 @@
-{% extends "md_member/base.html" %}
+{%load static%}
+
+<!DOCTYPE html>
 
 {% block content %}
 {% csrf_token %}
- <h4 style="text-align: center;"> 회원가입 </h4>
- <div class="userinput">
-	<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
-		<div class="userinfo2">
-			<table style="margin-right:auto; margin-left:auto;">
-				<tr>
-					<th> 아이디 </th>
-					<td>
-						<input class="input" type="text" name="user_id" autofocus  required>
-						<font id = "checkid" size="2"></font>
-					</td>
-				</tr>
-				<tr>
-					<th> 비밀번호 </th>
-					<td>
-						<input class="input" type="password" name="user_pass" maxlength="20" required>
-					</td>
-				</tr>
-				<tr>
-					<th> 이름 </th>
-					<td>
-						<input class="input" type="text" name="user_name" maxlength="30" required>
-					</td>
-				</tr>
-				<tr>
-					<th> 닉네임 </th>
-					<td>
-						<input class="input" type="text" name="user_nick" id="iuser_nick"  maxlength="45" required>
-						<font id = "checknick" size="2"></font>
-					</td>
-				</tr>
-				<tr>
-					<th> 생년월일 </th>
-					<td> 
-						<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required>
-					</td>
-				</tr>
-				<tr>
-					<th> 성별 </th>
-					<td> 
-						<select name="gen_id" class="select_genid">
-							<option value="0"> 남자 </option>
-							<option value="1"> 여자 </option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th> 프로필사진 </th>
-					<td>
-						<img src="/static/default_user.jpg"  alt="" width="50" height="50" name="img_d" border-radius="50%">
-						<input class="input" type="file" name="user_img" id="image" accept="image/*" onchange="readURL(this);">
-						<img id="preview" style="width:150px;">
-						<script>
-							function readURL(input) {
-								if (input.files && input.files[0]) {
-								    var reader = new FileReader();
-								    reader.onload = function(e) {
-								      document.getElementById('preview').src = e.target.result;
-								    };
-								    reader.readAsDataURL(input.files[0]);
-								  } else {
-								    document.getElementById('preview').src = "";
-								  }
-								}
-						</script>
-						<hr>
-					</td>
-				</tr>
-			</table>
+
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title>Welcome Maddi</title>
+		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_member.css'%}">
+		<link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
+		<script src = "{%static 'js/script_member.js'%}"></script>
+		<script src = "{%static 'js/script_comb.js'%}"></script>
+		<script src = "{%static 'js/script_favorite.js'%}"></script>
+		<script src="{% static 'js/script_store.js' %}"></script>
+		<script src="{% static 'js/script_order.js' %}"></script>
+	</head>
+
+
+	<body>
+		<div class="container">
+			<div class="col-md-12 mt-4"></div>
 		</div>
-		<div class="userinputT">
-			<table>
-				<tr>
-					<th colspan="2"> 상세 정보 선택(선택입력) / 중복선택 가능 </th>
-				</tr>
-				<tr>
-					<th> 디저트 취향 선택</th>
-					<td>
-						{% for dsrt in md_dsrt_t  %}
-							<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_id}}"> {{dsrt.dsrt_t_name }}
-						{% endfor %}
-						<hr>
-					</td>
-				</tr>
-				<tr>
-					<th> 음료 취향 선택 </th>
-					<td>
-						{% for drnk in md_drnk_t %}
-							<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_id}}"> {{drnk.drnk_t_name }}
-						{% endfor %}
-						<hr>
-					</td>
-				</tr>	
-				<tr>
-					<th> 알러지 정보 </th>
-					<td>
-						{% for algy in md_algy_t %}
-							<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}"> {{algy.algy_t_name }}
-						{% endfor %}
-						<hr>
-					</td>
-				</tr>	
-				<tr>
-					<th> 현재 관심분야 </th>
-					<td>
-						{% for intr in md_intr_t %}
-							<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_id}}"> {{intr.intr_t_name }}
-						{% endfor %}
-						<hr>
-					</td>
-				</tr>	
-				<tr>
-					<th> 좋아하는 맛 </th>
-					<td>
-						{% for tast in md_tast_t %}
-							<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_id}}"> {{tast.tast_t_name }}
-						{% endfor %}
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<br>
-					</td>				
-				</tr>
-				<tr>
-					<th colspan="2">
-						<input class="inputbutton" type="submit" value="회원가입">
-						<input class="inputbutton" type="button" value="가입취소"
-							onclick="location='/md_main/main'">
-					</th>
-				</tr>	
-			</table>
+			
+		<div class="logo">
+			<div class="row">
+				<div class="col" style="text-align:center;"><a href="/md_main/main"><img src="/static/image/logo.png" width="10%;" height="auto;"></a></div>
+			</div>
+			<div class="container">
+				<div class="col-md-12 mt-4"></div>
+			</div>
 		</div>
-	</form>
-</div><!-- userinput -->
+		
+		 <h4 style="text-align: center;"> 회원가입 </h4>
+		 
+		 <div class="container">
+				<div class="col-md-12 mt-4"></div>
+			</div>
+		 
+		 <div class="userinput">
+			<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
+				<div class="userinfo2">
+					<table>
+						<tr>
+							<th> 아이디 </th>
+							<td>
+								<input class="input" type="text" name="user_id" autofocus  required>
+								<font id = "checkid" size="2"></font>
+							</td>
+						</tr>
+						<tr>
+							<th> 비밀번호 </th>
+							<td>
+								<input class="input" type="password" name="user_pass" maxlength="20" required>
+							</td>
+						</tr>
+						<tr>
+							<th> 이름 </th>
+							<td>
+								<input class="input" type="text" name="user_name" maxlength="30" required>
+							</td>
+						</tr>
+						<tr>
+							<th> 닉네임 </th>
+							<td>
+								<input class="input" type="text" name="user_nick" id="iuser_nick"  maxlength="45" required>
+								<font id = "checknick" size="2"></font>
+							</td>
+						</tr>
+						<tr>
+							<th> 생년월일 </th>
+							<td> 
+								<input type="date" name="user_bir" min="1900-01-01" max="2025-01-01" required>
+							</td>
+						</tr>
+						<tr>
+							<th> 성별 </th>
+							<td> 
+								<select name="gen_id" class="select_genid">
+									<option value="0"> 남자 </option>
+									<option value="1"> 여자 </option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th> 프로필사진 </th>
+							<td>
+								<img src="/static/default_user.jpg"  alt="" width="50" height="50" name="img_d" border-radius="50%">
+								<input class="input" type="file" name="user_img" id="image" accept="image/*" onchange="readURL(this);">
+								<img id="preview" style="width:150px;">
+								<script>
+									function readURL(input) {
+										if (input.files && input.files[0]) {
+										    var reader = new FileReader();
+										    reader.onload = function(e) {
+										      document.getElementById('preview').src = e.target.result;
+										    };
+										    reader.readAsDataURL(input.files[0]);
+										  } else {
+										    document.getElementById('preview').src = "";
+										  }
+										}
+								</script>
+								<hr>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="userinputT">
+					<table>
+						<tr>
+							<th colspan="2"> 상세 정보 선택(선택입력) / 중복선택 가능 </th>
+						</tr>
+						<tr>
+							<th> 디저트 취향 선택</th>
+							<td>
+								{% for dsrt in md_dsrt_t  %}
+									<input type="checkbox" name="md_dsrt_t" value="{{dsrt.dsrt_t_id}}"> {{dsrt.dsrt_t_name }}
+								{% endfor %}
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<th> 음료 취향 선택 </th>
+							<td>
+								{% for drnk in md_drnk_t %}
+									<input type="checkbox" name="md_drnk_t" value="{{drnk.drnk_t_id}}"> {{drnk.drnk_t_name }}
+								{% endfor %}
+								<hr>
+							</td>
+						</tr>	
+						<tr>
+							<th> 알러지 정보 </th>
+							<td>
+								{% for algy in md_algy_t %}
+									<input type="checkbox" name="md_algy_t" value="{{algy.algy_t_id}}"> {{algy.algy_t_name }}
+								{% endfor %}
+								<hr>
+							</td>
+						</tr>	
+						<tr>
+							<th> 현재 관심분야 </th>
+							<td>
+								{% for intr in md_intr_t %}
+									<input type="checkbox" name="md_intr_t" value="{{intr.intr_t_id}}"> {{intr.intr_t_name }}
+								{% endfor %}
+								<hr>
+							</td>
+						</tr>	
+						<tr>
+							<th> 좋아하는 맛 </th>
+							<td>
+								{% for tast in md_tast_t %}
+									<input type="checkbox" name="md_tast_t" value="{{tast.tast_t_id}}"> {{tast.tast_t_name }}
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<br>
+							</td>				
+						</tr>
+						<tr>
+							<th colspan="2">
+								<input class="inputbutton" type="submit" value="회원가입">
+								<input class="inputbutton" type="button" value="가입취소"
+									onclick="location='/md_main/main'">
+							</th>
+						</tr>	
+					</table>
+				</div>
+			</form>
+		</div><!-- userinput -->
+	</body>
 {% endblock %}
 
+{% block footer%}<!-- footer -->
+	<footer class = "footer">
+		<hr>
+		<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+	</footer>
+{% endblock %}
+</html>

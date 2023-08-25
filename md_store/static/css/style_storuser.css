@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+section {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 섹션 제목 스타일 */
+section h3 {
+    color: #333;
+}
+
+/* 매장 정보 및 메뉴 컨텐츠 스타일 */
+.list-content {
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.list-content:hover {
+    background-color: #f0f0f0;
+}
+
+.list-content img {
+    margin-right: 10px;
+    width: 100px;
+    height: 75px;
+}
+
+/* 폰트 스타일 */
+h5 {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* 가게 이미지 스타일 */
+.col-3 img {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 스타일 */
+.inputbutton {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inputbutton:hover {
+    background-color: #45a049;
+}
+

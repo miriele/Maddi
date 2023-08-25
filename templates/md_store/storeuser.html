@@ -1,90 +1,84 @@
+{% extends "md_member/base.html" %}
+{%load static %}
 <title>사용자_매장정보</title>
-{% extends "md_main/base2.html" %}
-
 {% block content %}
 {% csrf_token %}
-<h2>사용자_매장정보</h2>
+
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_storuser.css' %}">
+</head>
+
+<body>
+
+<div class="col-md-12 mt-5"></div>
+
 <form method="post" action="storeuser" name="updateform">
 	<input type="hidden" name="stor_id" value="{{ stor_id }}">
 	<input type="hidden" name="user_id" value="{{ user_id }}">
-
-	<table border = "1">
-	    <tr>
-	        <th colspan = "2">매장정보</th>
-	        <th align = "right">
-	        	<form method="post" action="addfav"name="addfavform">
-					<input type="hidden" name="stor_id" value="{{stor_id}}">
-						{% if result == 0 %}
-							<input type="button" name="addfavbtn" value="즐겨찾기 등록">
-						{% else %}
-							<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+	
+	<section>
+		<h3 style="text-align:center;"> 매장정보 </h3>
+		<hr>
+		<div class="storinfo">
+			<div class="row">
+				<div class="col-3" style="text-align:center;"><img src="/media/{{ stor_img }}" width="350px" height="auto">
+					<p>
+						{% if gid == 1 %}
+				        	<input class="inputbutton" type="button" value="이 가게의 사장님이신가요?" onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
 						{% endif %}
-				</form>
-	        </th>
-	    </tr>
-	    <tr>
-	        <th rowspan="7"><img src="/media/{{ stor_img }}" width="100" height="75" ></th>
-	    </tr>
-	    <tr>
-	        <th>매장명</th>
-	        <td colspan="2">&nbsp;{{ dto.stor_name }}</td>
-	    </tr>
-	    <tr>
-         	<th>점주</th>
-         	<td> {{ user_ids }}</td>
-        </tr>
-	    <tr>
-	        <th>매장유형</th>
-	        <td colspan="2">&nbsp;{{ stor_type }}</td>
-	    </tr>
-	    <tr>
-	        <th>주소</th>
-	        <td colspan="2">&nbsp;{{ dto.stor_addr }}</td>
-	    </tr>
-	    <tr>
-		    <th>연락처</th>
-		    <td colspan="2">&nbsp;{{ stor_tel }}</td>
-		    </td>
-		</tr>
-	    <tr>
-	    	<th>
-	        	{% if gid == 1 %}
-	        	<input class="inputbutton" type="button" value="점주등록" onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
-				{% endif %}
-	        </th>
-	        	<th colspan = "2">
-		        	<input type="button" name="reviewgo" value="매장 리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
-	        	</th>
-	    </tr>
-	</table>
+					</p>
+				</div>
+				<div class="col-1" style="text-align:center;">
+					<p style="text-align:right;">
+						<form method="post" action="addfav"name="addfavform">
+							<input type="hidden" name="stor_id" value="{{stor_id}}">
+							{% if result == 0 %}
+								<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+							{% else %}
+								<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+							{% endif %} 
+						</form>
+					</p>
+					<h5>매장유형</h5>
+					<h5>매장명</h5>
+					<h5>주소</h5>
+					<h5>연락처</h5>
+				</div>	
+				<div class="col-8" style="text-align:center;">
+					<p style="text-align:left;">&nbsp;|&nbsp; 
+						<input type="button" name="reviewgo" value="매장 리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
+					</p>
+					<h5> {{ stor_type }}     </h5>
+					<h5> {{ dto.stor_name }} </h5>
+					<h5> {{ dto.stor_addr }} </h5>
+					<h5> {{ stor_tel }}      </h5>
+				</div>
+			</div><!-- row -->
+		</div><!--storinfo -->
+	</section>
+</form>
 
-	<h1>메뉴 목록</h1>
-	    {% if menu_list %}
-	    <table border = 1>
-	        <tr>
-	         	<th>메뉴 이미지</th>
-	            <th>메뉴 이름</th>
-	            <th>가격</th>
-	            <th>칼로리</th>
-	            <th>메뉴 소개</th>           
-	            <th>메뉴 타입</th>
-	        </tr>
+	<section>
+		<h3>메뉴</h3>
+		{% if menu_list %}
+	    <div class="list-content">
 	        {% for menu in menu_list %}
-	        <tr>
-	        	<th>
-	               <img src="/media/{{ menu.stor_m_img }}" width="100" height="75" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
-	            </th>
-	            <th>{{ menu.stor_m_name }}</th>
-	            <th>{{ menu.stor_m_pric }}원</th>
-	            <th>{{ menu.stor_m_cal }}kcal</th>
-	            <th>{{ menu.menu.menu_info }}</th>    
-	            <th>{{ menu.menu_t.menu_t_name }}</th>
-	        </tr>
-	        {% endfor %}
-	    </table>
+	        <section>
+	        	<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">		        	
+		        	<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">		        	
+		          	<p>{{ menu.stor_m_name }}</p>
+		            <p>{{ menu.stor_m_pric }}원</p>
+		            <p>{{ menu.stor_m_cal }}kcal</p>
+		            <p>{{ menu.menu.menu_info }}</p>
+		            <p>{{ menu.menu_t.menu_t_name }}</p>
+	            </div>
+	        </section>
+	    	 {% endfor %}
+	     </div>
 	    {% else %}
 	    <p>해당 매장의 메뉴가 없습니다.</p>
 	    {% endif %}
-</form>
-
+	</section>
+</body>
 {% endblock %}
