@@ -1,12 +1,11 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset = "utf-8">
 		<title>Welcome Maddi</title>
 		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_member.css'%}">
-		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_main.css'%}">
-		<link rel = "stylesheet" type = "text/css" href = "{%static 'css/style_combi.css'%}">
 		<link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 		
 		<script src = "{%static 'js/jquery-3.6.4.js'%}"></script>
@@ -16,136 +15,61 @@
 		<script src="{% static 'js/script_store.js' %}"></script>
 		<script src="{% static 'js/script_order.js' %}"></script>
 	</head>
-	<style>
-		body {
-		  font-family: 'Nunito', sans-serif;
-		  background-color: #f5f5f5;
-		  margin: 0;
-		  padding: 0;
-		}
-		
-		/* 헤더 스타일 */
-		header {
-		  background-color: #ffcc80;
-		  padding: 20px;
-		  text-align: center;
-		  border-bottom: 1px solid #ffb74d;
-		}
-		
-		header h1 {
-		  margin: 0;
-		  font-size: 36px;
-		  color: #e65100;
-		}
-		
-		/* 메인 콘텐츠 스타일 */
-		.main-content {
-		  padding: 20px;
-		}
-		
-		/* 디저트 카드 스타일 */
-		.dessert-card {
-		  background-color: #ffffff;
-		  border: 1px solid #ddd;
-		  border-radius: 10px;
-		  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-		  padding: 20px;
-		  margin-bottom: 20px;
-		}
-		
-		.dessert-card img {
-		  max-width: 100%;
-		  border-radius: 5px;
-		}
-		
-		.dessert-card h2 {
-		  font-size: 24px;
-		  margin-top: 10px;
-		}
-		
-		/* 버튼 스타일 */
-		.button {
-		  display: inline-block;
-		  padding: 10px 20px;
-		  background-color: #ff9800;
-		  color: #fff;
-		  border: none;
-		  border-radius: 5px;
-		  cursor: pointer;
-		  transition: background-color 0.3s ease;
-		}
-		
-		.button:hover {
-		  background-color: #f57c00;
-		}
-		
-		/* 푸터 스타일 */
-		footer {
-		  background-color: #ffcc80;
-		  padding: 10px;
-		  text-align: center;
-		  border-top: 1px solid #ffb74d;
-		}
-		
-		/* 아이콘 스타일 (Font Awesome 사용 예시) */
-		 .icon {
-		  font-size: 24px;
-		  color: #e65100;
-		  margin-right: 10px;
-		}
-		
-		/* 애니메이션 효과 */
-		@keyframes falling-stars {
-		  0% {
-		    transform: translateY(-100%);
-		  }
-		  100% {
-		    transform: translateY(100vh);
-		  }
-		}
-		
-		.star {
-		  position: absolute;
-		  top: -20px;
-		  left: calc(50% - 10px);
-		  font-size: 20px;
-		  animation: falling-stars 5s linear infinite;
-		}
-		
-	</style>
-	
-	
+
 	<body>
-		{% block header %}
-		<div class="header">
+
+<div class="logo">
+	<div class="container">
+		<div class="col-md-12 mt-3"></div>
+	</div>
+	<div class="row">
+			<div class="col-5"></div>
+			<div class="col-2"><a href="/md_main/main"><img src="/static/image/logo.png" width="80%;" height="auto;"></a></div>
+			<div class="col-5"></div>
+	</div>
+	<div class="container">
+		<div class="col-md-12 mt-3"></div>
+	</div>
+</div>
+
+
+{% block header %}
+<div class="topbar">
+	<div class="top" style="text-align:center;">
 			{% if memid %}
-				{% if gid == 1 %}
-					<input type="button" value="추천조합" onclick="location='/md_combi/comblist'"> |
-					<input type="button" value="주문내역" onclick="location='/md_member/myorderlist'"> |
-					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
-					<input type="button" value="즐겨찾기" onclick="location='/md_favorite/favorite'"> |
-					<input type="button" value="장바구니" onclick="location='/md_order/buck'">
-				{% elif gid == 6 %}
-					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
-					<input type="button" value="점주 마이페이지" onclick="location='/md_store/mypagejumju'"> |
-					<input type="button" value="메인" onclick = "location='/md_main/main'">
-				{% elif gid == 7 %}
-					<input type="button" value="마이페이지" onclick="location='/md_member/userinfo'"> |
-					<input type="button" value="회원관리" onclick="location='/md_admin/userlist'"> 
+					{% if gid == 1 %}
+						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+					{% elif gid == 6 %}
+						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+					{% elif gid == 7 %}
+						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+					{% endif %}
+				{% else %}
+						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+						<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
 				{% endif %}
-				| <input type="button" value="logout" onclick="location='/md_member/logout'">
-			{% else %}
-				<input type="button" value="추천조합" onclick="location='/md_combi/comblist'"> |
-				<input type="button" value="login" onclick="location='/md_member/login'">
-			{% endif %}
-			
-			{% block title %}
-				<div>
-					<div class="title" style="text-align: center;"><input type="button" value="Maddi" onclick="location='/md_main/main'"></div>
-				</div>
-			{% endblock %}
 		</div>
-		{% endblock %}
+	</div>
+{% endblock %}
+
 
 		{% block content %}		
 		{% endblock %}

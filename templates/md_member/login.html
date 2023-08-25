@@ -10,30 +10,37 @@
 	<form method="post" action="login" name="loginform">
 		<input type="hidden" name="user_g_id" value="{{ user_g_id }}" >
 			<div class="col" style="text-align: center;">
-					{% if message %}
-						{{ message }}
-					{% else %}
+				{% if message %}
+					{{ message }}
+				{% else %}
 					<h3 style="text-align: center;"> login </h3>
-						<h5>아이디와 비밀번호를 입력해 주세요</h5>
-						<div class="col-md-12 mt-5"></div>
-					{% endif %}
-			
+					<div class="col-md-12 mt-3"></div>
+					<p>아이디와 비밀번호를 입력해 주세요</p>
+				{% endif %}
 			</div>
+			
+			<div class="col-md-12 mt-5"></div>
+			
 			<div class="col" style="text-align: center;">
 				<input class="input" type="text" name="user_id" placeholder="아이디" 
 						size=30% maxlength="20" autofocus required>
 			</div>
+			
+			<div class="col-md-12 mt-2"></div>
+			
 			<div class="col" style="text-align: center;">
 					<input class="input" type="password" name="user_pass" placeholder="비밀번호"
 						size=30% maxlength="20" required>
 			</div>
-			</table>
 			
 			<div class="col-md-12 mt-5"></div>
 	
 			<div class="col" style="text-align: center;">
 				<input class="inputbutton" type="submit" value="로그인" width=30%>	
 			</div>
+			
+			<div class="col-md-12 mt-2"></div>
+			
 			<div class="col" style="text-align: center;">
 				<input class="inputbutton" type="button" value="회원가입"
 						onclick="location='input'">

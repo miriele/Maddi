@@ -12,176 +12,6 @@
 	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 </head>
-
-<style>
- a:link { color:black; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: white; text-decoration: none;}
-
-#container {
-  width: 100%; 
-  height: 450px; 
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-.img {
-  opacity: 0;
-  width: 100%; 
-  height: 450px;
-  position: absolute;
-  transition: opacity 1s ease-in-out;
-}
-
-.img.on {
-  opacity: 1;
-}
-
-.search_input {
-	position: relateive;
-    border: 1px solid #bbb;
-    border-radius: 25px;
-    padding: 15px;
-    font-size: 16px;
-    outline: none; 
-    background-color: #f2f2f2;
-    width : 500px;
-}
-
-.search_icon {
-	position : ralative;
-    width: 45px;
-    height: auto;
-    cursor: pointer;
-}
-
-input[type="button"][name="differlocate"] {
-  background-color :#f7d4b7;
-  color: black;
-  cursor: pointer;
-  border: none;
-  border-radius: 50px; 
-  padding: 10px;
-  display: block;
-  margin: 0 auto;
- }
-
-.text-overlay {
-  position: absolute;
-  top: 43%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 50px; 
-  border-radius: 50px; 
-  color: #000; 
-  font-size: 16px; 
-  text-align: center
-}
-
-.top {
-  background-color:#ffab66;
-  padding: 15px;
-}
-
-.navbar__menu {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding-left: 0;
-}
-
-.navbar__menu li {
-  padding: 8px 30px;
-}
-
-.au {
-  overflow: scroll;
-  width: 100%;
-  height: 450px;
-  border: none;
-      }
-
-.colju{
-  background-color:#ffab66;
-  color: black; 
-  cursor: pointer;
-  border: none;
-  padding: 10px;
- }
-
-#kakaomap {
-    position: absolute;
-    left: -9999px; 
-    top: -9999px;
-}
-
-.content{
- background-color:#f7d4b7;
-}
-
-.recomend {
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-}
-
-.recomend h5 {
-  margin-bottom: 10px;
-  color: #000000;
-}
-
-.recomend .list-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.recomend .list-item {
-  width: calc(20% - 20px); 
-  margin: 10px;
-  padding: 15px;
-  background-color: #f7f2f2;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.recomend .list-item:hover {
-  transform: scale(1.05);
-}
-
-.recomend .list-item img.main_recommend_img {
-  max-width: 100%;
-  height: 80px;
-  margin-bottom: 10px;
-
-</style>
-
-<script>
-
-
-window.onload = function() {
-	  const images = document.querySelectorAll('.img');
-	  let current = 0;
-
-	  function showSlide() {
-	    for (let i = 0; i < images.length; i++) {
-	      images[i].classList.remove('on');
-	    }
-	    current++;
-	    if (current > images.length) {
-	      current = 3;
-	    }
-	    images[current - 1].classList.add('on');
-	    setTimeout(showSlide, 2000);
-	  }
-
-	  showSlide();
-	};
-	
-</script>
-
 <body>
 
 <div class="logo">
@@ -199,42 +29,44 @@ window.onload = function() {
 	</div>
 </div>
 
-<div class="topbar">
+
 {% block header %}
-	<div class="top" style="text-align:center;">
-			{% if memid %}
-					{% if gid == 1 %}
-						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
-					{% elif gid == 6 %}
-						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
-					{% elif gid == 7 %}
-						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+	<div class="topbar">
+		<div class="top" style="text-align:center;">
+				{% if memid %}
+						{% if gid == 1 %}
+							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+						{% elif gid == 6 %}
+							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+						{% elif gid == 7 %}
+							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+						{% endif %}
+					{% else %}
+							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+							<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
 					{% endif %}
-				{% else %}
-						<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-						<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
-				{% endif %}
-		</div>
+			</div>
+	</div>
 {% endblock %}
-</div>
+
 
 <div class="col">
 	<div id="container">

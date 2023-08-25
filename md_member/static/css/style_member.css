@@ -28,18 +28,20 @@ input[type="button"] {
 
 input.inputbutton[type="submit"][value="로그인"]{
   border: none;
-  background-color: #e0f1fe;
-  color: gray;
+  background-color: #ffab66;
+  color: black;
   padding: 5px 95px;
   border-radius: 10px;
-}
+  border: 1px solid #f7d4b7;
+ }
 
 input.inputbutton[type="button"][value="회원가입"]{
   border: none;
-  background-color: #e0f1fe;
-  color: gray;
+  background-color:#ffab66;
+  color:black;
   padding: 5px 90px;
   border-radius: 10px;
+  border: 1px solid #f7d4b7;
 }
 
 input.input[type="text"][name="user_id"],[type="password"],[name="user_name"],[name="user_nick"]{
@@ -47,6 +49,15 @@ input.input[type="text"][name="user_id"],[type="password"],[name="user_name"],[n
 }
 input[type="date"]{
 	padding: 3px 43px;
+}
+
+ a:link { color:black; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: white; text-decoration: none;}
+
+.top {
+  background-color:#ffab66;
+  padding: 15px;
 }
 
 .login {
