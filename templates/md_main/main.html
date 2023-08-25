@@ -51,7 +51,7 @@
 <section class="recomend">
 	<h5> 추천 조합 </h5>
 		{% for comb_id, comb_info in rdtos.items %}
-		<div class="list-item">
+			<div class="list-item" style="cursor:pointer" onclick="location='/md_combi/combd?comb_id={{comb_id}}&pagenum='">
 			{% if comb_info.comb_img %}
 				<img src="{{ comb_info.comb_img.url }}" class="main_recommend_img"><br><hr>
 			{% endif %}

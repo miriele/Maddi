@@ -288,7 +288,6 @@ class CombDView( View ):
         comb_id = request.GET["comb_id"]
         
         pagenum = request.GET["pagenum"]
-        number  = request.GET["number"]
         # 선택한 추천조합 정보
         comb    = MdComb.objects.get( comb_id = comb_id )
 
@@ -321,7 +320,6 @@ class CombDView( View ):
                 "memid"     : memid,
                 "gid"       : gid,
                 "pagenum"   : pagenum,
-                "number"    : number,
                 "comb_id"   : comb_id,
                 "user"      : user,
                 "comb"      : comb,
@@ -338,7 +336,6 @@ class CombDView( View ):
                 "memid"     : memid,
                 "gid"       : gid,
                 "pagenum"   : pagenum,
-                "number"    : number,
                 "comb_id"   : comb_id,
                 "comb"      : comb,
                 "nick"      : nick,
