@@ -319,10 +319,10 @@ function searchDetailAddrFromCoords(coords, callback) {
 function displayCenterInfo(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
 		// 지도에 현재 법정동 위치 표시 해주기
-//		var infoDiv = document.getElementById('centerAddr');
-//		var cur_loc = '현재위치 : ' + result[0].address.address_name;
+		var infoDiv = document.getElementById('centerAddr');
+		var cur_loc =  result[0].address.address_name;
 
-//		infoDiv.innerHTML = cur_loc; 
+		infoDiv.innerHTML = cur_loc; 
 		
 		// 검색할 때 법정동 코드 얻기 위해 법정동 설정
 		var element_bjd = $("input[name='bjd_name']");
