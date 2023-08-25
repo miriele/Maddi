@@ -2,174 +2,174 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Maddi</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
-	<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
-</head>
-<body>
-
-<div class="logo">
-	<div class="container">
-		<div class=
-		"col-md-12 mt-3"></div>
-	</div>
-	<div class="row">
-			<div class="col-5"></div>
-			<div class="col-2"><a href="/md_main/main"><img src="/static/image/logo.png" width="80%;" height="auto;"></a></div>
-			<div class="col-5"></div>
-	</div>
-	<div class="container">
-		<div class="col-md-12 mt-3"></div>
-	</div>
-</div>
-
-
-{% block header %}
-	<div class="topbar">
-		<div class="top" style="text-align:center;">
-				{% if memid %}
-						{% if gid == 1 %}
-							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
-						{% elif gid == 6 %}
-							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
-						{% elif gid == 7 %}
-							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+	<head>
+		<meta charset="utf-8">
+		<title>Maddi</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style_main.css' %}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3dc8348a47c6ca7030528334a83b33b0&libraries=services"></script>
+		<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
+	</head>
+	
+	<body>
+		<!-- 로고 -->
+		<div class="logo">
+			<div class="container">
+				<div class=
+				"col-md-12 mt-3"></div>
+			</div>
+			<div class="row">
+				<div class="col" style="text-align:center;"><a href="/md_main/main"><img src="/static/image/logo.png" width="10%;" height="auto;"></a></div>
+			</div>
+			<div class="container">
+				<div class="col-md-12 mt-3"></div>
+			</div>
+		</div>
+		
+		<!-- nav -->
+		{% block header %}
+			<div class="topbar">
+				<div class="top" style="text-align:center;">
+					{% if memid %}
+							{% if gid == 1 %}
+								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+							{% elif gid == 6 %}
+								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+							{% elif gid == 7 %}
+								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/myorderlist">나의주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+							{% endif %}
+						{% else %}
+								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
+								<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
 						{% endif %}
-					{% else %}
-							<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-							<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
-					{% endif %}
+				</div>
 			</div>
-	</div>
-{% endblock %}
-
-
-<div class="col">
-	<div id="container">
-		<div class="row">
-				<img class="img" src="/static/image/ice.jpg">
-				<img class="img" src="/static/image/ta.jpg">
-				<img class="img" src="/static/image/crr.jpg">
-				<img class="img" src="/static/image/tee.jpg">
-				<img class="img" src="/static/image/ma.jpg">
-				<img class="img" src="/static/image/ca.jpg">
-				<img class="img" src="/static/image/cho.jpg">	
-		</div>
-	</div>
-</div>
-
-<div class="image-container">
-	<div class="text-overlay">
-		<h3 style="text-align:center;"> 어떤 메뉴를 찾아볼까요?</h3> <hr>
-			<form method="post" id="search">
-				<input type="hidden" name="bjd_name" value="" />
-				<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
-				<img name="ser" src="/static/image/ser.png" class="search_icon" onclick="performSearch()" />
-			</form>
-			<hr>
-		<h5 id="centerAddr" style="text-align:center;"></h5>
-		<div class="rel-srch-words"></div>			
-		<input type="button" name="differlocate" value="다른위치설정" style="width: 350px;"/>
-	</div>
-</div>
-
-{% block map %}
-	<div class="main_area_map">
-		<div id="kakaomap" class="kakaomap"></div>
-	</div>
-{% endblock %}	
-<div class="content">
-<div class ="col" style="text-align:center;">
-		{% block cont_lower %}
-			<div class="main_search_result" style="text-align:center;"></div>
 		{% endblock %}
-</div>
-
-<h5 class="colju" style="text-align:center;"> Maddi의 추천 </h5>
-
-	<div class="container">
-		<div class="col-md-12 mt-5"></div>
-	</div>
-	
-	<div class = "col">
-			{% if memid %}
-				<div class = "container">
-					{% block userrecommend %} 
-					{% endblock %}
+		
+		<!-- 이미지슬라이드 -->
+		<div class="col">
+			<div id="container">
+				<div class="row">
+						<img class="img" src="/static/image/ice.jpg">
+						<img class="img" src="/static/image/ta.jpg">
+						<img class="img" src="/static/image/crr.jpg">
+						<img class="img" src="/static/image/tee.jpg">
+						<img class="img" src="/static/image/ma.jpg">
+						<img class="img" src="/static/image/ca.jpg">
+						<img class="img" src="/static/image/cho.jpg">	
 				</div>
-			{% endif %}	
-			
-				<div class="container">
-					<div class="col-md-12 mt-4"></div>
-				</div>
-				
-				<div class = "container">
-					{% block drnkrecommend %}
-					{% endblock %}
-				</div>
-							
-				<div class="container">
-					<div class="col-md-12 mt-4"></div>
-				</div>
-				
-				<div class = "container">
-					{% block dsrtrecommend %}
-					{% endblock %}
-				</div>
-							
-				<div class="container">
-					<div class="col-md-12 mt-4"></div>
-				</div>
-				
-				
-				<div class = "container">
-					{% block combirecommend %}
-					{% endblock %}
-				</div>
-				
-	</div>
-	
-	<div class="container">
-		<div class="col-md-12 mt-5"></div>
-	</div>
-	
-	<div class="container">
-		<div class="row">
-			<div class="col-4" style="text-align:center;">
-	
 			</div>
 		</div>
-	</div>
-</div>
-{% block footer %}
-<footer class="footer">
-	<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
-</footer>
-{% endblock %}
-
-</body>
+		
+		<!-- 검색창 -->
+		<div class="image-container">
+			<div class="text-overlay">
+				<h3 style="text-align:center;"> 어떤 메뉴를 찾아볼까요?</h3> <hr>
+					<form method="post" id="search">
+						<input type="hidden" name="bjd_name" value="" />
+						<input type="text" name="search_word" class="search_input" maxlength="60" autocomplete="off" placeholder="검색할 메뉴를 입력해주세요" />
+						<img name="ser" src="/static/image/ser.png" class="search_icon" onclick="performSearch()" />
+					</form>
+					<hr>
+				<h5 id="centerAddr" style="text-align:center;"></h5>
+				<div class="rel-srch-words"></div>			
+				<input type="button" name="differlocate" value="다른위치설정" style="width: 350px;"/>
+			</div>
+		</div>
+		
+		<!-- 지도(숨김) -->
+		{% block map %}
+		<div class="main_area_map">
+			<div id="kakaomap" class="kakaomap"></div>
+		</div>
+		{% endblock %}	
+		
+		<!-- 메인컨텐츠 -->
+		<div class="content">
+		
+			<!-- 검색결과 -->
+			<div class ="col" style="text-align:center;">
+					{% block cont_lower %}
+						<div class="main_search_result" style="text-align:center;"></div>
+					{% endblock %}
+			</div>
+			
+			<h5 class="colju" style="text-align:center;"> Maddi의 추천 </h5>
+		
+			<!-- 추천 -->
+			<div class = "col">
+					{% if memid %}
+						<div class = "container">
+							{% block userrecommend %} 
+							{% endblock %}
+						</div>
+					{% endif %}	
+					
+						<div class="container">
+							<div class="col-md-12 mt-4"></div>
+						</div>
+						
+						<div class = "container">
+							{% block drnkrecommend %}
+							{% endblock %}
+						</div>
+									
+						<div class="container">
+							<div class="col-md-12 mt-4"></div>
+						</div>
+						
+						<div class = "container">
+							{% block dsrtrecommend %}
+							{% endblock %}
+						</div>
+									
+						<div class="container">
+							<div class="col-md-12 mt-4"></div>
+						</div>
+						
+						
+						<div class = "container">
+							{% block combirecommend %}
+							{% endblock %}
+						</div>
+				</div>
+			
+			<!--여백 -->
+			<div class="col-md-12 mt-5"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col"></div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- footer -->
+		{% block footer %}
+		<div class="col-md-12 mt-5"></div>
+		<footer class="footer">
+			<p>Copyright <b>Maddi(이하맛디)</b> Inc. All Rights Reserved</p>
+		</footer>
+		{% endblock %}
+		
+	</body>
 </html>
