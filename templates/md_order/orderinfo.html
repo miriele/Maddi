@@ -1,9 +1,14 @@
-{% extends "md_main/base2.html" %}
+{% extends "md_member/base.html" %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style_orderinfo.css' %}">
 
 {% block content %}
-<h2> 주문하기 </h2>
-
 {% csrf_token %}
+
+
+<div class="col-md-12 mt-5"></div>
+<div class="col-md-12 mt-5"></div>
 <form method="post" name="inputform">
 	<input type="hidden" name="stor_m_id" value="{{ dto.stor_m_id }}">
 	<input type="hidden" name="user_id" value="{{ user_id }}">

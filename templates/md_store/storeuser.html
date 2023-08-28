@@ -11,74 +11,151 @@
 
 <body>
 
-<div class="col-md-12 mt-5"></div>
-
-<form method="post" action="storeuser" name="updateform">
-	<input type="hidden" name="stor_id" value="{{ stor_id }}">
-	<input type="hidden" name="user_id" value="{{ user_id }}">
+	<div class="col-md-12 mt-5"></div>
+	
+	<form method="post" action="storeuser" name="updateform">
+		<input type="hidden" name="stor_id" value="{{ stor_id }}">
+		<input type="hidden" name="user_id" value="{{ user_id }}">
+		
+		<section>
+			<h3 style="text-align:center;"> 매장정보 </h3>
+			<hr>
+			<div class="storinfo">
+				<div class="row">
+					<div class="col-3" style="text-align:center;"><img src="/media/{{ stor_img }}" width="350px" height="auto">
+						<p>
+							{% if gid == 1 %}
+					        	<input class="inputbutton" type="button" value="이 가게의 사장님이신가요?" onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
+							{% endif %}
+						</p>
+					</div>
+					<div class="col-1" style="text-align:center;">
+						<h5>매장유형</h5><br>
+						<h5>매장명</h5><br>
+						<h5>주소</h5><br>
+						<h5>연락처</h5><br>
+						<p>
+							<form method="post" action="addfav"name="addfavform">
+								<input type="hidden" name="stor_id" value="{{stor_id}}">
+								{% if result == 0 %}
+									<input type="button" name="addfavbtn" value="즐겨찾기 등록">
+								{% else %}
+									<input type="button" name="addfavbtn" value="즐겨찾기 취소">
+								{% endif %} 
+							</form>
+						</p>
+					</div>	
+					<div class="col-8" style="text-align:left;">
+						<h5> {{ stor_type }}     </h5><br>
+						<h5> {{ dto.stor_name }} </h5><br>
+						<h5> {{ dto.stor_addr }} </h5><br>
+						<h5> {{ stor_tel }}      </h5><br>
+					</div>
+				</div><!-- row -->
+			</div><!--storinfo -->
+		</section>
+	</form>
+	
+	<h1>시그니처 메뉴</h1>
+		<section class="menu-section">
+			<h3> 음료 </h3>
+				<div class="list-content" style="text-align:center; display: flex; flex-wrap: wrap;">
+					{% if menu_list %}
+						{% for menu in menu_list %}
+							{% if menu.menu_t.menu_t_name == "시그니처" %}
+								{% if menu.menu.dsrt_t_id == -1 %}
+									 <section style="flex: 0 0 calc(33.33% - 20px);">
+										<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
+											<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">
+											<p>{{ menu.stor_m_name }}</p>
+											<p>{{ menu.stor_m_pric }}원</p>
+											<p>{{ menu.stor_m_cal }}kcal</p>
+											<p>{{ menu.menu.menu_info }}</p>
+										</div>
+									</section>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						<p>시그니처 메뉴가 없습니다.</p>
+					{% endif %}
+				</div>
+		</section>
+	
+		<section>
+			<h3> 디저트 </h3>
+				<div class="list-content" style="text-align:center; display: flex; flex-wrap: wrap;">
+					{% if menu_list %}
+						{% for menu in menu_list %}
+							{% if menu.menu_t.menu_t_name == "시그니처" %}
+								{% if menu.menu.dsrt_t_id != -1 %}
+									 <section style="flex: 0 0 calc(33.33% - 20px);">
+										<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
+											<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">
+											<p>{{ menu.stor_m_name }}</p>
+											<p>{{ menu.stor_m_pric }}원</p>
+											<p>{{ menu.stor_m_cal }}kcal</p>
+											<p>{{ menu.menu.menu_info }}</p>
+										</div>
+									</section>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						<p>시그니처 메뉴가 없습니다.</p>
+					{% endif %}
+				</div>
+		</section>
+	
+	<h1>일반메뉴</h1>
+	<section class="menu-section">
+		<h3> 음료 </h3>
+			<div class="list-content" style="text-align:center; display: flex; flex-wrap: wrap; justify-content: space-between;">
+				{% if menu_list %}
+					{% for menu in menu_list %}
+						{% if menu.menu_t.menu_t_name == "일반" %}
+							{% if menu.menu.dsrt_t_id == -1 %}
+								 <section style="flex: 0 0 calc(33.33% - 20px);">
+									<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
+										<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">
+										<p>{{ menu.stor_m_name }}</p>
+										<p>{{ menu.stor_m_pric }}원</p>
+										<p>{{ menu.stor_m_cal }}kcal</p>
+										<p>{{ menu.menu.menu_info }}</p>
+									</div>
+								</section>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					<p>일반 메뉴가 없습니다.</p>
+				{% endif %}
+			</div>
+	</section>
 	
 	<section>
-		<h3 style="text-align:center;"> 매장정보 </h3>
-		<hr>
-		<div class="storinfo">
-			<div class="row">
-				<div class="col-3" style="text-align:center;"><img src="/media/{{ stor_img }}" width="350px" height="auto">
-					<p>
-						{% if gid == 1 %}
-				        	<input class="inputbutton" type="button" value="이 가게의 사장님이신가요?" onclick="location='/md_store/addjumju?stor_id={{stor_id}}'">
+	<h3>디저트</h3>
+		<div class="list-content" style="text-align:center; display: flex; flex-wrap: wrap; justify-content: space-between;">
+			{% if menu_list %}
+				{% for menu in menu_list %}
+					{% if menu.menu_t.menu_t_name == "일반" %}
+						{% if menu.menu.dsrt_t_id != -1 %}
+							 <section style="flex: 0 0 calc(33.33% - 20px);">
+								<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">
+									<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">
+									<p>{{ menu.stor_m_name }}</p>
+									<p>{{ menu.stor_m_pric }}원</p>
+									<p>{{ menu.stor_m_cal }}kcal</p>
+									<p>{{ menu.menu.menu_info }}</p>
+								</div>
+							</section>
 						{% endif %}
-					</p>
-				</div>
-				<div class="col-1" style="text-align:center;">
-					<p style="text-align:right;">
-						<form method="post" action="addfav"name="addfavform">
-							<input type="hidden" name="stor_id" value="{{stor_id}}">
-							{% if result == 0 %}
-								<input type="button" name="addfavbtn" value="즐겨찾기 등록">
-							{% else %}
-								<input type="button" name="addfavbtn" value="즐겨찾기 취소">
-							{% endif %} 
-						</form>
-					</p>
-					<h5>매장유형</h5>
-					<h5>매장명</h5>
-					<h5>주소</h5>
-					<h5>연락처</h5>
-				</div>	
-				<div class="col-8" style="text-align:center;">
-					<p style="text-align:left;">&nbsp;|&nbsp; 
-						<input type="button" name="reviewgo" value="매장 리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
-					</p>
-					<h5> {{ stor_type }}     </h5>
-					<h5> {{ dto.stor_name }} </h5>
-					<h5> {{ dto.stor_addr }} </h5>
-					<h5> {{ stor_tel }}      </h5>
-				</div>
-			</div><!-- row -->
-		</div><!--storinfo -->
-	</section>
-</form>
-
-	<section>
-		<h3>메뉴</h3>
-		{% if menu_list %}
-	    <div class="list-content">
-	        {% for menu in menu_list %}
-	        <section>
-	        	<div class="list-content2" onclick="location.href='/md_order/orderinfo?stor_id={{stor_id}}&stor_m_id={{menu.stor_m_id}}'">		        	
-		        	<img src="/media/{{ menu.stor_m_img }}" width="100" height="75">		        	
-		          	<p>{{ menu.stor_m_name }}</p>
-		            <p>{{ menu.stor_m_pric }}원</p>
-		            <p>{{ menu.stor_m_cal }}kcal</p>
-		            <p>{{ menu.menu.menu_info }}</p>
-		            <p>{{ menu.menu_t.menu_t_name }}</p>
-	            </div>
-	        </section>
-	    	 {% endfor %}
-	     </div>
-	    {% else %}
-	    <p>해당 매장의 메뉴가 없습니다.</p>
-	    {% endif %}
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				<p>일반 메뉴가 없습니다.</p>
+			{% endif %}
+		</div>
 	</section>
 </body>
 {% endblock %}
