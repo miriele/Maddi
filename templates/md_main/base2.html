@@ -12,7 +12,34 @@
 		<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script type="text/javascript" src="{% static 'js/script_main.js' %}"></script>
 	</head>
+	<style>
+	  /* 메뉴 리스트 스타일 */
+	  .menu-list {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+	    display: inline; /* 가로로 배치 */
+	  }
 	
+	  /* 메뉴 아이템 스타일 */
+	  .menu-item {
+	    display: inline-block; /* 가로로 배치 */
+	    margin-right: 20px; /* 메뉴 간격 */
+	  }
+	
+	  /* 공통된 메뉴 링크 스타일 */
+	  .menu-link {
+	    font-size: 16px; /* 기본 폰트 크기 */
+	    text-decoration: none;
+	  }
+	
+	  /* 반응형 폰트 크기 조절 */
+	  @media (max-width: 768px) {
+	    .menu-link {
+	      font-size: 14px;
+	    }
+	  }
+	</style>
 	
 	<body>
 		<!-- 로고 -->
@@ -26,37 +53,56 @@
 		
 		<!-- nav -->
 		{% block header %}
-		<div class="topbar">
-			<div class="top" style="text-align:center;">
+			<div class="topbar">
+				<div class="top" style="text-align:center;">
 					{% if memid %}
 							{% if gid == 1 %}
-								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; | &nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/myorderlist">나의 주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+								<li class="menu-item"><a class="menu-link" href="/md_combi/comblist">추천조합</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/userinfo">마이페이지</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_favorite/favorite">즐겨찾기</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_order/buck">장바구니</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/myorderlist">나의주문</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/logout">로그아웃</a></li>
 							{% elif gid == 6 %}
-								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_store/mypagejumju">점주페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/myorderlist">나의 주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+								<li class="menu-item"><a class="menu-link" href="/md_combi/comblist">추천조합</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/userinfo">마이페이지</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_store/mypagejumju">점주페이지</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_favorite/favorite">즐겨찾기</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_order/buck">장바구니</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/myorderlist">나의주문</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/logout">로그아웃</a></li>
 							{% elif gid == 7 %}
-								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/userinfo">마이페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_admin/userlist">관리자페이지</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_favorite/favorite">즐겨찾기</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/myorderlist">나의 주문</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_order/buck">장바구니</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/logout">로그아웃</a>&nbsp;&nbsp;&nbsp;</h5>
+								<li class="menu-item"><a class="menu-link" href="/md_combi/comblist">추천조합</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/userinfo">마이페이지</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_admin/userlist">관리자페이지</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_favorite/favorite">즐겨찾기</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_order/buck">장바구니</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/myorderlist">나의주문</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/logout">로그아웃</a></li>
 							{% endif %}
 						{% else %}
-								<h5 style="display:inline"><a href="/md_combi/comblist">추천조합</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/login">로그인</a>&nbsp;&nbsp;&nbsp; |&nbsp;</h5>
-								<h5 style="display:inline"><a href="/md_member/input">회원가입</a>&nbsp;&nbsp;&nbsp;</h5>
+								<li class="menu-item"><a class="menu-link" href="/md_combi/comblist">추천조합</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/login">로그인</a></li>
+								<li class="menu-item">|</li>
+								<li class="menu-item"><a class="menu-link" href="/md_member/input">회원가입</a></li>
 						{% endif %}
 				</div>
 			</div>
