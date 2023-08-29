@@ -17,31 +17,23 @@
 					즐겨찾기에 등록된 매장이 없습니다.
 			</tr>
 		{% else %}
-			{% for fav in md_fav %}
+			{% for k, v in fav_list.items %}
 				<tr>
 					<td align="center">
 						{{ number | sub:forloop.counter0 }}		<!-- 현제 번호 인덱스 -->
 					</td>
 					<td>
-						{% for st in store %}
-							{% if fav.stor_id == st.stor.stor_id %}
-								<a href="/md_store/storeuser?stor_id={{ st.stor.stor_id }}" style="color: darkblue">
-									{{ st.stor.stor_name }}					<!-- 매장명 -->
-								</a>
-							{% endif %}
-						{% endfor %}
+						<a href="/md_store/storeuser?stor_id={{ v.stor_id }}" style="color: darkblue">
+							{{ v.stor_name }}					<!-- 매장명 -->
+						</a>
 					</td>	
 					<td>
-						{% for st in store %}
-							{% if fav.stor_id == st.stor.stor_id %}
-								{{ st.stor.stor_addr }}					<!-- 매장주소 -->
-							{% endif %}
-						{% endfor %}
+						{{ v.stor_addr }}					<!-- 매장주소 -->
 					</td>
 					<td>
-						{{ fav.fav_reg_ts |date:"Y-m-d H:i" }}
+						{{ v.fav_reg_ts }}
 					</td>				
-				</tr>						
+				</tr>					
 			{% endfor %}
 		{% endif %}
 		</table>

@@ -47,8 +47,6 @@ class FavoriteView( View ):
             if end >count :
                 end = count
             
-            md_fav      = MdFavorite.objects.filter(user_id = memid ).order_by("-fav_reg_ts")[start:end]  
-
             number      = count - ( pagenum -1) * int (page_size)            
             startpage   = pagenum //int(page_block) * int(page_block) +1  
             
@@ -66,14 +64,28 @@ class FavoriteView( View ):
                 endpage = pagecount
             
             pages = range(startpage, endpage + 1)             
+           
+            fav     = MdFavorite.objects.select_related('stor').filter(user_id = memid ).order_by("-fav_reg_ts").values(
+                    'fav_id', 'fav_reg_ts', 'stor__stor_id', 'stor__stor_name', 'stor__stor_addr' )[start:end]
+            # print(fav)
+            fav_list = dict()
             
-            store = MdFavorite.objects.select_related('stor').order_by("-fav_reg_ts")
+            for f in fav :
+                fav_id = f["fav_id"]
+                if fav_id not in fav_list :
+                    fav_list[fav_id] ={
+                        "stor_id"    : f["stor__stor_id"],
+                        "stor_name"  : f["stor__stor_name"],
+                        "stor_addr"  : f["stor__stor_addr"],
+                        "fav_reg_ts" : f["fav_reg_ts"],
+                        }
+            
+            print(fav_list)
             # for s in store :
                 # logger.debug(f's.stor.stor_id : {s.stor.stor_id}')
 
             context = {
-                "store"     : store,
-                "md_fav"    : md_fav,
+                "fav_list"  : fav_list,
                 "memid"     : memid,
                 "gid"       : gid,
                 "count"     : count,
