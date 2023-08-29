@@ -139,51 +139,47 @@ class RevwriteView( View ):
     
     
     def post(self, request):
-        
-        rev_star    = request.POST["rev_star"]
-        rev_star    = rev_star
-        ordr_id     =  request.POST.get("ordr_id","")
-        
         md_tag0     = request.POST.get("md_tag0","")
         md_tag1     = request.POST.getlist("md_tag1","")
-
+        ordr_id     = request.POST.get("ordr_id","")
+        
+        
         # 리뷰 저장
         rev = MdReview(
             ordr_id     = ordr_id,
-            rev_star    = rev_star,
+            rev_star    = request.POST["rev_star"],
             rev_ts      = datetime.now(),
             rev_cont    = request.POST["rev_cont"],
             rev_img     = request.FILES.get("rev_img"),
             )
         rev.save()
-        
+        # logger.debug(f'md_tag0 : {md_tag0}')
+        # logger.debug(f'md_tag1 : {md_tag1}')
+        # logger.debug(f'cont : {request.POST["rev_cont"]}')
         # 태그 저장
         # 리뷰 id 
         md_review = MdReview.objects.get(ordr_id = ordr_id) 
-        
-        rev_id = 0
-        tag_id = 0
         
         rev_id = md_review.rev_id
         
         
         if md_tag0 != None :
-            tag0 = MdRevT(
+            tag1 = MdRevT(
                 rev_id = rev_id,
-                tag_id = tag_id
+                tag_id = md_tag0
                 )
-            tag0.save()
-            
+            tag1.save()
+        
         if md_tag1 != None :
             for tag1 in md_tag1 :
                 logger.debug(f' tag1  : { tag1 }')
-                tag_id = tag1
-                
-                tag1 = MdRevT(
-                    rev_id = rev_id,
-                    tag_id = tag_id
-                    )
-                tag1.save()
         
+                tag2 = MdRevT(
+                    rev_id = rev_id,
+                    tag_id = tag1
+                    )
+                tag2.save()
+        
+
         return redirect("/md_member/myorderlist")
     
