@@ -41,6 +41,8 @@ class AddJumjuView(View):
         
         #회원정보
         user_id = request.session.get('memid')
+        memid = request.session.get('memid')
+        gid = request.session.get("gid")
         user = MdUser.objects.get(user_id=user_id)
         user_name = user.user_name
         user_bir = user.user_bir
@@ -68,6 +70,8 @@ class AddJumjuView(View):
             reg_num = None
         
         context = {
+                "memid" : memid,
+                "gid" : gid,
                 "user_id": user_id,
                 "user_ids": user_ids,
                 "user_name": user_name,

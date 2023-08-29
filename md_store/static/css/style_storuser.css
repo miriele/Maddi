@@ -44,18 +44,4 @@ h5 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 버튼 스타일 */
-.inputbutton {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.inputbutton:hover {
-    background-color: #45a049;
-}
-
 

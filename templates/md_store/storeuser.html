@@ -34,22 +34,21 @@
 						<h5>매장명</h5><br>
 						<h5>주소</h5><br>
 						<h5>연락처</h5><br>
-						<p>
-							<form method="post" action="addfav"name="addfavform">
+						<form method="post" action="addfav"name="addfavform">
 								<input type="hidden" name="stor_id" value="{{stor_id}}">
 								{% if result == 0 %}
 									<input type="button" name="addfavbtn" value="즐겨찾기 등록">
 								{% else %}
 									<input type="button" name="addfavbtn" value="즐겨찾기 취소">
 								{% endif %} 
-							</form>
-						</p>
+						</form>
 					</div>	
 					<div class="col-8" style="text-align:left;">
 						<h5> {{ stor_type }}     </h5><br>
 						<h5> {{ dto.stor_name }} </h5><br>
 						<h5> {{ dto.stor_addr }} </h5><br>
 						<h5> {{ stor_tel }}      </h5><br>
+						<input type="button" name="reviewgo" value="매장 리뷰 보기" onclick="location='/md_review/review?stor_id={{stor_id}}'">
 					</div>
 				</div><!-- row -->
 			</div><!--storinfo -->
