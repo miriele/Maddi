@@ -1,8 +1,12 @@
+{% extends "md_member/base.html" %}
 
 {% block content %}
 {% csrf_token %}
-<div class="col-md-12 mt-4"></div>
-<div class="userinput">
+<div class="col-md-12 mt-5"></div>
+<div class="col-md-12 mt-5"></div>
+
+
+ <div class="userinput">
 	<form method="post" action="input"	name="inputform" enctype="multipart/form-data">
 		<div class="userinfo2">
 			<table>
@@ -137,4 +141,3 @@
 	</form>
 </div><!-- userinput -->
 {% endblock %}
-
