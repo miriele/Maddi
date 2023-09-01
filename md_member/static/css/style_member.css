@@ -72,11 +72,6 @@ input[type="date"]{
 	margin-bottom :100px;
 }
 
-select.select_genid {
-	width: 5%;
-	font-family: inherit;
-	text-align: center;
-}
 .userinput2{
 	left: 50%;
 	right: 50%;
